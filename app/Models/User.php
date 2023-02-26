@@ -44,15 +44,21 @@ class User extends Authenticatable
 	public static $rules=[
 		'name'=>'required',
 		'email'=>'required|email',
-		'password'=>'required|confirmed|min:8',
+		'password'=>'required|confirmed|min:8|max:20',
 	];
 	public static $loginrules=[
 		'email'=>'required|email',
-		'password'=>'required|min:8',
+		'password'=>'required|min:8|max:20',
 	];
 	public static $profilrules=[
 		'name'=>'required',
 		'email'=>'required|email',
-		'password'=>'required|confirmed|min:8',
+		'password'=>'required|confirmed|min:8|max:20',
+	];
+	public static $forgetpass=['email'=>'required|email'];
+	public static $resetpass=[
+		'password'=>'required|confirmed|min:8|max:20',
+		'token'=>'required',
+		'email'=>'required|email'
 	];
 }

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+	return view('login');
 });
 //Admin route
 Route::get('register',[AdminController::class,'register']);
@@ -22,3 +22,11 @@ Route::post('register',[AdminController::class,'postRegister']);
 Route::get('login',[AdminController::class,'login']);
 Route::post('login',[AdminController::class,'postLogin']);
 Route::get('logout',[AdminController::class,'logout']);
+Route::get('forget-password',[AdminController::class,'forgetPassword']);
+Route::post('forget-password',[AdminController::class,'postForgetPassword']);
+Route::get('reset-password/{token}',[AdminController::class,'resetPassword']);
+Route::post('reset-password',[AdminController::class,'postResetPassword']);
+//Menu admin route
+Route::middleware('checkAdmin')->group(function(){
+	//
+});
