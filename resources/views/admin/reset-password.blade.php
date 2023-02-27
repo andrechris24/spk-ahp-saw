@@ -1,83 +1,82 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>
+@extends('admin.auth')
+@section('title')
+<title>
 		Reset Password | Sistem Pendukung Keputusan metode AHP dan SAW
-		</title>
-		<link rel="stylesheet" href="{{ url('assets/css/main/app.css') }}" />
-		<link rel="stylesheet" href="{{ url('assets/css/pages/auth.css') }}" />
-		<link
-			rel="shortcut icon"
-			href="{{ url('assets/images/logo/favicon.svg') }}"
-			type="image/x-icon"
-		/>
-		<link
-			rel="shortcut icon"
-			href="{{ url('assets/images/logo/favicon.png') }}"
-			type="image/png"
-		/>
-	</head>
+	</title>
+@endsection
 
-	<body>
-		<div id="auth">
-			<div class="row h-100">
-				<div class="col-lg-5 col-12">
-					<div id="auth-left">
-						<div class="auth-logo">
-							<img src="{{ url('assets/images/logo/logo.svg') }}" alt="Logo" />
-						</div>
-						<h1 class="auth-title">Reset Password</h1>
-						<p class="auth-subtitle mb-5">
-							Selamat datang kembali! Untuk melanjutkan, masukkan password baru.
-						</p>
-						<form action="{{ url('reset-password') }}" method="post">
-							@csrf
-							<div class="form-group position-relative has-icon-left mb-4">
-								<input
-									type="password"
-									class="form-control form-control-xl"
-									placeholder="Password"
-									name="password"
-									pattern=".{8,20}"
-									maxlength="20"
-									required
-								/>
-								<div class="form-control-icon">
-									<i class="bi bi-shield-lock"></i>
-								</div>
-							</div>
-							<div class="form-group position-relative has-icon-left mb-4">
-								<input
-									type="password"
-									class="form-control form-control-xl"
-									placeholder="Confirm Password"
-									name="password_confirmation"
-									pattern=".{8,20}"
-									maxlength="20"
-									required
-								/>
-								<div class="form-control-icon">
-									<i class="bi bi-shield-lock"></i>
-								</div>
-							</div>
-							<button type="submit" class="btn btn-primary btn-block btn-lg shadow-lg mt-5">
-								Kirim
-							</button>
-						</form>
-						<div class="text-center mt-5 text-lg fs-4">
-							<p class="text-gray-600">
-								Ingat akun Anda?
-								<a href="{{ url('login') }}" class="font-bold">Login</a>
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-7 d-none d-lg-block">
-					<div id="auth-right"></div>
-				</div>
-			</div>
+@section('auth-desc')
+<h1 class="auth-title">Reset Password</h1>
+<p class="auth-subtitle mb-5">
+Selamat datang kembali! Untuk melanjutkan, masukkan password baru.
+</p>
+@endsection
+
+@section('content')
+<div class="alert alert-warning d-none">
+	<i class="bi bi-capslock-fill"></i> CAPS LOCK nyala
+</div>
+<form action="{{ url('reset-password') }}" method="post">
+	@csrf
+	<div class="form-group position-relative has-icon-left mb-4">
+		<input type="text" class="form-control form-control-xl"
+		placeholder="Email" name="email" value="" readonly />
+		<div class="form-control-icon">
+			<i class="bi bi-envelope"></i>
 		</div>
-	</body>
-</html>
+	</div>
+	<div class="form-group position-relative has-icon-left mb-4">
+		<input type="password" class="form-control form-control-xl" placeholder="Password"
+		name="password" pattern=".{8,20}" maxlength="20" id="password" oninput="checkpassword()" required />
+		<div class="form-control-icon">
+			<i class="bi bi-shield-lock"></i>
+		</div>
+	</div>
+	<div class="form-group position-relative has-icon-left mb-4">
+		<input type="password" class="form-control form-control-xl"
+		placeholder="Confirm Password" name="password_confirmation" pattern=".{8,20}" 
+		maxlength="20" id="confirm-password" oninput="checkpassword()" required />
+		<div class="form-control-icon">
+			<i class="bi bi-shield-lock"></i>
+		</div>
+	</div>
+	<button type="submit" class="btn btn-primary btn-block btn-lg shadow-lg mt-5">
+		Reset
+	</button>
+</form>
+<div class="text-center mt-5 text-lg fs-4">
+	<p class="text-gray-600">
+		Ingat akun Anda?
+		<a href="{{ url('login') }}" class="font-bold">Login</a>
+	</p>
+</div>
+@endsection
+
+@section('js')
+	<script type="text/javascript">
+		const accpassword = document.querySelectorAll('input[type="password"]');
+		const message = document.querySelector('#capslock');
+		for (a = 0; a < accpassword.length; a++) {
+			accpassword[a].addEventListener('keyup', function(e) {
+				if (e.getModifierState('CapsLock')) {
+					message.classList.remove('d-none');
+					message.classList.add('d-block');
+				} else {
+					message.classList.remove('d-block');
+					message.classList.add('d-none');
+				}
+			});
+		}
+		var newpassform = document.getElementById("password");
+		var passcekform = document.getElementById("confirm-password");
+
+		function checkpassword() {
+			var pass1 = newpassform.value;
+			var pass2 = passcekform.value;
+			if (pass1 !== pass2) passcekform.setCustomValidity(
+				"Password konfirmasi salah"
+			);
+			else passcekform.setCustomValidity("");
+		}
+	</script>
+@endsection

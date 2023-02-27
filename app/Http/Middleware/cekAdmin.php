@@ -16,9 +16,9 @@ class cekAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(session('admin')){
+        if (session('admin')) {
             return $next($request);
         }
-        return redirect('login')->with('status','Anda harus login dulu.');
+        return redirect('login')->with('status', 'Anda harus login dulu.');
     }
 }

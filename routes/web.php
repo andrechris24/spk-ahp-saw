@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,20 +14,48 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-	return view('login');
-});
 //Admin route
-Route::get('register',[AdminController::class,'register']);
-Route::post('register',[AdminController::class,'postRegister']);
-Route::get('login',[AdminController::class,'login']);
-Route::post('login',[AdminController::class,'postLogin']);
-Route::get('logout',[AdminController::class,'logout']);
-Route::get('forget-password',[AdminController::class,'forgetPassword']);
-Route::post('forget-password',[AdminController::class,'postForgetPassword']);
-Route::get('reset-password/{token}',[AdminController::class,'resetPassword']);
-Route::post('reset-password',[AdminController::class,'postResetPassword']);
-//Menu admin route
-Route::middleware('checkAdmin')->group(function(){
+// Route::get('register', [AdminController::class, 'register']);
+// Route::post('register', [AdminController::class, 'postRegister']);
+// Route::get('login', [AdminController::class, 'login']);
+// Route::post('login', [AdminController::class, 'postLogin']);
+// Route::get('logout', [AdminController::class, 'logout']);
+
+Route::group(['namespace' => 'App\Http\Controllers'], function()
+{
+    /**
+     * Home Routes
+     */
+    Route::get('/', 'HomeController@index')->name('home.index');
+    Route::group(['middleware' => ['guest']], function() {
+        /**
+         * Register Routes
+         */
+        Route::get('/register', 'RegisterController@show')->name('register.show');
+        Route::post('/register', 'RegisterController@register')->name('register.perform');
+
+        /**
+         * Login Routes
+         */
+        Route::get('/login', 'LoginController@show')->name('login.show');
+        Route::post('/login', 'LoginController@login')->name('login.perform');
+
+        /**
+         * Reset Password Routes
+         */
+        Route::get('/forget-password', 'ForgotPasswordController@showForgetPasswordForm')->name('forget-password.show');
+		Route::post('/forget-password', 'ForgotPasswordController@submitForgetPasswordForm')->name('forget-password.perform');
+		Route::get('/reset-password/{token}', 'ForgotPasswordController@showResetPasswordForm')->name('reset-password.show');
+		Route::post('/reset-password', 'ForgotPasswordController@submitResetPasswordForm')->name('reset-password.perform');
+    });
+
+    Route::group(['middleware' => ['auth']], function() {
+        /**
+         * Logout Routes
+         */
+        Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
+    });
+});
+Route::middleware('checkAdmin')->group(function () {
 	//
 });
