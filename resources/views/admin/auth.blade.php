@@ -6,13 +6,11 @@
 	@yield('title')
 	<link rel="stylesheet" href="{{ url('assets/css/main/app.css') }}" />
 	<link rel="stylesheet" href="{{ url('assets/css/pages/auth.css') }}" />
-	<link rel="shortcut icon" href="{{ url('assets/images/logo/favicon.svg') }}" type="image/x-icon" />
-	<link rel="shortcut icon" href="{{ url('assets/images/logo/favicon.png') }}" type="image/png" />
 </head>
 <body>
 	<div id="auth">
 		<div class="row h-100">
-			<div class="col-lg-5 col-12">
+			<div class="col-lg-7 col-12">
 				<div id="auth-left">
 					<div class="auth-logo">
 						<img src="{{ url('assets/images/logo/logo.svg') }}" alt="Logo" />
@@ -20,6 +18,7 @@
 					@yield('auth-desc')
 					@if($errors->any())
 						<div class="alert alert-danger">
+							<i class="bi bi-x-circle-fill"></i> Kesalahan:
 							<ul>
 								@foreach($errors->all() as $error)
 									<li>{{$error}}</li>
@@ -29,13 +28,20 @@
 					@endif
 					@if(Session::has('status'))
 						<div class="alert alert-warning" role="alert">
+							<i class="bi bi-exclamation-triangle-fill"></i>
 							{{Session::get('status')}}
+						</div>
+					@endif
+					@if(Session::has('success'))
+						<div class="alert alert-warning" role="alert">
+							<i class="bi bi-check-circle-fill"></i>
+							{{Session::get('success')}}
 						</div>
 					@endif
 					@yield('content')
 				</div>
 			</div>
-			<div class="col-lg-7 d-none d-lg-block">
+			<div class="col-lg-5 d-none d-lg-block">
 				<div id="auth-right"></div>
 			</div>
 		</div>

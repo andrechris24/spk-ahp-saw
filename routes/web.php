@@ -14,19 +14,13 @@ use App\Http\Controllers\AdminController;
 |
 */
 
-//Admin route
-// Route::get('register', [AdminController::class, 'register']);
-// Route::post('register', [AdminController::class, 'postRegister']);
-// Route::get('login', [AdminController::class, 'login']);
-// Route::post('login', [AdminController::class, 'postLogin']);
-// Route::get('logout', [AdminController::class, 'logout']);
-
 Route::group(['namespace' => 'App\Http\Controllers'], function()
 {
     /**
      * Home Routes
      */
     Route::get('/', 'HomeController@index')->name('home.index');
+    Route::get('/home', 'HomeController@index')->name('home.index');
     Route::group(['middleware' => ['guest']], function() {
         /**
          * Register Routes

@@ -59,7 +59,7 @@ class ForgotPasswordController extends Controller
       public function submitResetPasswordForm(Request $request)
       {
           $request->validate([
-              'email' => 'required|email:rfc,dns|exists:users',
+              'email' => 'required|email|exists:users',
               'password' => 'required|string|min:8|confirmed',
               'password_confirmation' => 'required'
           ]);
