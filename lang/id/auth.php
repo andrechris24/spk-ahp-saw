@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'failed' => 'Kredensial ini tidak sesuai dengan yang ada di sistem.',
+    'failed' => 'Username/Email atau Password salah.',
     'password' => 'Password yang diberikan salah',
     'throttle' => 'Terlalu banyak upaya. Coba lagi dalam :seconds detik.',
 

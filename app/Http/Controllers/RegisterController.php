@@ -8,29 +8,27 @@ use App\Http\Requests\RegisterRequest;
 
 class RegisterController extends Controller
 {
-    /**
-     * Display register page.
-     * 
-     * @return \Illuminate\Http\Response
-     */
-    public function show()
-    {
-        return view('admin.register');
-    }
+	/**
+	 * Display register page.
+	 * 
+	 * @return \Illuminate\Http\Response
+	 */
+	public function show()
+	{
+		return view('admin.register',['title'=>'Registrasi']);
+	}
 
-    /**
-     * Handle account registration request
-     * 
-     * @param RegisterRequest $request
-     * 
-     * @return \Illuminate\Http\Response
-     */
-    public function register(RegisterRequest $request) 
-    {
-        $user = User::create($request->validated());
-
-        auth()->login($user);
-
-        return redirect('/login')->with('success', "Registrasi akun berhasil");
-    }
+	/**
+	 * Handle account registration request
+	 * 
+	 * @param RegisterRequest $request
+	 * 
+	 * @return \Illuminate\Http\Response
+	 */
+	public function register(RegisterRequest $request)
+	{
+		$user = User::create($request->validated());
+		auth()->login($user);
+		return redirect('/login')->with('success', "Registrasi akun berhasil");
+	}
 }

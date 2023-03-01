@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	@yield('title')
+	<title>
+	@yield('title', $title) | Sistem Pendukung Keputusan metode AHP & SAW
+	</title>
 	<link rel="stylesheet" href="{{ url('assets/css/main/app.css') }}" />
 	<link rel="stylesheet" href="{{ url('assets/css/pages/auth.css') }}" />
 </head>
+
 <body>
 	<div id="auth">
 		<div class="row h-100">
@@ -16,26 +20,37 @@
 						<img src="{{ url('assets/images/logo/logo.svg') }}" alt="Logo" />
 					</div>
 					@yield('auth-desc')
-					@if($errors->any())
-						<div class="alert alert-danger">
-							<i class="bi bi-x-circle-fill"></i> Kesalahan:
-							<ul>
-								@foreach($errors->all() as $error)
-									<li>{{$error}}</li>
-								@endforeach
-							</ul>
+					@if (Session:::has('error') || $errors->any())
+						<div class="alert alert-danger alert-dismissible" role="alert">
+							<i class="bi bi-x-circle-fill"></i>
+							@if(Session:::has('error'))
+								{{ Session::get('error') }}
+							@elseif($errors->any())
+								@yield('title', $title) gagal:
+								<ul>
+									@foreach ($errors->all() as $error)
+										<li>{{ $error }}</li>
+									@endforeach
+								</ul>
+							@endif
+							<button type="button" class="btn-close"
+							data-bs-dismiss="alert" aria-label="Close"></button>
 						</div>
 					@endif
-					@if(Session::has('status'))
-						<div class="alert alert-warning" role="alert">
+					@if (Session::has('warning'))
+						<div class="alert alert-warning alert-dismissible" role="alert">
 							<i class="bi bi-exclamation-triangle-fill"></i>
-							{{Session::get('status')}}
+							{{ Session::get('warning') }}
+							<button type="button" class="btn-close"
+							data-bs-dismiss="alert" aria-label="Close"></button>
 						</div>
 					@endif
-					@if(Session::has('success'))
-						<div class="alert alert-warning" role="alert">
+					@if (Session::has('success'))
+						<div class="alert alert-success alert-dismissible" role="alert">
 							<i class="bi bi-check-circle-fill"></i>
-							{{Session::get('success')}}
+							{{ Session::get('success') }}
+							<button type="button" class="btn-close"
+							data-bs-dismiss="alert" aria-label="Close"></button>
 						</div>
 					@endif
 					@yield('content')
@@ -48,4 +63,5 @@
 	</div>
 	@yield('js')
 </body>
+
 </html>

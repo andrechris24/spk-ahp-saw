@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\Cookie;
 trait RememberMeExpiration
 {
 	/**
-     * Set default minutes expiration
-     *
-     * @var int
-     */
+	 * Set default minutes expiration
+	 *
+	 * @var int
+	 */
 	protected $minutesExpiration = 720; //equivalent of 12 hours
 
 	/**
@@ -19,9 +19,13 @@ trait RememberMeExpiration
 	 * 
 	 * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
 	 */
-	public function setRememberMeExpiration($user) 
+	public function setRememberMeExpiration($user)
 	{
-		Cookie::queue($this->getRememberMeSessionName(), encrypt($this->setRememberMeValue($user)), $this->minutesExpiration);
+		Cookie::queue(
+			$this->getRememberMeSessionName(), 
+			encrypt($this->setRememberMeValue($user)), 
+			$this->minutesExpiration
+		);
 	}
 
 	/**
@@ -29,9 +33,9 @@ trait RememberMeExpiration
 	 *
 	 * @return string
 	 */
-	protected function setRememberMeValue($user) 
+	protected function setRememberMeValue($user)
 	{
-	    return $user->id . "|" . $user->remember_token . "|" . $user->password;
+		return $user->id . "|" . $user->remember_token . "|" . $user->password;
 	}
 
 	/**
@@ -39,8 +43,8 @@ trait RememberMeExpiration
 	 *
 	 * @return string
 	 */
-	protected function getRememberMeSessionName() 
+	protected function getRememberMeSessionName()
 	{
-	    return Auth::getRecallerName();
+		return Auth::getRecallerName();
 	}
 }
