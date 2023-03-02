@@ -17,7 +17,7 @@ class LoginController extends Controller
 	 */
 	public function show()
 	{
-		return view('admin.login',['title'=>'Login']);
+		return view('admin.login', ['title' => 'Login']);
 	}
 	/**
 	 * Handle account login request
@@ -30,9 +30,10 @@ class LoginController extends Controller
 	{
 		$credentials = $request->getCredentials();
 		if (!Auth::validate($credentials)) :
-			return redirect()->to('login')->with('error','Email atau Password salah');
+			return redirect()->to('login')->with('error', 'Email atau Password salah');
 		endif;
 		$user = Auth::getProvider()->retrieveByCredentials($credentials);
+		// Auth::logoutOtherDevices($request->password);
 		Auth::login($user, $request->get('remember'));
 		if ($request->get('remember')) :
 			$this->setRememberMeExpiration($user);

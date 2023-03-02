@@ -14,14 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['namespace' => 'App\Http\Controllers'], function()
-{
+Route::group(['namespace' => 'App\Http\Controllers'], function () {
 	/**
 	 * Home Routes
 	 */
 	Route::get('/', 'HomeController@index')->name('home.index');
 	Route::get('/home', 'HomeController@index')->name('home.index');
-	Route::group(['middleware' => ['guest']], function() {
+	Route::group(['middleware' => ['guest']], function () {
 		/**
 		 * Register Routes
 		 */
@@ -41,12 +40,14 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
 		Route::post('/forget-password', 'ForgotPasswordController@submitForgetPasswordForm')->name('forget-password.perform');
 		Route::get('/reset-password/{token}', 'ForgotPasswordController@showResetPasswordForm')->name('reset-password.show');
 		Route::post('/reset-password', 'ForgotPasswordController@submitResetPasswordForm')->name('reset-password.perform');
-		Route::get('/kriteria',function(){
-			return redirect();
-		});
+		// Route::get('/kriteria', function () {
+		// 	return redirect();
+		// });
 	});
 
-	Route::group(['middleware' => ['auth']], function() {
+	Route::group(['middleware' => ['auth']], function () {
+		Route::get('/akun','HomeController@profile')->name('akun.show');
+		Route::post('/akun','HomeController@updateProfil')->name('akun.perform');
 		/**
 		 * Logout Routes
 		 */

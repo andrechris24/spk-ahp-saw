@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>
-	@yield('title', $title) | Sistem Pendukung Keputusan metode AHP & SAW
+		@yield('title', $title) | Sistem Pendukung Keputusan metode AHP & SAW
 	</title>
 	<link rel="stylesheet" href="{{ url('assets/css/main/app.css') }}" />
 	<link rel="stylesheet" href="{{ url('assets/css/pages/auth.css') }}" />
@@ -20,37 +20,37 @@
 						<img src="{{ url('assets/images/logo/logo.svg') }}" alt="Logo" />
 					</div>
 					@yield('auth-desc')
-					@if (Session:::has('error') || $errors->any())
+					@if (Session::has('error') || $errors->any())
 						<div class="alert alert-danger alert-dismissible" role="alert">
 							<i class="bi bi-x-circle-fill"></i>
-							@if(Session:::has('error'))
-								{{ Session::get('error') }}
+							@if (Session::has('error'))
+								{{ ucfirst(Session::get('error')) }}
 							@elseif($errors->any())
-								@yield('title', $title) gagal:
+								Gagal:
 								<ul>
 									@foreach ($errors->all() as $error)
-										<li>{{ $error }}</li>
+										<li>{{ ucfirst($error) }}</li>
 									@endforeach
 								</ul>
 							@endif
-							<button type="button" class="btn-close"
-							data-bs-dismiss="alert" aria-label="Close"></button>
+							<button type="button" class="btn-close" data-bs-dismiss="alert"
+								aria-label="Close"></button>
 						</div>
 					@endif
 					@if (Session::has('warning'))
 						<div class="alert alert-warning alert-dismissible" role="alert">
 							<i class="bi bi-exclamation-triangle-fill"></i>
 							{{ Session::get('warning') }}
-							<button type="button" class="btn-close"
-							data-bs-dismiss="alert" aria-label="Close"></button>
+							<button type="button" class="btn-close" data-bs-dismiss="alert"
+								aria-label="Close"></button>
 						</div>
 					@endif
 					@if (Session::has('success'))
 						<div class="alert alert-success alert-dismissible" role="alert">
 							<i class="bi bi-check-circle-fill"></i>
 							{{ Session::get('success') }}
-							<button type="button" class="btn-close"
-							data-bs-dismiss="alert" aria-label="Close"></button>
+							<button type="button" class="btn-close" data-bs-dismiss="alert"
+								aria-label="Close"></button>
 						</div>
 					@endif
 					@yield('content')

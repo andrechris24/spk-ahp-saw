@@ -50,7 +50,7 @@ return [
     'email' => ':attribute harus berupa alamat email.',
     'ends_with' => ':attribute harus diakhiri dengan :values.',
     'enum' => ':attribute yang dipilih salah.',
-    'exists' => ':attribute yang dipilih sudah ada.',
+    'exists' => ':attribute salah atau tidak ditemukan.',
     'file' => ':attribute harus berupa file.',
     'filled' => 'Kolom :attribute harus diisi.',
     'gt' => [

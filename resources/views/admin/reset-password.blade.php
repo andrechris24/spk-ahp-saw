@@ -13,13 +13,13 @@
 	<form action="{{ url('reset-password') }}" method="post">
 		@csrf
 		<input type="hidden" name="token" value="{{ $token }}">
-		<div class="form-group position-relative has-icon-left mb-4">
+		{{-- <div class="form-group position-relative has-icon-left mb-4">
 			<input type="text" class="form-control form-control-xl" placeholder="Email" name="email"
 				value="" readonly />
 			<div class="form-control-icon">
 				<i class="bi bi-envelope"></i>
 			</div>
-		</div>
+		</div> --}}
 		<div class="form-group position-relative has-icon-left mb-4">
 			<input type="password" class="form-control form-control-xl" placeholder="Password"
 				name="password" pattern=".{8,20}" maxlength="20" id="password" oninput="checkpassword()"

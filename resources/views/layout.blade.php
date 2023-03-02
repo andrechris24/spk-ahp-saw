@@ -99,10 +99,10 @@
 										<a href="{{ url('normalisasi-ahp') }}">Normalisasi</a>
 									</li>
 									<li class="submenu-item">
-										<a href="{{url('prioritas')}}">Prioritas</a>
+										<a href="{{ url('prioritas') }}">Prioritas</a>
 									</li>
 									<li class="submenu-item">
-										<a href="{{url('cm')}}">Consistency Measure</a>
+										<a href="{{ url('cm') }}">Consistency Measure</a>
 									</li>
 								</ul>
 							</li>
@@ -117,11 +117,11 @@
 									</li>
 									<li class="submenu-item">
 										<a href="{{ url('bobot-normalisasi') }}">
-										Normalisasi Terbobot
+											Normalisasi Terbobot
 										</a>
 									</li>
 									<li class="submenu-item">
-										<a href="{{url('rank')}}">Hasil Akhir</a>
+										<a href="{{ url('rank') }}">Hasil Akhir</a>
 									</li>
 								</ul>
 							</li>
@@ -214,7 +214,7 @@
 											<h6 class="dropdown-header">Akun</h6>
 										</li>
 										<li>
-											<a class="dropdown-item" href="{{ url('profil') }}">
+											<a class="dropdown-item" href="{{ url('akun') }}">
 												<i class="icon-mid bi bi-person me-2"></i> Edit Profil
 											</a>
 										</li>
@@ -256,6 +256,7 @@
 	<script src="{{ url('assets/js/app.js') }}"></script>
 	<script src="{{ url('assets/js/initTheme.js') }}"></script>
 	<script src="https://kit.fontawesome.com/a49b540b68.js" crossorigin="anonymous"></script>
+	@yield('js')
 </body>
 
 </html>

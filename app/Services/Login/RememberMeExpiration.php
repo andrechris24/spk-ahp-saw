@@ -22,8 +22,8 @@ trait RememberMeExpiration
 	public function setRememberMeExpiration($user)
 	{
 		Cookie::queue(
-			$this->getRememberMeSessionName(), 
-			encrypt($this->setRememberMeValue($user)), 
+			$this->getRememberMeSessionName(),
+			encrypt($this->setRememberMeValue($user)),
 			$this->minutesExpiration
 		);
 	}

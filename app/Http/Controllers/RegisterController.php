@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
 use App\Http\Requests\RegisterRequest;
 
 class RegisterController extends Controller
@@ -15,7 +15,7 @@ class RegisterController extends Controller
 	 */
 	public function show()
 	{
-		return view('admin.register',['title'=>'Registrasi']);
+		return view('admin.register', ['title' => 'Registrasi']);
 	}
 
 	/**
