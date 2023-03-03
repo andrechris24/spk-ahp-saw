@@ -13,24 +13,16 @@
 	<form action="{{ url('reset-password') }}" method="post">
 		@csrf
 		<input type="hidden" name="token" value="{{ $token }}">
-		{{-- <div class="form-group position-relative has-icon-left mb-4">
-			<input type="text" class="form-control form-control-xl" placeholder="Email" name="email"
-				value="" readonly />
-			<div class="form-control-icon">
-				<i class="bi bi-envelope"></i>
-			</div>
-		</div> --}}
 		<div class="form-group position-relative has-icon-left mb-4">
 			<input type="password" class="form-control form-control-xl" placeholder="Password"
-				name="password" pattern=".{8,20}" maxlength="20" id="password" oninput="checkpassword()"
-				required />
+				name="password" pattern=".{8,20}" maxlength="20" id="password" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-toggle="tooltip" data-bs-placement="top" title="Minimal 8 karakter (Saran: terdiri dari huruf besar, huruf kecil, angka, dan simbol)" oninput="checkpassword()" required />
 			<div class="form-control-icon">
 				<i class="bi bi-shield-lock"></i>
 			</div>
 		</div>
 		<div class="form-group position-relative has-icon-left mb-4">
-			<input type="password" class="form-control form-control-xl" placeholder="Confirm Password"
-				name="password_confirmation" pattern=".{8,20}" maxlength="20" id="confirm-password"
+			<input type="password" class="form-control form-control-xl" id="confirm-password"
+				placeholder="Confirm Password" name="password_confirmation" maxlength="20"
 				oninput="checkpassword()" required />
 			<div class="form-control-icon">
 				<i class="bi bi-shield-lock"></i>

@@ -31,8 +31,8 @@ class ForgotPasswordController extends Controller
 	{
 		$request->validate([
 			'email' => 'required|email|exists:users|unique:password_resets,email',
-		],[
-			'email.unique'=>'Anda tidak bisa meminta reset password lagi sebelum ...'
+		], [
+			'email.unique' => 'Anda tidak bisa meminta reset password lagi sebelum ...'
 		]);
 		$token = Str::random(64);
 		DB::table('password_resets')->insert([
@@ -72,7 +72,6 @@ class ForgotPasswordController extends Controller
 	public function submitResetPasswordForm(Request $request)
 	{
 		$request->validate([
-			// 'email' => 'required|email|exists:users',
 			'password' => 'required|string|min:8|confirmed',
 			'password_confirmation' => 'required'
 		]);

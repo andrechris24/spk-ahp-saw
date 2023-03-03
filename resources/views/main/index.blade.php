@@ -23,7 +23,8 @@
 				</div>
 				<div class="card-body">
 					<p>
-						Sistem ini akan membantu seseorang membuat keputusan dengan metode Simple Additive Weighting
+						Sistem ini akan membantu seseorang membuat keputusan dengan metode Simple Additive
+						Weighting
 						dan Analytial Hierarchy Process.
 					</p>
 					<p>

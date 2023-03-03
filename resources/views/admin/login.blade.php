@@ -13,8 +13,8 @@
 	<form action="{{ url('login') }}" method="post" enctype="multipart/form-data">
 		@csrf
 		<div class="form-group position-relative has-icon-left mb-4">
-			<input type="email" class="form-control form-control-xl" placeholder="Email" name="email"
-				required />
+			<input type="email" class="form-control form-control-xl" placeholder="Email"
+				name="email" required />
 			<div class="form-control-icon">
 				<i class="bi bi-envelope"></i>
 			</div>
@@ -27,9 +27,10 @@
 			</div>
 		</div>
 		<div class="form-check form-check-lg d-flex align-items-end">
-			<input class="form-check-input me-2" type="checkbox" value="1" id="flexCheckDefault"
-				name="remember" />
-			<label class="form-check-label text-gray-600" for="flexCheckDefault">
+			<input class="form-check-input me-2" type="checkbox" value="1" id="remember-me" 
+				name="remember" data-bs-toggle="tooltip" data-bs-placement="top"
+				title="Berlaku selama 7 hari, jangan dicentang jika Anda menggunakannya di tempat umum"/>
+			<label class="form-check-label text-gray-600" for="remember-me">
 				Biarkan saya login
 			</label>
 		</div>

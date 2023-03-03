@@ -12,7 +12,7 @@ trait RememberMeExpiration
 	 *
 	 * @var int
 	 */
-	protected $minutesExpiration = 720; //equivalent of 12 hours
+	protected $minutesExpiration = 10080; //equivalent of 7 days
 
 	/**
 	 * Customize the user logged remember me expiration 

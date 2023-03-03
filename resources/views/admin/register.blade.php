@@ -10,8 +10,8 @@
 	<form action="{{ url('register') }}" method="post" enctype="multipart/form-data">
 		@csrf
 		<div class="form-group position-relative has-icon-left mb-4">
-			<input type="text" class="form-control form-control-xl" placeholder="Email" name="email"
-				required />
+			<input type="text" class="form-control form-control-xl" placeholder="Email"
+				name="email" required />
 			<div class="form-control-icon">
 				<i class="bi bi-envelope"></i>
 			</div>
@@ -26,15 +26,15 @@
 		<div class="form-group position-relative has-icon-left mb-4">
 			<input type="password" class="form-control form-control-xl" placeholder="Password"
 				name="password" pattern=".{8,20}" maxlength="20" id="password" oninput="checkpassword()"
-				required />
+				data-bs-toggle="tooltip" data-bs-placement="top" title="Minimal 8 karakter (Saran: terdiri dari huruf besar, huruf kecil, angka, dan simbol)" required />
 			<div class="form-control-icon">
 				<i class="bi bi-shield-lock"></i>
 			</div>
 		</div>
 		<div class="form-group position-relative has-icon-left mb-4">
-			<input type="password" class="form-control form-control-xl" placeholder="Confirm Password"
-				name="password_confirmation" pattern=".{8,20}" oninput="checkpassword()" maxlength="20"
-				id="confirm-password" required />
+			<input type="password" class="form-control form-control-xl"
+				placeholder="Confirm Password" name="password_confirmation" maxlength="20"
+				oninput="checkpassword()" id="confirm-password" required />
 			<div class="form-control-icon">
 				<i class="bi bi-shield-lock"></i>
 			</div>

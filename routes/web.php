@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-// use App\Http\Controllers\AdminController;
+use App\Http\Controllers\KriteriaController;
+use App\Http\Controllers\AlternatifController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,17 +41,24 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		Route::post('/forget-password', 'ForgotPasswordController@submitForgetPasswordForm')->name('forget-password.perform');
 		Route::get('/reset-password/{token}', 'ForgotPasswordController@showResetPasswordForm')->name('reset-password.show');
 		Route::post('/reset-password', 'ForgotPasswordController@submitResetPasswordForm')->name('reset-password.perform');
-		// Route::get('/kriteria', function () {
-		// 	return redirect();
-		// });
 	});
 
-	Route::group(['middleware' => ['auth']], function () {
-		Route::get('/akun','HomeController@profile')->name('akun.show');
-		Route::post('/akun','HomeController@updateProfil')->name('akun.perform');
-		/**
-		 * Logout Routes
-		 */
+	Route::group(['middleware' => ['auth']], function () { //Authenticated users
+		Route::get('/akun', 'HomeController@profile')->name('akun.show');
+		Route::post('/akun', 'HomeController@updateProfil')->name('akun.perform');
+		Route::prefix('kriteria')->group(function(){
+			Route::get('/',[KriteriaController::class,'index']);
+			Route::get('bobot',[KriteriaController::class,'bobot']);
+			Route::post('add',[KriteriaController::class,'tambah']);
+			Route::post('update/{$id}',[KriteriaController::class,'update']);
+			Route::get('del/{$id}',[KriteriaController::class,'hapus']);
+		});
+		Route::prefix('alternatif')->group(function(){
+			Route::get('/',[AlternatifController::class,'index']);
+			Route::post('add',[AlternatifController::class,'tambah']);
+			Route::post('update/{$id}',[AlternatifController::class,'update']);
+			Route::get('del/{$id}',[AlternatifController::class,'hapus']);
+		});
 		Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
 	});
 });
