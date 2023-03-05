@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 class KriteriaCompController extends Controller
 {
-	public function bobot(){
+	public function index(){
 		$crit=Kriteria::get();
 		$total=DB::table('kriteria')->count();
 		return view('main.kriteria-comp',compact('total','crit'));

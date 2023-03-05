@@ -10,6 +10,6 @@ class Alternatif extends Model
     use HasFactory;
     protected $table='alternatif';
     protected $fillable=['name'];
-    protected $rules=['name'=>'required'];
+    public static $rules=['name'=>'required'];
     //
 }

@@ -17,7 +17,7 @@ class LoginController extends Controller
 	 */
 	public function show()
 	{
-		return view('admin.login', ['title' => 'Login']);
+		return view('admin.login');
 	}
 	/**
 	 * Handle account login request

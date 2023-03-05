@@ -10,7 +10,7 @@ class Kriteria extends Model
     use HasFactory;
     protected $table='kriteria';
     protected $fillable=['name','type'];
-    protected $rules=[
+    public static $rules=[
         'name'=>'required',
         'type'=>'required|in:cost,benefit'
     ];

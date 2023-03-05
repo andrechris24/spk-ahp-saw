@@ -1,4 +1,5 @@
 @extends('layout')
+@section('title','Kriteria')
 @section('content')
 	<div class="page-heading">
 		<div class="page-title">
@@ -138,19 +139,20 @@
 						<i class="bi bi-plus-lg"></i>
 						Tambah Kriteria
 					</button>
-					<table class="table table-striped" id="table-crit">
-						<thead>
-							<tr>
-								{{-- <th>No</th> --}}
-								<th>Nama Kriteria</th>
-								<th>Atribut</th>
-								<th>Aksi</th>
-							</tr>
-						</thead>
-						<tbody>
-							@if(count($krit)>0)
+						<table class="table table-hover" id="table-crit">
+							<thead>
+								<tr>
+									<th>No</th>
+									<th>Nama Kriteria</th>
+									<th>Atribut</th>
+									<th>Aksi</th>
+								</tr>
+							</thead>
+							<tbody>
+								@php($count=0)
 								@foreach($krit as $kriteria)
 									<tr>
+										<td>{{ ++$count }}</td>
 										<td>{{ $kriteria->name }}</td>
 										<td>{{ $kriteria->type }}</td>
 										<td>
@@ -168,9 +170,8 @@
 										</td>
 									</tr>
 								@endforeach
-							@endif
-						</tbody>
-					</table>
+							</tbody>
+						</table>
 				</div>
 			</div>
 		</section>
@@ -198,6 +199,9 @@ editCriteriaModal.addEventListener('show.bs.modal', event => {
 	var formurl="{{ url('/kriteria/update/:id') }}";
 	formurl=formurl.replace(':id',id);
 	document.editkriteria.action=formurl;
+});
+$(document).ready(function(){
+	$('#table-crit').DataTable();
 });
 </script>
 @endsection

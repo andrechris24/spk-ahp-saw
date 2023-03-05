@@ -48,10 +48,13 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		Route::post('/akun', 'HomeController@updateProfil')->name('akun.perform');
 		Route::prefix('kriteria')->group(function(){
 			Route::get('/',[KriteriaController::class,'index']);
-			Route::get('bobot',[KriteriaController::class,'bobot']);
 			Route::post('add',[KriteriaController::class,'tambah']);
 			Route::post('update/{$id}',[KriteriaController::class,'update']);
 			Route::get('del/{$id}',[KriteriaController::class,'hapus']);
+			
+		});
+		Route::prefix('bobot')->group(function(){
+			Route::get('/',[KriteriaController::class,'bobot']);
 		});
 		Route::prefix('alternatif')->group(function(){
 			Route::get('/',[AlternatifController::class,'index']);

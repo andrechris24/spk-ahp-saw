@@ -5,11 +5,12 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>
-		@yield('title', $title) | Sistem Pendukung Keputusan metode AHP & SAW
+		@yield('title') | Sistem Pendukung Keputusan metode AHP & SAW
 	</title>
 	<link rel="stylesheet" href="{{ url('assets/css/main/app.css') }}" />
 	<link rel="stylesheet" href="{{ url('assets/css/main/app-dark.css') }}" />
 	<link rel="stylesheet" href="{{ url('assets/css/shared/iconly.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url('assets/datatables.min.css') }}">
 </head>
 
 <body>
@@ -82,7 +83,7 @@
 										<a href="{{ url('kriteria') }}">Kriteria</a>
 									</li>
 									<li class="submenu-item">
-										<a href="{{ url('banding-kriteria') }}">Perbandingan Kriteria</a>
+										<a href="{{ url('bobot') }}">Perbandingan Kriteria</a>
 									</li>
 									<li class="submenu-item">
 										<a href="{{ url('alternatif') }}">Alternatif</a>
@@ -262,6 +263,7 @@
 	<script src="{{ url('assets/js/bootstrap.js') }}"></script>
 	<script src="{{ url('assets/js/app.js') }}"></script>
 	<script src="{{ url('assets/js/initTheme.js') }}"></script>
+	<script type="text/javascript" src="{{ url('assets/datatables.min.js') }}"></script>
 	<script src="https://kit.fontawesome.com/a49b540b68.js" crossorigin="anonymous">
 	</script>
 	@yield('js')

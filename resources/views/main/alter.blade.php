@@ -1,4 +1,5 @@
 @extends('layout')
+@section('title','Alternatif')
 @section('content')
 	<div class="page-heading">
 		<div class="page-title">
@@ -122,15 +123,16 @@
 					<table class="table table-striped" id="table-alter">
 						<thead>
 							<tr>
-								{{-- <th>No</th> --}}
+								<th>No</th>
 								<th>Nama Alternatif</th>
 								<th>Aksi</th>
 							</tr>
 						</thead>
 						<tbody>
-							@if(count($alt)>0)
+							@php($count=0)
 								@foreach($alt as $alternatif)
 									<tr>
+										<td>{{ ++$count }}</td>
 										<td>{{ $alternatif->name }}</td>
 										<td>
 											<div class="btn-group" role="button">
@@ -147,7 +149,6 @@
 										</td>
 									</tr>
 								@endforeach
-							@endif
 						</tbody>
 					</table>
 				</div>
@@ -174,6 +175,9 @@ editCriteriaModal.addEventListener('show.bs.modal', event => {
 	var formurl="{{ url('/kriteria/update/:id') }}";
 	formurl=formurl.replace(':id',id);
 	document.editkriteria.action=formurl;
+});
+$(document).ready(function(){
+	$('#table-alter').DataTable();
 });
 </script>
 @endsection

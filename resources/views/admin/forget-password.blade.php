@@ -1,4 +1,5 @@
 @extends('admin.auth')
+@section('title','Lupa Password')
 @section('auth-desc')
 	<h1 class="auth-title">Lupa Password</h1>
 	<p class="auth-subtitle mb-5">

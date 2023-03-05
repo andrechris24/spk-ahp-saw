@@ -10,7 +10,7 @@ class HomeController extends Controller
 {
 	public function index()
 	{
-		return view('main.index', ['title' => 'Beranda']);
+		return view('main.index');
 	}
 	public function redirect()
 	{
@@ -21,7 +21,7 @@ class HomeController extends Controller
 	}
 	public function profile()
 	{
-		return view('main.profil', ['title' => 'Edit Akun']);
+		return view('main.profil');
 	}
 	public function updateProfil(Request $request)
 	{

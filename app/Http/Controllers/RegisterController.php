@@ -15,7 +15,7 @@ class RegisterController extends Controller
 	 */
 	public function show()
 	{
-		return view('admin.register', ['title' => 'Registrasi']);
+		return view('admin.register');
 	}
 
 	/**

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 class KriteriaController extends Controller
 {
-	private function getCriteriaComp($sel1,$sel2){
+	public function getCriteriaComp($sel1,$sel2){
 		$kriteria1=$this->getCriteriaID($sel1);
 		$kriteria2=$this->getCriteriaID($sel2);
 		$list=DB::table('kriteria_banding')->select('nilai')

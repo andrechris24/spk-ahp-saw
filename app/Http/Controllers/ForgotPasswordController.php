@@ -19,7 +19,7 @@ class ForgotPasswordController extends Controller
 	 */
 	public function showForgetPasswordForm()
 	{
-		return view('admin.forget-password', ['title' => 'Lupa Password']);
+		return view('admin.forget-password');
 	}
 
 	/**

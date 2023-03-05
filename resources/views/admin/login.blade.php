@@ -1,4 +1,5 @@
 @extends('admin.auth')
+@section('title','Login')
 @section('auth-desc')
 	<h1 class="auth-title">Login</h1>
 	<p class="auth-subtitle mb-5">
