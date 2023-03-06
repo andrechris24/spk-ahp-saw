@@ -1,5 +1,5 @@
 @extends('layout')
-@section('title','Beranda')
+@section('title', 'Beranda')
 @section('content')
 	<div class="page-heading">
 		<div class="page-title">
@@ -25,8 +25,7 @@
 				<div class="card-body">
 					<p>
 						Sistem ini akan membantu seseorang membuat keputusan dengan metode Simple Additive
-						Weighting
-						dan Analytial Hierarchy Process.
+						Weighting dan Analytial Hierarchy Process.
 					</p>
 					<p>
 						In case you want the navbar to be sticky on top while

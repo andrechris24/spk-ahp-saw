@@ -1,5 +1,8 @@
 @extends('layout')
-@section('title','Hasil Perbandingan Kriteria')
+@section('title', 'Hasil Perbandingan Kriteria')
+@php
+use App\Http\Controllers\KriteriaCompController;
+@endphp
 @section('content')
 	<div class="page-heading">
 		<div class="page-title">
@@ -136,12 +139,12 @@
 							<tr>
 								<td>Hasil Konsistensi</td>
 								<td>
-									@if(true)
-									<span class="text-success"><b>Konsisten</b></span>
+									@if (true)
+										<span class="text-success"><b>Konsisten</b></span>
 									@else
-									<span class="text-danger">
-									<b>Tidak Konsisten</b>, mohon untuk menginput ulang perbandingan!
-									</span>
+										<span class="text-danger">
+											<b>Tidak Konsisten</b>, mohon untuk menginput ulang perbandingan!
+										</span>
 									@endif
 								</td>
 							</tr>

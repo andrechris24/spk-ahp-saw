@@ -26,8 +26,8 @@ class HomeController extends Controller
 	public function updateProfil(Request $request)
 	{
 		$id = auth()->user()->id;
-		$cek= User::find($id);
-		if(!$cek) 
+		$cek = User::find($id);
+		if (!$cek)
 			return back()->withInput()->with('error', 'Gagal update akun: Akun tidak ditemukan');
 		$request->validate(
 			[
@@ -35,15 +35,21 @@ class HomeController extends Controller
 				'email' => 'required|email|unique:users,email,' . $id,
 				'current_password' => 'required|min:8',
 				'password' => 'confirmed|between:8,20',
-				'password_confirmation' => 'required_with:password|same:password',
+				'password_confirmation' => 'required_with:password',
+			],[
+				'name.required'=>'Nama harus diisi',
+				'email.required'=>'Email harus diisi',
+				'email.unique'=>'Email '.$request->email.' sudah digunakan',
+				'current_password.required'=>'Password lama harus diisi',
+				'password.confirmed'=>'Password konfirmasi salah',
 			]
 		);
 		$cekpass = Hash::check($request->current_password, auth()->user()->password);
-		if (!$cekpass) 
+		if (!$cekpass)
 			return back()->with('error', 'Gagal update akun: Password salah');
 		$req = $request->all();
 		$req['password'] = Hash::make($req['password']);
-		$updprofil =$cek->update($req);
+		$updprofil = $cek->update($req);
 		if ($updprofil) return back()->with('success', 'Akun sudah diupdate');
 		return back()->withInput()->with('error', 'Akun gagal diupdate');
 	}

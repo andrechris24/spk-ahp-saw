@@ -1,5 +1,5 @@
 @extends('layout')
-@section('title','Edit Akun')
+@section('title', 'Edit Akun')
 @section('content')
 	<div class="page-heading">
 		<div class="page-title">
@@ -10,38 +10,38 @@
 			</p>
 		</div>
 		@if (Session::has('error') || $errors->any())
-						<div class="alert alert-danger alert-dismissible" role="alert">
-							<i class="bi bi-x-circle-fill"></i>
-							@if (Session::has('error'))
-								{{ ucfirst(Session::get('error')) }}
-							@elseif($errors->any())
-								Gagal update akun:
-								<ul>
-									@foreach ($errors->all() as $error)
-										<li>{{ ucfirst($error) }}</li>
-									@endforeach
-								</ul>
-							@endif
-							<button type="button" class="btn-close" data-bs-dismiss="alert"
-								aria-label="Close"></button>
-						</div>
-					@endif
-					@if (Session::has('warning'))
-						<div class="alert alert-warning alert-dismissible" role="alert">
-							<i class="bi bi-exclamation-triangle-fill"></i>
-							{{ Session::get('warning') }}
-							<button type="button" class="btn-close" data-bs-dismiss="alert"
-								aria-label="Close"></button>
-						</div>
-					@endif
-					@if (Session::has('success'))
-						<div class="alert alert-success alert-dismissible" role="alert">
-							<i class="bi bi-check-circle-fill"></i>
-							{{ Session::get('success') }}
-							<button type="button" class="btn-close" data-bs-dismiss="alert"
-								aria-label="Close"></button>
-						</div>
-					@endif
+			<div class="alert alert-danger alert-dismissible" role="alert">
+				<i class="bi bi-x-circle-fill"></i>
+				@if (Session::has('error'))
+					{{ ucfirst(Session::get('error')) }}
+				@elseif($errors->any())
+					Gagal update akun:
+					<ul>
+						@foreach ($errors->all() as $error)
+							<li>{{ ucfirst($error) }}</li>
+						@endforeach
+					</ul>
+				@endif
+				<button type="button" class="btn-close" data-bs-dismiss="alert"
+					aria-label="Close"></button>
+			</div>
+		@endif
+		@if (Session::has('warning'))
+			<div class="alert alert-warning alert-dismissible" role="alert">
+				<i class="bi bi-exclamation-triangle-fill"></i>
+				{{ Session::get('warning') }}
+				<button type="button" class="btn-close" data-bs-dismiss="alert"
+					aria-label="Close"></button>
+			</div>
+		@endif
+		@if (Session::has('success'))
+			<div class="alert alert-success alert-dismissible" role="alert">
+				<i class="bi bi-check-circle-fill"></i>
+				{{ Session::get('success') }}
+				<button type="button" class="btn-close" data-bs-dismiss="alert"
+					aria-label="Close"></button>
+			</div>
+		@endif
 		<div class="card">
 			<div class="card-content">
 				<div class="card-body">
@@ -92,7 +92,10 @@
 									<div class="form-group has-icon-left">
 										<div class="position-relative">
 											<input type="password" name="password" class="form-control"
-												placeholder="Kosongkan jika tidak ganti password" id="newpassword" oninput="checkpassword()" title="8-20 karakter" pattern=".{8,20}" data-bs-toggle="tooltip" data-bs-placement="top" title="Minimal 8 karakter (Saran: terdiri dari huruf besar, huruf kecil, angka, dan simbol)" />
+												placeholder="Kosongkan jika tidak ganti password" id="newpassword"
+												oninput="checkpassword()" title="8-20 karakter" pattern=".{8,20}"
+												data-bs-toggle="tooltip" data-bs-placement="top"
+												title="Minimal 8 karakter (Saran: terdiri dari huruf besar, huruf kecil, angka, dan simbol)" />
 											<div class="form-control-icon"><i class="bi bi-lock"></i></div>
 										</div>
 									</div>
@@ -102,7 +105,8 @@
 									<div class="form-group has-icon-left">
 										<div class="position-relative">
 											<input type="password" name="password_confirmation" class="form-control"
-												placeholder="Ketik ulang Password baru" id="conf-password" oninput="checkpassword()" />
+												placeholder="Ketik ulang Password baru" id="conf-password"
+												oninput="checkpassword()" />
 											<div class="form-control-icon"><i class="bi bi-lock"></i></div>
 										</div>
 									</div>

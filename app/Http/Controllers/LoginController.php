@@ -30,7 +30,7 @@ class LoginController extends Controller
 	{
 		$credentials = $request->getCredentials();
 		if (!Auth::validate($credentials)) :
-			return redirect()->to('login')->with('error', 'Email atau Password salah');
+			return back()->with('error', 'Email atau Password salah');
 		endif;
 		$user = Auth::getProvider()->retrieveByCredentials($credentials);
 		// Auth::logoutOtherDevices($request->password);

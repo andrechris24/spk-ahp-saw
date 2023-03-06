@@ -1,5 +1,5 @@
 @extends('admin.auth')
-@section('title','Login')
+@section('title', 'Login')
 @section('auth-desc')
 	<h1 class="auth-title">Login</h1>
 	<p class="auth-subtitle mb-5">
@@ -28,9 +28,9 @@
 			</div>
 		</div>
 		<div class="form-check form-check-lg d-flex align-items-end">
-			<input class="form-check-input me-2" type="checkbox" value="1" id="remember-me" 
+			<input class="form-check-input me-2" type="checkbox" value="1" id="remember-me"
 				name="remember" data-bs-toggle="tooltip" data-bs-placement="top"
-				title="Berlaku selama 7 hari, jangan dicentang jika Anda menggunakannya di tempat umum"/>
+				title="Berlaku selama 7 hari, jangan dicentang jika Anda menggunakannya di tempat umum" />
 			<label class="form-check-label text-gray-600" for="remember-me">
 				Biarkan saya login
 			</label>

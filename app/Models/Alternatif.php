@@ -10,6 +10,9 @@ class Alternatif extends Model
     use HasFactory;
     protected $table='alternatif';
     protected $fillable=['name'];
-    public static $rules=['name'=>'required'];
-    //
+    public static $rules=['name'=>'required|regex:/^[\s\w-]*$/'];
+    public static $message=[
+        'name.required'=>'Nama alternatif diperlukan',
+        'name.regex'=>'Nama alternatif tidak boleh mengandung simbol'
+    ];
 }

@@ -12,6 +12,10 @@ class Kriteria extends Model
     protected $fillable=['name','type'];
     public static $rules=[
         'name'=>'required',
-        'type'=>'required|in:cost,benefit'
+        'type'=>'bail|required|in:cost,benefit'
+    ];
+    public static $message=[
+        'name.required'=>'Nama kriteria diperlukan',
+        'type.required'=>'Tipe Kriteria harus dipilih'
     ];
 }
