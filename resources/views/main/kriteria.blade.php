@@ -71,6 +71,11 @@
 										<option value="benefit">Benefit</option>
 									</select>
 								</div>
+								<label for="deskripsi">Keterangan</label>
+								<div class="form-group">
+									<input type="text" class="form-control" name="desc" id="deskripsi"
+										required />
+								</div>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
@@ -116,6 +121,11 @@
 										<option value="benefit">Benefit</option>
 									</select>
 								</div>
+								<label for="deskripsi-edit">Keterangan</label>
+								<div class="form-group">
+									<input type="text" class="form-control" name="desc" id="deskripsi-edit"
+										required />
+								</div>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-light-secondary"
@@ -146,6 +156,7 @@
 								<th>No</th>
 								<th>Nama Kriteria</th>
 								<th>Atribut</th>
+								<th>Keterangan</th>
 								<th>Aksi</th>
 							</tr>
 						</thead>
@@ -156,17 +167,18 @@
 									<td>{{ ++$count }}</td>
 									<td>{{ $kriteria->name }}</td>
 									<td>{{ $kriteria->type }}</td>
+									<td>{{ $kriteria->desc }}</td>
 									<td>
 										<div class="btn-group" role="button">
 											<button type="button" class="btn btn-primary" data-bs-toggle="modal"
 												data-bs-target="#EditCritModal" data-bs-id="{{ $kriteria->id }}"
-												data-bs-name="{{ $kriteria->name }}"
+												data-bs-name="{{ $kriteria->name }}" data-bs-desc="{{ $kriteria->desc }}"
 												data-bs-type="{{ $kriteria->type }}">
-												Edit
+												<i class="bi bi-pencil-square"></i> Edit
 											</button>
 											<button type="button" class="btn btn-danger" data-bs-toggle="modal"
 												data-bs-target="#DelCritModal" data-bs-id="{{ $kriteria->id }}">
-												Hapus
+												<i class="bi bi-trash3-fill"></i> Hapus
 											</button>
 										</div>
 									</td>
@@ -189,15 +201,18 @@
 			// Extract info from data-bs-* attributes
 			const nama = button.getAttribute('data-bs-name');
 			const tipe = button.getAttribute('data-bs-type');
+			const desc= button.getAttribute('data-bs-desc');
 			const id = button.getAttribute('data-bs-id');
 			// If necessary, you could initiate an AJAX request here
 			// and then do the updating in a callback.
 
 			// Update the modal's content.
 			const nameval = editCriteriaModal.querySelector('#nama-edit')
+			const descval = editCriteriaModal.querySelector('#deskripsi-edit')
 			const typeval = editCriteriaModal.querySelector('#tipe-kriteria-edit')
 			nameval.value = nama;
 			typeval.value = tipe;
+			descval.value=desc
 			var formurl = "{{ url('/kriteria/update/:id') }}";
 			formurl = formurl.replace(':id', id);
 			document.editkriteria.action = formurl;

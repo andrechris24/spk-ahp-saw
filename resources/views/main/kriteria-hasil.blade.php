@@ -1,7 +1,10 @@
 @extends('layout')
 @section('title', 'Hasil Perbandingan Kriteria')
 @php
-use App\Http\Controllers\KriteriaCompController;
+	// use App\Http\Controllers\KriteriaCompController;
+	use App\Models\Kriteria;
+	$listkriteria = Kriteria::get();
+	$counter = 0;
 @endphp
 @section('content')
 	<div class="page-heading">
@@ -49,18 +52,29 @@ use App\Http\Controllers\KriteriaCompController;
 					<h4 class="card-title">Matriks Perbandingan Awal</h4>
 				</div>
 				<div class="card-body">
+					{{-- {{ json_encode($data) }}
+					{{ print_r($listkriteria) }} --}}
 					<div class="table-responsive">
 						<table class="table table-hover">
 							<thead>
 								<tr>
 									<th>Kriteria</th>
-									<th>...</th>
+									@foreach ($data['kriteria'] as $kr)
+										<th>{{ $kr->name }}</th>
+									@endforeach
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>...</td>
-								</tr>
+								@foreach ($data['kriteria'] as $kr)
+									<tr>
+										<th>{{ $kr->name }}</th>
+										@foreach($data['matriks_awal'] as $ma)
+											@if($ma['kode_kriteria']==$kr->idkriteria)
+											<td>{{ $ma['nilai'] }}</td>
+											@endif
+										@endforeach
+									</tr>
+								@endforeach
 							</tbody>
 						</table>
 					</div>
@@ -76,13 +90,27 @@ use App\Http\Controllers\KriteriaCompController;
 							<thead>
 								<tr>
 									<th>Kriteria</th>
-									<th>...
+									@foreach ($data['kriteria'] as $kr)
+										<th>{{ $kr->name }}</th>
+									@endforeach
 								</tr>
 							</thead>
 							<tbody>
+								@foreach ($data['kriteria'] as $kr)
+									<tr>
+										<th>{{ $kr->name }}</th>
+										@foreach($data['matriks_perbandingan'] as $mp)
+											@if($mp['kode_kriteria']==$kr->idkriteria)
+											<td>{{ $mp['nilai'] }}</td>
+											@endif
+										@endforeach
+									</tr>
+								@endforeach
 								<tr>
-									<td>Jumlah</td>
-									<td>...</td>
+									<th>Jumlah</th>
+									@foreach ($data['jumlah'] as $nilai)
+										<td>{{ $nilai['jumlah'] }}</td>
+									@endforeach
 								</tr>
 							</tbody>
 						</table>
@@ -99,15 +127,30 @@ use App\Http\Controllers\KriteriaCompController;
 							<thead>
 								<tr>
 									<th>Kriteria</th>
-									<th>...</th>
+									@foreach ($data['kriteria'] as $kr)
+										<th>{{ $kr->name }}</th>
+									@endforeach
 									<th>Jumlah Baris</th>
 									<th>Eigen</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td></td>
-								</tr>
+								@foreach ($data['kriteria'] as $kr)
+									<tr>
+										<th>{{ $kr->name }}</th>
+										@foreach($data['matriks_normalisasi'] as $mn)
+											@if($mn['kode_kriteria']==$kr->idkriteria)
+											<td>{{ $mn['nilai'] }}</td>
+											@endif
+										@endforeach
+										@foreach($data['bobot_prioritas'] as $bp)
+											@if($bp['kode_kriteria']==$kr->idkriteria)
+											<td>{{ $bp['jumlah_baris'] }}</td>
+											<td>{{ $bp['bobot'] }}
+											@endif
+										@endforeach
+									</tr>
+								@endforeach
 							</tbody>
 						</table>
 					</div>
@@ -122,24 +165,28 @@ use App\Http\Controllers\KriteriaCompController;
 						<table class="table table-hover">
 							<tr>
 								<td>Consistency Vector</td>
-								<td></td>
+								<td>
+									@foreach($data['cm'] as $cm)
+									[{{ $cm['cm'] }}]
+									@endforeach
+								</td>
 							</tr>
 							<tr>
 								<td>Rata-rata Consistency Vector</td>
-								<td></td>
+								<td>{{ $data['average_cm'] }}</td>
 							</tr>
 							<tr>
 								<td>Consistency Index (CI)</td>
-								<td></td>
+								<td>{{ $data['ci'] }}</td>
 							</tr>
 							<tr>
 								<td>Consistency Ratio (CR)</td>
-								<td></td>
+								<td>{{ $data['result'] }}</td>
 							</tr>
 							<tr>
 								<td>Hasil Konsistensi</td>
 								<td>
-									@if (true)
+									@if ($data['result']<=0.1)
 										<span class="text-success"><b>Konsisten</b></span>
 									@else
 										<span class="text-danger">
@@ -149,6 +196,9 @@ use App\Http\Controllers\KriteriaCompController;
 								</td>
 							</tr>
 						</table>
+						<a href="{{ url('/bobot/reset') }}" class="btn btn-secondary">
+						<i class="bi bi-arrow-counterclockwise"></i> Reset
+						</a>
 					</div>
 				</div>
 			</div>

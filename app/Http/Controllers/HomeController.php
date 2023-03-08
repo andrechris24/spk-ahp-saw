@@ -36,12 +36,13 @@ class HomeController extends Controller
 				'current_password' => 'required|min:8',
 				'password' => 'confirmed|between:8,20',
 				'password_confirmation' => 'required_with:password',
-			],[
-				'name.required'=>'Nama harus diisi',
-				'email.required'=>'Email harus diisi',
-				'email.unique'=>'Email '.$request->email.' sudah digunakan',
-				'current_password.required'=>'Password lama harus diisi',
-				'password.confirmed'=>'Password konfirmasi salah',
+			],
+			[
+				'name.required' => 'Nama harus diisi',
+				'email.required' => 'Email harus diisi',
+				'email.unique' => 'Email ' . $request->email . ' sudah digunakan',
+				'current_password.required' => 'Password lama harus diisi',
+				'password.confirmed' => 'Password konfirmasi salah',
 			]
 		);
 		$cekpass = Hash::check($request->current_password, auth()->user()->password);

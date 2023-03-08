@@ -76,20 +76,17 @@
 							<li class="sidebar-item has-sub">
 								<a href="#" class="sidebar-link">
 									<i class="bi bi-stack"></i>
-									<span>Data</span>
+									<span>Data Master</span>
 								</a>
 								<ul class="submenu">
 									<li class="submenu-item">
 										<a href="{{ url('kriteria') }}">Kriteria</a>
 									</li>
 									<li class="submenu-item">
-										<a href="{{ url('bobot') }}">Perbandingan Kriteria</a>
+										<a href="{{ url('kriteria/sub') }}">Sub Kriteria</a>
 									</li>
 									<li class="submenu-item">
 										<a href="{{ url('alternatif') }}">Alternatif</a>
-									</li>
-									<li class="submenu-item">
-										<a href="{{ url('banding-alternatif') }}">Perbandingan Alternatif</a>
 									</li>
 								</ul>
 							</li>
@@ -100,7 +97,7 @@
 								</a>
 								<ul class="submenu">
 									<li class="submenu-item">
-										<a href="{{ url('matriks-ahp') }}">Matriks Perbandingan</a>
+										<a href="{{ url('bobot') }}">Perbandingan Kriteria</a>
 									</li>
 									<li class="submenu-item">
 										<a href="{{ url('normalisasi-ahp') }}">Normalisasi</a>
@@ -260,6 +257,7 @@
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript" src="{{ url('assets/jquery-3.6.3.min.js') }}"></script>
 	<script src="{{ url('assets/js/bootstrap.js') }}"></script>
 	<script src="{{ url('assets/js/app.js') }}"></script>
 	<script src="{{ url('assets/js/initTheme.js') }}"></script>

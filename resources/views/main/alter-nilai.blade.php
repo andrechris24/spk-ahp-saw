@@ -1,10 +1,10 @@
 @extends('layout')
-@section('title', 'Alternatif')
+@section('title','Nilai Alternatif');
 @section('content')
-	<div class="page-heading">
+<div class="page-heading">
 		<div class="page-title">
 			<div class="col-12 col-md-6 order-md-1 order-last">
-				<h3>Alternatif</h3>
+				<h3>Nilai Alternatif</h3>
 			</div>
 		</div>
 		<section class="section">
@@ -47,12 +47,12 @@
 					role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h4 class="modal-title" id="AddAlterLabel">Tambah Alternatif</h4>
+							<h4 class="modal-title" id="AddAlterLabel">Tambah Nilai Alternatif</h4>
 							<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
 								<i data-feather="x"></i>
 							</button>
 						</div>
-						<form action="{{ url('/alternatif') }}" method="post"
+						<form action="{{ url('/nilai-alternatif') }}" method="post"
 							enctype="multipart/form-data">
 							@csrf
 							<div class="modal-body">
@@ -86,7 +86,7 @@
 								<i data-feather="x"></i>
 							</button>
 						</div>
-						<form action="{{ url('/alternatif/update/:id') }}" method="post"
+						<form action="{{ url('/nilai-alternatif/update/:id') }}" method="post"
 							enctype="multipart/form-data" name="editalternatif">
 							@csrf
 							<div class="modal-body">
@@ -153,29 +153,4 @@
 			</div>
 		</section>
 	</div>
-@endsection
-
-@section('js')
-	<script type="text/javascript">
-		const editCriteriaModal = document.getElementById('EditCritModal');
-		editCriteriaModal.addEventListener('show.bs.modal', event => {
-			// Button that triggered the modal
-			const button = event.relatedTarget;
-			// Extract info from data-bs-* attributes
-			const nama = button.getAttribute('data-bs-name');
-			const id = button.getAttribute('data-bs-id');
-			// If necessary, you could initiate an AJAX request here
-			// and then do the updating in a callback.
-
-			// Update the modal's content.
-			const nameval = editCriteriaModal.querySelector('#nama-edit')
-			nameval.value = nama;
-			var formurl = "{{ url('/kriteria/update/:id') }}";
-			formurl = formurl.replace(':id', id);
-			document.editkriteria.action = formurl;
-		});
-		$(document).ready(function() {
-			$('#table-alter').DataTable();
-		});
-	</script>
 @endsection

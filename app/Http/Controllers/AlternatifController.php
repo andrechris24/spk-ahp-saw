@@ -14,7 +14,7 @@ class AlternatifController extends Controller
 	}
 	public function tambah(Request $altrequest)
 	{
-		$altrequest->validate(Alternatif::$rules,Alternatif::$message);
+		$altrequest->validate(Alternatif::$rules, Alternatif::$message);
 		$alts = $altrequest->all();
 		$alternatif = Alternatif::create($alts);
 		if ($alternatif) return back()->with('success', 'Alternatif sudah ditambahkan');

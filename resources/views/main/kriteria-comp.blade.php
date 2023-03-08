@@ -48,6 +48,9 @@
 				</div>
 				<div class="card-content">
 					<div class="card-body">
+						<a href="{{ url('bobot/hasil') }}" class="btn btn-primary mb-3">
+						Lihat hasil
+						</a>
 						<ul class="nav nav-tabs" id="InputCompTab" role="tablist">
 							<li class="nav-item" role="presentation">
 								<a class="nav-link active" id="info-tab" data-bs-toggle="tab" href="#info"
@@ -108,70 +111,66 @@
 							</div>
 							<div class="tab-pane fade" id="input" role="tabpanel"
 								aria-labelledby="input-tab">
-								@if ($total > 1)
+								@if (count($array) > 0)
 									<div class="table-responsive">
-										<form method="post" enctype="multipart/form-data" action="{{ url('bobot') }}">
+										<form method="post" enctype="multipart/form-data"
+											action="{{ url('bobot') }}">
 											@csrf
-											<table class="table table-lg table-hover">
+											<table class="table table-lg table-hover text-center">
 												<thead>
 													<tr>
-														<th colspan="2">Pilih yang lebih penting</th>
-														<th>Nilai</th>
+														<th>Kriteria</th>
+														<th>Perbandingan</th>
+														<th>Kriteria</th>
 													</tr>
 												</thead>
 												<tbody>
-													@php
-														$urutan = 0;
-														foreach ($crit as $criterias):
-														  $pilihan[] = $criterias->name;
-														endforeach;
-													@endphp
-													@for ($a = 0; $a < $total - 1; $a++)
-														@for ($b = 0; $b < $total; $b++)
-															<tr>
-																<td>
-																	<div class="form-check">
-																		<input class="form-check-input" type="radio"
-																			name="pilihan[{{ $urutan }}]" id="pilihan-1.{{ $urutan }}"
-																			value="1" required />
-																		<label class="form-check-label" for="pilihan-1.{{ $urutan }}">
-																			{{ $pilihan[$a] }}
-																		</label>
-																	</div>
-																</td>
-																<td>
-																	<div class="form-check">
-																		<input class="form-check-input" type="radio"
-																			name="pilihan[{{ $urutan }}]" id="pilihan-2.{{ $urutan }}"
-																			value="2" />
-																		<label class="form-check-label" for="pilihan-2.{{ $urutan }}">
-																			{{ $pilihan[$b] }}
-																		</label>
-																	</div>
-																</td>
-																<td>
-																	@if ($pilihan[$a] == $pilihan[$b])
-																		<input type="number" name="bobot[{{ $urutan }}]"
-																			class="form-control" value="1" readonly>
-																	@else
-																		<input type="number" name="bobot[{{ $urutan }}]"
-																			class="form-control" value="" min="1"
-																			max="9" required>
-																	@endif
-																</td>
-															</tr>
-															@php($urutan++)
-														@endfor
-													@endfor
+													@foreach($array as $krit)
+													<tr>
+														<th>{{ $krit['baris'] }}</th>
+														<td>
+															<div class="input-group mb-3">
+																@if($krit['baris']==$krit['kolom'])
+																<input type="number" name="baris[]"
+																	class="form-control text-center"
+																	min="1" max="9" value="1" readonly/>
+																<div class="input-group-prepend">
+																	<span class="input-group-text">
+																		Banding
+																	</span>
+																</div>
+																<input type="number" name="kolom[]"
+																	class="form-control text-center"
+																	value="1" min="1" max="9" readonly/>
+																@else
+																<input type="number" name="baris[]"
+																	class="form-control text-center" min="1"
+																	max="9" required />
+																<div class="input-group-prepend">
+																	<span class="input-group-text">
+																		Banding
+																	</span>
+																</div>
+																<input type="number" name="kolom[]"
+																	class="form-control text-center"
+																	min="1" max="9" required />
+																@endif
+															</div>
+														</td>
+														<th>{{ $krit['kolom'] }}</th>
+													</tr>
+													@endforeach
 												</tbody>
 											</table>
-											<input type="submit" name="submit" class="btn btn-primary">
+											<div class="p-4">
+												<input type="submit" name="submit" class="btn btn-primary">
+											</div>
 										</form>
 									</div>
 								@else
 									<div class="alert alert-warning">
 										Masukkan data <a href="{{ url('kriteria') }}">Kriteria</a> dulu untuk
-										melakukan perbandingan (Minimal 2).
+										melakukan perbandingan.
 									</div>
 								@endif
 							</div>

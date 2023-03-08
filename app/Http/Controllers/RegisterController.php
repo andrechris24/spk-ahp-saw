@@ -27,14 +27,14 @@ class RegisterController extends Controller
 	 */
 	public function register(RegisterRequest $request)
 	{
-		$request->validate(User::$regrules,[
-			'name.required'=>'Nama harus diisi',
-			'name.regex'=>'Nama tidak boleh mengandung simbol dan angka',
-			'email.required'=>'Email harus diisi',
-			'email.unique'=>'Email '.$request->email.' sudah digunakan',
-			'password.required'=>'Password harus diisi',
-			'password.in'=>'Panjang password harus 8-20 karakter',
-			'password.confirmed'=>'Password konfirmasi salah',
+		$request->validate(User::$regrules, [
+			'name.required' => 'Nama harus diisi',
+			'name.regex' => 'Nama tidak boleh mengandung simbol dan angka',
+			'email.required' => 'Email harus diisi',
+			'email.unique' => 'Email ' . $request->email . ' sudah digunakan',
+			'password.required' => 'Password harus diisi',
+			'password.in' => 'Panjang password harus 8-20 karakter',
+			'password.confirmed' => 'Password konfirmasi salah',
 		]);
 		$user = User::create($request->validated());
 		auth()->login($user);

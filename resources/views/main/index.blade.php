@@ -25,12 +25,10 @@
 				<div class="card-body">
 					<p>
 						Sistem ini akan membantu seseorang membuat keputusan dengan metode Simple Additive
-						Weighting dan Analytial Hierarchy Process.
+						Weighting (SAW) dan Analytical Hierarchy Process (AHP).
 					</p>
 					<p>
-						In case you want the navbar to be sticky on top while
-						scrolling, add <code>.navbar-fixed</code> class alongside
-						with <code>.layout-navbar</code> class.
+						Perhitungan Kriteria dan Sub Kriteria menggunakan metode AHP, sedangkan perhitungan Alternatif menggunakan metode SAW.
 					</p>
 				</div>
 			</div>
