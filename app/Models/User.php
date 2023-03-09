@@ -56,9 +56,6 @@ class User extends Authenticatable
 		'password.in' => 'Panjang password harus 8-20 karakter',
 		'password.confirmed' => 'Password konfirmasi salah',
 	];
-	public static $profilrules = [
-		//
-	];
 	/**
 	 * Always encrypt password when it is updated.
 	 *

@@ -20,7 +20,8 @@ class SubKriteria extends Model
         'kriteria_id.required' => 'Kriteria harus dipilih',
         'kriteria_id.integer' => 'Kriteria tidak valid',
     ];
-    public function kriteria(){
-        return $this->belongsTo(Kriteria::class,'kriteria_id');
+    public function kriteria()
+    {
+        return $this->belongsTo(Kriteria::class, 'kriteria_id');
     }
 }

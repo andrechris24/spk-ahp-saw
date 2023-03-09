@@ -10,7 +10,8 @@
 	<link rel="stylesheet" href="{{ url('assets/css/main/app.css') }}" />
 	<link rel="stylesheet" href="{{ url('assets/css/main/app-dark.css') }}" />
 	<link rel="stylesheet" href="{{ url('assets/css/shared/iconly.css') }}" />
-	<link rel="stylesheet" type="text/css" href="{{ url('assets/datatables.min.css') }}">
+	<link rel="stylesheet" type="text/css"
+		href="{{ url('assets/datatables.min.css') }}">
 </head>
 
 <body>
@@ -37,7 +38,8 @@
 									<g transform="translate(-210 -1)">
 										<path d="M220.5 2.5v2m6.5.5l-1.5 1.5"></path>
 										<circle cx="220.5" cy="11.5" r="4"></circle>
-										<path d="m214 5l1.5 1.5m5 14v-2m6.5-.5l-1.5-1.5M214 18l1.5-1.5m-4-5h2m14 0h2">
+										<path
+											d="m214 5l1.5 1.5m5 14v-2m6.5-.5l-1.5-1.5M214 18l1.5-1.5m-4-5h2m14 0h2">
 										</path>
 									</g>
 								</g>
@@ -100,7 +102,7 @@
 										<a href="{{ url('bobot') }}">Perbandingan Kriteria</a>
 									</li>
 									<li class="submenu-item">
-										<a href="{{ url('normalisasi-ahp') }}">Normalisasi</a>
+										<a href="{{ url('bobot/sub') }}">Perbandingan Sub Kriteria</a>
 									</li>
 									<li class="submenu-item">
 										<a href="{{ url('prioritas') }}">Prioritas</a>
@@ -150,8 +152,9 @@
 							<i class="bi bi-justify fs-3"></i>
 						</a>
 						<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-							data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-							aria-expanded="false" aria-label="Toggle navigation">
+							data-bs-target="#navbarSupportedContent"
+							aria-controls="navbarSupportedContent" aria-expanded="false"
+							aria-label="Toggle navigation">
 							<span class="navbar-toggler-icon"></span>
 						</button>
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -172,7 +175,8 @@
 									</li>
 									<li class="nav-item dropdown me-3">
 										<a class="nav-link active dropdown-toggle text-gray-600" href="#"
-											data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+											data-bs-toggle="dropdown" data-bs-display="static"
+											aria-expanded="false">
 											<i class="bi bi-bell bi-sub fs-4"></i>
 										</a>
 										<ul class="dropdown-menu dropdown-menu-end notification-dropdown"
@@ -257,11 +261,13 @@
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript" src="{{ url('assets/jquery-3.6.3.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url('assets/jquery-3.6.3.min.js') }}">
+	</script>
 	<script src="{{ url('assets/js/bootstrap.js') }}"></script>
 	<script src="{{ url('assets/js/app.js') }}"></script>
 	<script src="{{ url('assets/js/initTheme.js') }}"></script>
-	<script type="text/javascript" src="{{ url('assets/datatables.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url('assets/datatables.min.js') }}">
+	</script>
 	<script src="https://kit.fontawesome.com/a49b540b68.js" crossorigin="anonymous">
 	</script>
 	@yield('js')

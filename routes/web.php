@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\KriteriaCompController;
 use App\Http\Controllers\SubKriteriaController;
+use App\Http\Controllers\SubKriteriaCompController;
 use App\Http\Controllers\AlternatifController;
 use App\Http\Controllers\LoginController;
 
@@ -24,7 +25,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 	 */
 	Route::get('/', 'HomeController@index')->name('home.index');
 	Route::get('/home', 'HomeController@index')->name('home.index');
-	// Route::get('login','LoginController@show')->name('login');
 	Route::group(['middleware' => ['guest']], function () {
 		/**
 		 * Register Routes
@@ -35,7 +35,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		/**
 		 * Login Routes
 		 */
-		Route::get('/login', 'LoginController@show')->name('login.show');
+		Route::get('/login', 'LoginController@show')->name('login');
 		Route::post('/login', 'LoginController@login')->name('login.perform');
 
 		/**
@@ -55,16 +55,25 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			Route::post('add', [KriteriaController::class, 'tambah']);
 			Route::post('update/{$id}', [KriteriaController::class, 'update']);
 			Route::get('del/{$id}', [KriteriaController::class, 'hapus']);
-			Route::prefix('sub')->group(function(){
-				Route::get('/',[SubKriteriaController::class,'index']);
-				Route::post('add',[SubKriteriaController::class,'store']);
+			Route::prefix('sub')->group(function () {
+				Route::get('/', [SubKriteriaController::class, 'index']);
+				Route::post('add', [SubKriteriaController::class, 'store']);
+				Route::post('update/{$id}', [SubKriteriaController::class, 'update']);
+				Route::get('del/{$id}', [SubKriteriaController::class, 'destroy']);
 			});
 		});
 		Route::prefix('bobot')->group(function () {
 			Route::get('/', [KriteriaCompController::class, 'index']);
 			Route::post('/', [KriteriaCompController::class, 'simpan']);
-			Route::get('hasil',[KriteriaCompController::class,'hasil']);
-			Route::get('reset',[KriteriaCompController::class,'destroy']);
+			Route::get('hasil', [KriteriaCompController::class, 'hasil']);
+			Route::get('reset', [KriteriaCompController::class, 'destroy']);
+			Route::prefix('sub')->group(function(){
+				Route::get('/', [SubKriteriaCompController::class, 'index']);
+				Route::get('/comp',[SubKriteriaCompController::class,'create']);
+				Route::post('/{}', [SubKriteriaCompController::class, 'store']);
+				Route::get('hasil/{}', [SubKriteriaCompController::class, 'show']);
+				Route::get('reset/{}', [SubKriteriaCompController::class, 'destroy']);
+			});
 		});
 		Route::prefix('alternatif')->group(function () {
 			Route::get('/', [AlternatifController::class, 'index']);

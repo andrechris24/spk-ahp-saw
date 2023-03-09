@@ -3,90 +3,87 @@
 namespace App\Http\Controllers;
 
 use App\Models\SubKriteria;
+use App\Models\SubKriteriaComp;
 use App\Models\Kriteria;
 use Illuminate\Http\Request;
 
 class SubKriteriaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $kriteria=Kriteria::get();
-        $subkriteria=SubKriteria::get();
-        return view('main.subkriteria',compact('kriteria','subkriteria'));
-    }
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function index()
+	{
+		$kriteria = Kriteria::get();
+		$subkriteria = SubKriteria::get();
+		return view('main.subkriteria.index', compact('kriteria', 'subkriteria'));
+	}
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        
-    }
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function store(Request $request)
+	{
+		$request->validate(SubKriteria::$rules, SubKriteria::$message);
+		$subs = $request->all();
+		$subkriteria = SubKriteria::create($subs);
+		if ($subkriteria) return back()->with('success', 'Sub Kriteria sudah ditambahkan');
+		return back()->with('error', 'Gagal menambah sub kriteria');
+	}
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $request->validate(SubKriteria::$rules, SubKriteria::$message);
-        $subs = $request->all();
-        $subkriteria = SubKriteria::create($subs);
-        if ($subkriteria) return back()->with('success', 'Kriteria sudah ditambahkan');
-        return back()->with('error', 'Gagal menambah kriteria');
-    }
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  \App\Models\SubKriteria  $subKriteria
+	 * @return \Illuminate\Http\Response
+	 */
+	public function show(SubKriteria $subKriteria)
+	{
+		//
+	}
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\SubKriteria  $subKriteria
-     * @return \Illuminate\Http\Response
-     */
-    public function show(SubKriteria $subKriteria)
-    {
-        //
-    }
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @param  \App\Models\SubKriteria  $subKriteria
+	 * @return \Illuminate\Http\Response
+	 */
+	public function update(Request $request, SubKriteria $subKriteria)
+	{
+		$cek = SubKriteria::find($subKriteria->id);
+		if (!$cek) return back()->with('error', 'Data Sub Kriteria tidak ditemukan');
+		$req = $request->all();
+		$upd = $cek->update($req);
+		if ($upd) return back()->with('success', 'Data Sub Kriteria sudah diupdate');
+		return back()->with('error', 'Gagal mengupdate data sub kriteria');
+	}
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\SubKriteria  $subKriteria
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(SubKriteria $subKriteria)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\SubKriteria  $subKriteria
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, SubKriteria $subKriteria)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\SubKriteria  $subKriteria
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(SubKriteria $subKriteria)
-    {
-        //
-    }
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  \App\Models\SubKriteria  $subKriteria
+	 * @return \Illuminate\Http\Response
+	 */
+	public function destroy(SubKriteria $subKriteria)
+	{
+		$cek = SubKriteria::find($subKriteria->id);
+		if (!$cek) return back()->with('error', 'Data Sub Kriteria tidak ditemukan');
+		$del = $cek->delete();
+		if ($del){
+			$cekhasil=SubKriteriaComp::count();
+			if($cekhasil>0){
+				SubKriteriaComp::delete();
+				return back()
+				->with('success', 'Data Sub Kriteria sudah dihapus. Silahkan input ulang perbandingan.');
+			}
+			return back()->with('success', 'Data Sub Kriteria sudah dihapus');
+		}
+		return back()->with('error', 'Data sub kriteria gagal dihapus');
+	}
 }

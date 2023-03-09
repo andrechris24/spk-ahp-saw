@@ -56,8 +56,8 @@
 								<div class="col-md-8">
 									<div class="form-group has-icon-left">
 										<div class="position-relative">
-											<input type="text" class="form-control" name="name" placeholder="Name"
-												id="nama-user" value="{{ auth()->user()->name }}" required />
+											<input type="text" class="form-control" name="name" id="nama-user"
+												placeholder="Name" value="{{ auth()->user()->name }}" required />
 											<div class="form-control-icon">
 												<i class="bi bi-person"></i>
 											</div>
@@ -68,8 +68,9 @@
 								<div class="col-md-8">
 									<div class="form-group has-icon-left">
 										<div class="position-relative">
-											<input type="email" class="form-control" name="email" placeholder="Email"
-												id="email-user" value="{{ auth()->user()->email }}" required />
+											<input type="email" class="form-control" name="email"
+												placeholder="Email" id="email-user" value="{{ auth()->user()->email }}"
+												required />
 											<div class="form-control-icon">
 												<i class="bi bi-envelope"></i>
 											</div>

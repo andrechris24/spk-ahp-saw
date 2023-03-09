@@ -41,14 +41,15 @@
 						aria-label="Close"></button>
 				</div>
 			@endif
-			<div class="modal fade text-left" id="AddSubCritModal" tabindex="-1" role="dialog"
-				aria-labelledby="AddCritLabel" aria-hidden="true">
+			<div class="modal fade text-left" id="AddSubCritModal" tabindex="-1"
+				role="dialog" aria-labelledby="AddCritLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
 					role="document">
 					<div class="modal-content">
 						<div class="modal-header">
 							<h4 class="modal-title" id="AddSubCritLabel">Tambah Sub Kriteria</h4>
-							<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+							<button type="button" class="close" data-bs-dismiss="modal"
+								aria-label="Close">
 								<i data-feather="x"></i>
 							</button>
 						</div>
@@ -67,14 +68,15 @@
 									</label>
 									<select class="form-select" id="kriteria" name="kriteria_id" required>
 										<option value="">Pilih</option>
-										@foreach($kriteria as $kr)
-										<option value="{{ $kr->id }}">{{ $kr->name }}</option>
+										@foreach ($kriteria as $kr)
+											<option value="{{ $kr->id }}">{{ $kr->name }}</option>
 										@endforeach
 									</select>
 								</div>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+								<button type="button" class="btn btn-light-secondary"
+									data-bs-dismiss="modal">
 									<i class="bx bx-x d-block d-sm-none"></i>
 									<span class="d-none d-sm-block">Batal</span>
 								</button>
@@ -87,14 +89,15 @@
 					</div>
 				</div>
 			</div>
-			<div class="modal fade text-left" id="EditSubCritModal" tabindex="-1" role="dialog"
-				aria-labelledby="EditSubCritLabel" aria-hidden="true">
+			<div class="modal fade text-left" id="EditSubCritModal" tabindex="-1"
+				role="dialog" aria-labelledby="EditSubCritLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
 					role="document">
 					<div class="modal-content">
 						<div class="modal-header">
 							<h4 class="modal-title" id="EditSubCritLabel">Edit Sub Kriteria</h4>
-							<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+							<button type="button" class="close" data-bs-dismiss="modal"
+								aria-label="Close">
 								<i data-feather="x"></i>
 							</button>
 						</div>
@@ -102,7 +105,7 @@
 							enctype="multipart/form-data" name="editsubkriteria">
 							@csrf
 							<div class="modal-body">
-								<label for="nama-edit">Nama Kriteria</label>
+								<label for="nama-edit">Nama Sub Kriteria</label>
 								<div class="form-group">
 									<input type="text" class="form-control" name="name" id="nama-edit"
 										required />
@@ -111,10 +114,11 @@
 									<label class="input-group-text" for="kriteria-edit">
 										Kriteria
 									</label>
-									<select class="form-select" id="kriteria-edit" name="kriteria_id" required>
+									<select class="form-select" id="kriteria-edit" name="kriteria_id"
+										required>
 										<option value="">Pilih</option>
-										@foreach($kriteria as $kr)
-										<option value="{{ $kr->id }}">{{ $kr->name }}</option>
+										@foreach ($kriteria as $kr)
+											<option value="{{ $kr->id }}">{{ $kr->name }}</option>
 										@endforeach
 									</select>
 								</div>
@@ -162,7 +166,8 @@
 										<div class="btn-group" role="button">
 											<button type="button" class="btn btn-primary" data-bs-toggle="modal"
 												data-bs-target="#EditSubCritModal" data-bs-id="{{ $sk->id }}"
-												data-bs-name="{{ $sk->name }}" data-bs-kr="{{ $sk->kriteria->name }}">
+												data-bs-name="{{ $sk->name }}"
+												data-bs-kr="{{ $sk->kriteria->name }}">
 												<i class="bi bi-pencil-square"></i> Edit
 											</button>
 											<button type="button" class="btn btn-danger" data-bs-toggle="modal"

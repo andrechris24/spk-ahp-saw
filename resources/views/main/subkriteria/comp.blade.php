@@ -1,6 +1,9 @@
 @extends('layout')
 @section('title', 'Perbandingan Kriteria')
-<?php use App\Http\Controllers\KriteriaCompController; ?>
+@php
+use App\Http\Controllers\SubKriteriaCompController;
+$subkriteriacomp=new SubKriteriaCompController();
+@endphp
 @section('content')
 	<div class="page-heading">
 		<div class="page-title">
@@ -44,12 +47,15 @@
 			@endif
 			<div class="card">
 				<div class="card-header">
-					<h4 class="card-title">Masukkan Perbandingan</h4>
+					<h4 class="card-title">
+						Masukkan Perbandingan Sub Kriteria
+						{{ $subkriteriacomp->nama_kriteria($kriteria_id) }}
+					</h4>
 				</div>
 				<div class="card-content">
 					<div class="card-body">
 						<a href="{{ url('bobot/hasil') }}" class="btn btn-primary mb-3">
-						Lihat hasil
+							Lihat hasil
 						</a>
 						<ul class="nav nav-tabs" id="InputCompTab" role="tablist">
 							<li class="nav-item" role="presentation">
@@ -119,46 +125,46 @@
 											<table class="table table-lg table-hover text-center">
 												<thead>
 													<tr>
-														<th>Kriteria</th>
+														<th>Sub Kriteria</th>
 														<th>Perbandingan</th>
-														<th>Kriteria</th>
+														<th>Sub Kriteria</th>
 													</tr>
 												</thead>
 												<tbody>
-													@foreach($array as $krit)
-													<tr>
-														<th>{{ $krit['baris'] }}</th>
-														<td>
-															<div class="input-group mb-3">
-																@if($krit['baris']==$krit['kolom'])
-																<input type="number" name="baris[]"
-																	class="form-control text-center"
-																	min="1" max="9" value="1" readonly/>
-																<div class="input-group-prepend">
-																	<span class="input-group-text">
-																		Banding
-																	</span>
+													@foreach ($array as $krit)
+														<tr>
+															<th>{{ $krit['baris'] }}</th>
+															<td>
+																<div class="input-group mb-3">
+																	@if ($krit['baris'] == $krit['kolom'])
+																		<input type="number" name="baris[]"
+																			class="form-control text-center" min="1" max="9"
+																			value="1" readonly />
+																		<div class="input-group-prepend">
+																			<span class="input-group-text">
+																				Banding
+																			</span>
+																		</div>
+																		<input type="number" name="kolom[]"
+																			class="form-control text-center" value="1" min="1"
+																			max="9" readonly />
+																	@else
+																		<input type="number" name="baris[]"
+																			class="form-control text-center" min="1" max="9"
+																			required />
+																		<div class="input-group-prepend">
+																			<span class="input-group-text">
+																				Banding
+																			</span>
+																		</div>
+																		<input type="number" name="kolom[]"
+																			class="form-control text-center" min="1" max="9"
+																			required />
+																	@endif
 																</div>
-																<input type="number" name="kolom[]"
-																	class="form-control text-center"
-																	value="1" min="1" max="9" readonly/>
-																@else
-																<input type="number" name="baris[]"
-																	class="form-control text-center" min="1"
-																	max="9" required />
-																<div class="input-group-prepend">
-																	<span class="input-group-text">
-																		Banding
-																	</span>
-																</div>
-																<input type="number" name="kolom[]"
-																	class="form-control text-center"
-																	min="1" max="9" required />
-																@endif
-															</div>
-														</td>
-														<th>{{ $krit['kolom'] }}</th>
-													</tr>
+															</td>
+															<th>{{ $krit['kolom'] }}</th>
+														</tr>
 													@endforeach
 												</tbody>
 											</table>
@@ -169,8 +175,8 @@
 									</div>
 								@else
 									<div class="alert alert-warning">
-										Masukkan data <a href="{{ url('kriteria') }}">Kriteria</a> dulu untuk
-										melakukan perbandingan.
+										Masukkan data <a href="{{ url('kriteria/sub') }}">Sub Kriteria</a>
+										dulu untuk melakukan perbandingan.
 									</div>
 								@endif
 							</div>

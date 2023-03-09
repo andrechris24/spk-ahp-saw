@@ -10,7 +10,7 @@ class AlternatifController extends Controller
 	public function index()
 	{
 		$alt = Alternatif::get();
-		return view('main.alter', compact('alt'));
+		return view('main.alternatif.index', compact('alt'));
 	}
 	public function tambah(Request $altrequest)
 	{

@@ -9,23 +9,26 @@ use Illuminate\Support\Facades\DB;
 
 class KriteriaCompController extends Controller
 {
-	// private function getAllKriteria()
-	// {
-	// 	$kriteria = DB::table("kriteria")->select("nama")->get();
-	// 	return $kriteria;
-	// }
 	private function getKriteriaPerbandingan()
 	{
 		$kriteria_comp = DB::table('kriteria_banding')
-			->join('kriteria','kriteria_banding.kriteria1','kriteria.id')
-			->select('kriteria_banding.kriteria1 as idkriteria','kriteria.name')
-			->groupBy('kriteria1','name')->get();
+		->join(
+				"kriteria",
+				"kriteria_banding.kriteria1",
+				"kriteria.id"
+			)
+			->select(
+				"kriteria_banding.kriteria1 as idkriteria",
+				"kriteria.name"
+			)
+			->groupBy("kriteria1",'name')
+			->get();
 		return $kriteria_comp;
 	}
 	private function getPerbandinganByKriteria1($kriteria1)
 	{
 		$kriteria2 = DB::table("kriteria_banding")
-		->select('nilai','kriteria2','kriteria1')
+			->select('nilai', 'kriteria2', 'kriteria1')
 			->where("kriteria2", "=", $kriteria1)
 			->get();
 		return $kriteria2;
@@ -49,7 +52,7 @@ class KriteriaCompController extends Controller
 				$counter++;
 			}
 		}
-		return view('main.kriteria-comp', compact('array'));
+		return view('main.kriteria.comp', compact('array'));
 	}
 	public function simpan(Request $request)
 	{
@@ -158,10 +161,7 @@ class KriteriaCompController extends Controller
 					$kolom = $m;
 					$hasil = 0;
 					for ($l = 0; $l < count($array_filter); $l++) {
-						// if (!isset($matriks_perbandingan[$kolom])) continue (1);
-						$hasil +=
-							$array_filter[$l] *
-							$matriks_perbandingan[$kolom]["nilai"];
+						$hasil += $array_filter[$l] * $matriks_perbandingan[$kolom]["nilai"];
 						$kolom += count($array_filter);
 					}
 					$array_normalisasi[$a] = [
@@ -187,7 +187,6 @@ class KriteriaCompController extends Controller
 		for ($i = 0; $i < count($array_normalisasi); $i++) {
 			$jumlah_baris = $jumlah_baris + $array_normalisasi[$i]["nilai"];
 			if ($index_kriteria == count($kriteria) - 1) {
-				// if (!isset($kriteria[$j])) continue;
 				$array_BobotPrioritas[$j] = [
 					"jumlah_baris" => number_format(abs($jumlah_baris), 4),
 					"bobot" => number_format(
@@ -267,7 +266,7 @@ class KriteriaCompController extends Controller
 			"result" => $result,
 			"total_jumlah_baris" => $total_jumlah_baris,
 		];
-		return view('main.kriteria-hasil', compact('data'));
+		return view('main.kriteria.hasil', compact('data'));
 	}
 	public function destroy()
 	{

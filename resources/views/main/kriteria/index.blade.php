@@ -48,7 +48,8 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<h4 class="modal-title" id="AddCritLabel">Tambah Kriteria</h4>
-							<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+							<button type="button" class="close" data-bs-dismiss="modal"
+								aria-label="Close">
 								<i data-feather="x"></i>
 							</button>
 						</div>
@@ -78,7 +79,8 @@
 								</div>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+								<button type="button" class="btn btn-light-secondary"
+									data-bs-dismiss="modal">
 									<i class="bx bx-x d-block d-sm-none"></i>
 									<span class="d-none d-sm-block">Batal</span>
 								</button>
@@ -98,7 +100,8 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<h4 class="modal-title" id="EditCritLabel">Edit Kriteria</h4>
-							<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+							<button type="button" class="close" data-bs-dismiss="modal"
+								aria-label="Close">
 								<i data-feather="x"></i>
 							</button>
 						</div>
@@ -115,7 +118,8 @@
 									<label class="input-group-text" for="tipe-kriteria-edit">
 										Atribut
 									</label>
-									<select class="form-select" id="tipe-kriteria-edit" name="type" required>
+									<select class="form-select" id="tipe-kriteria-edit" name="type"
+										required>
 										<option value="">Pilih</option>
 										<option value="cost">Cost</option>
 										<option value="benefit">Benefit</option>
@@ -123,8 +127,8 @@
 								</div>
 								<label for="deskripsi-edit">Keterangan</label>
 								<div class="form-group">
-									<input type="text" class="form-control" name="desc" id="deskripsi-edit"
-										required />
+									<input type="text" class="form-control" name="desc"
+										id="deskripsi-edit" required />
 								</div>
 							</div>
 							<div class="modal-footer">
@@ -172,7 +176,8 @@
 										<div class="btn-group" role="button">
 											<button type="button" class="btn btn-primary" data-bs-toggle="modal"
 												data-bs-target="#EditCritModal" data-bs-id="{{ $kriteria->id }}"
-												data-bs-name="{{ $kriteria->name }}" data-bs-desc="{{ $kriteria->desc }}"
+												data-bs-name="{{ $kriteria->name }}"
+												data-bs-desc="{{ $kriteria->desc }}"
 												data-bs-type="{{ $kriteria->type }}">
 												<i class="bi bi-pencil-square"></i> Edit
 											</button>
@@ -201,7 +206,7 @@
 			// Extract info from data-bs-* attributes
 			const nama = button.getAttribute('data-bs-name');
 			const tipe = button.getAttribute('data-bs-type');
-			const desc= button.getAttribute('data-bs-desc');
+			const desc = button.getAttribute('data-bs-desc');
 			const id = button.getAttribute('data-bs-id');
 			// If necessary, you could initiate an AJAX request here
 			// and then do the updating in a callback.
@@ -212,7 +217,7 @@
 			const typeval = editCriteriaModal.querySelector('#tipe-kriteria-edit')
 			nameval.value = nama;
 			typeval.value = tipe;
-			descval.value=desc
+			descval.value = desc
 			var formurl = "{{ url('/kriteria/update/:id') }}";
 			formurl = formurl.replace(':id', id);
 			document.editkriteria.action = formurl;

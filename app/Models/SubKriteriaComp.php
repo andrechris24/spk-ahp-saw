@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class KriteriaComp extends Model
+class SubKriteriaComp extends Model
 {
     use HasFactory;
-    protected $table = "kriteria_banding";
+    protected $table = "subkriteria_banding";
     protected $fillable = [
-        "kriteria1",
-        "kriteria2",
+        'idkriteria',
+        "subkriteria1",
+        "subkriteria2",
         "nilai",
     ];
     public static $rules = [
