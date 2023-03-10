@@ -12,7 +12,7 @@ class KriteriaCompController extends Controller
 	private function getKriteriaPerbandingan()
 	{
 		$kriteria_comp = DB::table('kriteria_banding')
-		->join(
+			->join(
 				"kriteria",
 				"kriteria_banding.kriteria1",
 				"kriteria.id"
@@ -21,7 +21,7 @@ class KriteriaCompController extends Controller
 				"kriteria_banding.kriteria1 as idkriteria",
 				"kriteria.name"
 			)
-			->groupBy("kriteria1",'name')
+			->groupBy("kriteria1", 'name')
 			->get();
 		return $kriteria_comp;
 	}

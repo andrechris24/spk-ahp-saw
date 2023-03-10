@@ -3,44 +3,44 @@
 @section('content')
 	<div class="page-heading">
 		<div class="page-title">
-			<div class="col-12 col-md-6 order-md-1 order-last">
-				<h3>Sub Kriteria</h3>
-			</div>
+			<h3>Sub Kriteria</h3>
 		</div>
 		<section class="section">
-			@if (Session::has('error') || $errors->any())
-				<div class="alert alert-danger alert-dismissible" role="alert">
-					<i class="bi bi-x-circle-fill"></i>
-					@if (Session::has('error'))
-						{{ ucfirst(Session::get('error')) }}
-					@elseif($errors->any())
-						Gagal:
-						<ul>
-							@foreach ($errors->all() as $error)
-								<li>{{ ucfirst($error) }}</li>
-							@endforeach
-						</ul>
-					@endif
-					<button type="button" class="btn-close" data-bs-dismiss="alert"
-						aria-label="Close"></button>
+			@include('main.message')
+			<div class="modal fade text-left" id="DelSubCritModal" tabindex="-1"
+			role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+					role="document">
+					<div class="modal-content">
+						<div class="modal-header bg-warning">
+							<h5 class="modal-title white" id="myModalLabel160">
+								Hapus Sub Kriteria
+							</h5>
+							<button type="button" class="close" data-bs-dismiss="modal"
+								aria-label="Close">
+								<i data-feather="x"></i>
+							</button>
+						</div>
+						<div class="modal-body">
+							<p>
+								<span id="del-desc">Anda akan menghapus sebuah sub kriteria.</span>
+							</p>
+							<p>Lanjutkan?</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-light-secondary"
+								data-bs-dismiss="modal">
+								<i class="bx bx-x d-block d-sm-none"></i>
+								<span class="d-none d-sm-block">Tidak</span>
+							</button>
+							<a href="" class="btn btn-warning ml-1" id="del-action">
+								<i class="bx bx-check d-block d-sm-none"></i>
+								<span class="d-none d-sm-block">Ya</span>
+							</a>
+						</div>
+					</div>
 				</div>
-			@endif
-			@if (Session::has('warning'))
-				<div class="alert alert-warning alert-dismissible" role="alert">
-					<i class="bi bi-exclamation-triangle-fill"></i>
-					{{ Session::get('warning') }}
-					<button type="button" class="btn-close" data-bs-dismiss="alert"
-						aria-label="Close"></button>
-				</div>
-			@endif
-			@if (Session::has('success'))
-				<div class="alert alert-success alert-dismissible" role="alert">
-					<i class="bi bi-check-circle-fill"></i>
-					{{ Session::get('success') }}
-					<button type="button" class="btn-close" data-bs-dismiss="alert"
-						aria-label="Close"></button>
-				</div>
-			@endif
+			</div>
 			<div class="modal fade text-left" id="AddSubCritModal" tabindex="-1"
 				role="dialog" aria-labelledby="AddCritLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
@@ -131,7 +131,7 @@
 								</button>
 								<button type="submit" class="btn btn-primary ml-1">
 									<i class="bx bx-check d-block d-sm-none"></i>
-									<span class="d-none d-sm-block">Tambah</span>
+									<span class="d-none d-sm-block">Edit</span>
 								</button>
 							</div>
 						</form>
@@ -141,7 +141,7 @@
 			<div class="card">
 				<div class="card-header">Daftar Sub Kriteria</div>
 				<div class="card-body">
-					<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+					<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal"
 						data-bs-target="#AddSubCritModal">
 						<i class="bi bi-plus-lg"></i>
 						Tambah Sub Kriteria
@@ -161,17 +161,20 @@
 								<tr>
 									<td>{{ ++$count }}</td>
 									<td>{{ $sk->name }}</td>
-									<td>{{ $sk->kriteria->name }}</td>
+									<td title="{{ $sk->kriteria->desc }}">
+										{{ $sk->kriteria->name }}
+									</td>
 									<td>
 										<div class="btn-group" role="button">
 											<button type="button" class="btn btn-primary" data-bs-toggle="modal"
 												data-bs-target="#EditSubCritModal" data-bs-id="{{ $sk->id }}"
 												data-bs-name="{{ $sk->name }}"
-												data-bs-kr="{{ $sk->kriteria->name }}">
+												data-bs-kr="{{ $sk->kriteria->id }}">
 												<i class="bi bi-pencil-square"></i> Edit
 											</button>
 											<button type="button" class="btn btn-danger" data-bs-toggle="modal"
-												data-bs-target="#DelSubCritModal" data-bs-id="{{ $sk->id }}">
+												data-bs-target="#DelSubCritModal" data-bs-id="{{ $sk->id }}"
+												data-bs-name="{{ $sk->name }}" data-bs-kr="{{ $sk->kriteria->name }}">
 												<i class="bi bi-trash3-fill"></i> Hapus
 											</button>
 										</div>
@@ -203,13 +206,36 @@
 			const nameval = editCriteriaModal.querySelector('#nama-edit')
 			const typeval = editCriteriaModal.querySelector('#kriteria-edit')
 			nameval.value = nama;
-			typeval.value = id;
+			typeval.value = idk;
 			var formurl = "{{ url('/kriteria/sub/update/:id') }}";
 			formurl = formurl.replace(':id', id);
 			document.editsubkriteria.action = formurl;
 		});
+		const delCriteriaModal = document.getElementById('DelSubCritModal');
+		delCriteriaModal.addEventListener('show.bs.modal', event => {
+			const button = event.relatedTarget;
+			const id = button.getAttribute('data-bs-id');
+			const nama = button.getAttribute('data-bs-name');
+			const krnama=button.getAttribute('data-bs-kr');
+			const link=delCriteriaModal.querySelector('#del-action');
+			const desc=delCriteriaModal.querySelector('#del-desc');
+			var formurl = "{{ url('/kriteria/sub/del/:id') }}";
+			formurl = formurl.replace(':id', id);
+			desc.innerHTML=
+				"Anda akan menghapus sub kriteria <b>"
+				+nama+"</b> (Kriteria "+krnama+").";
+			link.href = formurl;
+		});
 		$(document).ready(function() {
-			$('#table-subcrit').DataTable();
+			$('#table-subcrit').DataTable({
+				"stateSave": true,
+				"lengthChange": false,
+				"searching": false,
+				columnDefs: [{
+					orderable: false,
+					targets: 3,
+				}]
+			});
 		});
 	</script>
 @endsection

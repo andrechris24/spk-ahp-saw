@@ -3,46 +3,46 @@
 @section('content')
 	<div class="page-heading">
 		<div class="page-title">
-			<div class="col-12 col-md-6 order-md-1 order-last">
-				<h3>Alternatif</h3>
-			</div>
+			<h3>Alternatif</h3>
 		</div>
 		<section class="section">
-			@if (Session::has('error') || $errors->any())
-				<div class="alert alert-danger alert-dismissible" role="alert">
-					<i class="bi bi-x-circle-fill"></i>
-					@if (Session::has('error'))
-						{{ ucfirst(Session::get('error')) }}
-					@elseif($errors->any())
-						Gagal:
-						<ul>
-							@foreach ($errors->all() as $error)
-								<li>{{ ucfirst($error) }}</li>
-							@endforeach
-						</ul>
-					@endif
-					<button type="button" class="btn-close" data-bs-dismiss="alert"
-						aria-label="Close"></button>
+			@include('main.message')
+			<div class="modal fade text-left" id="DelAlterModal" tabindex="-1"
+			role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+					role="document">
+					<div class="modal-content">
+						<div class="modal-header bg-warning">
+							<h5 class="modal-title white" id="myModalLabel160">
+								Hapus Alternatif
+							</h5>
+							<button type="button" class="close" data-bs-dismiss="modal"
+								aria-label="Close">
+								<i data-feather="x"></i>
+							</button>
+						</div>
+						<div class="modal-body">
+							<p>
+								<span id="del-desc">Anda akan menghapus sebuah alternatif.</span>
+							</p>
+							<p>Lanjutkan?</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-light-secondary"
+								data-bs-dismiss="modal">
+								<i class="bx bx-x d-block d-sm-none"></i>
+								<span class="d-none d-sm-block">Tidak</span>
+							</button>
+							<a href="" class="btn btn-warning ml-1" id="del-action">
+								<i class="bx bx-check d-block d-sm-none"></i>
+								<span class="d-none d-sm-block">Ya</span>
+							</a>
+						</div>
+					</div>
 				</div>
-			@endif
-			@if (Session::has('warning'))
-				<div class="alert alert-warning alert-dismissible" role="alert">
-					<i class="bi bi-exclamation-triangle-fill"></i>
-					{{ Session::get('warning') }}
-					<button type="button" class="btn-close" data-bs-dismiss="alert"
-						aria-label="Close"></button>
-				</div>
-			@endif
-			@if (Session::has('success'))
-				<div class="alert alert-success alert-dismissible" role="alert">
-					<i class="bi bi-check-circle-fill"></i>
-					{{ Session::get('success') }}
-					<button type="button" class="btn-close" data-bs-dismiss="alert"
-						aria-label="Close"></button>
-				</div>
-			@endif
-			<div class="modal fade text-left" id="AddAlterModal" tabindex="-1" role="dialog"
-				aria-labelledby="AddAlterLabel" aria-hidden="true">
+			</div>
+			<div class="modal fade text-left" id="AddAlterModal" tabindex="-1"
+				 role="dialog"aria-labelledby="AddAlterLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
 					role="document">
 					<div class="modal-content">
@@ -53,7 +53,7 @@
 								<i data-feather="x"></i>
 							</button>
 						</div>
-						<form action="{{ url('/alternatif') }}" method="post"
+						<form action="{{ url('/alternatif/add') }}" method="post"
 							enctype="multipart/form-data">
 							@csrf
 							<div class="modal-body">
@@ -117,12 +117,12 @@
 			<div class="card">
 				<div class="card-header">Daftar Alternatif</div>
 				<div class="card-body">
-					<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+					<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal"
 						data-bs-target="#AddAlterModal">
 						<i class="bi bi-plus-lg"></i>
 						Tambah Alternatif
 					</button>
-					<table class="table table-striped" id="table-alter">
+					<table class="table table-hover" id="table-alter">
 						<thead>
 							<tr>
 								<th>No</th>
@@ -144,7 +144,8 @@
 												<i class="bi bi-pencil-square"></i> Edit
 											</button>
 											<button type="button" class="btn btn-danger" data-bs-toggle="modal"
-												data-bs-target="#DelAlterModal" data-bs-id="{{ $alternatif->id }}">
+												data-bs-target="#DelAlterModal" data-bs-id="{{ $alternatif->id }}"
+												data-bs-name="{{ $alternatif->name }}">
 												<i class="bi bi-trash3-fill"></i> Hapus
 											</button>
 										</div>
@@ -161,8 +162,8 @@
 
 @section('js')
 	<script type="text/javascript">
-		const editCriteriaModal = document.getElementById('EditCritModal');
-		editCriteriaModal.addEventListener('show.bs.modal', event => {
+		const editAlterModal = document.getElementById('EditAlterModal');
+		editAlterModal.addEventListener('show.bs.modal', event => {
 			// Button that triggered the modal
 			const button = event.relatedTarget;
 			// Extract info from data-bs-* attributes
@@ -172,14 +173,34 @@
 			// and then do the updating in a callback.
 
 			// Update the modal's content.
-			const nameval = editCriteriaModal.querySelector('#nama-edit')
+			const nameval = editAlterModal.querySelector('#nama-edit')
 			nameval.value = nama;
-			var formurl = "{{ url('/kriteria/update/:id') }}";
+			var formurl = "{{ url('/alternatif/update/:id') }}";
 			formurl = formurl.replace(':id', id);
-			document.editkriteria.action = formurl;
+			document.editalternatif.action = formurl;
+		});
+		const delAlterModal = document.getElementById('DelAlterModal');
+		delAlterModal.addEventListener('show.bs.modal', event => {
+			const button = event.relatedTarget;
+			const id = button.getAttribute('data-bs-id');
+			const nama = button.getAttribute('data-bs-name');
+			const link=delAlterModal.querySelector('#del-action');
+			const desc=delAlterModal.querySelector('#del-desc');
+			var formurl = "{{ url('/alternatif/del/:id') }}";
+			formurl = formurl.replace(':id', id);
+			desc.innerHTML="Anda akan menghapus alternatif <b>"+nama+"</b>.";
+			link.href = formurl;
 		});
 		$(document).ready(function() {
-			$('#table-alter').DataTable();
+			$('#table-alter').DataTable({
+				"stateSave": true,
+				"lengthChange": false,
+				"searching": false,
+				columnDefs: [{
+					orderable: false,
+					targets: 2,
+				}]
+			});
 		});
 	</script>
 @endsection

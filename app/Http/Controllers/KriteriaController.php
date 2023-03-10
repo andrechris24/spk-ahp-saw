@@ -19,12 +19,15 @@ class KriteriaController extends Controller
 		$kritrequest->validate(Kriteria::$rules, Kriteria::$message);
 		$krits = $kritrequest->all();
 		$kriteria = Kriteria::create($krits);
-		if ($kriteria){
-			$cekhasil=KriteriaComp::count();
-			if($cekhasil>0){
-				KriteriaComp::delete();
+		if ($kriteria) {
+			$cekhasil = KriteriaComp::count();
+			if ($cekhasil > 0) {
+				DB::table('kriteria_banding')->delete();
 				return back()
-				->with('success','Kriteria sudah ditambahkan. Silahkan input ulang perbandingan.');
+					->with(
+						'success', 
+						'Kriteria sudah ditambahkan. Silahkan input ulang perbandingan kriteria.'
+					);
 			}
 			return back()->with('success', 'Kriteria sudah ditambahkan.');
 		}
@@ -44,12 +47,15 @@ class KriteriaController extends Controller
 		$cek = Kriteria::find($id);
 		if (!$cek) return back()->with('error', 'Data Kriteria tidak ditemukan');
 		$del = $cek->delete();
-		if ($del){
-			$cekhasil=KriteriaComp::count();
-			if($cekhasil>0){
-				KriteriaComp::delete();
+		if ($del) {
+			$cekhasil = KriteriaComp::count();
+			if ($cekhasil > 0) {
+				DB::table('kriteria_banding')->delete();
 				return back()
-				->with('success', 'Data Kriteria sudah dihapus. Silahkan input ulang perbandingan.');
+					->with(
+						'success', 
+						'Data Kriteria sudah dihapus. Silahkan input ulang perbandingan.'
+					);
 			}
 			return back()->with('success', 'Data Kriteria sudah dihapus');
 		}

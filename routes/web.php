@@ -53,13 +53,13 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		Route::prefix('kriteria')->group(function () {
 			Route::get('/', [KriteriaController::class, 'index']);
 			Route::post('add', [KriteriaController::class, 'tambah']);
-			Route::post('update/{$id}', [KriteriaController::class, 'update']);
-			Route::get('del/{$id}', [KriteriaController::class, 'hapus']);
+			Route::post('update/{id}', [KriteriaController::class, 'update']);
+			Route::get('del/{id}', [KriteriaController::class, 'hapus']);
 			Route::prefix('sub')->group(function () {
 				Route::get('/', [SubKriteriaController::class, 'index']);
 				Route::post('add', [SubKriteriaController::class, 'store']);
-				Route::post('update/{$id}', [SubKriteriaController::class, 'update']);
-				Route::get('del/{$id}', [SubKriteriaController::class, 'destroy']);
+				Route::post('update/{id}', [SubKriteriaController::class, 'update']);
+				Route::get('del/{id}', [SubKriteriaController::class, 'destroy']);
 			});
 		});
 		Route::prefix('bobot')->group(function () {
@@ -67,21 +67,20 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			Route::post('/', [KriteriaCompController::class, 'simpan']);
 			Route::get('hasil', [KriteriaCompController::class, 'hasil']);
 			Route::get('reset', [KriteriaCompController::class, 'destroy']);
-			Route::prefix('sub')->group(function(){
+			Route::prefix('sub')->group(function () {
 				Route::get('/', [SubKriteriaCompController::class, 'index']);
-				Route::get('/comp',[SubKriteriaCompController::class,'create']);
-				Route::post('/{}', [SubKriteriaCompController::class, 'store']);
-				Route::get('hasil/{}', [SubKriteriaCompController::class, 'show']);
-				Route::get('reset/{}', [SubKriteriaCompController::class, 'destroy']);
+				Route::get('comp', [SubKriteriaCompController::class, 'create']);
+				Route::post('comp', [SubKriteriaCompController::class, 'store']);
+				Route::get('hasil/{id}', [SubKriteriaCompController::class, 'show']);
+				Route::get('reset/{id}', [SubKriteriaCompController::class, 'destroy']);
 			});
 		});
 		Route::prefix('alternatif')->group(function () {
 			Route::get('/', [AlternatifController::class, 'index']);
 			Route::post('add', [AlternatifController::class, 'tambah']);
-			Route::post('update/{$id}', [AlternatifController::class, 'update']);
-			Route::get('del/{$id}', [AlternatifController::class, 'hapus']);
+			Route::post('update/{id}', [AlternatifController::class, 'update']);
+			Route::get('del/{id}', [AlternatifController::class, 'hapus']);
 		});
 		Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
-		// Route::get('/login', 'LoginController@show')->name('login');
 	});
 });

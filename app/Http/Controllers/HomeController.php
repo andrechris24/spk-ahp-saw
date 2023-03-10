@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Kriteria;
+use App\Models\SubKriteria;
+use App\Models\Alternatif;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -10,6 +13,12 @@ class HomeController extends Controller
 {
 	public function index()
 	{
+		if(auth()){
+			$jml['kriteria']=Kriteria::count();
+			$jml['subkriteria']=SubKriteria::count();
+			$jml['alternatif']=Alternatif::count();
+			return view('main.index',compact('jml'));
+		}
 		return view('main.index');
 	}
 	public function redirect()
