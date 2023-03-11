@@ -244,14 +244,14 @@ class KriteriaCompController extends Controller
 		$ratio = [null, 0, 0, 0.58, 0.9, 1.12, 1.24, 1.32, 1.41, 1.45];
 		$result = number_format(abs($total_ci / $ratio[count($kriteria) - 1]), 4);
 
-		// for ($i = 0; $i < count($kriteria); $i++) {
-		// 	Kriteria::where(
-		// 		"kode_kriteria",
-		// 		$kriteria[$i]->idkriteria
-		// 	)->update([
-		// 		"bobot" => $array_BobotPrioritas[$i]["bobot"],
-		// 	]);
-		// }
+		for ($i = 0; $i < count($kriteria); $i++) {
+			Kriteria::where(
+				"id",
+				$kriteria[$i]->idkriteria
+			)->update([
+				"bobot" => $array_BobotPrioritas[$i]["bobot"],
+			]);
+		}
 
 		$data = [
 			"kriteria" => $kriteria,

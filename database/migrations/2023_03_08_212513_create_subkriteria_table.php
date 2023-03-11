@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('kriteria_id')->constrained('kriteria')->cascadeOnDelete();
             $table->string('name',255);
+            $table->float('bobot',8,5);
             $table->timestamps();
         });
     }

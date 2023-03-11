@@ -96,8 +96,8 @@
 									</div>
 								@else
 									<div class="alert alert-warning">
-										Masukkan data <a href="{{ url('kriteria') }}">Kriteria</a> dulu untuk
-										melakukan perbandingan.
+										Masukkan data <a href="{{ url('kriteria') }}">Kriteria</a>
+										dulu untuk melakukan perbandingan.
 									</div>
 								@endif
 							</div>

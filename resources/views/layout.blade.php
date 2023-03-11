@@ -104,12 +104,6 @@
 									<li class="submenu-item">
 										<a href="{{ url('bobot/sub') }}">Perbandingan Sub Kriteria</a>
 									</li>
-									<li class="submenu-item">
-										<a href="{{ url('prioritas') }}">Prioritas</a>
-									</li>
-									<li class="submenu-item">
-										<a href="{{ url('cm') }}">Consistency Measure</a>
-									</li>
 								</ul>
 							</li>
 							<li class="sidebar-item has-sub">
@@ -119,11 +113,11 @@
 								</a>
 								<ul class="submenu">
 									<li class="submenu-item">
-										<a href="{{ url('normalisasi-saw') }}">Normalisasi</a>
+										<a href="{{ url('alternatif/nilai') }}">Penilaian Alternatif</a>
 									</li>
 									<li class="submenu-item">
-										<a href="{{ url('bobot-normalisasi') }}">
-											Normalisasi Terbobot
+										<a href="{{ url('alternatif/hasil') }}">
+											Hasil
 										</a>
 									</li>
 									<li class="submenu-item">

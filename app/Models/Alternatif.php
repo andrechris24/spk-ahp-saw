@@ -15,4 +15,7 @@ class Alternatif extends Model
         'name.required' => 'Nama alternatif diperlukan',
         'name.regex' => 'Nama alternatif tidak boleh mengandung simbol'
     ];
+    public function nilai(){
+        return $this->hasMany(Nilai::class,'alternatif_id');
+    }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\KriteriaCompController;
 use App\Http\Controllers\SubKriteriaController;
 use App\Http\Controllers\SubKriteriaCompController;
 use App\Http\Controllers\AlternatifController;
+use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\LoginController;
 
 /*
@@ -80,7 +81,17 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			Route::post('add', [AlternatifController::class, 'tambah']);
 			Route::post('update/{id}', [AlternatifController::class, 'update']);
 			Route::get('del/{id}', [AlternatifController::class, 'hapus']);
+			Route::get('hasil',[NilaiController::class,'show']);
+			Route::prefix('nilai')->group(function(){
+				Route::get('/',[NilaiController::class,'index']);
+				Route::post('add',[NilaiController::class,'store']);
+				Route::post('update/{id}',[NilaiController::class,'update']);
+				Route::get('del/{id}',[NilaiController::class,'destroy']);
+			});
 		});
 		Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
 	});
+});
+Route::get('/test',function(){
+	return view('vendor.mail.html.layout');
 });

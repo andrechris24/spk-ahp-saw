@@ -279,7 +279,6 @@ class SubKriteriaCompController extends Controller
 		$indexbobot = 0;
 		$j = 0;
 		for ($i = 0; $i < count($matriks_perbandingan); $i++) {
-			// if (!isset($array_BobotPrioritas[$indexbobot]["bobot"])) continue;
 			$cm = number_format(
 				abs(
 					$cm +
@@ -315,7 +314,15 @@ class SubKriteriaCompController extends Controller
 		);
 		$ratio = [null, 0, 0, 0.58, 0.9, 1.12, 1.24, 1.32, 1.41, 1.45];
 		$result = number_format(abs($total_ci / $ratio[count($subkriteria) - 1]), 4);
-
+		for ($i = 0; $i < count($kriteria); $i++) {
+			SubKriteria::where(
+				"id",
+				$kriteria[$i]->idsubkriteria
+			)->where('kriteria_id','=',$id)
+			->update([
+				"bobot" => $array_BobotPrioritas[$i]["bobot"],
+			]);
+		}
 		$data = [
 			"subkriteria" => $subkriteria,
 			"matriks_perbandingan" => $matriks_perbandingan,

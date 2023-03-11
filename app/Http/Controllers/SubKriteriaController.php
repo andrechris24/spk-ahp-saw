@@ -18,6 +18,10 @@ class SubKriteriaController extends Controller
 	{
 		$kriteria = Kriteria::get();
 		$subkriteria = SubKriteria::get();
+		if(count($kriteria)==0) {
+			return redirect('kriteria')
+			->with('warning','Tambahkan kriteria dulu sebelum menginput sub kriteria');
+		}
 		return view('main.subkriteria.index', compact('kriteria', 'subkriteria'));
 	}
 

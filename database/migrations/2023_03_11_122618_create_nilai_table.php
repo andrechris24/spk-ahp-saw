@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('ir', function (Blueprint $table) {
+        Schema::create('nilai', function (Blueprint $table) {
             $table->id();
-            $table->integer('jumlah');
-            $table->float('nilai', 8, 2);
+            $table->foreignId('alternatif_id')->constrained('alternatif')->cascadeOnDelete();
+            $table->foreignId('kriteria_id')->constrained('kriteria')->cascadeOnDelete();
+            $table->foreignId('subkriteria_id')->constrained('subkriteria')->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ir');
+        Schema::dropIfExists('nilai');
     }
 };
