@@ -29,7 +29,7 @@ class ForgotPasswordController extends Controller
 	 */
 	public function submitForgetPasswordForm(Request $request)
 	{
-		$tanggal = DB::table('password_resets');
+		// $tanggal = DB::table('password_resets');
 		$request->validate([
 			'email' => 'required|email|exists:users|unique:password_resets,email',
 		], [

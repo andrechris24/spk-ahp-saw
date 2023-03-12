@@ -6,6 +6,8 @@ use App\Models\Nilai;
 use App\Models\Kriteria;
 use App\Models\SubKriteria;
 use App\Models\Alternatif;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class NilaiController extends Controller
@@ -174,6 +176,9 @@ class NilaiController extends Controller
 	 */
 	public function show(Nilai $nilai)
 	{
+		$hasil=Nilai::leftJoin('alternatif','alternatif.id','=','nilai.alternatif_id')
+		->leftJoin('kriteria','kriteria.id','=','nilai.kriteria_id')
+		->leftJoin('subkriteria','subkriteria.id','=','nilai.subkriteria_id')->get();
 		$alternatif = $this->getAlternatif();
 		$kriteria = $this->getKriteria();
 		$nilai_awal = $this->getNilaiAwal();
@@ -209,9 +214,26 @@ class NilaiController extends Controller
 	 * @param  \App\Models\Nilai  $nilai
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(Request $request, Nilai $nilai)
+	public function update(Request $request, $id)
 	{
-		//
+		$cek=DB::table('nilai')->where('alternatif_id','=',$id)->get();
+		if(!$cek)
+			return back()->with('error','Penilaian alternatif tidak ditemukan');
+		$request->validate(Nilai::$updrules,Nilai::$message);
+		$scores=$request->all();
+		for($a=0;$a<count($scores['kriteria_id']);$a++){
+			try { 
+				DB::table('nilai')->where('alternatif_id','=',$id)
+				->where('kriteria_id','=',$scores['kriteria_id'][$a])
+				->update(['subkriteria_id'=>$scores['subkriteria_id'][$a]]);
+					// Closures include ->first(), ->get(), ->pluck(), etc.
+			} catch(QueryException $ex){ 
+				return back()->withErrors($ex->getMessage());
+				break;
+				// Note any method of class PDOException can be called on $ex.
+			}
+		}
+		return back()->with('success','Penilaian alternatif sudah diupdate');
 	}
 
 	/**

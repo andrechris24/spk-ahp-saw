@@ -17,6 +17,13 @@ class Nilai extends Model
         'subkriteria_id'=>'required',
         'subkriteria_id.*'=>'numeric'
     ];
+    public static $updrules = [
+        'alternatif_id' => 'bail|required',
+        'kriteria_id'=>'required',
+        'kriteria_id.*'=>'numeric',
+        'subkriteria_id'=>'required',
+        'subkriteria_id.*'=>'numeric'
+    ];
     public static $message=[
         'alternatif_id.required'=>'Nama alternatif harus dipilih',
         'alternatif_id.unique'=>'Nama alternatif sudah digunakan',

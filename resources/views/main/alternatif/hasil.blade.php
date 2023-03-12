@@ -26,19 +26,14 @@
 								@foreach ($data['kriteria'] as $kr)
 									<tr>
 										<th>{{ $kr->name }}</th>
-										@foreach ($data['matriks_perbandingan'] as $mp)
+										{{-- @foreach ($data['matriks_perbandingan'] as $mp)
 											@if ($mp['kode_kriteria'] == $kr->idkriteria)
 												<td>{{ $mp['nilai'] }}</td>
 											@endif
-										@endforeach
+										@endforeach --}}
+										<td></td>
 									</tr>
 								@endforeach
-								<tr>
-									<th>Jumlah</th>
-									@foreach ($data['jumlah'] as $nilai)
-										<td>{{ $nilai['jumlah'] }}</td>
-									@endforeach
-								</tr>
 							</tbody>
 						</table>
 					</div>
