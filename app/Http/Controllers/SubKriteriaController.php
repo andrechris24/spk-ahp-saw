@@ -6,6 +6,8 @@ use App\Models\SubKriteria;
 use App\Models\SubKriteriaComp;
 use App\Models\Kriteria;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
 
 class SubKriteriaController extends Controller
 {
@@ -18,11 +20,15 @@ class SubKriteriaController extends Controller
 	{
 		$kriteria = Kriteria::get();
 		$subkriteria = SubKriteria::get();
-		if(count($kriteria)==0) {
+		$compskr = SubKriteriaComp::count();
+		if (count($kriteria) == 0) {
 			return redirect('kriteria')
-			->with('warning','Tambahkan kriteria dulu sebelum menginput sub kriteria');
+				->withWarning('Tambahkan kriteria dulu sebelum menginput sub kriteria');
 		}
-		return view('main.subkriteria.index', compact('kriteria', 'subkriteria'));
+		return view(
+			'main.subkriteria.index',
+			compact('kriteria', 'subkriteria', 'compskr')
+		);
 	}
 
 	/**
@@ -35,22 +41,26 @@ class SubKriteriaController extends Controller
 	{
 		$request->validate(SubKriteria::$rules, SubKriteria::$message);
 		$subs = $request->all();
-		$subkriteria = SubKriteria::create($subs);
-		if ($subkriteria) {
-			$cek=SubKriteriaComp::where('idkriteria','=',$request->kriteria_id)->count();
-			if($cek>0){
-				DB::table('subkriteria_banding')
-				->where('idkriteria','=',$request->kriteria_id)
-				->delete();
-				return back()
-				->with(
-					'success',
-					'Sub Kriteria sudah ditambahkan. Silahkan input ulang perbandingan sub kriteria.'
-				);
+		try{
+			$subkriteria = SubKriteria::create($subs);
+			if ($subkriteria) {
+				$cek = SubKriteriaComp::where('idkriteria', '=', $request->kriteria_id)->count();
+				if ($cek > 0) {
+					DB::table('subkriteria_banding')
+						->where('idkriteria', '=', $request->kriteria_id)
+						->delete();
+					return back()
+						->withSuccess(
+							'Sub Kriteria sudah ditambahkan. Silahkan input ulang perbandingan sub kriteria.'
+						);
+				}
+				return back()->withSuccess('Sub Kriteria sudah ditambahkan');
 			}
-			return back()->with('success', 'Sub Kriteria sudah ditambahkan');
+		}catch(QueryException $sql){
+			return back()->withError('Gagal menambah sub kriteria')
+			->withErrors($sql->getMessage());
 		}
-		return back()->with('error', 'Gagal menambah sub kriteria');
+		return back()->withError('Gagal menambah sub kriteria');
 	}
 
 	/**
@@ -62,12 +72,17 @@ class SubKriteriaController extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
-		$cek = SubKriteria::find($id);
-		if (!$cek) return back()->with('error', 'Data Sub Kriteria tidak ditemukan');
-		$req = $request->all();
-		$upd = $cek->update($req);
-		if ($upd) return back()->with('success', 'Data Sub Kriteria sudah diupdate');
-		return back()->with('error', 'Gagal mengupdate data sub kriteria');
+		try{
+			$cek = SubKriteria::find($id);
+			if (!$cek) return back()->withError('Data Sub Kriteria tidak ditemukan');
+			$req = $request->all();
+		 $cek->update($req);
+			return back()->withSuccess('Data Sub Kriteria sudah diupdate');
+		}catch(QueryException $sql){
+			return back()->withError('Gagal mengupdate data sub kriteria')
+			->withErrors($sql->getMessage());
+		}
+		return back()->withError('Gagal mengupdate data sub kriteria');
 	}
 
 	/**
@@ -76,23 +91,17 @@ class SubKriteriaController extends Controller
 	 * @param  \App\Models\SubKriteria  $subKriteria
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy(SubKriteria $subKriteria)
+	public function destroy($id)
 	{
-		$cek = SubKriteria::find($subKriteria->id);
-		if (!$cek) return back()->with('error', 'Data Sub Kriteria tidak ditemukan');
-		$del = $cek->delete();
-		if ($del) {
-			// $cekhasil = SubKriteriaComp::where('idkriteria','=','')->count();
-			// if ($cekhasil > 0) {
-			// 	DB::table('subkriteria_banding')->where('idkriteria','=','')->delete();
-			// 	return back()
-			// 		->with(
-			// 			'success', 
-			// 			'Data Sub Kriteria sudah dihapus. Silahkan input ulang perbandingan.'
-			// 		);
-			// }
-			return back()->with('success', 'Data Sub Kriteria sudah dihapus');
+		try{
+			$cek = SubKriteria::find($id);
+			if (!$cek) return back()->withError('Data Sub Kriteria tidak ditemukan');
+			$del=$cek->delete();
+			if($del) return back()->withSuccess('Data Sub Kriteria sudah dihapus');
+		}catch(QueryException $sql){
+			return back()->withError('Gagal hapus data sub kriteria')
+			->withErrors($sql->getMessage());
 		}
-		return back()->with('error', 'Data sub kriteria gagal dihapus');
+		return back()->withError('Data sub kriteria gagal dihapus');
 	}
 }

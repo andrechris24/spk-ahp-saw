@@ -2,9 +2,9 @@
 @php
 	use App\Http\Controllers\SubKriteriaCompController;
 	$subkriteriacomp = new SubKriteriaCompController();
-	$title=$subkriteriacomp->nama_kriteria($kriteria_id);
+	$title = $subkriteriacomp->nama_kriteria($kriteria_id);
 @endphp
-@section('title', 'Perbandingan Sub Kriteria '.$title)
+@section('title', 'Perbandingan Sub Kriteria ' . $title)
 @section('content')
 	<div class="page-heading">
 		<div class="page-title">
@@ -20,10 +20,12 @@
 				</div>
 				<div class="card-content">
 					<div class="card-body">
-						<a href="{{ url('bobot/sub/hasil/'.$kriteria_id) }}"
-						class="btn btn-primary mb-3">
+						@if($cek>0)
+						<a href="{{ url('bobot/sub/hasil/' . $kriteria_id) }}"
+							class="btn btn-primary mb-3">
 							Lihat hasil
 						</a>
+						@endif
 						<ul class="nav nav-tabs" id="InputCompTab" role="tablist">
 							<li class="nav-item" role="presentation">
 								<a class="nav-link active" id="info-tab" data-bs-toggle="tab" href="#info"

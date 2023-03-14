@@ -6,59 +6,73 @@ use App\Models\Kriteria;
 use App\Models\KriteriaComp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
 
 class KriteriaController extends Controller
 {
 	public function index()
 	{
 		$krit = Kriteria::get();
-		return view('main.kriteria.index', compact('krit'));
+		$compkr = KriteriaComp::count();
+		return view('main.kriteria.index', compact('krit', 'compkr'));
 	}
 	public function tambah(Request $kritrequest)
 	{
 		$kritrequest->validate(Kriteria::$rules, Kriteria::$message);
 		$krits = $kritrequest->all();
-		$kriteria = Kriteria::create($krits);
-		if ($kriteria) {
-			$cekhasil = KriteriaComp::count();
-			if ($cekhasil > 0) {
-				DB::table('kriteria_banding')->delete();
-				return back()
-					->with(
-						'success', 
-						'Kriteria sudah ditambahkan. Silahkan input ulang perbandingan kriteria.'
-					);
+		try{
+			$kriteria = Kriteria::create($krits);
+			if ($kriteria) {
+				$cekhasil = KriteriaComp::count();
+				if ($cekhasil > 0) {
+					DB::table('kriteria_banding')->delete();
+					return back()
+						->withSuccess(
+							'Kriteria sudah ditambahkan. Silahkan input ulang perbandingan kriteria.'
+						);
+				}
+				return back()->withSuccess('Kriteria sudah ditambahkan.');
 			}
-			return back()->with('success', 'Kriteria sudah ditambahkan.');
+		}catch(QueryException $db){
+			return back()->withError('Kesalahan:')
+			->withErrors($db->getMessage());
 		}
-		return back()->with('error', 'Gagal menambah kriteria');
+		return back()->withError('Gagal menambah kriteria');
 	}
 	public function update(Request $updkritrequest, $id)
 	{
-		$cek = Kriteria::find($id);
-		if (!$cek) return back()->with('error', 'Data Kriteria tidak ditemukan');
-		$req = $updkritrequest->all();
-		$upd = $cek->update($req);
-		if ($upd) return back()->with('success', 'Data Kriteria sudah diupdate');
-		return back()->with('error', 'Gagal mengupdate data kriteria');
+		try{
+			$cek = Kriteria::find($id);
+			if (!$cek) return back()->withError('Data Kriteria tidak ditemukan');
+			$req = $updkritrequest->all();
+			$cek->update($req);
+			return back()->withSuccess('Data Kriteria sudah diupdate');
+		}catch(QueryException $db){
+			return back()->withError('Gagal mengupdate data kriteria')
+			->withErrors($db->getMessage());
+		}
+		return back()->withError('Gagal mengupdate data kriteria');
 	}
 	public function hapus($id)
 	{
-		$cek = Kriteria::find($id);
-		if (!$cek) return back()->with('error', 'Data Kriteria tidak ditemukan');
-		$del = $cek->delete();
-		if ($del) {
-			$cekhasil = KriteriaComp::count();
-			if ($cekhasil > 0) {
-				DB::table('kriteria_banding')->delete();
-				return back()
-					->with(
-						'success', 
-						'Data Kriteria sudah dihapus. Silahkan input ulang perbandingan.'
-					);
+		try{
+			$cek = Kriteria::find($id);
+			if (!$cek) return back()->withError('Data Kriteria tidak ditemukan');
+			$del = $cek->delete();
+			if ($del) {
+				$cekhasil = KriteriaComp::count();
+				if ($cekhasil > 0) {
+					DB::table('kriteria_banding')->delete();
+					return back()
+						->withSuccess(
+							'Data Kriteria sudah dihapus. Silahkan input ulang perbandingan.'
+						);
+				}
+				return back()->withSuccess('Data Kriteria sudah dihapus');
 			}
-			return back()->with('success', 'Data Kriteria sudah dihapus');
+		}catch(QueryException $e){
+			return back()->withError('Kesalahan:')->withErrors($e->getMessage());
 		}
-		return back()->with('error', 'Data kriteria gagal dihapus');
+		return back()->withError('Data kriteria gagal dihapus');
 	}
 }

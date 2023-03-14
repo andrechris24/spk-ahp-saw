@@ -14,9 +14,11 @@
 				</div>
 				<div class="card-content">
 					<div class="card-body">
+						@if($cek>0)
 						<a href="{{ url('bobot/hasil') }}" class="btn btn-primary mb-3">
 							Lihat hasil
 						</a>
+						@endif
 						<ul class="nav nav-tabs" id="InputCompTab" role="tablist">
 							<li class="nav-item" role="presentation">
 								<a class="nav-link active" id="info-tab" data-bs-toggle="tab" href="#info"

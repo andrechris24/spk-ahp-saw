@@ -1,7 +1,7 @@
 @extends('layout')
-@section('title','Hasil Penilaian Alternatif')
+@section('title', 'Hasil Penilaian Alternatif')
 @section('content')
-<div class="page-heading">
+	<div class="page-heading">
 		<div class="page-title">
 			<h3>Hasil Penilaian Alternatif</h3>
 		</div>
@@ -9,30 +9,30 @@
 			@include('main.message')
 			<div class="card">
 				<div class="card-header">
-					<h4 class="card-title">Matriks Normalisasi</h4>
+					<h4 class="card-title">Matriks Analisa</h4>
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
 						<table class="table table-hover">
 							<thead>
 								<tr>
-									<th>Kriteria</th>
-									@foreach ($data['kriteria'] as $kr)
-										<th>{{ $kr->name }}</th>
+									<th>Kriteria/Alternatif</th>
+									@foreach ($kr as $krit)
+										<th>{{ $krit->name }}</th>
 									@endforeach
 								</tr>
 							</thead>
 							<tbody>
-								@foreach ($data['kriteria'] as $kr)
+								@foreach ($alt as $alter)
+									@php($anal=$hasil->where('alternatif_id','=',$alter->id)->all())
+									@if(count($anal)>0)
 									<tr>
-										<th>{{ $kr->name }}</th>
-										{{-- @foreach ($data['matriks_perbandingan'] as $mp)
-											@if ($mp['kode_kriteria'] == $kr->idkriteria)
-												<td>{{ $mp['nilai'] }}</td>
-											@endif
-										@endforeach --}}
-										<td></td>
+										<th>{{ $alter->name }}</th>
+										@foreach ($anal as $skoralt)
+										<td>{{ $skoralt->subkriteria->bobot }}</td>
+										@endforeach
 									</tr>
+									@endif
 								@endforeach
 							</tbody>
 						</table>
@@ -48,79 +48,31 @@
 						<table class="table table-hover">
 							<thead>
 								<tr>
-									<th>Kriteria</th>
-									@foreach ($data['kriteria'] as $kr)
-										<th>{{ $kr->name }}</th>
+									<th>Kriteria/Alternatif</th>
+									@foreach ($kr as $krit)
+										<th>{{ $krit->name }}</th>
 									@endforeach
 									<th>Jumlah Baris</th>
 									<th>Eigen</th>
 								</tr>
 							</thead>
 							<tbody>
-								@foreach ($data['kriteria'] as $kr)
+								@foreach ($alt as $alter)
+									@php($anal=$hasil->where('alternatif_id','=',$alter->id)->all())
+									@if(count($anal)>0)
 									<tr>
-										<th>{{ $kr->name }}</th>
-										@foreach ($data['matriks_normalisasi'] as $mn)
-											@if ($mn['kode_kriteria'] == $kr->idkriteria)
-												<td>{{ $mn['nilai'] }}</td>
+										<th>{{ $alter->name }}</th>
+										{{-- @foreach ($data['matriks_perbandingan'] as $mp)
+											@if ($mp['kode_kriteria'] == $kr->idkriteria)
+												<td>{{ $mp['nilai'] }}</td>
 											@endif
-										@endforeach
-										@foreach ($data['bobot_prioritas'] as $bp)
-											@if ($bp['kode_kriteria'] == $kr->idkriteria)
-												<td>{{ $bp['jumlah_baris'] }}</td>
-												<td>{{ $bp['bobot'] }}
-											@endif
-										@endforeach
+										@endforeach --}}
+										<td></td>
 									</tr>
+									@endif
 								@endforeach
 							</tbody>
 						</table>
-					</div>
-				</div>
-			</div>
-			<div class="card">
-				<div class="card-header">
-					<div class="card-title">Nilai Konsistensi</div>
-				</div>
-				<div class="card-body">
-					<div class="table-responsive">
-						<table class="table table-hover">
-							<tr>
-								<td>Consistency Vector</td>
-								<td>
-									@foreach ($data['cm'] as $cm)
-										[{{ $cm['cm'] }}]
-									@endforeach
-								</td>
-							</tr>
-							<tr>
-								<td>Rata-rata Consistency Vector</td>
-								<td>{{ $data['average_cm'] }}</td>
-							</tr>
-							<tr>
-								<td>Consistency Index (CI)</td>
-								<td>{{ $data['ci'] }}</td>
-							</tr>
-							<tr>
-								<td>Consistency Ratio (CR)</td>
-								<td>{{ $data['result'] }}</td>
-							</tr>
-							<tr>
-								<td>Hasil Konsistensi</td>
-								<td>
-									@if ($data['result'] <= 0.1)
-										<span class="text-success"><b>Konsisten</b></span>
-									@else
-										<span class="text-danger">
-											<b>Tidak Konsisten</b>, mohon untuk menginput ulang perbandingan!
-										</span>
-									@endif
-								</td>
-							</tr>
-						</table>
-						<a href="{{ url('/bobot/reset') }}" class="btn btn-secondary">
-							<i class="bi bi-arrow-counterclockwise"></i> Reset
-						</a>
 					</div>
 				</div>
 			</div>

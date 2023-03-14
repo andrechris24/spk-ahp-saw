@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kriteria;
 use App\Models\SubKriteriaComp;
 use App\Models\SubKriteria;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -23,25 +24,25 @@ class SubKriteriaCompController extends Controller
 				"subkriteria.name"
 			)
 			->groupBy("subkriteria1", 'name')
-			->where('kriteria_id','=',$id)
+			->where('kriteria_id', '=', $id)
 			->get();
 		return $subkriteria_comp;
 	}
-	private function getPerbandinganBySubKriteria1($subkriteria1,$id)
+	private function getPerbandinganBySubKriteria1($subkriteria1, $id)
 	{
 		$subkriteria2 = DB::table("subkriteria_banding")
 			->select('nilai', 'subkriteria2', 'subkriteria1')
 			->where("subkriteria2", "=", $subkriteria1)
-			->where('idkriteria','=',$id)
+			->where('idkriteria', '=', $id)
 			->get();
 		return $subkriteria2;
 	}
-	private function getNilaiPerbandingan($kode_kriteria,$id)
+	private function getNilaiPerbandingan($kode_kriteria, $id)
 	{
 		$nilai_perbandingan = DB::table("subkriteria_banding")
 			->select("nilai", "subkriteria1")
 			->where("subkriteria1", "=", $kode_kriteria)
-			->where('idkriteria','=',$id)
+			->where('idkriteria', '=', $id)
 			->get();
 		return $nilai_perbandingan;
 	}
@@ -58,20 +59,18 @@ class SubKriteriaCompController extends Controller
 	public function index()
 	{
 		$allkrit = Kriteria::get();
-		if (count($allkrit) == 0){
+		if (count($allkrit) == 0) {
 			return redirect('/kriteria')
-			->with(
-				'warning', 
-				'Masukkan kriteria dulu untuk melakukan perbandingan sub kriteria'
-			);
+				->withWarning(
+					'Masukkan kriteria dulu untuk melakukan perbandingan sub kriteria'
+				);
 		}
-		$crit = SubKriteria::get();
-		if (count($crit) == 0){
+		$crit = SubKriteria::count();
+		if ($crit == 0) {
 			return redirect('/kriteria')
-			->with(
-				'warning', 
-				'Masukkan data sub kriteria dulu untuk melakukan perbandingan sub kriteria'
-			);
+				->withWarning(
+					'Masukkan data sub kriteria dulu untuk melakukan perbandingan sub kriteria'
+				);
 		}
 		return view('main.subkriteria.select', compact('allkrit'));
 	}
@@ -87,28 +86,18 @@ class SubKriteriaCompController extends Controller
 			'kriteria_id' => 'required|numeric'
 		]);
 		$idkriteria = $request->kriteria_id;
-		if(isset($request->lompat)) {
-			$cek=SubKriteriaComp::where('idkriteria','=',$idkriteria)->count();
-			if($cek>0) return redirect('/bobot/sub/hasil/'.$idkriteria);
-			else 
-				$message="Hasil sub Kriteria belum tersedia, mohon untuk diisi dulu";
-		}
 		$subkriteria = SubKriteria::where('kriteria_id', '=', $idkriteria)->get();
 		$counter = 0;
 		for ($a = 0; $a < count($subkriteria); $a++) {
-			for ($b = 0; $b < count($subkriteria); $b++) {
+			for ($b = $a; $b < count($subkriteria); $b++) {
 				$array[$counter]["baris"] = $subkriteria[$a]->name;
 				$array[$counter]["kolom"] = $subkriteria[$b]->name;
 				$counter++;
 			}
 		}
-		if(isset($message)){
-			return view('main.subkriteria.comp', compact('array'),['warning'=>$message])->with([
-				'kriteria_id' => $idkriteria
-			]);
-		}
-		return view('main.subkriteria.comp', compact('array'))->with([
-				'kriteria_id' => $idkriteria
+		$cek=SubKriteriaComp::where('idkriteria','=',$idkriteria)->count();
+		return view('main.subkriteria.comp', compact('array','cek'))->with([
+			'kriteria_id' => $idkriteria
 		]);
 	}
 
@@ -121,26 +110,31 @@ class SubKriteriaCompController extends Controller
 	public function store(Request $request)
 	{
 		$request->validate(SubKriteriaComp::$rules, SubKriteriaComp::$message);
-		$subkriteria = DB::table("subkriteria")
-			->where('kriteria_id','=',$request->kriteria_id)->get();
-		DB::table("subkriteria_banding")->
-		where('idkriteria','=',$request->kriteria_id);
-		$a = 0;
-		for ($i = 0; $i < count($subkriteria); $i++) {
-			for ($j = $i; $j < count($subkriteria); $j++) {
-				$perbandingan = new SubKriteriaComp();
-				$perbandingan->subkriteria1 = $subkriteria[$i]->id;
-				$perbandingan->subkriteria2 = $subkriteria[$j]->id;
-				$perbandingan->idkriteria=$request->kriteria_id;
-				if ($request->kolom[$a] > $request->baris[$a]) {
-					$nilai = 0 - $request->kolom[$a];
-				} else $nilai = $request->baris[$a];
-				$perbandingan->nilai = $nilai;
-				$perbandingan->save();
-				$a++;
+		try{
+			$subkriteria = DB::table("subkriteria")
+				->where('kriteria_id', '=', $request->kriteria_id)->get();
+			DB::table("subkriteria_banding")->where('idkriteria', '=', $request->kriteria_id)->delete();
+			if (DB::table("subkriteria_banding")->count() == 0)
+				DB::table("subkriteria_banding")->truncate();
+			$a = 0;
+			for ($i = 0; $i < count($subkriteria); $i++) {
+				for ($j = $i; $j < count($subkriteria); $j++) {
+					$perbandingan = new SubKriteriaComp();
+					$perbandingan->subkriteria1 = $subkriteria[$i]->id;
+					$perbandingan->subkriteria2 = $subkriteria[$j]->id;
+					$perbandingan->idkriteria = $request->kriteria_id;
+					if ($request->kolom[$a] > $request->baris[$a]) {
+						$nilai = 0 - $request->kolom[$a];
+					} else $nilai = $request->baris[$a];
+					$perbandingan->nilai = $nilai;
+					$perbandingan->save();
+					$a++;
+				}
 			}
+			return redirect('/bobot/sub/hasil/' . $request->kriteria_id);
+		}catch(QueryException $e){
+			return back()->withErrors($e->getMessage());
 		}
-		return redirect('/bobot/sub/hasil/'.$request->kriteria_id);
 	}
 
 	/**
@@ -149,13 +143,13 @@ class SubKriteriaCompController extends Controller
 	 * @param  \App\Models\SubKriteriaComp  $subKriteriaComp
 	 * @return \Illuminate\Http\Response
 	 */
-	public function show(SubKriteriaComp $subKriteriaComp,$id)
+	public function show(SubKriteriaComp $subKriteriaComp, $id)
 	{
 		$subkriteria = $this->getSubKriteriaPerbandingan($id);
 		$a = 0;
 		foreach ($subkriteria as $k) {
 			$kode_kriteria = $k->idsubkriteria;
-			$perbandingan = $this->getPerbandinganBySubKriteria1($kode_kriteria,$id);
+			$perbandingan = $this->getPerbandinganBySubKriteria1($kode_kriteria, $id);
 			if ($perbandingan) {
 				foreach ($perbandingan as $hk) {
 					if ($hk->subkriteria2 !== $hk->subkriteria1) {
@@ -177,7 +171,7 @@ class SubKriteriaCompController extends Controller
 						$a++;
 					}
 				}
-				$nilaiPerbandingan = $this->getNilaiPerbandingan($kode_kriteria,$id);
+				$nilaiPerbandingan = $this->getNilaiPerbandingan($kode_kriteria, $id);
 				foreach ($nilaiPerbandingan as $hb) {
 					if ($hb->nilai < 0) {
 						$nilai = number_format(abs(1 / $hb->nilai), 4);
@@ -312,16 +306,16 @@ class SubKriteriaCompController extends Controller
 			abs(($average_cm - count($subkriteria)) / (count($subkriteria) - 1)),
 			4
 		);
-		$ratio = [null, 0, 0, 0.58, 0.9, 1.12, 1.24, 1.32, 1.41, 1.45];
+		$ratio = [0, 0, 0.58, 0.9, 1.12, 1.24, 1.32, 1.41, 1.45, 1.49, 1.51];
 		$result = number_format(abs($total_ci / $ratio[count($subkriteria) - 1]), 4);
-		for ($i = 0; $i < count($kriteria); $i++) {
+		for ($i = 0; $i < count($subkriteria); $i++) {
 			SubKriteria::where(
 				"id",
-				$kriteria[$i]->idsubkriteria
-			)->where('kriteria_id','=',$id)
-			->update([
-				"bobot" => $array_BobotPrioritas[$i]["bobot"],
-			]);
+				$subkriteria[$i]->idsubkriteria
+			)->where('kriteria_id', '=', $id)
+				->update([
+					"bobot" => $array_BobotPrioritas[$i]["bobot"],
+				]);
 		}
 		$data = [
 			"subkriteria" => $subkriteria,
@@ -337,41 +331,25 @@ class SubKriteriaCompController extends Controller
 			"total_jumlah_baris" => $total_jumlah_baris,
 		];
 		return view('main.subkriteria.hasil', compact('data'))
-		->with(['kriteria_id' => $id]);
+			->with(['kriteria_id' => $id]);
 	}
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  \App\Models\SubKriteriaComp  $subKriteriaComp
-	 * @return \Illuminate\Http\Response
-	 */
-	public function edit(SubKriteriaComp $subKriteriaComp)
-	{
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @param  \App\Models\SubKriteriaComp  $subKriteriaComp
-	 * @return \Illuminate\Http\Response
-	 */
-	public function update(Request $request, SubKriteriaComp $subKriteriaComp)
-	{
-		//
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  \App\Models\SubKriteriaComp  $subKriteriaComp
-	 * @return \Illuminate\Http\Response
-	 */
 	public function destroy($id)
 	{
-		DB::table('subkriteria_banding')->where('idkriteria','=',$id)->delete();
-		return redirect()->action("SubKriteriaCompController@create",[$id]);
+		try {
+			$kr = Kriteria::where('id', '=', $id)->first();
+			DB::table('subkriteria_banding')->where('idkriteria', '=', $id)->delete();
+			return redirect('/bobot/sub')
+			->withSuccess('Perbandingan Sub Kriteria ' . $kr->name . ' sudah direset');
+		} catch (QueryException $e) {
+			return redirect('/bobot/sub')
+				->withError(
+					'Perbandingan Sub Kriteria ' . $kr->name . ' gagal direset'
+				)->withErrors($e->getMessage());
+		}
+		return redirect('/bobot/sub')
+			->withError(
+				'Perbandingan Sub Kriteria ' . $kr->name . ' gagal direset'
+			);
 	}
 }

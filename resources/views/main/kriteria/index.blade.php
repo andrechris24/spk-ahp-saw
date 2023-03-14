@@ -7,8 +7,8 @@
 		</div>
 		<section class="section">
 			@include('main.message')
-			<div class="modal fade text-left" id="DelCritModal" tabindex="-1"
-			role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
+			<div class="modal fade text-left" id="DelCritModal" tabindex="-1" role="dialog"
+				aria-labelledby="myModalLabel160" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
 					role="document">
 					<div class="modal-content">
@@ -26,6 +26,11 @@
 								<span id="del-desc">Anda akan menghapus sebuah kriteria.</span>
 							</p>
 							<p>Lanjutkan?</p>
+							@if ($compkr > 0)
+								<p class="text-danger">
+									Menghapus kriteria akan mereset perbandingan kriteria dan menghapus perbandingan sub kriteria yang bersangkutan.
+								</p>
+							@endif
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-light-secondary"
@@ -57,6 +62,11 @@
 							enctype="multipart/form-data">
 							@csrf
 							<div class="modal-body">
+								@if ($compkr > 0)
+									<div class="alert alert-warning">
+										Menambahkan kriteria akan mereset perbandingan kriteria.
+									</div>
+								@endif
 								<label for="nama">Nama Kriteria</label>
 								<div class="form-group">
 									<input type="text" class="form-control" name="name" id="nama"
@@ -228,11 +238,11 @@
 			const button = event.relatedTarget;
 			const id = button.getAttribute('data-bs-id');
 			const nama = button.getAttribute('data-bs-name');
-			const link=delCriteriaModal.querySelector('#del-action');
-			const desc=delCriteriaModal.querySelector('#del-desc');
+			const link = delCriteriaModal.querySelector('#del-action');
+			const desc = delCriteriaModal.querySelector('#del-desc');
 			var formurl = "{{ url('/kriteria/del/:id') }}";
 			formurl = formurl.replace(':id', id);
-			desc.innerHTML="Anda akan menghapus kriteria <b>"+nama+"</b>.";
+			desc.innerHTML = "Anda akan menghapus kriteria <b>" + nama + "</b>.";
 			link.href = formurl;
 		});
 		$(document).ready(function() {

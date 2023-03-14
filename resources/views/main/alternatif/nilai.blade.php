@@ -8,7 +8,7 @@
 		<section class="section">
 			@include('main.message')
 			<div class="modal fade text-left" id="DelNilaiAlterModal" tabindex="-1"
-			role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
+				role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
 					role="document">
 					<div class="modal-content">
@@ -41,13 +41,15 @@
 					</div>
 				</div>
 			</div>
-			<div class="modal fade text-left" id="AddNilaiAlterModal" tabindex="-1" role="dialog"
-				aria-labelledby="AddNilaiAlterLabel" aria-hidden="true">
+			<div class="modal fade text-left" id="AddNilaiAlterModal" tabindex="-1"
+				role="dialog" aria-labelledby="AddNilaiAlterLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
 					role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h4 class="modal-title" id="AddNilaiAlterLabel">Tambah Nilai Alternatif</h4>
+							<h4 class="modal-title" id="AddNilaiAlterLabel">
+							Tambah Nilai Alternatif
+							</h4>
 							<button type="button" class="close" data-bs-dismiss="modal"
 								aria-label="Close">
 								<i data-feather="x"></i>
@@ -68,23 +70,23 @@
 										@endforeach
 									</select>
 								</div>
-								@foreach($kriteria as $kr)
-								<input type="hidden" name="kriteria_id[]" value="{{ $kr->id }}">
-								<div class="input-group mb-3">
-									<label class="input-group-text" for="subkriteria-{{ $kr->id }}" 
-										title="{{ $kr->desc }}">
-										{{ $kr->name }}
-									</label>
-									<select class="form-select" id="subkriteria-{{ $kr->id }}" 
-										name="subkriteria_id[]" required>
-										<option value="">Pilih</option>
-										@foreach ($subkriteria as $subkr)
-											@if($subkr->kriteria_id==$kr->id)
-											<option value="{{ $subkr->id }}">{{ $subkr->name }}</option>
-											@endif
-										@endforeach
-									</select>
-								</div>
+								@foreach ($kriteria as $kr)
+									<input type="hidden" name="kriteria_id[]" value="{{ $kr->id }}">
+									<div class="input-group mb-3">
+										<label class="input-group-text" for="subkriteria-{{ $kr->id }}"
+											title="{{ $kr->desc }}">
+											{{ $kr->name }}
+										</label>
+										<select class="form-select" id="subkriteria-{{ $kr->id }}"
+											name="subkriteria_id[]" required>
+											<option value="">Pilih</option>
+											@foreach ($subkriteria as $subkr)
+												@if ($subkr->kriteria_id == $kr->id)
+													<option value="{{ $subkr->id }}">{{ $subkr->name }}</option>
+												@endif
+											@endforeach
+										</select>
+									</div>
 								@endforeach
 							</div>
 							<div class="modal-footer">
@@ -123,31 +125,32 @@
 									<label class="input-group-text" for="alternatif-edit">
 										Nama Alternatif
 									</label>
-									<select class="form-select" id="alternatif-edit" 
-									name="alternatif_id" disabled>
+									<select class="form-select" id="alternatif-edit" name="alternatif_id"
+										disabled>
 										<option value="">Pilih</option>
 										@foreach ($alternatif as $alt)
 											<option value="{{ $alt->id }}">{{ $alt->name }}</option>
 										@endforeach
 									</select>
 								</div>
-								@foreach($kriteria as $kr)
-								<input type="hidden" name="kriteria_id[]" value="{{ $kr->id }}">
-								<div class="input-group mb-3">
-									<label class="input-group-text" for="subkriteria-{{ $kr->id }}-edit" 
-										title="{{ $kr->desc }}">
-										{{ $kr->name }}
-									</label>
-									<select class="form-select" id="subkriteria-{{ $kr->id }}-edit" 
-										name="subkriteria_id[]" required>
-										<option value="">Pilih</option>
-										@foreach ($subkriteria as $subkr)
-											@if($subkr->kriteria_id==$kr->id)
-											<option value="{{ $subkr->id }}">{{ $subkr->name }}</option>
-											@endif
-										@endforeach
-									</select>
-								</div>
+								@foreach ($kriteria as $kr)
+									<input type="hidden" name="kriteria_id[]" value="{{ $kr->id }}">
+									<div class="input-group mb-3">
+										<label class="input-group-text"
+											for="subkriteria-{{ $kr->id }}-edit"
+											title="{{ $kr->desc }}">
+											{{ $kr->name }}
+										</label>
+										<select class="form-select" id="subkriteria-{{ $kr->id }}-edit"
+											name="subkriteria_id[]" required>
+											<option value="">Pilih</option>
+											@foreach ($subkriteria as $subkr)
+												@if ($subkr->kriteria_id == $kr->id)
+													<option value="{{ $subkr->id }}">{{ $subkr->name }}</option>
+												@endif
+											@endforeach
+										</select>
+									</div>
 								@endforeach
 							</div>
 							<div class="modal-footer">
@@ -177,8 +180,8 @@
 						<thead>
 							<tr>
 								<th>Nama Alternatif</th>
-								@foreach($kriteria as $kr)
-								<th title="{{ $kr->desc }}">{{ $kr->name }}</th>
+								@foreach ($kriteria as $kr)
+									<th title="{{ $kr->desc }}">{{ $kr->name }}</th>
 								@endforeach
 								<th>Aksi</th>
 							</tr>
@@ -186,44 +189,38 @@
 						<tbody>
 							@foreach ($alternatif as $alt)
 								@php
-									$subcount=0;
-									$subkr=array();
+									$subcount = 0;
+									$subkr = [];
+									$skor=$nilaialt->where('alternatif_id','=',$alt->id)->all();
 								@endphp
+								@if(count($skor)>0)
 								<tr>
 									<td>{{ $alt->name }}</td>
-									@foreach($nilaialt as $skoralt)
-										@if($skoralt->alternatif_id==$alt->id)
-											@php
-												$subkr[$subcount]['subkriteria']=$skoralt->subkriteria->id;
-												$subkr[$subcount]['kriteria']=$skoralt->kriteria->id;
-											@endphp
-											<td>{{ $skoralt->subkriteria->name }}</td>
-											@php($subcount++)
-										@else
-											<td title="Inputkan penilaian untuk {{ $alt->name }}">-</td>
-										@endif
+									@foreach ($skor as $skoralt)
+										@php
+											$subkr[$subcount]['subkriteria'] = $skoralt->subkriteria->id;
+											$subkr[$subcount]['kriteria'] = $skoralt->kriteria->id;
+										@endphp
+										<td>{{ $skoralt->subkriteria->name }}</td>
+										@php($subcount++)
 									@endforeach
 									<td>
-										@if(count($subkr)>0)
 										<div class="btn-group" role="button">
 											<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-												data-bs-target="#EditNilaiAlterModal" data-bs-id="{{ $alt->id }}"
-												data-bs-name="{{ $alt->id }}" data-bs-score="{{ json_encode($subkr) }}">
+												data-bs-target="#EditNilaiAlterModal"
+												data-bs-id="{{ $alt->id }}" data-bs-name="{{ $alt->id }}"
+												data-bs-score="{{ json_encode($subkr) }}">
 												<i class="bi bi-pencil-square"></i> Edit
 											</button>
 											<button type="button" class="btn btn-danger" data-bs-toggle="modal"
-												data-bs-target="#DelNilaiAlterModal" data-bs-id="{{ $alt->id }}" data-bs-name="{{ $alt->name }}">
+												data-bs-target="#DelNilaiAlterModal" data-bs-id="{{ $alt->id }}"
+												data-bs-name="{{ $alt->name }}">
 												<i class="bi bi-trash3-fill"></i> Hapus
 											</button>
 										</div>
-										@else
-											<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-												data-bs-target="#AddNilaiAlterModal" data-bs-id="{{ $alt->id }}">
-												<i class="bi bi-plus-lg"></i> Input nilai
-											</button>
-										@endif
 									</td>
 								</tr>
+								@endif
 							@endforeach
 						</tbody>
 					</table>
@@ -232,21 +229,23 @@
 		</section>
 	</div>
 @endsection
-@php($critcount=count($kriteria))
+@php($critcount = count($kriteria))
 @section('js')
 	<script type="text/javascript">
 		var formkriteria;
-		function test(item,index,arr){
-			formkriteria=document.getElementById('subkriteria-'+item.kriteria+'-edit');
-			formkriteria.value=item.subkriteria;
+
+		function test(item, index, arr) {
+			formkriteria = document.getElementById('subkriteria-' + item.kriteria +
+				'-edit');
+			formkriteria.value = item.subkriteria;
 		}
-		const addNilaiAlterModal=document.getElementById('AddNilaiAlterModal');;
+		const addNilaiAlterModal = document.getElementById('AddNilaiAlterModal');;
 		addNilaiAlterModal.addEventListener('show.bs.modal', event => {
 			const button = event.relatedTarget;
 			const id = button.getAttribute('data-bs-id');
 			const nameval = addNilaiAlterModal.querySelector('#alternatif');
-			if(id) nameval.value=id;
-			else nameval.value='';
+			if (id) nameval.value = id;
+			else nameval.value = '';
 		});
 		const editNilaiAlterModal = document.getElementById('EditNilaiAlterModal');
 		editNilaiAlterModal.addEventListener('show.bs.modal', event => {
@@ -255,12 +254,12 @@
 			// Extract info from data-bs-* attributes
 			const nama = button.getAttribute('data-bs-name');
 			const id = button.getAttribute('data-bs-id');
-			const data=JSON.parse(button.getAttribute('data-bs-score'));
+			const data = JSON.parse(button.getAttribute('data-bs-score'));
 			data.forEach(test);
 			const nameval = editNilaiAlterModal.querySelector('#alternatif-edit');
-			const hiddenval=editNilaiAlterModal.querySelector('#alter');
+			const hiddenval = editNilaiAlterModal.querySelector('#alter');
 			nameval.value = nama;
-			hiddenval.value=nama;
+			hiddenval.value = nama;
 			var formurl = "{{ url('/alternatif/nilai/update/:id') }}";
 			formurl = formurl.replace(':id', id);
 			document.editnilaialternatif.action = formurl;
@@ -270,11 +269,12 @@
 			const button = event.relatedTarget;
 			const id = button.getAttribute('data-bs-id');
 			const nama = button.getAttribute('data-bs-name');
-			const link=delNilaiAlterModal.querySelector('#del-action');
-			const desc=delNilaiAlterModal.querySelector('#del-desc');
+			const link = delNilaiAlterModal.querySelector('#del-action');
+			const desc = delNilaiAlterModal.querySelector('#del-desc');
 			var formurl = "{{ url('/alternatif/nilai/del/:id') }}";
 			formurl = formurl.replace(':id', id);
-			desc.innerHTML="Anda akan menghapus nilai alternatif <b>"+nama+"</b>.";
+			desc.innerHTML = "Anda akan menghapus nilai alternatif <b>" + nama +
+				"</b>.";
 			link.href = formurl;
 		});
 		$(document).ready(function() {
@@ -284,7 +284,7 @@
 				"searching": false,
 				columnDefs: [{
 					orderable: false,
-					targets: {{ $critcount+1 }},
+					targets: {{ $critcount + 1 }},
 				}]
 			});
 		});

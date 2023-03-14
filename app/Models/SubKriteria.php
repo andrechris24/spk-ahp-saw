@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class SubKriteria extends Model
 {
     use HasFactory;
-    // protected $appends=['kriteria'];
     protected $table = 'subkriteria';
     protected $fillable = ['name', 'kriteria_id'];
     public static $rules = [

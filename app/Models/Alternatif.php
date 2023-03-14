@@ -10,12 +10,13 @@ class Alternatif extends Model
     use HasFactory;
     protected $table = 'alternatif';
     protected $fillable = ['name'];
-    public static $rules = ['name' => 'required|regex:/^[\s\w-]*$/'];
+    public static $rules = ['name' => 'bail|required|regex:/^[\s\w-]*$/'];
     public static $message = [
         'name.required' => 'Nama alternatif diperlukan',
         'name.regex' => 'Nama alternatif tidak boleh mengandung simbol'
     ];
-    public function nilai(){
-        return $this->hasMany(Nilai::class,'alternatif_id');
+    public function nilai()
+    {
+        return $this->hasMany(Nilai::class, 'alternatif_id');
     }
 }

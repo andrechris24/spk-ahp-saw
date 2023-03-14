@@ -6,6 +6,7 @@ use App\Models\Kriteria;
 use App\Models\KriteriaComp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
 
 class KriteriaCompController extends Controller
 {
@@ -46,34 +47,39 @@ class KriteriaCompController extends Controller
 		$crit = Kriteria::get();
 		$counter = 0;
 		for ($a = 0; $a < count($crit); $a++) {
-			for ($b = 0; $b < count($crit); $b++) {
+			for ($b = $a; $b < count($crit); $b++) {
 				$array[$counter]["baris"] = $crit[$a]->name;
 				$array[$counter]["kolom"] = $crit[$b]->name;
 				$counter++;
 			}
 		}
-		return view('main.kriteria.comp', compact('array'));
+		$cek=KriteriaComp::count();
+		return view('main.kriteria.comp', compact('array','cek'));
 	}
 	public function simpan(Request $request)
 	{
 		$request->validate(KriteriaComp::$rules, KriteriaComp::$message);
-		$kriteria = DB::table("kriteria")->get();
-		DB::table("kriteria_banding")->truncate();
-		$a = 0;
-		for ($i = 0; $i < count($kriteria); $i++) {
-			for ($j = $i; $j < count($kriteria); $j++) {
-				$perbandingan = new KriteriaComp();
-				$perbandingan->kriteria1 = $kriteria[$i]->id;
-				$perbandingan->kriteria2 = $kriteria[$j]->id;
-				if ($request->kolom[$a] > $request->baris[$a]) {
-					$nilai = 0 - $request->kolom[$a];
-				} else {
-					$nilai = $request->baris[$a];
+		try {
+			$kriteria = DB::table("kriteria")->get();
+			DB::table("kriteria_banding")->truncate();
+			$a = 0;
+			for ($i = 0; $i < count($kriteria); $i++) {
+				for ($j = $i; $j < count($kriteria); $j++) {
+					$perbandingan = new KriteriaComp();
+					$perbandingan->kriteria1 = $kriteria[$i]->id;
+					$perbandingan->kriteria2 = $kriteria[$j]->id;
+					if ($request->kolom[$a] > $request->baris[$a]) {
+						$nilai = 0 - $request->kolom[$a];
+					} else {
+						$nilai = $request->baris[$a];
+					}
+					$perbandingan->nilai = $nilai;
+					$perbandingan->save();
+					$a++;
 				}
-				$perbandingan->nilai = $nilai;
-				$perbandingan->save();
-				$a++;
 			}
+		} catch (QueryException $sql) {
+			return back()->withInput()->withErrors($sql->getMessage());
 		}
 		return redirect('/bobot/hasil');
 	}
@@ -207,7 +213,6 @@ class KriteriaCompController extends Controller
 		$indexbobot = 0;
 		$j = 0;
 		for ($i = 0; $i < count($matriks_perbandingan); $i++) {
-			// if (!isset($array_BobotPrioritas[$indexbobot]["bobot"])) continue;
 			$cm = number_format(
 				abs(
 					$cm +
@@ -241,7 +246,7 @@ class KriteriaCompController extends Controller
 			abs(($average_cm - count($kriteria)) / (count($kriteria) - 1)),
 			4
 		);
-		$ratio = [null, 0, 0, 0.58, 0.9, 1.12, 1.24, 1.32, 1.41, 1.45];
+		$ratio =[0, 0, 0.58, 0.9, 1.12, 1.24, 1.32, 1.41, 1.45, 1.49, 1.51];
 		$result = number_format(abs($total_ci / $ratio[count($kriteria) - 1]), 4);
 
 		for ($i = 0; $i < count($kriteria); $i++) {
@@ -270,7 +275,17 @@ class KriteriaCompController extends Controller
 	}
 	public function destroy()
 	{
-		DB::table('kriteria_banding')->delete();
-		return redirect('/bobot');
+		try {
+			$del = DB::table('kriteria_banding')->delete();
+			if (!$del) {
+				return redirect('/bobot')
+					->withWarning('Perbandingan Kriteria tidak ditemukan');
+			}
+		} catch (QueryException $sql) {
+			return redirect('/bobot')->
+			withError('Perbandingan Kriteria gagal direset:')
+			->withErrors($sql->getMessage());
+		}
+		return redirect('/bobot')->withSuccess('Perbandingan Kriteria sudah direset');
 	}
 }

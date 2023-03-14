@@ -102,7 +102,9 @@
 										<a href="{{ url('bobot') }}">Perbandingan Kriteria</a>
 									</li>
 									<li class="submenu-item">
-										<a href="{{ url('bobot/sub') }}">Perbandingan Sub Kriteria</a>
+										<a href="{{ url('bobot/sub') }}">
+										Perbandingan Sub Kriteria
+										</a>
 									</li>
 								</ul>
 							</li>
@@ -113,7 +115,9 @@
 								</a>
 								<ul class="submenu">
 									<li class="submenu-item">
-										<a href="{{ url('alternatif/nilai') }}">Penilaian Alternatif</a>
+										<a href="{{ url('alternatif/nilai') }}">
+										Penilaian Alternatif
+										</a>
 									</li>
 									<li class="submenu-item">
 										<a href="{{ url('alternatif/hasil') }}">

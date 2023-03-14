@@ -23,13 +23,6 @@
 								@endforeach
 							</select>
 						</div>
-						<div class="form-check mb-3">
-							<div class="checkbox">
-								<input type="checkbox" id="jump" class="form-check-input"
-									name="lompat" />
-								<label for="jump">Lompat ke hasil</label>
-							</div>
-						</div>
 						<button type="submit" class="btn btn-primary ml-1">
 							<i class="bi bi-arrow-right"></i>
 							Lanjut

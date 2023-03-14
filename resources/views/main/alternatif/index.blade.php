@@ -7,8 +7,8 @@
 		</div>
 		<section class="section">
 			@include('main.message')
-			<div class="modal fade text-left" id="DelAlterModal" tabindex="-1"
-			role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
+			<div class="modal fade text-left" id="DelAlterModal" tabindex="-1" role="dialog"
+				aria-labelledby="myModalLabel160" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
 					role="document">
 					<div class="modal-content">
@@ -42,7 +42,7 @@
 				</div>
 			</div>
 			<div class="modal fade text-left" id="AddAlterModal" tabindex="-1"
-				 role="dialog"aria-labelledby="AddAlterLabel" aria-hidden="true">
+				role="dialog"aria-labelledby="AddAlterLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
 					role="document">
 					<div class="modal-content">
@@ -184,11 +184,11 @@
 			const button = event.relatedTarget;
 			const id = button.getAttribute('data-bs-id');
 			const nama = button.getAttribute('data-bs-name');
-			const link=delAlterModal.querySelector('#del-action');
-			const desc=delAlterModal.querySelector('#del-desc');
+			const link = delAlterModal.querySelector('#del-action');
+			const desc = delAlterModal.querySelector('#del-desc');
 			var formurl = "{{ url('/alternatif/del/:id') }}";
 			formurl = formurl.replace(':id', id);
-			desc.innerHTML="Anda akan menghapus alternatif <b>"+nama+"</b>.";
+			desc.innerHTML = "Anda akan menghapus alternatif <b>" + nama + "</b>.";
 			link.href = formurl;
 		});
 		$(document).ready(function() {

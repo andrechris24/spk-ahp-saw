@@ -7,8 +7,8 @@
 		</div>
 		<section class="section">
 			@include('main.message')
-			<div class="modal fade text-left" id="DelSubCritModal" tabindex="-1"
-			role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
+			<div class="modal fade text-left" id="DelSubCritModal" tabindex="-1" role="dialog"
+				aria-labelledby="myModalLabel160" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
 					role="document">
 					<div class="modal-content">
@@ -26,6 +26,12 @@
 								<span id="del-desc">Anda akan menghapus sebuah sub kriteria.</span>
 							</p>
 							<p>Lanjutkan?</p>
+							@if ($compskr > 0)
+								<p class="text-danger">
+									Menghapus sub kriteria akan mereset perbandingan sub kriteria
+									{{ '...' }}.
+								</p>
+							@endif
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-light-secondary"
@@ -174,7 +180,8 @@
 											</button>
 											<button type="button" class="btn btn-danger" data-bs-toggle="modal"
 												data-bs-target="#DelSubCritModal" data-bs-id="{{ $sk->id }}"
-												data-bs-name="{{ $sk->name }}" data-bs-kr="{{ $sk->kriteria->name }}">
+												data-bs-name="{{ $sk->name }}"
+												data-bs-kr="{{ $sk->kriteria->name }}">
 												<i class="bi bi-trash3-fill"></i> Hapus
 											</button>
 										</div>
@@ -216,14 +223,14 @@
 			const button = event.relatedTarget;
 			const id = button.getAttribute('data-bs-id');
 			const nama = button.getAttribute('data-bs-name');
-			const krnama=button.getAttribute('data-bs-kr');
-			const link=delCriteriaModal.querySelector('#del-action');
-			const desc=delCriteriaModal.querySelector('#del-desc');
+			const krnama = button.getAttribute('data-bs-kr');
+			const link = delCriteriaModal.querySelector('#del-action');
+			const desc = delCriteriaModal.querySelector('#del-desc');
 			var formurl = "{{ url('/kriteria/sub/del/:id') }}";
 			formurl = formurl.replace(':id', id);
-			desc.innerHTML=
-				"Anda akan menghapus sub kriteria <b>"
-				+nama+"</b> (Kriteria "+krnama+").";
+			desc.innerHTML =
+				"Anda akan menghapus sub kriteria <b>" +
+				nama + "</b> (Kriteria " + krnama + ").";
 			link.href = formurl;
 		});
 		$(document).ready(function() {
