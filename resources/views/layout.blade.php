@@ -124,10 +124,13 @@
 											Hasil
 										</a>
 									</li>
-									<li class="submenu-item">
-										<a href="{{ url('rank') }}">Hasil Akhir</a>
-									</li>
 								</ul>
+							</li>
+							<li class="sidebar-item">
+								<a href="{{ url('/ranking') }}" class="sidebar-link">
+									<i class="bi bi-grid-fill"></i>
+									<span>Hasil Akhir</span>
+								</a>
 							</li>
 						@endauth
 						@guest

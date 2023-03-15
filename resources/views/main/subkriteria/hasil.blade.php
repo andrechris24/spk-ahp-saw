@@ -20,8 +20,6 @@
 					<h4 class="card-title">Matriks Perbandingan Awal</h4>
 				</div>
 				<div class="card-body">
-					{{-- {{ json_encode($data) }}
-					{{ print_r($listkriteria) }} --}}
 					<div class="table-responsive">
 						<table class="table table-hover">
 							<thead>
@@ -132,7 +130,7 @@
 					<div class="table-responsive">
 						<table class="table table-hover">
 							<tr>
-								<td>Consistency Vector</td>
+								<td>Consistency Measure</td>
 								<td>
 									@foreach ($data['cm'] as $cm)
 										[{{ $cm['cm'] }}]
@@ -140,7 +138,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td>Rata-rata Consistency Vector</td>
+								<td>Rata-rata Consistency Measure</td>
 								<td>{{ $data['average_cm'] }}</td>
 							</tr>
 							<tr>

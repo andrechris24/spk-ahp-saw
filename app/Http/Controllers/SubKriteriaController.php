@@ -41,7 +41,7 @@ class SubKriteriaController extends Controller
 	{
 		$request->validate(SubKriteria::$rules, SubKriteria::$message);
 		$subs = $request->all();
-		try{
+		try {
 			$subkriteria = SubKriteria::create($subs);
 			if ($subkriteria) {
 				$cek = SubKriteriaComp::where('idkriteria', '=', $request->kriteria_id)->count();
@@ -56,9 +56,9 @@ class SubKriteriaController extends Controller
 				}
 				return back()->withSuccess('Sub Kriteria sudah ditambahkan');
 			}
-		}catch(QueryException $sql){
+		} catch (QueryException $sql) {
 			return back()->withError('Gagal menambah sub kriteria')
-			->withErrors($sql->getMessage());
+				->withErrors($sql->getMessage());
 		}
 		return back()->withError('Gagal menambah sub kriteria');
 	}
@@ -72,15 +72,15 @@ class SubKriteriaController extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
-		try{
+		try {
 			$cek = SubKriteria::find($id);
 			if (!$cek) return back()->withError('Data Sub Kriteria tidak ditemukan');
 			$req = $request->all();
-		 $cek->update($req);
+			$cek->update($req);
 			return back()->withSuccess('Data Sub Kriteria sudah diupdate');
-		}catch(QueryException $sql){
+		} catch (QueryException $sql) {
 			return back()->withError('Gagal mengupdate data sub kriteria')
-			->withErrors($sql->getMessage());
+				->withErrors($sql->getMessage());
 		}
 		return back()->withError('Gagal mengupdate data sub kriteria');
 	}
@@ -93,14 +93,14 @@ class SubKriteriaController extends Controller
 	 */
 	public function destroy($id)
 	{
-		try{
+		try {
 			$cek = SubKriteria::find($id);
 			if (!$cek) return back()->withError('Data Sub Kriteria tidak ditemukan');
-			$del=$cek->delete();
-			if($del) return back()->withSuccess('Data Sub Kriteria sudah dihapus');
-		}catch(QueryException $sql){
+			$del = $cek->delete();
+			if ($del) return back()->withSuccess('Data Sub Kriteria sudah dihapus');
+		} catch (QueryException $sql) {
 			return back()->withError('Gagal hapus data sub kriteria')
-			->withErrors($sql->getMessage());
+				->withErrors($sql->getMessage());
 		}
 		return back()->withError('Data sub kriteria gagal dihapus');
 	}

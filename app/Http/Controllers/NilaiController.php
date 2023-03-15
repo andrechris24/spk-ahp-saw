@@ -6,102 +6,46 @@ use App\Models\Nilai;
 use App\Models\Kriteria;
 use App\Models\SubKriteria;
 use App\Models\Alternatif;
+use App\Models\Hasil;;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class NilaiController extends Controller
 {
-	private function getAlternatif()
+	public function normalisasi($arr,$type,$skor)
 	{
-		$alternatif = DB::table("hasil")
-			->join("nilai", "hasil.id_nilai", "nilai.id")
-			->join("alternatif", "nilai.alternatif_id", "alternatif.id")
-			->select("alternatif.name", "alternatif.id")
-			->groupBy("nilai.alternatif_id")
-			->orderBy("alternatif.id")
+		if($type=='cost') $hasil=min($arr)/$skor;
+		else if($type=='benefit') $hasil=$skor/max($arr);
+		else return "Invalid type: ".$type;
+		return round($hasil,5);
+	}
+	public function getNilaiArr($kriteria_id)
+	{
+		$data=array();
+		$kueri = Nilai::select('subkriteria.bobot as bobot')
+		->join("subkriteria", "nilai.subkriteria_id",'=', "subkriteria.id")
+			->where('nilai.kriteria_id','=',$kriteria_id)
 			->get();
-		return $alternatif;
+			foreach($kueri as $row){
+				array_push($data,$row->bobot);
+			}
+		return $data;
 	}
-
-	private function getKriteria()
-	{
-		$kriteria = DB::table("hasil")
-			->join("nilai", "hasil.id_nilai", "penilaian.kode_hasil")
-			->join(
-				"kriteria",
-				"nilai.kriteria_id",
-				"kriteria.id"
-			)
-			->select(
-				"kriteria.name",
-				"kriteria.bobot",
-				"kriteria.id"
-			)
-			->groupBy("nilai.kriteria_id")
-			->get();
-		return $kriteria;
+	public function getBobot($idkriteria){
+		$kueri=Kriteria::find($idkriteria)->first();
+		return $kueri->bobot;
 	}
-	public function getNilaiAwal()
-	{
-		$nilai_awal = Hasil::join(
-			"nilai",
-			"hasil.id_nilai",
-			"=",
-			"nilai.id"
-		)
-			->groupBy("penilaian.kode_penilaian")
-			->get(["nilai.*"]);
-
-		return $nilai_awal;
-	}
-
-	public function getNilaiAkhir()
-	{
-		$hasil_akhir = Hasil::join(
-			"penilaian",
-			"hasil.kode_hasil",
-			"penilaian.kode_hasil"
-		)
-			->join("guru", "penilaian.kode_guru", "guru.kode_guru")
-			->groupBy("penilaian.kode_hasil")
-			->get([
-				"guru.nama",
-				"guru.kode_guru",
-				"hasil.nilai_saw",
-				"hasil.keterangan",
-				"hasil.kode_hasil",
-			])
-			->toArray();
-
-		foreach ($hasil_akhir as $key => $isi) {
-			$nama[$key] = $isi["nama"];
-			$keterangan[$key] = $isi["keterangan"];
-			$kode_hasil[$key] = $isi["kode_hasil"];
-			$nilai_saw[$key] = $isi["nilai_saw"];
+	public function simpanHasil($alt_id,$jumlah){
+		try{
+			$cek=Hasil::where('alternatif_id','=',$alt_id)->count();
+			if($cek>0)
+				Hasil::where('alternatif_id','=',$alt_id)->update(['hasil'=>$jumlah]);
+			else Hasil::insert(['alternatif_id'=>$alt_id,'hasil'=>$jumlah]);
+		}catch(QueryException $e){
+			return false;
 		}
-
-		$nama = array_column($hasil_akhir, "nama");
-		$keterangan = array_column($hasil_akhir, "keterangan");
-		$kode_hasil = array_column($hasil_akhir, "kode_hasil");
-		$nilai_saw = array_column($hasil_akhir, "nilai_saw");
-
-		array_multisort($nilai_saw, SORT_DESC, $hasil_akhir);
-
-		// $hasil_akhir = DB::table("hasil")
-		//     ->join("penilaian", "hasil.kode_hasil", "penilaian.kode_hasil")
-		//     ->join("guru", "penilaian.kode_guru", "guru.kode_guru")
-		//     ->select(
-		//         "guru.nama",
-		//         "hasil.nilai_saw",
-		//         "hasil.keterangan",
-		//         "hasil.kode_hasil"
-		//     )
-		//     ->where("periode", $periode)
-		//     ->groupBy("penilaian.kode_hasil")
-		//     ->get();
-
-		return $hasil_akhir;
+		return true;
 	}
 	/**
 	 * Display a listing of the resource.
@@ -129,25 +73,14 @@ class NilaiController extends Controller
 			return redirect('alternatif')
 				->withWarning('Tambahkan alternatif dulu sebelum melakukan penilaian');
 		}
-		$nilaialt = Nilai::leftJoin('alternatif','alternatif.id','=','nilai.alternatif_id')
-		->leftJoin('kriteria','kriteria.id','=','nilai.kriteria_id')
-		->leftJoin('subkriteria','subkriteria.id','=','nilai.subkriteria_id')->get();
+		$nilaialt = Nilai::leftJoin('alternatif', 'alternatif.id', '=', 'nilai.alternatif_id')
+			->leftJoin('kriteria', 'kriteria.id', '=', 'nilai.kriteria_id')
+			->leftJoin('subkriteria', 'subkriteria.id', '=', 'nilai.subkriteria_id')->get();
 		return view(
 			'main.alternatif.nilai',
 			compact('kriteria', 'subkriteria', 'alternatif', 'nilaialt')
 		);
 	}
-
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
-	public function create()
-	{
-		//
-	}
-
 	/**
 	 * Store a newly created resource in storage.
 	 *
@@ -158,9 +91,8 @@ class NilaiController extends Controller
 	{
 		$request->validate(Nilai::$rules, Nilai::$message);
 		$scores = $request->all();
-		$cek=DB::table('nilai')
-		->where('alternatif_id','=',$scores['alternatif_id'])->count();
-		if($cek>0)
+		$cek = Nilai::where('alternatif_id', '=', $scores['alternatif_id'])->count();
+		if ($cek > 0)
 			return back()->withError('Alternatif sudah digunakan dalam penilaian');
 		for ($a = 0; $a < count($scores['kriteria_id']); $a++) {
 			$nilai = new Nilai();
@@ -183,51 +115,15 @@ class NilaiController extends Controller
 		$alt = Alternatif::get();
 		$kr = Kriteria::get();
 		$skr = SubKriteria::get();
-		$hasil = Nilai::leftJoin('alternatif','alternatif.id','=','nilai.alternatif_id')
-		->leftJoin('kriteria','kriteria.id','=','nilai.kriteria_id')
-		->leftJoin('subkriteria','subkriteria.id','=','nilai.subkriteria_id')->get();
-		$hasils = Nilai::leftJoin('alternatif','alternatif.id','=','nilai.alternatif_id')
-			->leftJoin('kriteria','kriteria.id','=','nilai.kriteria_id')
-			->leftJoin('subkriteria','subkriteria.id','=','nilai.subkriteria_id')->get();
-		foreach($alt as $alts){
-			// $afilter=$hasil->where('alternatif.id','=',$alts->id)->values()->all();
-			$arr=array();
-			foreach($hasil as $skor){
-				if($alts->id==$skor->alternatif_id){
-					echo $alts->name;
-				}
-				// Get all rating value for each criteria
-				// $rates = $hasils->map(function($val) use ($cw){
-				// 	if($cw->id == $val->id ){
-				// 		return $val->bobot;
-				// 	}
-				// })->toArray();
-				// print_r($rates);
-				// array_filter for removing null value caused by map,
-				// array_values for reiindex the array
-				// $rates = array_values(array_filter($rates));
-				// if ($cw->type == 'benefit') {
-				// 	$result = $afilter[$icw]->bobot / max($rates);
-				// 	$msg = 'rate ' . $afilter[$icw]->bobot . ' max ' . max($rates) . ' res ' . $result;
-				// } elseif ($cw->type == 'cost') {
-				// 	$result = min($rates) / $afilter[$icw]->bobot;
-				// }
-				// $afilter[$icw]->bobot = round($result, 2);
-			}
-			die();
-		}
-		return view('main.alternatif.hasil', compact('skr','kr', 'alt', 'hasil'));
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  \App\Models\Nilai  $nilai
-	 * @return \Illuminate\Http\Response
-	 */
-	public function edit(Nilai $nilai)
-	{
-		//
+		$hasil = Nilai::leftJoin('alternatif', 'alternatif.id', '=', 'nilai.alternatif_id')
+			->leftJoin('kriteria', 'kriteria.id', '=', 'nilai.kriteria_id')
+			->leftJoin('subkriteria', 'subkriteria.id', '=', 'nilai.subkriteria_id')->get();
+		$data = [
+			'alternatif' => $alt,
+			'kriteria' => $kr,
+			'subkriteria' => $skr,
+		];
+		return view('main.alternatif.hasil', compact('hasil', 'data'));
 	}
 
 	/**
@@ -239,25 +135,25 @@ class NilaiController extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
-		$success=false;
-		$cek = DB::table('nilai')->where('alternatif_id', '=', $id)->get();
+		$success = false;
+		$cek = Nilai::where('alternatif_id', '=', $id)->get();
 		if (!$cek)
 			return back()->with('error', 'Penilaian alternatif tidak ditemukan');
 		$request->validate(Nilai::$updrules, Nilai::$message);
 		$scores = $request->all();
 		for ($a = 0; $a < count($scores['kriteria_id']); $a++) {
 			try {
-				$upd=DB::table('nilai')->where('alternatif_id', '=', $id)
+				$upd = Nilai::where('alternatif_id', '=', $id)
 					->where('kriteria_id', '=', $scores['kriteria_id'][$a])
 					->update(['subkriteria_id' => $scores['subkriteria_id'][$a]]);
-				if($upd) $success=true;
+				if ($upd) $success = true;
 			} catch (QueryException $ex) {
 				return back()->withError('Gagal update penilaian alternatif')
-				->withErrors($ex->getMessage());
+					->withErrors($ex->getMessage());
 				break;
 			}
 		}
-		if($success)
+		if ($success)
 			return back()->withSuccess('Penilaian alternatif sudah diupdate');
 		return back()->withError('Gagal update penilaian alternatif');
 	}
@@ -270,13 +166,13 @@ class NilaiController extends Controller
 	 */
 	public function destroy($id)
 	{
-		try{
-			$cek=Nilai::where('alternatif_id','=',$id);
-			if(!$cek)
+		try {
+			$cek = Nilai::where('alternatif_id', '=', $id);
+			if (!$cek)
 				return back()->withError('Penilaian alternatif tidak ditemukan');
-			$del=$cek->delete();
-			if($del) return back()->withSuccess('Penilaian alternatif sudah dihapus');
-		}catch(QueryException $err){
+			$del = $cek->delete();
+			if ($del) return back()->withSuccess('Penilaian alternatif sudah dihapus');
+		} catch (QueryException $err) {
 			return back()->withError('Gagal hapus penilaian alternatif')
 				->withErrors($err->getMessage());
 		}

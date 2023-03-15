@@ -95,8 +95,8 @@ class SubKriteriaCompController extends Controller
 				$counter++;
 			}
 		}
-		$cek=SubKriteriaComp::where('idkriteria','=',$idkriteria)->count();
-		return view('main.subkriteria.comp', compact('array','cek'))->with([
+		$cek = SubKriteriaComp::where('idkriteria', '=', $idkriteria)->count();
+		return view('main.subkriteria.comp', compact('array', 'cek'))->with([
 			'kriteria_id' => $idkriteria
 		]);
 	}
@@ -110,7 +110,7 @@ class SubKriteriaCompController extends Controller
 	public function store(Request $request)
 	{
 		$request->validate(SubKriteriaComp::$rules, SubKriteriaComp::$message);
-		try{
+		try {
 			$subkriteria = DB::table("subkriteria")
 				->where('kriteria_id', '=', $request->kriteria_id)->get();
 			DB::table("subkriteria_banding")->where('idkriteria', '=', $request->kriteria_id)->delete();
@@ -132,7 +132,7 @@ class SubKriteriaCompController extends Controller
 				}
 			}
 			return redirect('/bobot/sub/hasil/' . $request->kriteria_id);
-		}catch(QueryException $e){
+		} catch (QueryException $e) {
 			return back()->withErrors($e->getMessage());
 		}
 	}
@@ -340,7 +340,7 @@ class SubKriteriaCompController extends Controller
 			$kr = Kriteria::where('id', '=', $id)->first();
 			DB::table('subkriteria_banding')->where('idkriteria', '=', $id)->delete();
 			return redirect('/bobot/sub')
-			->withSuccess('Perbandingan Sub Kriteria ' . $kr->name . ' sudah direset');
+				->withSuccess('Perbandingan Sub Kriteria ' . $kr->name . ' sudah direset');
 		} catch (QueryException $e) {
 			return redirect('/bobot/sub')
 				->withError(
