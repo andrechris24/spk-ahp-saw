@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
-use App\Http\Requests\RegisterRequest;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -15,6 +16,7 @@ class RegisterController extends Controller
 	 */
 	public function show()
 	{
+		if(Auth::viaRemember() || Auth::check()) return redirect()->intended('/');
 		return view('admin.register');
 	}
 
@@ -25,9 +27,9 @@ class RegisterController extends Controller
 	 * 
 	 * @return \Illuminate\Http\Response
 	 */
-	public function register(RegisterRequest $request)
+	public function register(Request $request)
 	{
-		$request->validate(User::$regrules, [
+		$credentials=$request->validate(User::$regrules, [
 			'name.required' => 'Nama harus diisi',
 			'name.regex' => 'Nama tidak boleh mengandung simbol dan angka',
 			'email.required' => 'Email harus diisi',
@@ -36,11 +38,12 @@ class RegisterController extends Controller
 			'password.between' => 'Panjang password harus 8-20 karakter',
 			'password.confirmed' => 'Password konfirmasi salah',
 		]);
-		try{
-			$user = User::create($request->validated());
-			auth()->login($user);
-			return redirect('/login')->withSuccess("Registrasi akun berhasil");
-		}catch(QueryException $e){
+		try {
+			$user = User::create($credentials);
+			Auth::login($user);
+			$request->session()->regenerate();
+			return redirect('/home')->withSuccess("Registrasi akun berhasil, selamat datang");
+		} catch (QueryException $e) {
 			return back()->withInput()->withErrors($e->getMessage());
 		}
 	}

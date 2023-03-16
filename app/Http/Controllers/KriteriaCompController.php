@@ -45,16 +45,23 @@ class KriteriaCompController extends Controller
 	public function index()
 	{
 		$crit = Kriteria::get();
+		$jmlcrit=count($crit);
+		if($jmlcrit<3){
+			return redirect('kriteria')
+			->withWarning(
+				'Minimal harus ada 3 kriteria untuk melakukan perbandingan (Jumlah sekarang: '.$jmlcrit.')'
+			);
+		}
 		$counter = 0;
-		for ($a = 0; $a < count($crit); $a++) {
-			for ($b = $a; $b < count($crit); $b++) {
+		for ($a = 0; $a < $jmlcrit; $a++) {
+			for ($b = $a; $b < $jmlcrit; $b++) {
 				$array[$counter]["baris"] = $crit[$a]->name;
 				$array[$counter]["kolom"] = $crit[$b]->name;
 				$counter++;
 			}
 		}
-		$cek=KriteriaComp::count();
-		return view('main.kriteria.comp', compact('array','cek'));
+		$cek = KriteriaComp::count();
+		return view('main.kriteria.comp', compact('array', 'cek'));
 	}
 	public function simpan(Request $request)
 	{
@@ -246,7 +253,7 @@ class KriteriaCompController extends Controller
 			abs(($average_cm - count($kriteria)) / (count($kriteria) - 1)),
 			4
 		);
-		$ratio =[0, 0, 0.58, 0.9, 1.12, 1.24, 1.32, 1.41, 1.45, 1.49, 1.51];
+		$ratio = [0, 0, 0.58, 0.9, 1.12, 1.24, 1.32, 1.41, 1.45, 1.49, 1.51];
 		$result = number_format(abs($total_ci / $ratio[count($kriteria) - 1]), 4);
 
 		for ($i = 0; $i < count($kriteria); $i++) {
@@ -282,9 +289,8 @@ class KriteriaCompController extends Controller
 					->withWarning('Perbandingan Kriteria tidak ditemukan');
 			}
 		} catch (QueryException $sql) {
-			return redirect('/bobot')->
-			withError('Perbandingan Kriteria gagal direset:')
-			->withErrors($sql->getMessage());
+			return redirect('/bobot')->withError('Perbandingan Kriteria gagal direset:')
+				->withErrors($sql->getMessage());
 		}
 		return redirect('/bobot')->withSuccess('Perbandingan Kriteria sudah direset');
 	}

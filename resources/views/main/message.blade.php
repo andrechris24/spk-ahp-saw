@@ -11,9 +11,9 @@
 		@if (Session::has('error'))
 			{{ ucfirst(Session::get('error')) }}
 		@else
-		 Gagal:
+			Gagal:
 		@endif
-		@if($errors->any())
+		@if ($errors->any())
 			<ul>
 				@foreach ($errors->all() as $error)
 					<li>{{ ucfirst($error) }}</li>

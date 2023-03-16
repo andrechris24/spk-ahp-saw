@@ -48,7 +48,7 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<h4 class="modal-title" id="AddNilaiAlterLabel">
-							Tambah Nilai Alternatif
+								Tambah Nilai Alternatif
 							</h4>
 							<button type="button" class="close" data-bs-dismiss="modal"
 								aria-label="Close">
@@ -191,35 +191,35 @@
 								@php
 									$subcount = 0;
 									$subkr = [];
-									$skor=$nilaialt->where('alternatif_id','=',$alt->id)->all();
+									$skor = $nilaialt->where('alternatif_id', '=', $alt->id)->all();
 								@endphp
-								@if(count($skor)>0)
-								<tr>
-									<td>{{ $alt->name }}</td>
-									@foreach ($skor as $skoralt)
-										@php
-											$subkr[$subcount]['subkriteria'] = $skoralt->subkriteria->id;
-											$subkr[$subcount]['kriteria'] = $skoralt->kriteria->id;
-										@endphp
-										<td>{{ $skoralt->subkriteria->name }}</td>
-										@php($subcount++)
-									@endforeach
-									<td>
-										<div class="btn-group" role="button">
-											<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-												data-bs-target="#EditNilaiAlterModal"
-												data-bs-id="{{ $alt->id }}" data-bs-name="{{ $alt->id }}"
-												data-bs-score="{{ json_encode($subkr) }}">
-												<i class="bi bi-pencil-square"></i> Edit
-											</button>
-											<button type="button" class="btn btn-danger" data-bs-toggle="modal"
-												data-bs-target="#DelNilaiAlterModal" data-bs-id="{{ $alt->id }}"
-												data-bs-name="{{ $alt->name }}">
-												<i class="bi bi-trash3-fill"></i> Hapus
-											</button>
-										</div>
-									</td>
-								</tr>
+								@if (count($skor) > 0)
+									<tr>
+										<td>{{ $alt->name }}</td>
+										@foreach ($skor as $skoralt)
+											@php
+												$subkr[$subcount]['subkriteria'] = $skoralt->subkriteria->id;
+												$subkr[$subcount]['kriteria'] = $skoralt->kriteria->id;
+											@endphp
+											<td>{{ $skoralt->subkriteria->name }}</td>
+											@php($subcount++)
+										@endforeach
+										<td>
+											<div class="btn-group" role="button">
+												<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+													data-bs-target="#EditNilaiAlterModal"
+													data-bs-id="{{ $alt->id }}" data-bs-name="{{ $alt->id }}"
+													data-bs-score="{{ json_encode($subkr) }}">
+													<i class="bi bi-pencil-square"></i> Edit
+												</button>
+												<button type="button" class="btn btn-danger" data-bs-toggle="modal"
+													data-bs-target="#DelNilaiAlterModal" data-bs-id="{{ $alt->id }}"
+													data-bs-name="{{ $alt->name }}">
+													<i class="bi bi-trash3-fill"></i> Hapus
+												</button>
+											</div>
+										</td>
+									</tr>
 								@endif
 							@endforeach
 						</tbody>

@@ -1,9 +1,9 @@
 @extends('layout')
 @section('title', 'Hasil Penilaian Alternatif')
 @php
-use App\Http\Controllers\NilaiController;
-$saw=new NilaiController();
-$simpan=false;
+	use App\Http\Controllers\NilaiController;
+	$saw = new NilaiController();
+	$simpan = false;
 @endphp
 @section('content')
 	<div class="page-heading">
@@ -30,7 +30,7 @@ $simpan=false;
 							<tbody>
 								@foreach ($data['alternatif'] as $alter)
 									@php
-									$anal = $hasil->where('alternatif_id', '=', $alter->id)->all();
+										$anal = $hasil->where('alternatif_id', '=', $alter->id)->all();
 									@endphp
 									@if (count($anal) > 0)
 										<tr>
@@ -63,7 +63,7 @@ $simpan=false;
 							</thead>
 							<tbody>
 								@foreach ($data['alternatif'] as $alts)
-									<?php	$counter=0;
+									<?php $counter = 0;
 									$norm = $hasil->where('alternatif_id', '=', $alts->id)->all();
 									?>
 									@if (count($norm) > 0)
@@ -71,15 +71,11 @@ $simpan=false;
 											<th>{{ $alts->name }}</th>
 											@foreach ($norm as $nilai)
 												<td>
-													<?php $arrays=$saw->getNilaiArr($nilai->kriteria_id);
-													$result=$saw->normalisasi(
-															$arrays,
-															$nilai->kriteria->type,
-															$nilai->subkriteria->bobot
-													);
+													<?php $arrays = $saw->getNilaiArr($nilai->kriteria_id);
+													$result = $saw->normalisasi($arrays, $nilai->kriteria->type, $nilai->subkriteria->bobot);
 													echo $result;
-													$lresult[$alts->id][$counter]=$result*$saw->getBobot($nilai->kriteria_id);
-													$counter++;?>
+													$lresult[$alts->id][$counter] = $result * $saw->getBobot($nilai->kriteria_id);
+													$counter++; ?>
 												</td>
 											@endforeach
 										</tr>
@@ -109,19 +105,19 @@ $simpan=false;
 							<tbody>
 								@foreach ($data['alternatif'] as $alts)
 									@php
-									$rank = $hasil->where('alternatif_id', '=', $alts->id)->all();
-									$jml=0;
+										$rank = $hasil->where('alternatif_id', '=', $alts->id)->all();
+										$jml = 0;
 									@endphp
 									@if (count($rank) > 0)
 										<tr>
 											<th>{{ $alts->name }}</th>
 											@foreach ($lresult[$alts->id] as $datas)
 												<td>
-													<?php echo round($datas,5);
-													$jml+=round($datas,5);?>
+													<?php echo round($datas, 5);
+													$jml += round($datas, 5); ?>
 												</td>
 											@endforeach
-											@php($simpan=$saw->simpanHasil($alts->id,$jml))
+											@php($simpan = $saw->simpanHasil($alts->id, $jml))
 											<td>{{ $jml }}</td>
 										</tr>
 									@endif
@@ -129,10 +125,10 @@ $simpan=false;
 							</tbody>
 						</table>
 					</div>
-					@if(!$simpan)
-					<div class="alert alert-warning">
-						Satu atau lebih hasil tidak tersimpan
-					</div>
+					@if (!$simpan)
+						<div class="alert alert-warning">
+							Satu atau lebih hasil tidak tersimpan
+						</div>
 					@endif
 				</div>
 			</div>

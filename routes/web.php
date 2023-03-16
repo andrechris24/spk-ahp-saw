@@ -1,13 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\KriteriaController;
-use App\Http\Controllers\KriteriaCompController;
-use App\Http\Controllers\SubKriteriaController;
-use App\Http\Controllers\SubKriteriaCompController;
-use App\Http\Controllers\AlternatifController;
-use App\Http\Controllers\NilaiController;
-use App\Http\Controllers\LoginController;
+// use App\Http\Controllers\KriteriaController;
+// use App\Http\Controllers\KriteriaCompController;
+// use App\Http\Controllers\SubKriteriaController;
+// use App\Http\Controllers\SubKriteriaCompController;
+// use App\Http\Controllers\AlternatifController;
+// use App\Http\Controllers\NilaiController;
+// use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,44 +52,44 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		Route::get('/akun', 'HomeController@profile')->name('akun.show');
 		Route::post('/akun', 'HomeController@updateProfil')->name('akun.perform');
 		Route::prefix('kriteria')->group(function () {
-			Route::get('/', [KriteriaController::class, 'index']);
-			Route::post('add', [KriteriaController::class, 'tambah']);
-			Route::post('update/{id}', [KriteriaController::class, 'update']);
-			Route::get('del/{id}', [KriteriaController::class, 'hapus']);
+			Route::get('/', 'KriteriaController@index')->name('kriteria.show');
+			Route::post('add', 'KriteriaController@tambah')->name('kriteria.create');
+			Route::post('update/{id}', 'KriteriaController@update')->name('kriteria.update');
+			Route::get('del/{id}', 'KriteriaController@hapus')->name('kriteria.delete');
 			Route::prefix('sub')->group(function () {
-				Route::get('/', [SubKriteriaController::class, 'index']);
-				Route::post('add', [SubKriteriaController::class, 'store']);
-				Route::post('update/{id}', [SubKriteriaController::class, 'update']);
-				Route::get('del/{id}', [SubKriteriaController::class, 'destroy']);
+				Route::get('/', 'SubKriteriaController@index')->name('subkriteria.show');
+				Route::post('add', 'SubKriteriaController@store')->name('subkriteria.create');
+				Route::post('update/{id}', 'SubKriteriaController@update')->name('subkriteria.update');
+				Route::get('del/{id}', 'SubKriteriaController@destroy')->name('subkriteria.delete');
 			});
 		});
 		Route::prefix('bobot')->group(function () {
-			Route::get('/', [KriteriaCompController::class, 'index']);
-			Route::post('/', [KriteriaCompController::class, 'simpan']);
-			Route::get('hasil', [KriteriaCompController::class, 'hasil']);
-			Route::get('reset', [KriteriaCompController::class, 'destroy']);
+			Route::get('/', 'KriteriaCompController@index')->name('bobotkriteria.index');
+			Route::post('/', 'KriteriaCompController@simpan')->name('bobotkriteria.store');
+			Route::get('hasil', 'KriteriaCompController@hasil')->name('bobotkriteria.result');
+			Route::get('reset', 'KriteriaCompController@destroy')->name('bobotkriteria.reset');
 			Route::prefix('sub')->group(function () {
-				Route::get('/', [SubKriteriaCompController::class, 'index']);
-				Route::get('comp', [SubKriteriaCompController::class, 'create']);
-				Route::post('comp', [SubKriteriaCompController::class, 'store']);
-				Route::get('hasil/{id}', [SubKriteriaCompController::class, 'show']);
-				Route::get('reset/{id}', [SubKriteriaCompController::class, 'destroy']);
+				Route::get('/', 'SubKriteriaCompController@index')->name('bobotsubkriteria.pick');
+				Route::get('comp', 'SubKriteriaCompController@create')->name('bobotsubkriteria.index');
+				Route::post('comp', 'SubKriteriaCompController@store')->name('bobotsubkriteria.store');
+				Route::get('hasil/{id}', 'SubKriteriaCompController@show')->name('bobotsubkriteria.result');
+				Route::get('reset/{id}', 'SubKriteriaCompController@destroy')->name('bobotsubkriteria.reset');
 			});
 		});
 		Route::prefix('alternatif')->group(function () {
-			Route::get('/', [AlternatifController::class, 'index']);
-			Route::post('add', [AlternatifController::class, 'tambah']);
-			Route::post('update/{id}', [AlternatifController::class, 'update']);
-			Route::get('del/{id}', [AlternatifController::class, 'hapus']);
-			Route::get('hasil', [NilaiController::class, 'show']);
+			Route::get('/', 'AlternatifController@index')->name('alternatif.index');
+			Route::post('add', 'AlternatifController@tambah')->name('alternatif.add');
+			Route::post('update/{id}', 'AlternatifController@update')->name('alternatif.update');
+			Route::get('del/{id}', 'AlternatifController@hapus')->name('alternatif.delete');
+			Route::get('hasil', 'NilaiController@show')->name('nilai.show');
 			Route::prefix('nilai')->group(function () {
-				Route::get('/', [NilaiController::class, 'index']);
-				Route::post('add', [NilaiController::class, 'store']);
-				Route::post('update/{id}', [NilaiController::class, 'update']);
-				Route::get('del/{id}', [NilaiController::class, 'destroy']);
+				Route::get('/', 'NilaiController@index')->name('nilai.index');
+				Route::post('add', 'NilaiController@store')->name('nilai.add');
+				Route::post('update/{id}', 'NilaiController@update')->name('nilai.update');
+				Route::get('del/{id}', 'NilaiController@destroy')->name('nilai.delete');
 			});
 		});
-		Route::get('ranking','HasilController@index')->name('ranking.show');
+		Route::get('ranking', 'HasilController@index')->name('ranking.show');
 		Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
 	});
 	Route::get('/test', 'HasilController@normalisasi');

@@ -19,4 +19,8 @@ class Alternatif extends Model
     {
         return $this->hasMany(Nilai::class, 'alternatif_id');
     }
+    public function hasil()
+    {
+        return $this->hasMany(Hasil::class, 'alternatif_id');
+    }
 }

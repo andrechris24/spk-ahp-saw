@@ -87,9 +87,18 @@ class SubKriteriaCompController extends Controller
 		]);
 		$idkriteria = $request->kriteria_id;
 		$subkriteria = SubKriteria::where('kriteria_id', '=', $idkriteria)->get();
+		$jmlsubkriteria=count($subkriteria);
+		if($jmlsubkriteria<3){
+			$critname=Kriteria::find($idkriteria)->first();
+			return redirect('kriteria/sub')
+			->withWarning(
+				'Minimal harus ada 3 sub kriteria '.$critname->name.
+				' untuk melakukan perbandingan (Jumlah sekarang: '.$jmlsubkriteria.')'
+			);
+		}
 		$counter = 0;
-		for ($a = 0; $a < count($subkriteria); $a++) {
-			for ($b = $a; $b < count($subkriteria); $b++) {
+		for ($a = 0; $a < $jmlsubkriteria; $a++) {
+			for ($b = $a; $b < $jmlsubkriteria; $b++) {
 				$array[$counter]["baris"] = $subkriteria[$a]->name;
 				$array[$counter]["kolom"] = $subkriteria[$b]->name;
 				$counter++;

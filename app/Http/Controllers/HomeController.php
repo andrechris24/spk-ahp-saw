@@ -29,7 +29,7 @@ class HomeController extends Controller
 	public function updateProfil(Request $request)
 	{
 		$id = auth()->user()->id;
-		try{
+		try {
 			$cek = User::find($id);
 			if (!$cek)
 				return back()->withInput()->withError('Gagal update: Akun tidak ditemukan');
@@ -56,9 +56,9 @@ class HomeController extends Controller
 			$req['password'] = Hash::make($req['password']);
 			$updprofil = $cek->update($req);
 			if ($updprofil) return back()->withSuccess('Akun sudah diupdate');
-		}catch(QueryException $db){
+		} catch (QueryException $db) {
 			return back()->withInput()->withError('Gagal update akun:')
-			->withErrors($db->getMessage());
+				->withErrors($db->getMessage());
 		}
 		return back()->withInput()->withError('Akun gagal diupdate');
 	}

@@ -20,11 +20,13 @@
 				</div>
 				<div class="card-content">
 					<div class="card-body">
-						@if($cek>0)
-						<a href="{{ url('bobot/sub/hasil/' . $kriteria_id) }}"
-							class="btn btn-primary mb-3">
-							Lihat hasil
-						</a>
+						@if ($cek > 0)
+							<div class="alert alert-primary">
+								<i class="bi bi-info-circle-fill"></i>
+								Perbandingan sub kriteria {{ $title }} sudah dilakukan,
+								<a href="{{ url('bobot/sub/hasil/'. $kriteria_id) }}">klik disini</a>
+								untuk melihat hasil perbandingan
+							</div>
 						@endif
 						<ul class="nav nav-tabs" id="InputCompTab" role="tablist">
 							<li class="nav-item" role="presentation">

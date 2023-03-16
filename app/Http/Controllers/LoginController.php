@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\LoginRequest;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Login\RememberMeExpiration;
 
@@ -17,6 +17,7 @@ class LoginController extends Controller
 	 */
 	public function show()
 	{
+		if(Auth::viaRemember() || Auth::check()) return redirect()->intended('/');
 		return view('admin.login');
 	}
 	/**
@@ -26,19 +27,17 @@ class LoginController extends Controller
 	 * 
 	 * @return \Illuminate\Http\Response
 	 */
-	public function login(LoginRequest $request)
+	public function login(Request $request)
 	{
-		$credentials = $request->getCredentials();
-		if (!Auth::validate($credentials)) :
-			return back()->with('error', 'Email atau Password salah');
-		endif;
-		$user = Auth::getProvider()->retrieveByCredentials($credentials);
-		// Auth::logoutOtherDevices($request->password);
-		Auth::login($user, $request->get('remember'));
-		if ($request->get('remember')) :
-			$this->setRememberMeExpiration($user);
-		endif;
-		return $this->authenticated($request, $user);
+		// dd($request);
+		$credentials = $request->validate(User::$loginrules);
+		if(Auth::attempt($credentials,$request->remember)){
+			$user=User::where('email','=',$request->email)->first();
+			Auth::login($user,$request->remember);
+			$request->session()->regenerate();
+ 			return redirect()->intended('home');
+		}
+		return back()->withError('Email atau Password salah')->onlyInput('email');
 	}
 
 	/**

@@ -56,6 +56,10 @@ class User extends Authenticatable
 		'password.in' => 'Panjang password harus 8-20 karakter',
 		'password.confirmed' => 'Password konfirmasi salah',
 	];
+	public static $loginrules=[
+			'email' => 'required|email',
+			'password' => 'required|min:8'
+		];
 	/**
 	 * Always encrypt password when it is updated.
 	 *

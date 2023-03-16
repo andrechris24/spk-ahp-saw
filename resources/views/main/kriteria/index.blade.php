@@ -28,7 +28,8 @@
 							<p>Lanjutkan?</p>
 							@if ($compkr > 0)
 								<p class="text-danger">
-									Menghapus kriteria akan mereset perbandingan kriteria dan menghapus perbandingan sub kriteria yang bersangkutan.
+									Menghapus kriteria akan mereset perbandingan kriteria dan menghapus
+									perbandingan sub kriteria yang bersangkutan.
 								</p>
 							@endif
 						</div>

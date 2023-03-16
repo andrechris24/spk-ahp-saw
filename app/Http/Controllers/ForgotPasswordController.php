@@ -52,12 +52,12 @@ class ForgotPasswordController extends Controller
 				}
 			);
 		} catch (\Exception $th) {
-			DB::table('password_resets')->where('email','=',$request->email)->delete();
+			DB::table('password_resets')->where('email', '=', $request->email)->delete();
 			return back()->withError('Pengiriman link reset password gagal:')
-			->withErrors($th->getMessage());
+				->withErrors($th->getMessage());
 		} catch (QueryException $err) {
 			return back()->withError('Gagal membuat token reset password:')
-			->withErrors($err->getMessage());
+				->withErrors($err->getMessage());
 		}
 		if ($mailresult)
 			return back()->withSuccess('Link reset password sudah dikirim.');
@@ -99,7 +99,7 @@ class ForgotPasswordController extends Controller
 			}
 		} catch (QueryException $sql) {
 			return back()->withError('Reset password gagal:')
-			->withErrors($sql->getMessage());
+				->withErrors($sql->getMessage());
 		}
 		return back()->withError('Reset password gagal');
 	}

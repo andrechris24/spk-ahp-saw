@@ -20,7 +20,7 @@ class KriteriaController extends Controller
 	{
 		$kritrequest->validate(Kriteria::$rules, Kriteria::$message);
 		$krits = $kritrequest->all();
-		try{
+		try {
 			$kriteria = Kriteria::create($krits);
 			if ($kriteria) {
 				$cekhasil = KriteriaComp::count();
@@ -33,29 +33,29 @@ class KriteriaController extends Controller
 				}
 				return back()->withSuccess('Kriteria sudah ditambahkan.');
 			}
-		}catch(QueryException $db){
+		} catch (QueryException $db) {
 			return back()->withError('Kesalahan:')
-			->withErrors($db->getMessage());
+				->withErrors($db->getMessage());
 		}
 		return back()->withError('Gagal menambah kriteria');
 	}
 	public function update(Request $updkritrequest, $id)
 	{
-		try{
+		try {
 			$cek = Kriteria::find($id);
 			if (!$cek) return back()->withError('Data Kriteria tidak ditemukan');
 			$req = $updkritrequest->all();
 			$cek->update($req);
 			return back()->withSuccess('Data Kriteria sudah diupdate');
-		}catch(QueryException $db){
+		} catch (QueryException $db) {
 			return back()->withError('Gagal mengupdate data kriteria')
-			->withErrors($db->getMessage());
+				->withErrors($db->getMessage());
 		}
 		return back()->withError('Gagal mengupdate data kriteria');
 	}
 	public function hapus($id)
 	{
-		try{
+		try {
 			$cek = Kriteria::find($id);
 			if (!$cek) return back()->withError('Data Kriteria tidak ditemukan');
 			$del = $cek->delete();
@@ -70,7 +70,7 @@ class KriteriaController extends Controller
 				}
 				return back()->withSuccess('Data Kriteria sudah dihapus');
 			}
-		}catch(QueryException $e){
+		} catch (QueryException $e) {
 			return back()->withError('Kesalahan:')->withErrors($e->getMessage());
 		}
 		return back()->withError('Data kriteria gagal dihapus');

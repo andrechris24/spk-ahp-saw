@@ -6,43 +6,42 @@ use App\Models\Nilai;
 use App\Models\Kriteria;
 use App\Models\SubKriteria;
 use App\Models\Alternatif;
-use App\Models\Hasil;;
-use Illuminate\Support\Facades\DB;
+use App\Models\Hasil;
+
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class NilaiController extends Controller
 {
-	public function normalisasi($arr,$type,$skor)
+	public function normalisasi($arr, $type, $skor)
 	{
-		if($type=='cost') $hasil=min($arr)/$skor;
-		else if($type=='benefit') $hasil=$skor/max($arr);
-		else return "Invalid type: ".$type;
-		return round($hasil,5);
+		if ($type == 'cost') $hasil = min($arr) / $skor;
+		else if ($type == 'benefit') $hasil = $skor / max($arr);
+		else return "Invalid type: " . $type;
+		return round($hasil, 5);
 	}
 	public function getNilaiArr($kriteria_id)
 	{
-		$data=array();
+		$data = array();
 		$kueri = Nilai::select('subkriteria.bobot as bobot')
-		->join("subkriteria", "nilai.subkriteria_id",'=', "subkriteria.id")
-			->where('nilai.kriteria_id','=',$kriteria_id)
+			->join("subkriteria", "nilai.subkriteria_id", '=', "subkriteria.id")
+			->where('nilai.kriteria_id', '=', $kriteria_id)
 			->get();
-			foreach($kueri as $row){
-				array_push($data,$row->bobot);
-			}
+		foreach ($kueri as $row) {
+			array_push($data, $row->bobot);
+		}
 		return $data;
 	}
-	public function getBobot($idkriteria){
-		$kueri=Kriteria::find($idkriteria)->first();
+	public function getBobot($idkriteria)
+	{
+		$kueri = Kriteria::find($idkriteria)->first();
 		return $kueri->bobot;
 	}
-	public function simpanHasil($alt_id,$jumlah){
-		try{
-			$cek=Hasil::where('alternatif_id','=',$alt_id)->count();
-			if($cek>0)
-				Hasil::where('alternatif_id','=',$alt_id)->update(['hasil'=>$jumlah]);
-			else Hasil::insert(['alternatif_id'=>$alt_id,'hasil'=>$jumlah]);
-		}catch(QueryException $e){
+	public function simpanHasil($alt_id, $jumlah)
+	{
+		try {
+			Hasil::updateOrInsert(['alternatif_id' => $alt_id], ['hasil' => $jumlah]);
+		} catch (QueryException $e) {
 			return false;
 		}
 		return true;

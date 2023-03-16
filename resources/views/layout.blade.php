@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="{{ url('assets/css/shared/iconly.css') }}" />
 	<link rel="stylesheet" type="text/css"
 		href="{{ url('assets/datatables.min.css') }}">
+	<link rel="stylesheet" href="{{ url('assets/apexcharts.css') }}">
 </head>
 
 <body>
@@ -103,7 +104,7 @@
 									</li>
 									<li class="submenu-item">
 										<a href="{{ url('bobot/sub') }}">
-										Perbandingan Sub Kriteria
+											Perbandingan Sub Kriteria
 										</a>
 									</li>
 								</ul>
@@ -116,7 +117,7 @@
 								<ul class="submenu">
 									<li class="submenu-item">
 										<a href="{{ url('alternatif/nilai') }}">
-										Penilaian Alternatif
+											Penilaian Alternatif
 										</a>
 									</li>
 									<li class="submenu-item">
@@ -249,7 +250,7 @@
 				<footer>
 					<div class="footer clearfix mb-0 text-muted">
 						<div class="float-start">
-							<p>2021 &copy; Mazer</p>
+							<p><?=date("Y")?> &copy; Mazer</p>
 						</div>
 						<div class="float-end">
 							<p>
@@ -271,6 +272,7 @@
 	</script>
 	<script src="https://kit.fontawesome.com/a49b540b68.js" crossorigin="anonymous">
 	</script>
+	<script src="{{ url('assets/apexcharts.min.js') }}"></script>
 	@yield('js')
 </body>
 

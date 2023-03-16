@@ -17,39 +17,39 @@ class AlternatifController extends Controller
 	{
 		$altrequest->validate(Alternatif::$rules, Alternatif::$message);
 		$alts = $altrequest->all();
-		try{
+		try {
 			$alternatif = Alternatif::create($alts);
 			if ($alternatif) return back()->withSuccess('Alternatif sudah ditambahkan');
-		}catch(QueryException $e){
+		} catch (QueryException $e) {
 			return back()->withError('Gagal menambah alternatif')
-			->withErrors($e->getMessage());
+				->withErrors($e->getMessage());
 		}
 		return back()->withError('Gagal menambah alternatif');
 	}
 	public function update(Request $updaltrequest, $id)
 	{
-		try{
+		try {
 			$cek = Alternatif::find($id);
 			if (!$cek) return back()->with('error', 'Data Alternatif tidak ditemukan');
 			$req = $updaltrequest->all();
 			$upd = $cek->update($req);
 			if ($upd) return back()->with('success', 'Data Alternatif sudah diupdate');
-		}catch(QueryException $sql){
+		} catch (QueryException $sql) {
 			return back()->withError('Gagal update data Alternatif')
-			->withErrors($sql->getMessage());
+				->withErrors($sql->getMessage());
 		}
 		return back()->withError('Gagal update data Alternatif');
 	}
 	public function hapus($id)
 	{
-		try{
+		try {
 			$cek = Alternatif::find($id);
 			if (!$cek) return back()->with('error', 'Data Alternatif tidak ditemukan');
 			$del = $cek->delete();
 			if ($del) return back()->with('success', 'Data Alternatif sudah dihapus');
-		}catch(QueryException $sql){
+		} catch (QueryException $sql) {
 			return back()->withError('Data Alternatif gagal dihapus')
-			->withErrors($sql->getMessage());
+				->withErrors($sql->getMessage());
 		}
 		return back()->withError('Data Alternatif gagal dihapus');
 	}

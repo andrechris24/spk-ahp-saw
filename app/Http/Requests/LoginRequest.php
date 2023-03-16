@@ -41,9 +41,8 @@ class LoginRequest extends FormRequest
 		// have name of "username", however, in order to support
 		// logging users in with both (username and email)
 		// we have to check if user has entered one or another
-		$email = $this->get('email');
 		return [
-			'email' => $email,
+			'email' => $this->get('email'),
 			'password' => $this->get('password')
 		];
 	}
