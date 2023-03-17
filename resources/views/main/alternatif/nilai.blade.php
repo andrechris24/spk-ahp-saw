@@ -171,11 +171,20 @@
 			<div class="card">
 				<div class="card-header">Daftar Nilai Alternatif</div>
 				<div class="card-body">
-					<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-						data-bs-target="#AddNilaiAlterModal">
-						<i class="bi bi-plus-lg"></i>
-						Tambah Nilai Alternatif
-					</button>
+					<div class="btn btn-group">
+						<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+							data-bs-target="#AddNilaiAlterModal">
+							<i class="bi bi-plus-lg"></i>
+							Tambah Nilai Alternatif
+						</button>
+						@if(count($hasil)>0)
+						<a href="{{url('alternatif/hasil')}}" class="btn btn-success">
+						@else
+						<a href="{{url('alternatif/hasil')}}" class="btn btn-success disabled">
+						@endif
+						Lihat hasil
+						</a>
+					</div>
 					<table class="table table-hover" id="table-nilaialt">
 						<thead>
 							<tr>

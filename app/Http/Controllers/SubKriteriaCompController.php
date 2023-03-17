@@ -67,7 +67,7 @@ class SubKriteriaCompController extends Controller
 		}
 		$crit = SubKriteria::count();
 		if ($crit == 0) {
-			return redirect('/kriteria')
+			return redirect('/kriteria/sub')
 				->withWarning(
 					'Masukkan data sub kriteria dulu untuk melakukan perbandingan sub kriteria'
 				);
@@ -88,14 +88,15 @@ class SubKriteriaCompController extends Controller
 		$idkriteria = $request->kriteria_id;
 		$subkriteria = SubKriteria::where('kriteria_id', '=', $idkriteria)->get();
 		$jmlsubkriteria=count($subkriteria);
-		if($jmlsubkriteria<3){
-			$critname=Kriteria::find($idkriteria)->first();
-			return redirect('kriteria/sub')
-			->withWarning(
-				'Minimal harus ada 3 sub kriteria '.$critname->name.
-				' untuk melakukan perbandingan (Jumlah sekarang: '.$jmlsubkriteria.')'
-			);
-		}
+		// if($jmlsubkriteria<3){
+		// 	$critname=Kriteria::find($idkriteria)->first();
+		// 	return redirect('kriteria/sub')
+		// 	->withWarning(
+		// 		'Minimal harus ada 3 sub kriteria '.$critname->name.
+		// 		' untuk melakukan perbandingan (Jumlah sekarang: '.$jmlsubkriteria.')'
+		// 	);
+		// }
+		$array=[];
 		$counter = 0;
 		for ($a = 0; $a < $jmlsubkriteria; $a++) {
 			for ($b = $a; $b < $jmlsubkriteria; $b++) {
@@ -105,9 +106,8 @@ class SubKriteriaCompController extends Controller
 			}
 		}
 		$cek = SubKriteriaComp::where('idkriteria', '=', $idkriteria)->count();
-		return view('main.subkriteria.comp', compact('array', 'cek'))->with([
-			'kriteria_id' => $idkriteria
-		]);
+		return view('main.subkriteria.comp', compact('array', 'cek','jmlsubkriteria'))
+		->with(['kriteria_id' => $idkriteria]);
 	}
 
 	/**
@@ -348,6 +348,7 @@ class SubKriteriaCompController extends Controller
 		try {
 			$kr = Kriteria::where('id', '=', $id)->first();
 			DB::table('subkriteria_banding')->where('idkriteria', '=', $id)->delete();
+			SubKriteria::where('kriteria_id','=',$id)->update(['bobot'=>0.0000]);
 			return redirect('/bobot/sub')
 				->withSuccess('Perbandingan Sub Kriteria ' . $kr->name . ' sudah direset');
 		} catch (QueryException $e) {

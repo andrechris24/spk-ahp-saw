@@ -11,7 +11,9 @@ class HasilController extends Controller
     {
         $alt = Alternatif::get();
         $result = Hasil::get();
-        $highest = Hasil::orderBy('hasil', 'desc')->first();
+        if(count($result)==0)
+            return redirect('alternatif/nilai')->withWarning('Nilai Alternatif kosong');
+        $highest = Hasil::orderBy('skor', 'desc')->first();
         return view('main.rank', compact('alt', 'result', 'highest'));
     }
 }

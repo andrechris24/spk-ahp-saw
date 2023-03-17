@@ -26,6 +26,7 @@ class KriteriaController extends Controller
 				$cekhasil = KriteriaComp::count();
 				if ($cekhasil > 0) {
 					DB::table('kriteria_banding')->delete();
+					Kriteria::update(['bobot'=>0.0000]);
 					return back()
 						->withSuccess(
 							'Kriteria sudah ditambahkan. Silahkan input ulang perbandingan kriteria.'
@@ -34,7 +35,7 @@ class KriteriaController extends Controller
 				return back()->withSuccess('Kriteria sudah ditambahkan.');
 			}
 		} catch (QueryException $db) {
-			return back()->withError('Kesalahan:')
+			return back()->withError('Gagal menambah kriteria:')
 				->withErrors($db->getMessage());
 		}
 		return back()->withError('Gagal menambah kriteria');
@@ -62,7 +63,8 @@ class KriteriaController extends Controller
 			if ($del) {
 				$cekhasil = KriteriaComp::count();
 				if ($cekhasil > 0) {
-					DB::table('kriteria_banding')->delete();
+					KriteriaComp::delete();
+					Kriteria::update(['bobot'=>0.0000]);
 					return back()
 						->withSuccess(
 							'Data Kriteria sudah dihapus. Silahkan input ulang perbandingan.'
@@ -71,7 +73,8 @@ class KriteriaController extends Controller
 				return back()->withSuccess('Data Kriteria sudah dihapus');
 			}
 		} catch (QueryException $e) {
-			return back()->withError('Kesalahan:')->withErrors($e->getMessage());
+			return back()->withError('Data kriteria gagal dihapus:')
+			->withErrors($e->getMessage());
 		}
 		return back()->withError('Data kriteria gagal dihapus');
 	}

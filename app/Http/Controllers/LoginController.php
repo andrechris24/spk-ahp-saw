@@ -29,11 +29,10 @@ class LoginController extends Controller
 	 */
 	public function login(Request $request)
 	{
-		// dd($request);
 		$credentials = $request->validate(User::$loginrules);
-		if(Auth::attempt($credentials,$request->remember)){
+		if(Auth::attempt($credentials,$request->get('remember'))){
 			$user=User::where('email','=',$request->email)->first();
-			Auth::login($user,$request->remember);
+			Auth::login($user,$request->get('remember'));
 			$request->session()->regenerate();
  			return redirect()->intended('home');
 		}

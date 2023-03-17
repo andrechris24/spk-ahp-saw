@@ -40,7 +40,7 @@ class NilaiController extends Controller
 	public function simpanHasil($alt_id, $jumlah)
 	{
 		try {
-			Hasil::updateOrInsert(['alternatif_id' => $alt_id], ['hasil' => $jumlah]);
+			Hasil::updateOrInsert(['alternatif_id' => $alt_id], ['skor' => $jumlah]);
 		} catch (QueryException $e) {
 			return false;
 		}
@@ -117,6 +117,13 @@ class NilaiController extends Controller
 		$hasil = Nilai::leftJoin('alternatif', 'alternatif.id', '=', 'nilai.alternatif_id')
 			->leftJoin('kriteria', 'kriteria.id', '=', 'nilai.kriteria_id')
 			->leftJoin('subkriteria', 'subkriteria.id', '=', 'nilai.subkriteria_id')->get();
+		$cekbobotkr=Kriteria::where('bobot',0.0000)->first();
+		if($cekbobotkr->bobot==0.0000){
+			return redirect('bobot')
+			->withWarning(
+				'Lakukan perbandingan kriteria dulu sebelum melihat hasil penilaian alternatif'
+			);
+		}
 		$data = [
 			'alternatif' => $alt,
 			'kriteria' => $kr,

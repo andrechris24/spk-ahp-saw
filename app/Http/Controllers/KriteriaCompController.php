@@ -46,12 +46,7 @@ class KriteriaCompController extends Controller
 	{
 		$crit = Kriteria::get();
 		$jmlcrit=count($crit);
-		if($jmlcrit<3){
-			return redirect('kriteria')
-			->withWarning(
-				'Minimal harus ada 3 kriteria untuk melakukan perbandingan (Jumlah sekarang: '.$jmlcrit.')'
-			);
-		}
+		$array=[];
 		$counter = 0;
 		for ($a = 0; $a < $jmlcrit; $a++) {
 			for ($b = $a; $b < $jmlcrit; $b++) {
@@ -61,7 +56,7 @@ class KriteriaCompController extends Controller
 			}
 		}
 		$cek = KriteriaComp::count();
-		return view('main.kriteria.comp', compact('array', 'cek'));
+		return view('main.kriteria.comp', compact('array', 'cek','jmlcrit'));
 	}
 	public function simpan(Request $request)
 	{
@@ -283,11 +278,12 @@ class KriteriaCompController extends Controller
 	public function destroy()
 	{
 		try {
-			$del = DB::table('kriteria_banding')->delete();
+			$del = KriteriaComp::delete();
 			if (!$del) {
 				return redirect('/bobot')
 					->withWarning('Perbandingan Kriteria tidak ditemukan');
 			}
+			Kriteria::update(['bobot'=>0.0000]);
 		} catch (QueryException $sql) {
 			return redirect('/bobot')->withError('Perbandingan Kriteria gagal direset:')
 				->withErrors($sql->getMessage());

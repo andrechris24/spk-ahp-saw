@@ -42,7 +42,7 @@
 							</div>
 							<div class="tab-pane fade" id="input" role="tabpanel"
 								aria-labelledby="input-tab">
-								@if (count($array) > 0)
+								@if ($jmlcrit >= 3)
 									<div class="table-responsive">
 										<form method="post" enctype="multipart/form-data"
 											action="{{ url('bobot') }}">
@@ -99,9 +99,11 @@
 										</form>
 									</div>
 								@else
-									<div class="alert alert-warning">
+									<div class="alert alert-warning mt-3">
+										<i class="bi bi-sign-stop-fill"></i>
 										Masukkan data <a href="{{ url('kriteria') }}">Kriteria</a>
-										dulu untuk melakukan perbandingan.
+										dulu (Minimal 3) untuk melakukan perbandingan.
+										(Jumlah sekarang: {{ $jmlcrit }})
 									</div>
 								@endif
 							</div>

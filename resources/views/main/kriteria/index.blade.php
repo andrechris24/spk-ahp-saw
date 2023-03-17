@@ -22,15 +22,15 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<p>
-								<span id="del-desc">Anda akan menghapus sebuah kriteria.</span>
+							<p id="del-desc">
+								Anda akan menghapus sebuah kriteria.
 							</p>
 							<p>Lanjutkan?</p>
 							@if ($compkr > 0)
-								<p class="text-danger">
-									Menghapus kriteria akan mereset perbandingan kriteria dan menghapus
-									perbandingan sub kriteria yang bersangkutan.
-								</p>
+								<div class="alert alert-warning">
+									Menghapus kriteria akan mereset perbandingan kriteria dan
+									menghapus perbandingan sub kriteria yang bersangkutan.
+								</div>
 							@endif
 						</div>
 						<div class="modal-footer">

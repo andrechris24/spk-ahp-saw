@@ -72,13 +72,13 @@
 							<li class="sidebar-title">Menu</li>
 							<li class="sidebar-item">
 								<a href="{{ url('/home') }}" class="sidebar-link">
-									<i class="bi bi-grid-fill"></i>
+									<i class="bi bi-house-fill"></i>
 									<span>Beranda</span>
 								</a>
 							</li>
 							<li class="sidebar-item has-sub">
 								<a href="#" class="sidebar-link">
-									<i class="bi bi-stack"></i>
+									<i class="bi bi-clipboard-data-fill"></i>
 									<span>Data Master</span>
 								</a>
 								<ul class="submenu">
@@ -95,7 +95,7 @@
 							</li>
 							<li class="sidebar-item has-sub">
 								<a href="#" class="sidebar-link">
-									<i class="bi bi-collection-fill"></i>
+									<i class="bi bi-calculator-fill"></i>
 									<span>Perhitungan AHP</span>
 								</a>
 								<ul class="submenu">
@@ -111,7 +111,7 @@
 							</li>
 							<li class="sidebar-item has-sub">
 								<a href="#" class="sidebar-link">
-									<i class="bi bi-collection-fill"></i>
+									<i class="bi bi-calculator-fill"></i>
 									<span>Perhitungan SAW</span>
 								</a>
 								<ul class="submenu">
@@ -129,7 +129,7 @@
 							</li>
 							<li class="sidebar-item">
 								<a href="{{ url('/ranking') }}" class="sidebar-link">
-									<i class="bi bi-grid-fill"></i>
+									<i class="fa-solid fa-ranking-star"></i>
 									<span>Hasil Akhir</span>
 								</a>
 							</li>
@@ -137,7 +137,7 @@
 						@guest
 							<li class="sidebar-item">
 								<a href="{{ url('login') }}" class="sidebar-link">
-									<i class="fas fa-user"></i>
+									<i class="fa-solid fa-user me-2"></i>
 									Login
 								</a>
 							</li>
@@ -208,7 +208,7 @@
 									<a href="#" data-bs-toggle="dropdown" aria-expanded="false">
 										<div class="user-menu d-flex">
 											<div class="user-name text-end me-3">
-												<h6 class="mb-0 text-gray-600">
+												<h6 class="my-0 text-gray-600">
 													{{ auth()->user()->name }}
 												</h6>
 											</div>
@@ -226,7 +226,7 @@
 										</li>
 										<li>
 											<a class="dropdown-item" href="{{ url('akun') }}">
-												<i class="icon-mid bi bi-person me-2"></i> Edit Profil
+												<i class="icon-mid bi bi-person me-2"></i> Edit Akun
 											</a>
 										</li>
 										<li>

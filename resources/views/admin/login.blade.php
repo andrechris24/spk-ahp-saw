@@ -30,7 +30,7 @@
 		<div class="form-check form-check-lg d-flex align-items-end">
 			<input class="form-check-input me-2" type="checkbox" value="1"
 				id="remember-me" name="remember" data-bs-toggle="tooltip" data-bs-placement="top"
-				title="Berlaku selama 7 hari, jangan dicentang jika Anda menggunakannya di tempat umum" />
+				title="Berlaku selama 30 hari, jangan dicentang jika bukan perangkat Anda." />
 			<label class="form-check-label text-gray-600" for="remember-me">
 				Biarkan saya login
 			</label>

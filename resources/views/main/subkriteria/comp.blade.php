@@ -49,7 +49,7 @@
 							</div>
 							<div class="tab-pane fade" id="input" role="tabpanel"
 								aria-labelledby="input-tab">
-								@if (count($array) > 0)
+								@if ($jmlsubkriteria >= 3)
 									<div class="table-responsive">
 										<form method="post" enctype="multipart/form-data"
 											action="{{ url('bobot/sub/comp') }}">
@@ -107,9 +107,11 @@
 										</form>
 									</div>
 								@else
-									<div class="alert alert-warning">
+									<div class="alert alert-warning mt-3">
+										<i class="bi bi-sign-stop-fill"></i>
 										Masukkan data <a href="{{ url('kriteria/sub') }}">Sub Kriteria</a>
-										dulu untuk melakukan perbandingan.
+										{{ $title }} dulu (Minimal 3) untuk melakukan perbandingan.
+										(Jumlah sekarang: {{ $jmlsubkriteria }})
 									</div>
 								@endif
 							</div>
@@ -119,8 +121,4 @@
 			</div>
 		</section>
 	</div>
-@endsection
-
-@section('js')
-
 @endsection

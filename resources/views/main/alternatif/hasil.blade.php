@@ -21,7 +21,10 @@
 						<table class="table table-hover">
 							<thead>
 								<tr>
-									<th>Alternatif\Kriteria</th>
+									<th rowspan="2">Alternatif</th>
+									<th colspan="{{ count($data['kriteria']) }}">Kriteria</th>
+								</tr>
+								<tr>
 									@foreach ($data['kriteria'] as $krit)
 										<th>{{ $krit->name }}</th>
 									@endforeach
@@ -55,7 +58,10 @@
 						<table class="table table-hover">
 							<thead>
 								<tr>
-									<th>Alternatif\Kriteria</th>
+									<th rowspan="2">Alternatif</th>
+									<th colspan="{{ count($data['kriteria']) }}">Kriteria</th>
+								</tr>
+								<tr>
 									@foreach ($data['kriteria'] as $krit)
 										<th>{{ $krit->name }}</th>
 									@endforeach
@@ -63,18 +69,24 @@
 							</thead>
 							<tbody>
 								@foreach ($data['alternatif'] as $alts)
-									<?php $counter = 0;
+									@php 
+									$counter = 0;
 									$norm = $hasil->where('alternatif_id', '=', $alts->id)->all();
-									?>
+									@endphp
 									@if (count($norm) > 0)
 										<tr>
 											<th>{{ $alts->name }}</th>
 											@foreach ($norm as $nilai)
 												<td>
 													<?php $arrays = $saw->getNilaiArr($nilai->kriteria_id);
-													$result = $saw->normalisasi($arrays, $nilai->kriteria->type, $nilai->subkriteria->bobot);
+													$result = $saw->normalisasi(
+														$arrays, 
+														$nilai->kriteria->type, 
+														$nilai->subkriteria->bobot
+													);
 													echo $result;
-													$lresult[$alts->id][$counter] = $result * $saw->getBobot($nilai->kriteria_id);
+													$lresult[$alts->id][$counter] = 
+														$result * $saw->getBobot($nilai->kriteria_id);
 													$counter++; ?>
 												</td>
 											@endforeach
@@ -92,14 +104,17 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<table class="table table-hover">
+						<table class="table table-hover" id="table-hasil">
 							<thead>
 								<tr>
-									<th>Alternatif\Kriteria</th>
+									<th rowspan="2">Alternatif</th>
+									<th colspan="{{ count($data['kriteria']) }}">Kriteria</th>
+									<th rowspan="2">Jumlah</th>
+								</tr>
+								<tr>
 									@foreach ($data['kriteria'] as $krit)
 										<th>{{ $krit->name }}</th>
 									@endforeach
-									<th>Jumlah</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -134,4 +149,15 @@
 			</div>
 		</section>
 	</div>
+@endsection
+@section('js')
+<script type="text/javascript">
+	$(document).ready(function() {
+			$('#table-hasil').DataTable({
+				"stateSave": true,
+				"lengthChange": false,
+				"searching": false,
+			});
+		});
+</script>
 @endsection

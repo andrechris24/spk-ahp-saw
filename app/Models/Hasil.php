@@ -9,7 +9,7 @@ class Hasil extends Model
 {
     use HasFactory;
     protected $table = 'hasil';
-    protected $fillable = ['alternatif_id', 'hasil'];
+    protected $fillable = ['alternatif_id', 'skor'];
     public function alternatif()
     {
         return $this->belongsTo(Alternatif::class, 'alternatif_id');

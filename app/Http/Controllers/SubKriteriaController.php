@@ -23,7 +23,7 @@ class SubKriteriaController extends Controller
 		$compskr = SubKriteriaComp::count();
 		if (count($kriteria) == 0) {
 			return redirect('kriteria')
-				->withWarning('Tambahkan kriteria dulu sebelum menginput sub kriteria');
+				->withWarning('Tambahkan kriteria dulu sebelum menambah sub kriteria');
 		}
 		return view(
 			'main.subkriteria.index',
@@ -43,15 +43,18 @@ class SubKriteriaController extends Controller
 		$subs = $request->all();
 		try {
 			$subkriteria = SubKriteria::create($subs);
+			$namakriteria=$subkriteria->kriteria->name;
 			if ($subkriteria) {
 				$cek = SubKriteriaComp::where('idkriteria', '=', $request->kriteria_id)->count();
 				if ($cek > 0) {
 					DB::table('subkriteria_banding')
 						->where('idkriteria', '=', $request->kriteria_id)
 						->delete();
+					SubKriteria::where('kriteria_id',$request->kriteria_id)->update(['bobot',0.0000]);
 					return back()
 						->withSuccess(
-							'Sub Kriteria sudah ditambahkan. Silahkan input ulang perbandingan sub kriteria.'
+							'Sub Kriteria sudah ditambahkan. '.
+							'Silahkan input ulang perbandingan sub kriteria '.$namakriteria.'.'
 						);
 				}
 				return back()->withSuccess('Sub Kriteria sudah ditambahkan');
@@ -95,9 +98,20 @@ class SubKriteriaController extends Controller
 	{
 		try {
 			$cek = SubKriteria::find($id);
+			$idkriteria=$cek->kriteria_id;
+			$namakriteria=$cek->kriteria->name;
 			if (!$cek) return back()->withError('Data Sub Kriteria tidak ditemukan');
-			$del = $cek->delete();
-			if ($del) return back()->withSuccess('Data Sub Kriteria sudah dihapus');
+			$cek->delete();
+			$subkrcomp=SubKriteriaComp::where('idkriteria',$cek->kriteria_id);
+			if($subkrcomp->count()>0){
+				$subkrcomp->delete();
+				SubKriteria::where('kriteria_id',$idkriteria)->update(['bobot',0.0000]);
+				return back()->withSuccess(
+					'Data Sub Kriteria sudah dihapus. '.
+					'Silahkan input ulang perbandingan sub kriteria '.$namakriteria.'.'
+				);
+			}
+			return back()->withSuccess('Data Sub Kriteria sudah dihapus');
 		} catch (QueryException $sql) {
 			return back()->withError('Gagal hapus data sub kriteria')
 				->withErrors($sql->getMessage());
