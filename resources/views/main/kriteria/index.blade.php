@@ -26,12 +26,14 @@
 								Anda akan menghapus sebuah kriteria.
 							</p>
 							<p>Lanjutkan?</p>
+							<div class="alert alert-warning">
 							@if ($compkr > 0)
-								<div class="alert alert-warning">
-									Menghapus kriteria akan mereset perbandingan kriteria dan
-									menghapus perbandingan sub kriteria yang bersangkutan.
-								</div>
+								Data subkriteria yang berkaitan juga akan dihapus,
+								serta mereset	perbandingan kriteria.
+							@else
+								Data subkriteria yang berkaitan juga akan dihapus.
 							@endif
+							</div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-light-secondary"

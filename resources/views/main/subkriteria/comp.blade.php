@@ -4,18 +4,18 @@
 	$subkriteriacomp = new SubKriteriaCompController();
 	$title = $subkriteriacomp->nama_kriteria($kriteria_id);
 @endphp
-@section('title', 'Perbandingan Sub Kriteria ' . $title)
+@section('title', 'Perbandingan Subkriteria ' . $title)
 @section('content')
 	<div class="page-heading">
 		<div class="page-title">
-			<h3>Perbandingan Sub Kriteria {{ $title }}</h3>
+			<h3>Perbandingan Subkriteria {{ $title }}</h3>
 		</div>
 		<section class="section">
 			@include('main.message')
 			<div class="card">
 				<div class="card-header">
 					<h4 class="card-title">
-						Masukkan Perbandingan Sub Kriteria {{ $title }}
+						Masukkan Perbandingan Subkriteria {{ $title }}
 					</h4>
 				</div>
 				<div class="card-content">
@@ -23,7 +23,7 @@
 						@if ($cek > 0)
 							<div class="alert alert-primary">
 								<i class="bi bi-info-circle-fill"></i>
-								Perbandingan sub kriteria {{ $title }} sudah dilakukan,
+								Perbandingan subkriteria {{ $title }} sudah dilakukan,
 								<a href="{{ url('bobot/sub/hasil/'. $kriteria_id) }}">klik disini</a>
 								untuk melihat hasil perbandingan
 							</div>
@@ -58,9 +58,9 @@
 											<table class="table table-lg table-hover text-center">
 												<thead>
 													<tr>
-														<th>Sub Kriteria</th>
+														<th>Subkriteria</th>
 														<th>Perbandingan</th>
-														<th>Sub Kriteria</th>
+														<th>Subkriteria</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -109,7 +109,7 @@
 								@else
 									<div class="alert alert-warning mt-3">
 										<i class="bi bi-sign-stop-fill"></i>
-										Masukkan data <a href="{{ url('kriteria/sub') }}">Sub Kriteria</a>
+										Masukkan data <a href="{{ url('kriteria/sub') }}">Subkriteria</a>
 										{{ $title }} dulu (Minimal 3) untuk melakukan perbandingan.
 										(Jumlah sekarang: {{ $jmlsubkriteria }})
 									</div>

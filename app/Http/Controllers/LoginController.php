@@ -36,7 +36,8 @@ class LoginController extends Controller
 			$request->session()->regenerate();
  			return redirect()->intended('home');
 		}
-		return back()->withError('Email atau Password salah')->onlyInput('email');
+		return back()->withError('Email atau Password salah')
+		->withInput($request->all());
 	}
 
 	/**

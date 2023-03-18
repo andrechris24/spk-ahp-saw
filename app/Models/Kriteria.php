@@ -7,25 +7,25 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kriteria extends Model
 {
-    use HasFactory;
-    protected $table = 'kriteria';
-    protected $fillable = ['name', 'type', 'desc'];
-    public static $rules = [
-        'name' => 'required',
-        'type' => 'bail|required|in:cost,benefit',
-        'desc' => 'required'
-    ];
-    public static $message = [
-        'name.required' => 'Nama kriteria harus diisi',
-        'type.required' => 'Tipe Kriteria harus dipilih',
-        'desc.required' => 'Keterangan kriteria harus diisi',
-    ];
-    public function subkriteria()
-    {
-        return $this->hasMany(SubKriteria::class, 'kriteria_id');
-    }
-    public function nilai()
-    {
-        return $this->hasMany(Nilai::class, 'kriteria_id');
-    }
+	use HasFactory;
+	protected $table = 'kriteria';
+	protected $fillable = ['name', 'type', 'desc'];
+	public static $rules = [
+		'name' => 'required',
+		'type' => 'bail|required|in:cost,benefit',
+		'desc' => 'required'
+	];
+	public static $message = [
+		'name.required' => 'Nama kriteria harus diisi',
+		'type.required' => 'Tipe Kriteria harus dipilih',
+		'desc.required' => 'Keterangan kriteria harus diisi',
+	];
+	public function subkriteria()
+	{
+		return $this->hasMany(SubKriteria::class, 'kriteria_id');
+	}
+	public function nilai()
+	{
+		return $this->hasMany(Nilai::class, 'kriteria_id');
+	}
 }

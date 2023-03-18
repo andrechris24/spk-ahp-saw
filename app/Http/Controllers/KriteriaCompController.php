@@ -12,8 +12,7 @@ class KriteriaCompController extends Controller
 {
 	private function getKriteriaPerbandingan()
 	{
-		$kriteria_comp = DB::table('kriteria_banding')
-			->join(
+		$kriteria_comp = KriteriaComp::join(
 				"kriteria",
 				"kriteria_banding.kriteria1",
 				"kriteria.id"
@@ -28,16 +27,14 @@ class KriteriaCompController extends Controller
 	}
 	private function getPerbandinganByKriteria1($kriteria1)
 	{
-		$kriteria2 = DB::table("kriteria_banding")
-			->select('nilai', 'kriteria2', 'kriteria1')
+		$kriteria2 = KriteriaComp::select('nilai', 'kriteria2', 'kriteria1')
 			->where("kriteria2", "=", $kriteria1)
 			->get();
 		return $kriteria2;
 	}
 	private function getNilaiPerbandingan($kode_kriteria)
 	{
-		$nilai_perbandingan = DB::table("kriteria_banding")
-			->select("nilai", "kriteria1")
+		$nilai_perbandingan = KriteriaComp::select("nilai", "kriteria1")
 			->where("kriteria1", "=", $kode_kriteria)
 			->get();
 		return $nilai_perbandingan;
@@ -62,8 +59,8 @@ class KriteriaCompController extends Controller
 	{
 		$request->validate(KriteriaComp::$rules, KriteriaComp::$message);
 		try {
-			$kriteria = DB::table("kriteria")->get();
-			DB::table("kriteria_banding")->truncate();
+			$kriteria = Kriteria::get();
+			KriteriaComp::truncate();
 			$a = 0;
 			for ($i = 0; $i < count($kriteria); $i++) {
 				for ($j = $i; $j < count($kriteria); $j++) {

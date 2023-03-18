@@ -3,7 +3,7 @@
 @section('content')
 	<div class="page-heading">
 		<div class="page-title">
-			<h3>Sub Kriteria</h3>
+			<h3>Subkriteria</h3>
 		</div>
 		<section class="section">
 			@include('main.message')
@@ -54,7 +54,7 @@
 					role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h4 class="modal-title" id="AddSubCritLabel">Tambah Sub Kriteria</h4>
+							<h4 class="modal-title" id="AddSubCritLabel">Tambah Subkriteria</h4>
 							<button type="button" class="close" data-bs-dismiss="modal"
 								aria-label="Close">
 								<i data-feather="x"></i>
@@ -64,7 +64,7 @@
 							enctype="multipart/form-data">
 							@csrf
 							<div class="modal-body">
-								<label for="nama">Nama Sub Kriteria</label>
+								<label for="nama">Nama Subkriteria</label>
 								<div class="form-group">
 									<input type="text" class="form-control" name="name" id="nama"
 										required />
@@ -102,7 +102,7 @@
 					role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h4 class="modal-title" id="EditSubCritLabel">Edit Sub Kriteria</h4>
+							<h4 class="modal-title" id="EditSubCritLabel">Edit Subkriteria</h4>
 							<button type="button" class="close" data-bs-dismiss="modal"
 								aria-label="Close">
 								<i data-feather="x"></i>
@@ -112,7 +112,7 @@
 							enctype="multipart/form-data" name="editsubkriteria">
 							@csrf
 							<div class="modal-body">
-								<label for="nama-edit">Nama Sub Kriteria</label>
+								<label for="nama-edit">Nama Subkriteria</label>
 								<div class="form-group">
 									<input type="text" class="form-control" name="name" id="nama-edit"
 										required />
@@ -146,18 +146,18 @@
 				</div>
 			</div>
 			<div class="card">
-				<div class="card-header">Daftar Sub Kriteria</div>
+				<div class="card-header">Daftar Subkriteria</div>
 				<div class="card-body">
 					<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal"
 						data-bs-target="#AddSubCritModal">
 						<i class="bi bi-plus-lg"></i>
-						Tambah Sub Kriteria
+						Tambah Subkriteria
 					</button>
 					<table class="table table-hover" id="table-subcrit">
 						<thead>
 							<tr>
 								<th>No</th>
-								<th>Nama Sub Kriteria</th>
+								<th>Nama Subkriteria</th>
 								<th>Kriteria</th>
 								<th>Aksi</th>
 							</tr>

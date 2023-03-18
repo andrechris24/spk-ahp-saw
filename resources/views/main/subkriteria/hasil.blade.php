@@ -7,11 +7,11 @@
 	$subkriteriacomp = new SubKriteriaCompController();
 	$title = $subkriteriacomp->nama_kriteria($kriteria_id);
 @endphp
-@section('title', 'Hasil Perbandingan Sub Kriteria')
+@section('title', 'Hasil Perbandingan Subkriteria')
 @section('content')
 	<div class="page-heading">
 		<div class="page-title">
-			<h3>Hasil Perbandingan Sub Kriteria {{ $title }}</h3>
+			<h3>Hasil Perbandingan Subkriteria {{ $title }}</h3>
 		</div>
 		<section class="section">
 			@include('main.message')
@@ -24,7 +24,7 @@
 						<table class="table table-hover">
 							<thead>
 								<tr>
-									<th>Sub Kriteria</th>
+									<th>Subkriteria</th>
 									@foreach ($data['subkriteria'] as $kr)
 										<th>{{ $kr->name }}</th>
 									@endforeach
@@ -55,7 +55,7 @@
 						<table class="table table-hover">
 							<thead>
 								<tr>
-									<th>Sub Kriteria</th>
+									<th>Subkriteria</th>
 									@foreach ($data['subkriteria'] as $kr)
 										<th>{{ $kr->name }}</th>
 									@endforeach
@@ -92,7 +92,7 @@
 						<table class="table table-hover">
 							<thead>
 								<tr>
-									<th>Sub Kriteria</th>
+									<th>Subkriteria</th>
 									@foreach ($data['subkriteria'] as $kr)
 										<th>{{ $kr->name }}</th>
 									@endforeach

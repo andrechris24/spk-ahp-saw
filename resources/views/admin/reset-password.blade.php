@@ -18,9 +18,9 @@
 			<input type="password" class="form-control form-control-xl" placeholder="Password"
 				name="password" pattern=".{8,20}" maxlength="20" id="password"
 				data-bs-toggle="tooltip" data-bs-placement="top" data-bs-toggle="tooltip"
-				data-bs-placement="top"
-				title="Minimal 8 karakter (Saran: terdiri dari huruf besar, huruf kecil, angka, dan simbol)"
-				oninput="checkpassword()" required />
+				data-bs-placement="top" oninput="checkpassword()" required 
+				title="8-20 karakter (Saran: terdiri dari huruf besar, huruf kecil, angka, dan simbol)"
+				/>
 			<div class="form-control-icon">
 				<i class="bi bi-shield-lock"></i>
 			</div>

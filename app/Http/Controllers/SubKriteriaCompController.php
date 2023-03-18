@@ -13,8 +13,7 @@ class SubKriteriaCompController extends Controller
 {
 	private function getSubKriteriaPerbandingan($id)
 	{
-		$subkriteria_comp = DB::table('subkriteria_banding')
-			->join(
+		$subkriteria_comp = SubKriteriaComp::join(
 				"subkriteria",
 				"subkriteria_banding.subkriteria1",
 				"subkriteria.id"
@@ -30,8 +29,7 @@ class SubKriteriaCompController extends Controller
 	}
 	private function getPerbandinganBySubKriteria1($subkriteria1, $id)
 	{
-		$subkriteria2 = DB::table("subkriteria_banding")
-			->select('nilai', 'subkriteria2', 'subkriteria1')
+		$subkriteria2 =SubKriteriaComp::select('nilai', 'subkriteria2', 'subkriteria1')
 			->where("subkriteria2", "=", $subkriteria1)
 			->where('idkriteria', '=', $id)
 			->get();
@@ -39,8 +37,7 @@ class SubKriteriaCompController extends Controller
 	}
 	private function getNilaiPerbandingan($kode_kriteria, $id)
 	{
-		$nilai_perbandingan = DB::table("subkriteria_banding")
-			->select("nilai", "subkriteria1")
+		$nilai_perbandingan = SubKriteriaComp::select("nilai", "subkriteria1")
 			->where("subkriteria1", "=", $kode_kriteria)
 			->where('idkriteria', '=', $id)
 			->get();
@@ -62,14 +59,14 @@ class SubKriteriaCompController extends Controller
 		if (count($allkrit) == 0) {
 			return redirect('/kriteria')
 				->withWarning(
-					'Masukkan kriteria dulu untuk melakukan perbandingan sub kriteria'
+					'Masukkan kriteria dulu untuk melakukan perbandingan subkriteria'
 				);
 		}
 		$crit = SubKriteria::count();
 		if ($crit == 0) {
 			return redirect('/kriteria/sub')
 				->withWarning(
-					'Masukkan data sub kriteria dulu untuk melakukan perbandingan sub kriteria'
+					'Masukkan data sub kriteria dulu untuk melakukan perbandingan subkriteria'
 				);
 		}
 		return view('main.subkriteria.select', compact('allkrit'));
@@ -88,14 +85,6 @@ class SubKriteriaCompController extends Controller
 		$idkriteria = $request->kriteria_id;
 		$subkriteria = SubKriteria::where('kriteria_id', '=', $idkriteria)->get();
 		$jmlsubkriteria=count($subkriteria);
-		// if($jmlsubkriteria<3){
-		// 	$critname=Kriteria::find($idkriteria)->first();
-		// 	return redirect('kriteria/sub')
-		// 	->withWarning(
-		// 		'Minimal harus ada 3 sub kriteria '.$critname->name.
-		// 		' untuk melakukan perbandingan (Jumlah sekarang: '.$jmlsubkriteria.')'
-		// 	);
-		// }
 		$array=[];
 		$counter = 0;
 		for ($a = 0; $a < $jmlsubkriteria; $a++) {
@@ -120,11 +109,10 @@ class SubKriteriaCompController extends Controller
 	{
 		$request->validate(SubKriteriaComp::$rules, SubKriteriaComp::$message);
 		try {
-			$subkriteria = DB::table("subkriteria")
-				->where('kriteria_id', '=', $request->kriteria_id)->get();
-			DB::table("subkriteria_banding")->where('idkriteria', '=', $request->kriteria_id)->delete();
-			if (DB::table("subkriteria_banding")->count() == 0)
-				DB::table("subkriteria_banding")->truncate();
+			$subkriteria = SubKriteria::where('kriteria_id', $request->kriteria_id)->get();
+			SubKriteriaComp::where('idkriteria', '=', $request->kriteria_id)->delete();
+			if (SubKriteriaComp::count() == 0)
+				SubKriteriaComp::truncate();
 			$a = 0;
 			for ($i = 0; $i < count($subkriteria); $i++) {
 				for ($j = $i; $j < count($subkriteria); $j++) {
@@ -347,19 +335,19 @@ class SubKriteriaCompController extends Controller
 	{
 		try {
 			$kr = Kriteria::where('id', '=', $id)->first();
-			DB::table('subkriteria_banding')->where('idkriteria', '=', $id)->delete();
+			SubKriteriaComp::where('idkriteria', '=', $id)->delete();
 			SubKriteria::where('kriteria_id','=',$id)->update(['bobot'=>0.0000]);
 			return redirect('/bobot/sub')
-				->withSuccess('Perbandingan Sub Kriteria ' . $kr->name . ' sudah direset');
+				->withSuccess('Perbandingan Subkriteria ' . $kr->name . ' sudah direset');
 		} catch (QueryException $e) {
 			return redirect('/bobot/sub')
 				->withError(
-					'Perbandingan Sub Kriteria ' . $kr->name . ' gagal direset'
+					'Perbandingan Subkriteria ' . $kr->name . ' gagal direset'
 				)->withErrors($e->getMessage());
 		}
 		return redirect('/bobot/sub')
 			->withError(
-				'Perbandingan Sub Kriteria ' . $kr->name . ' gagal direset'
+				'Perbandingan Subkriteria ' . $kr->name . ' gagal direset'
 			);
 	}
 }

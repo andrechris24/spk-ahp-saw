@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Mail;
+use Illuminate\Support\Facades\Auth;
+use Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -13,6 +14,10 @@ use Illuminate\Database\QueryException;
 
 class ForgotPasswordController extends Controller
 {
+	// private function clearResets(){
+	// 	$dt=Carbon::now()->addHours(2);
+	// 	dd(DB::table('password_resets')->where('created_at','>',$dt)->first());
+	// }
 	/**
 	 * Write code on Method
 	 *
@@ -20,6 +25,8 @@ class ForgotPasswordController extends Controller
 	 */
 	public function showForgetPasswordForm()
 	{
+		// $this->clearResets();
+		if(Auth::viaRemember() || Auth::check()) return redirect()->intended('/');
 		return view('admin.forget-password');
 	}
 
@@ -30,11 +37,17 @@ class ForgotPasswordController extends Controller
 	 */
 	public function submitForgetPasswordForm(Request $request)
 	{
-		// $tanggal = DB::table('password_resets');
+		$tanggal = DB::table('password_resets')->where('email',$request->email)->first();
+		if(isset($tanggal)) {
+			Carbon::setLocale('id');
+			$dt_next=Carbon::parse($tanggal->created_at)
+			->addHours(2)->translatedFormat('d F Y G:i');
+		}
 		$request->validate([
 			'email' => 'required|email|exists:users|unique:password_resets,email',
 		], [
-			'email.unique' => 'Anda tidak bisa meminta reset password lagi sebelum ...'
+			'email.unique' => 'Anda tidak bisa meminta reset password lagi sebelum '.
+			($dt_next??'...')
 		]);
 		$token = Str::random(64);
 		try {
@@ -43,7 +56,7 @@ class ForgotPasswordController extends Controller
 				'token' => $token,
 				'created_at' => Carbon::now()
 			]);
-			$mailresult = Mail::send(
+			Mail::send(
 				'email.forgetPassword',
 				['token' => $token],
 				function ($message) use ($request) {
@@ -51,6 +64,7 @@ class ForgotPasswordController extends Controller
 					$message->subject('Reset Password');
 				}
 			);
+			return back()->withSuccess('Link reset password sudah dikirim.');
 		} catch (\Exception $th) {
 			DB::table('password_resets')->where('email', '=', $request->email)->delete();
 			return back()->withError('Pengiriman link reset password gagal:')
@@ -59,8 +73,6 @@ class ForgotPasswordController extends Controller
 			return back()->withError('Gagal membuat token reset password:')
 				->withErrors($err->getMessage());
 		}
-		if ($mailresult)
-			return back()->withSuccess('Link reset password sudah dikirim.');
 		return back()->withError('Pengiriman link reset password gagal');
 	}
 	/**
@@ -70,6 +82,7 @@ class ForgotPasswordController extends Controller
 	 */
 	public function showResetPasswordForm($token)
 	{
+		if(Auth::viaRemember() || Auth::check()) return redirect()->intended('/');
 		return view(
 			'admin.reset-password',
 			['token' => $token, 'title' => 'Reset Password']
@@ -92,9 +105,12 @@ class ForgotPasswordController extends Controller
 			if (!$updatePassword)
 				return back()->withInput()->withWarning('Token tidak valid!');
 			$user = User::where('email', $updatePassword->email)
-				->update(['password' => Hash::make($request->password)]);
+				->update([
+					'password' => Hash::make($request->password),
+					'remember_token'=>null
+				]);
 			if ($user) {
-				DB::table('password_resets')->where(['token' => $request->token])->delete();
+				DB::table('password_resets')->where('token', $request->token)->delete();
 				return redirect('/login')->withSuccess('Reset password berhasil');
 			}
 		} catch (QueryException $sql) {

@@ -25,7 +25,7 @@ class KriteriaController extends Controller
 			if ($kriteria) {
 				$cekhasil = KriteriaComp::count();
 				if ($cekhasil > 0) {
-					DB::table('kriteria_banding')->delete();
+					KriteriaComp::delete();
 					Kriteria::update(['bobot'=>0.0000]);
 					return back()
 						->withSuccess(

@@ -52,7 +52,9 @@
 											<input type="password" name="current_password" class="form-control"
 												placeholder="Password Anda" maxlength="
 												20" required />
-											<div class="form-control-icon"><i class="bi bi-lock"></i></div>
+											<div class="form-control-icon">
+												<i class="bi bi-lock"></i>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -64,8 +66,10 @@
 												placeholder="Kosongkan jika tidak ganti password" id="newpassword"
 												oninput="checkpassword()" title="8-20 karakter" pattern=".{8,20}"
 												data-bs-toggle="tooltip" data-bs-placement="top"
-												title="Minimal 8 karakter (Saran: terdiri dari huruf besar, huruf kecil, angka, dan simbol)" />
-											<div class="form-control-icon"><i class="bi bi-lock"></i></div>
+												title="8-20 karakter (Saran: terdiri dari huruf besar, huruf kecil, angka, dan simbol)" />
+											<div class="form-control-icon">
+												<i class="bi bi-lock"></i>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -76,7 +80,9 @@
 											<input type="password" name="password_confirmation" class="form-control"
 												placeholder="Ketik ulang Password baru" id="conf-password"
 												oninput="checkpassword()" />
-											<div class="form-control-icon"><i class="bi bi-lock"></i></div>
+											<div class="form-control-icon">
+												<i class="bi bi-lock"></i>
+											</div>
 										</div>
 									</div>
 								</div>

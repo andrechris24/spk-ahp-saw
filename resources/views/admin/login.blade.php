@@ -22,7 +22,8 @@
 		</div>
 		<div class="form-group position-relative has-icon-left mb-4">
 			<input type="password" class="form-control form-control-xl" placeholder="Password"
-				name="password" pattern=".{8,20}" maxlength="20" id="password" required />
+				name="password" pattern=".{8,20}" maxlength="20" id="password" title="8-20 karakter"
+				required />
 			<div class="form-control-icon">
 				<i class="bi bi-shield-lock"></i>
 			</div>

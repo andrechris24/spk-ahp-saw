@@ -42,7 +42,8 @@ class RegisterController extends Controller
 			$user = User::create($credentials);
 			Auth::login($user);
 			$request->session()->regenerate();
-			return redirect('/home')->withSuccess("Registrasi akun berhasil, selamat datang");
+			return redirect('/home')
+			->withSuccess("Registrasi akun berhasil, selamat datang");
 		} catch (QueryException $e) {
 			return back()->withInput()->withErrors($e->getMessage());
 		}

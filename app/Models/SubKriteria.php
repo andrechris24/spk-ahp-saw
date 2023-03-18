@@ -7,24 +7,24 @@ use Illuminate\Database\Eloquent\Model;
 
 class SubKriteria extends Model
 {
-    use HasFactory;
-    protected $table = 'subkriteria';
-    protected $fillable = ['name', 'kriteria_id'];
-    public static $rules = [
-        'name' => 'required',
-        'kriteria_id' => 'bail|required|integer',
-    ];
-    public static $message = [
-        'name.required' => 'Nama sub kriteria harus diisi',
-        'kriteria_id.required' => 'Kriteria harus dipilih',
-        'kriteria_id.integer' => 'Kriteria tidak valid',
-    ];
-    public function kriteria()
-    {
-        return $this->belongsTo(Kriteria::class, 'kriteria_id');
-    }
-    public function nilai()
-    {
-        return $this->hasMany(Nilai::class, 'subkriteria_id');
-    }
+	use HasFactory;
+	protected $table = 'subkriteria';
+	protected $fillable = ['name', 'kriteria_id'];
+	public static $rules = [
+		'name' => 'required',
+		'kriteria_id' => 'bail|required|integer',
+	];
+	public static $message = [
+		'name.required' => 'Nama subkriteria harus diisi',
+		'kriteria_id.required' => 'Kriteria harus dipilih',
+		'kriteria_id.integer' => 'Kriteria tidak valid',
+	];
+	public function kriteria()
+	{
+		return $this->belongsTo(Kriteria::class, 'kriteria_id');
+	}
+	public function nilai()
+	{
+		return $this->hasMany(Nilai::class, 'subkriteria_id');
+	}
 }

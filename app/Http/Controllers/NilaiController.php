@@ -7,7 +7,6 @@ use App\Models\Kriteria;
 use App\Models\SubKriteria;
 use App\Models\Alternatif;
 use App\Models\Hasil;
-
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
@@ -57,14 +56,14 @@ class NilaiController extends Controller
 		if (count($kriteria) == 0) {
 			return redirect('kriteria')
 				->withWarning(
-					'Tambahkan kriteria dan sub kriteria dulu sebelum melakukan penilaian alternatif'
+					'Tambahkan kriteria dan subkriteria dulu sebelum melakukan penilaian alternatif'
 				);
 		}
 		$subkriteria = SubKriteria::get();
 		if (count($subkriteria) == 0) {
 			return redirect('kriteria/sub')
 				->withWarning(
-					'Tambahkan sub kriteria dulu sebelum melakukan penilaian alternatif'
+					'Tambahkan subkriteria dulu sebelum melakukan penilaian alternatif'
 				);
 		}
 		$alternatif = Alternatif::get();
@@ -72,9 +71,11 @@ class NilaiController extends Controller
 			return redirect('alternatif')
 				->withWarning('Tambahkan alternatif dulu sebelum melakukan penilaian');
 		}
-		$nilaialt = Nilai::leftJoin('alternatif', 'alternatif.id', '=', 'nilai.alternatif_id')
-			->leftJoin('kriteria', 'kriteria.id', '=', 'nilai.kriteria_id')
-			->leftJoin('subkriteria', 'subkriteria.id', '=', 'nilai.subkriteria_id')->get();
+		$nilaialt = Nilai::leftJoin(
+			'alternatif', 'alternatif.id', '=', 'nilai.alternatif_id'
+		)->leftJoin('kriteria', 'kriteria.id', '=', 'nilai.kriteria_id')
+			->leftJoin('subkriteria', 'subkriteria.id', '=', 'nilai.subkriteria_id')
+			->get();
 		return view(
 			'main.alternatif.nilai',
 			compact('kriteria', 'subkriteria', 'alternatif', 'nilaialt')
@@ -114,9 +115,11 @@ class NilaiController extends Controller
 		$alt = Alternatif::get();
 		$kr = Kriteria::get();
 		$skr = SubKriteria::get();
-		$hasil = Nilai::leftJoin('alternatif', 'alternatif.id', '=', 'nilai.alternatif_id')
-			->leftJoin('kriteria', 'kriteria.id', '=', 'nilai.kriteria_id')
-			->leftJoin('subkriteria', 'subkriteria.id', '=', 'nilai.subkriteria_id')->get();
+		$hasil = Nilai::leftJoin(
+			'alternatif', 'alternatif.id', '=', 'nilai.alternatif_id'
+		)->leftJoin('kriteria', 'kriteria.id', '=', 'nilai.kriteria_id')
+			->leftJoin('subkriteria', 'subkriteria.id', '=', 'nilai.subkriteria_id')
+			->get();
 		$cekbobotkr=Kriteria::where('bobot',0.0000)->first();
 		if($cekbobotkr->bobot==0.0000){
 			return redirect('bobot')

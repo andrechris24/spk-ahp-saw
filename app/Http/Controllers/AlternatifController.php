@@ -30,10 +30,10 @@ class AlternatifController extends Controller
 	{
 		try {
 			$cek = Alternatif::find($id);
-			if (!$cek) return back()->with('error', 'Data Alternatif tidak ditemukan');
+			if (!$cek) return back()->withError('Data Alternatif tidak ditemukan');
 			$req = $updaltrequest->all();
 			$upd = $cek->update($req);
-			if ($upd) return back()->with('success', 'Data Alternatif sudah diupdate');
+			if ($upd) return back()->withSuccess('Data Alternatif sudah diupdate');
 		} catch (QueryException $sql) {
 			return back()->withError('Gagal update data Alternatif')
 				->withErrors($sql->getMessage());
@@ -44,9 +44,9 @@ class AlternatifController extends Controller
 	{
 		try {
 			$cek = Alternatif::find($id);
-			if (!$cek) return back()->with('error', 'Data Alternatif tidak ditemukan');
+			if (!$cek) return back()->withError('Data Alternatif tidak ditemukan');
 			$del = $cek->delete();
-			if ($del) return back()->with('success', 'Data Alternatif sudah dihapus');
+			if ($del) return back()->withSuccess('Data Alternatif sudah dihapus');
 		} catch (QueryException $sql) {
 			return back()->withError('Data Alternatif gagal dihapus')
 				->withErrors($sql->getMessage());
