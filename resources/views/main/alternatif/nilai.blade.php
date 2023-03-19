@@ -177,7 +177,7 @@
 							<i class="bi bi-plus-lg"></i>
 							Tambah Nilai Alternatif
 						</button>
-						@if(count($hasil)>0)
+						@if(count($nilaialt)>0)
 						<a href="{{url('alternatif/hasil')}}" class="btn btn-success">
 						@else
 						<a href="{{url('alternatif/hasil')}}" class="btn btn-success disabled">

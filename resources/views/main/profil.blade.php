@@ -24,8 +24,9 @@
 								<div class="col-md-8">
 									<div class="form-group has-icon-left">
 										<div class="position-relative">
-											<input type="text" class="form-control" name="name" id="nama-user"
-												placeholder="Name" value="{{ auth()->user()->name }}" required />
+											<input type="text" name="name" placeholder="Name"
+											class="form-control @error('name') is-invalid @enderror"
+												id="nama-user" value="{{ auth()->user()->name }}" required />
 											<div class="form-control-icon">
 												<i class="bi bi-person"></i>
 											</div>
@@ -36,8 +37,9 @@
 								<div class="col-md-8">
 									<div class="form-group has-icon-left">
 										<div class="position-relative">
-											<input type="email" class="form-control" name="email"
-												placeholder="Email" id="email-user" value="{{ auth()->user()->email }}"
+											<input type="email" name="email" placeholder="Email" 
+											class="form-control @error('email') is-invalid @enderror"
+												id="email-user" value="{{ auth()->user()->email }}"
 												required />
 											<div class="form-control-icon">
 												<i class="bi bi-envelope"></i>
@@ -49,9 +51,9 @@
 								<div class="col-md-8">
 									<div class="form-group has-icon-left">
 										<div class="position-relative">
-											<input type="password" name="current_password" class="form-control"
-												placeholder="Password Anda" maxlength="
-												20" required />
+											<input type="password" name="current_password"
+											class="form-control @error('current_password') is-invalid @enderror"
+												placeholder="Password Anda" maxlength="20" required />
 											<div class="form-control-icon">
 												<i class="bi bi-lock"></i>
 											</div>
@@ -62,9 +64,10 @@
 								<div class="col-md-8">
 									<div class="form-group has-icon-left">
 										<div class="position-relative">
-											<input type="password" name="password" class="form-control"
-												placeholder="Kosongkan jika tidak ganti password" id="newpassword"
-												oninput="checkpassword()" title="8-20 karakter" pattern=".{8,20}"
+											<input type="password" name="password" title="8-20 karakter"
+											class="form-control @error('password') is-invalid @enderror"
+												placeholder="Kosongkan jika tidak ganti password"
+												oninput="checkpassword()" pattern=".{8,20}" id="newpassword"
 												data-bs-toggle="tooltip" data-bs-placement="top"
 												title="8-20 karakter (Saran: terdiri dari huruf besar, huruf kecil, angka, dan simbol)" />
 											<div class="form-control-icon">
@@ -77,7 +80,8 @@
 								<div class="col-md-8">
 									<div class="form-group has-icon-left">
 										<div class="position-relative">
-											<input type="password" name="password_confirmation" class="form-control"
+											<input type="password" name="password_confirmation"
+											class="form-control @error('password_confirmation') is-invalid @enderror"
 												placeholder="Ketik ulang Password baru" id="conf-password"
 												oninput="checkpassword()" />
 											<div class="form-control-icon">

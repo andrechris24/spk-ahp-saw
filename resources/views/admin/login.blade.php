@@ -3,27 +3,24 @@
 @section('auth-desc')
 	<h1 class="auth-title">Login</h1>
 	<p class="auth-subtitle mb-5">
-		Login dengan data yang sudah Anda daftarkan
+		Login untuk menggunakan fasilitas Sistem Pendukung Keputusan
 	</p>
 @endsection
 
 @section('content')
-	<div class="alert alert-warning d-none" id="capslock">
-		<i class="bi bi-capslock-fill"></i> CAPS LOCK nyala
-	</div>
 	<form action="{{ url('login') }}" method="post" enctype="multipart/form-data">
 		@csrf
 		<div class="form-group position-relative has-icon-left mb-4">
-			<input type="email" class="form-control form-control-xl" placeholder="Email"
-				name="email" required />
+			<input type="email" placeholder="Email" name="email" required 
+			class="form-control form-control-xl @error('email') is-invalid @enderror"/>
 			<div class="form-control-icon">
 				<i class="bi bi-envelope"></i>
 			</div>
 		</div>
 		<div class="form-group position-relative has-icon-left mb-4">
-			<input type="password" class="form-control form-control-xl" placeholder="Password"
-				name="password" pattern=".{8,20}" maxlength="20" id="password" title="8-20 karakter"
-				required />
+			<input type="password" placeholder="Password" name="password" pattern=".{8,20}" 
+			class="form-control form-control-xl @error('password') is-invalid @enderror"
+				maxlength="20" id="password" title="8-20 karakter" required />
 			<div class="form-control-icon">
 				<i class="bi bi-shield-lock"></i>
 			</div>

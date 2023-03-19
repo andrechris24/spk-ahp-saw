@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -38,6 +39,7 @@ class RegisterController extends Controller
 			'password.between' => 'Panjang password harus 8-20 karakter',
 			'password.confirmed' => 'Password konfirmasi salah',
 		]);
+		$credentials['password']=Hash::make($credentials['password']);
 		try {
 			$user = User::create($credentials);
 			Auth::login($user);

@@ -21,6 +21,9 @@
 					</div>
 					@yield('auth-desc')
 					@include('main.message')
+					<div class="alert alert-warning d-none" id="capslock">
+						<i class="bi bi-capslock-fill"></i> CAPS LOCK nyala
+					</div>
 					@yield('content')
 				</div>
 			</div>

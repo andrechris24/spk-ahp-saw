@@ -120,11 +120,22 @@ class NilaiController extends Controller
 		)->leftJoin('kriteria', 'kriteria.id', '=', 'nilai.kriteria_id')
 			->leftJoin('subkriteria', 'subkriteria.id', '=', 'nilai.subkriteria_id')
 			->get();
-		$cekbobotkr=Kriteria::where('bobot',0.0000)->first();
-		if($cekbobotkr->bobot==0.0000){
-			return redirect('bobot')
-			->withWarning(
+		$jml=$hasil->count();
+		$cekbobotkr=Kriteria::where('bobot',0.0000)->count();
+		$cekbobotskr=SubKriteria::where('bobot',0.0000)->count();
+		if($cekbobotkr>0){
+			return redirect('bobot')->withWarning(
 				'Lakukan perbandingan kriteria dulu sebelum melihat hasil penilaian alternatif'
+			);
+		}
+		if($cekbobotskr>0){
+			return redirect('bobot/sub')->withWarning(
+				'Satu atau lebih perbandingan subkriteria belum dilakukan'
+			);
+		}
+		if($jml==0){
+			return redirect('alternatif/nilai')->withWarning(
+				'Masukkan data penilaian alternatif dulu'
 			);
 		}
 		$data = [

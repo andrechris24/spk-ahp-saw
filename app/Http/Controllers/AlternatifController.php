@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Alternatif;
+use App\Models\Nilai;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 
@@ -11,7 +12,8 @@ class AlternatifController extends Controller
 	public function index()
 	{
 		$alt = Alternatif::get();
-		return view('main.alternatif.index', compact('alt'));
+		$ceknilai=Nilai::count();
+		return view('main.alternatif.index', compact('alt','ceknilai'));
 	}
 	public function tambah(Request $altrequest)
 	{

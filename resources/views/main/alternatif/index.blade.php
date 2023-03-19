@@ -26,6 +26,11 @@
 								<span id="del-desc">Anda akan menghapus sebuah alternatif.</span>
 							</p>
 							<p>Lanjutkan?</p>
+							@if($ceknilai>0)
+							<div class="alert alert-warning">
+								Menghapus alternatif akan menghapus Penilaian yang bersangkutan.
+							</div>
+							@endif
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-light-secondary"

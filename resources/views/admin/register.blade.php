@@ -11,34 +11,34 @@
 	<form action="{{ url('register') }}" method="post" enctype="multipart/form-data">
 		@csrf
 		<div class="form-group position-relative has-icon-left mb-4">
-			<input type="text" class="form-control form-control-xl" placeholder="Email"
-				name="email" required />
+			<input type="text" name="email" placeholder="Email" required
+			class="form-control form-control-xl @error('email') is-invalid @enderror" />
 			<div class="form-control-icon">
 				<i class="bi bi-envelope"></i>
 			</div>
 		</div>
 		<div class="form-group position-relative has-icon-left mb-4">
-			<input type="text" class="form-control form-control-xl"
-				placeholder="Nama lengkap" name="name" maxlength="99"
+			<input type="text" name="name" maxlength="99" placeholder="Nama lengkap"
+			class="form-control form-control-xl @error('name') is-invalid @enderror"
 				pattern="[A-z.,' ]{5,99}" required />
 			<div class="form-control-icon">
 				<i class="bi bi-person"></i>
 			</div>
 		</div>
 		<div class="form-group position-relative has-icon-left mb-4">
-			<input type="password" class="form-control form-control-xl" placeholder="Password"
-				name="password" pattern=".{8,20}" maxlength="20" id="password"
-				oninput="checkpassword()" data-bs-toggle="tooltip" data-bs-placement="top"
-				title="8-20 karakter (Saran: terdiri dari huruf besar, huruf kecil, angka, dan simbol)"
-				required />
+			<input type="password" placeholder="Password" name="password" 
+			class="form-control form-control-xl @error('password') is-invalid @enderror"
+				pattern=".{8,20}" maxlength="20" id="password" oninput="checkpassword()"
+				data-bs-toggle="tooltip" data-bs-placement="top" required
+				title="8-20 karakter (Saran: terdiri dari huruf besar, huruf kecil, angka, dan simbol)"/>
 			<div class="form-control-icon">
 				<i class="bi bi-shield-lock"></i>
 			</div>
 		</div>
 		<div class="form-group position-relative has-icon-left mb-4">
-			<input type="password" class="form-control form-control-xl"
-				placeholder="Confirm Password" name="password_confirmation" maxlength="20"
-				oninput="checkpassword()" id="confirm-password" required />
+			<input type="password" placeholder="Confirm Password" name="password_confirmation" 
+			class="form-control form-control-xl @error('password_confirmation') is-invalid @enderror"
+				maxlength="20" oninput="checkpassword()" id="confirm-password" required />
 			<div class="form-control-icon">
 				<i class="bi bi-shield-lock"></i>
 			</div>

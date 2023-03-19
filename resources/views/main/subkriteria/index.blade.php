@@ -31,6 +31,9 @@
 									Menghapus sub kriteria akan mereset perbandingan sub kriteria
 									<b><span id="warning-msg">...</span></b>
 									jika perbandingan sudah dilakukan.
+									@if($ceknilai>0)
+									Penilaian alternatif yang berkaitan juga akan dihapus.
+									@endif
 								</div>
 							@endif
 						</div>

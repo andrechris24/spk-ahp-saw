@@ -47,27 +47,22 @@ class User extends Authenticatable
 		'password' => 'bail|required|between:8,20|confirmed',
 		// 'password_confirmation' => 'same:password',
 	];
-	public static $regmsg = [
-		'name.required' => 'Nama akun diperlukan',
-		'name.regex' => 'Nama tidak boleh mengandung simbol dan angka',
-		'email.required' => 'Email diperlukan',
-		'email.unique' => 'Email :email sudah digunakan',
-		'password.required' => 'Password diperlukan dengan panjang 8-20 karakter',
-		'password.in' => 'Panjang password harus 8-20 karakter',
-		'password.confirmed' => 'Password konfirmasi salah',
+	public static $resetpass = [
+		'token' => 'required',
+		'email' => 'bail|required|email|exists:users',
+		'password' => 'bail|required|between:8,20|confirmed',
 	];
 	public static $loginrules=[
-			'email' => 'required|email',
-			'password' => 'required|min:8'
-		];
-	/**
-	 * Always encrypt password when it is updated.
-	 *
-	 * @param $value
-	 * @return string
-	 */
-	public function setPasswordAttribute($value)
-	{
-		$this->attributes['password'] = bcrypt($value);
-	}
+		'email' => 'bail|required|email|exists:users',
+		'password' => 'required|min:8'
+	];
+	public static $resetmsg=[
+		'token.required'=>'Token tidak valid',
+		'email.required'=>'Akun tidak ditemukan',
+		'email.email'=>'Format Email salah',
+		'email.exists'=>'Akun tidak ditemukan',
+		'password.required' => 'Password harus diisi',
+		'password.between' => 'Panjang password harus 8-20 karakter',
+		'password.confirmed' => 'Password konfirmasi salah',
+	];
 }

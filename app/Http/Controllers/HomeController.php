@@ -36,9 +36,9 @@ class HomeController extends Controller
 			$request->validate(
 				[
 					'name' => 'required',
-					'email' => 'required|email|unique:users,email,' . $id,
-					'current_password' => 'required|min:8',
-					'password' => 'confirmed|between:8,20',
+					'email' => 'bail|required|email|unique:users,email,' . $id,
+					'current_password' => 'bail|required|min:8',
+					'password' => 'nullable|confirmed|between:8,20',
 					'password_confirmation' => 'required_with:password',
 				],
 				[

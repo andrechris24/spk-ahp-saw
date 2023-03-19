@@ -8,17 +8,23 @@
 @endsection
 
 @section('content')
-	<div class="alert alert-warning d-none">
-		<i class="bi bi-capslock-fill"></i> CAPS LOCK nyala
-	</div>
 	<form action="{{ url('reset-password') }}" method="post">
 		@csrf
 		<input type="hidden" name="token" value="{{ $token }}">
 		<div class="form-group position-relative has-icon-left mb-4">
-			<input type="password" class="form-control form-control-xl" placeholder="Password"
-				name="password" pattern=".{8,20}" maxlength="20" id="password"
+			<input type="email" placeholder="Email" name="email" value="{{ $email }}"
+			class="form-control form-control-xl @error('email') is-invalid @enderror"
+				readonly required />
+			<div class="form-control-icon">
+				<i class="bi bi-envelope"></i>
+			</div>
+		</div>
+		<div class="form-group position-relative has-icon-left mb-4">
+			<input type="password" name="password" placeholder="Password"
+			class="form-control form-control-xl @error('password') is-invalid @enderror"
+				pattern=".{8,20}" maxlength="20" id="password" oninput="checkpassword()"
 				data-bs-toggle="tooltip" data-bs-placement="top" data-bs-toggle="tooltip"
-				data-bs-placement="top" oninput="checkpassword()" required 
+				data-bs-placement="top" required 
 				title="8-20 karakter (Saran: terdiri dari huruf besar, huruf kecil, angka, dan simbol)"
 				/>
 			<div class="form-control-icon">
@@ -26,9 +32,9 @@
 			</div>
 		</div>
 		<div class="form-group position-relative has-icon-left mb-4">
-			<input type="password" class="form-control form-control-xl" id="confirm-password"
-				placeholder="Confirm Password" name="password_confirmation" maxlength="20"
-				oninput="checkpassword()" required />
+			<input type="password" name="password_confirmation" id="confirm-password"
+			class="form-control form-control-xl @error('password_confirmation') is-invalid @enderror"
+				placeholder="Confirm Password" maxlength="20" oninput="checkpassword()" required />
 			<div class="form-control-icon">
 				<i class="bi bi-shield-lock"></i>
 			</div>

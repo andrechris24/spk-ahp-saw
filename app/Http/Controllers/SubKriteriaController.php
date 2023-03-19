@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SubKriteria;
 use App\Models\SubKriteriaComp;
 use App\Models\Kriteria;
+use App\Models\Nilai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
@@ -21,6 +22,7 @@ class SubKriteriaController extends Controller
 		$kriteria = Kriteria::get();
 		$subkriteria = SubKriteria::get();
 		$compskr = SubKriteriaComp::count();
+		$ceknilai=Nilai::count();
 		if (count($kriteria) == 0) {
 			return redirect('kriteria')
 				->withWarning('Tambahkan kriteria dulu sebelum menambah subkriteria');

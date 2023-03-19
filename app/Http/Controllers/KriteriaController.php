@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kriteria;
 use App\Models\KriteriaComp;
+use App\Models\Nilai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
@@ -13,8 +14,9 @@ class KriteriaController extends Controller
 	public function index()
 	{
 		$krit = Kriteria::get();
+		$ceknilai=Nilai::count();
 		$compkr = KriteriaComp::count();
-		return view('main.kriteria.index', compact('krit', 'compkr'));
+		return view('main.kriteria.index', compact('krit', 'compkr','ceknilai'));
 	}
 	public function tambah(Request $kritrequest)
 	{

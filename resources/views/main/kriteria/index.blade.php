@@ -27,12 +27,16 @@
 							</p>
 							<p>Lanjutkan?</p>
 							<div class="alert alert-warning">
-							@if ($compkr > 0)
-								Data subkriteria yang berkaitan juga akan dihapus,
-								serta mereset	perbandingan kriteria.
-							@else
-								Data subkriteria yang berkaitan juga akan dihapus.
-							@endif
+								@if($compkr>0 && $ceknilai>0)
+									Data subkriteria yang berkaitan juga akan dihapus,
+									begitu juga dengan penilaian alternatif.
+									Perbandingan kriteria juga akan direset.
+								@elseif ($compkr > 0)
+									Data subkriteria yang berkaitan juga akan dihapus,
+									serta mereset	perbandingan kriteria.
+								@else
+									Data subkriteria yang berkaitan juga akan dihapus.
+								@endif
 							</div>
 						</div>
 						<div class="modal-footer">
