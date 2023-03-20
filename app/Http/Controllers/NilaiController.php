@@ -45,11 +45,6 @@ class NilaiController extends Controller
 		}
 		return true;
 	}
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
 	public function index()
 	{
 		$kriteria = Kriteria::get();
@@ -72,7 +67,10 @@ class NilaiController extends Controller
 				->withWarning('Tambahkan alternatif dulu sebelum melakukan penilaian');
 		}
 		$nilaialt = Nilai::leftJoin(
-			'alternatif', 'alternatif.id', '=', 'nilai.alternatif_id'
+			'alternatif',
+			'alternatif.id',
+			'=',
+			'nilai.alternatif_id'
 		)->leftJoin('kriteria', 'kriteria.id', '=', 'nilai.kriteria_id')
 			->leftJoin('subkriteria', 'subkriteria.id', '=', 'nilai.subkriteria_id')
 			->get();
@@ -81,12 +79,6 @@ class NilaiController extends Controller
 			compact('kriteria', 'subkriteria', 'alternatif', 'nilaialt')
 		);
 	}
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @return \Illuminate\Http\Response
-	 */
 	public function store(Request $request)
 	{
 		$request->validate(Nilai::$rules, Nilai::$message);
@@ -104,36 +96,33 @@ class NilaiController extends Controller
 		return back()->withSuccess('Penilaian alternatif sudah ditambahkan');
 	}
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  \App\Models\Nilai  $nilai
-	 * @return \Illuminate\Http\Response
-	 */
 	public function show()
 	{
 		$alt = Alternatif::get();
 		$kr = Kriteria::get();
 		$skr = SubKriteria::get();
 		$hasil = Nilai::leftJoin(
-			'alternatif', 'alternatif.id', '=', 'nilai.alternatif_id'
+			'alternatif',
+			'alternatif.id',
+			'=',
+			'nilai.alternatif_id'
 		)->leftJoin('kriteria', 'kriteria.id', '=', 'nilai.kriteria_id')
 			->leftJoin('subkriteria', 'subkriteria.id', '=', 'nilai.subkriteria_id')
 			->get();
-		$jml=$hasil->count();
-		$cekbobotkr=Kriteria::where('bobot',0.0000)->count();
-		$cekbobotskr=SubKriteria::where('bobot',0.0000)->count();
-		if($cekbobotkr>0){
+		$jml = $hasil->count();
+		$cekbobotkr = Kriteria::where('bobot', 0.0000)->count();
+		$cekbobotskr = SubKriteria::where('bobot', 0.0000)->count();
+		if ($cekbobotkr > 0) {
 			return redirect('bobot')->withWarning(
 				'Lakukan perbandingan kriteria dulu sebelum melihat hasil penilaian alternatif'
 			);
 		}
-		if($cekbobotskr>0){
+		if ($cekbobotskr > 0) {
 			return redirect('bobot/sub')->withWarning(
 				'Satu atau lebih perbandingan subkriteria belum dilakukan'
 			);
 		}
-		if($jml==0){
+		if ($jml == 0) {
 			return redirect('alternatif/nilai')->withWarning(
 				'Masukkan data penilaian alternatif dulu'
 			);
@@ -146,13 +135,6 @@ class NilaiController extends Controller
 		return view('main.alternatif.hasil', compact('hasil', 'data'));
 	}
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @param  \App\Models\Nilai  $nilai
-	 * @return \Illuminate\Http\Response
-	 */
 	public function update(Request $request, $id)
 	{
 		$success = false;
@@ -170,7 +152,6 @@ class NilaiController extends Controller
 			} catch (QueryException $ex) {
 				return back()->withError('Gagal update penilaian alternatif')
 					->withErrors($ex->getMessage());
-				break;
 			}
 		}
 		if ($success)
@@ -178,20 +159,14 @@ class NilaiController extends Controller
 		return back()->withError('Gagal update penilaian alternatif');
 	}
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  \App\Models\Nilai  $nilai
-	 * @return \Illuminate\Http\Response
-	 */
 	public function destroy($id)
 	{
 		try {
 			$cek = Nilai::where('alternatif_id', '=', $id);
 			if (!$cek)
 				return back()->withError('Penilaian alternatif tidak ditemukan');
-			$del = $cek->delete();
-			if ($del) return back()->withSuccess('Penilaian alternatif sudah dihapus');
+			$cek->delete();
+			return back()->withSuccess('Penilaian alternatif sudah dihapus');
 		} catch (QueryException $err) {
 			return back()->withError('Gagal hapus penilaian alternatif')
 				->withErrors($err->getMessage());

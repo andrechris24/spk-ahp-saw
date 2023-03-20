@@ -18,7 +18,7 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<table class="table table-hover">
+						<table class="table table-hover text-center">
 							<thead>
 								<tr>
 									<th rowspan="2">Alternatif</th>
@@ -55,7 +55,7 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<table class="table table-hover">
+						<table class="table table-hover text-center">
 							<thead>
 								<tr>
 									<th rowspan="2">Alternatif</th>
@@ -69,9 +69,9 @@
 							</thead>
 							<tbody>
 								@foreach ($data['alternatif'] as $alts)
-									@php 
-									$counter = 0;
-									$norm = $hasil->where('alternatif_id', '=', $alts->id)->all();
+									@php
+										$counter = 0;
+										$norm = $hasil->where('alternatif_id', '=', $alts->id)->all();
 									@endphp
 									@if (count($norm) > 0)
 										<tr>
@@ -79,14 +79,9 @@
 											@foreach ($norm as $nilai)
 												<td>
 													<?php $arrays = $saw->getNilaiArr($nilai->kriteria_id);
-													$result = $saw->normalisasi(
-														$arrays, 
-														$nilai->kriteria->type, 
-														$nilai->subkriteria->bobot
-													);
+													$result = $saw->normalisasi($arrays, $nilai->kriteria->type, $nilai->subkriteria->bobot);
 													echo $result;
-													$lresult[$alts->id][$counter] = 
-														$result * $saw->getBobot($nilai->kriteria_id);
+													$lresult[$alts->id][$counter] = $result * $saw->getBobot($nilai->kriteria_id);
 													$counter++; ?>
 												</td>
 											@endforeach
@@ -104,8 +99,8 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<table class="table table-hover" id="table-hasil">
-							<thead>
+						<table class="table table-hover text-center" id="table-hasil">
+							<thead class="text-center">
 								<tr>
 									<th rowspan="2">Alternatif</th>
 									<th colspan="{{ count($data['kriteria']) }}">Kriteria</th>
@@ -151,13 +146,13 @@
 	</div>
 @endsection
 @section('js')
-<script type="text/javascript">
-	$(document).ready(function() {
+	<script type="text/javascript">
+		$(document).ready(function() {
 			$('#table-hasil').DataTable({
 				"stateSave": true,
 				"lengthChange": false,
 				"searching": false,
 			});
 		});
-</script>
+	</script>
 @endsection

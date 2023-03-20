@@ -22,17 +22,15 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<p id="del-desc">
-							Anda akan menghapus sebuah sub kriteria.
-							</p>
+							<p id="del-desc">Anda akan menghapus sebuah sub kriteria.</p>
 							<p>Lanjutkan?</p>
 							@if ($compskr > 0)
 								<div class="alert alert-warning">
 									Menghapus sub kriteria akan mereset perbandingan sub kriteria
 									<b><span id="warning-msg">...</span></b>
 									jika perbandingan sudah dilakukan.
-									@if($ceknilai>0)
-									Penilaian alternatif yang berkaitan juga akan dihapus.
+									@if ($ceknilai > 0)
+										Penilaian alternatif yang berkaitan juga akan dihapus.
 									@endif
 								</div>
 							@endif
@@ -230,13 +228,13 @@
 			const krnama = button.getAttribute('data-bs-kr');
 			const link = delCriteriaModal.querySelector('#del-action');
 			const desc = delCriteriaModal.querySelector('#del-desc');
-			const warnmsg=delCriteriaModal.querySelector('#warning-msg');
+			const warnmsg = delCriteriaModal.querySelector('#warning-msg');
 			var formurl = "{{ url('/kriteria/sub/del/:id') }}";
 			formurl = formurl.replace(':id', id);
 			desc.innerHTML =
 				"Anda akan menghapus sub kriteria <b>" +
 				nama + "</b> (Kriteria " + krnama + ").";
-			warnmsg.textContent=krnama;
+			warnmsg.textContent = krnama;
 			link.href = formurl;
 		});
 		$(document).ready(function() {

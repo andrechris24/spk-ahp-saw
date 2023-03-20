@@ -26,10 +26,10 @@
 								<span id="del-desc">Anda akan menghapus sebuah alternatif.</span>
 							</p>
 							<p>Lanjutkan?</p>
-							@if($ceknilai>0)
-							<div class="alert alert-warning">
-								Menghapus alternatif akan menghapus Penilaian yang bersangkutan.
-							</div>
+							@if ($ceknilai > 0)
+								<div class="alert alert-warning">
+									Menghapus alternatif akan menghapus Penilaian yang bersangkutan.
+								</div>
 							@endif
 						</div>
 						<div class="modal-footer">
@@ -46,8 +46,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="modal fade text-left" id="AddAlterModal" tabindex="-1"
-				role="dialog"aria-labelledby="AddAlterLabel" aria-hidden="true">
+			<div class="modal fade text-left" id="AddAlterModal" tabindex="-1" role="dialog"
+				aria-labelledby="AddAlterLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
 					role="document">
 					<div class="modal-content">

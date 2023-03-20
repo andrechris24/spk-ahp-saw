@@ -13,14 +13,13 @@ class KriteriaCompController extends Controller
 	private function getKriteriaPerbandingan()
 	{
 		$kriteria_comp = KriteriaComp::join(
-				"kriteria",
-				"kriteria_banding.kriteria1",
-				"kriteria.id"
-			)
-			->select(
-				"kriteria_banding.kriteria1 as idkriteria",
-				"kriteria.name"
-			)
+			"kriteria",
+			"kriteria_banding.kriteria1",
+			"kriteria.id"
+		)->select(
+			"kriteria_banding.kriteria1 as idkriteria",
+			"kriteria.name"
+		)
 			->groupBy("kriteria1", 'name')
 			->get();
 		return $kriteria_comp;
@@ -42,8 +41,8 @@ class KriteriaCompController extends Controller
 	public function index()
 	{
 		$crit = Kriteria::get();
-		$jmlcrit=count($crit);
-		$array=[];
+		$jmlcrit = count($crit);
+		$array = [];
 		$counter = 0;
 		for ($a = 0; $a < $jmlcrit; $a++) {
 			for ($b = $a; $b < $jmlcrit; $b++) {
@@ -53,7 +52,7 @@ class KriteriaCompController extends Controller
 			}
 		}
 		$cek = KriteriaComp::count();
-		return view('main.kriteria.comp', compact('array', 'cek','jmlcrit'));
+		return view('main.kriteria.comp', compact('array', 'cek', 'jmlcrit'));
 	}
 	public function simpan(Request $request)
 	{
@@ -245,7 +244,9 @@ class KriteriaCompController extends Controller
 			abs(($average_cm - count($kriteria)) / (count($kriteria) - 1)),
 			4
 		);
-		$ratio = [0, 0, 0.58, 0.9, 1.12, 1.24, 1.32, 1.41, 1.45, 1.49, 1.51];
+		$ratio = [0, 0, 0.58, 0.9, 1.12, 1.24, 1.32, 1.41, 1.45, 1.49, 1.51, 1.48, 1.56, 1.57, 1.59, 1.605, 1.61, 1.615, 1.62, 1.625];
+		if($ratio[count($kriteria) - 1]==0) $result='-';
+		else
 		$result = number_format(abs($total_ci / $ratio[count($kriteria) - 1]), 4);
 
 		for ($i = 0; $i < count($kriteria); $i++) {
@@ -275,12 +276,12 @@ class KriteriaCompController extends Controller
 	public function destroy()
 	{
 		try {
-			$del = KriteriaComp::delete();
+			$del = DB::table('kriteria_banding')->delete();
 			if (!$del) {
 				return redirect('/bobot')
 					->withWarning('Perbandingan Kriteria tidak ditemukan');
 			}
-			Kriteria::update(['bobot'=>0.0000]);
+			DB::table('kriteria')->update(['bobot' => 0.0000]);
 		} catch (QueryException $sql) {
 			return redirect('/bobot')->withError('Perbandingan Kriteria gagal direset:')
 				->withErrors($sql->getMessage());

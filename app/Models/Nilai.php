@@ -28,9 +28,9 @@ class Nilai extends Model
 		'alternatif_id.required' => 'Nama alternatif harus dipilih',
 		'alternatif_id.unique' => 'Nama alternatif sudah digunakan',
 		'kriteria_id.required' => 'Kriteria tidak ditemukan',
-		'subkriteria_id.required' => 'Semua sub kriteria harus dipilih',
+		'subkriteria_id.required' => 'Semua subkriteria harus dipilih',
 		'kriteria_id.numeric' => 'Kriteria tidak valid',
-		'subkriteria_id.numeric' => 'Sub Kriteria tidak valid'
+		'subkriteria_id.numeric' => 'Subkriteria tidak valid'
 	];
 	public function alternatif()
 	{

@@ -1,9 +1,6 @@
 @extends('layout')
 @php
 	use App\Http\Controllers\SubKriteriaCompController;
-	use App\Models\SubKriteria;
-	$listkriteria = SubKriteria::get();
-	$counter = 0;
 	$subkriteriacomp = new SubKriteriaCompController();
 	$title = $subkriteriacomp->nama_kriteria($kriteria_id);
 @endphp
@@ -21,7 +18,7 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<table class="table table-hover">
+						<table class="table table-hover text-center">
 							<thead>
 								<tr>
 									<th>Subkriteria</th>
@@ -52,7 +49,7 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<table class="table table-hover">
+						<table class="table table-hover text-center">
 							<thead>
 								<tr>
 									<th>Subkriteria</th>
@@ -89,7 +86,7 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<table class="table table-hover">
+						<table class="table table-hover text-center">
 							<thead>
 								<tr>
 									<th>Subkriteria</th>
@@ -147,12 +144,21 @@
 							</tr>
 							<tr>
 								<td>Consistency Ratio (CR)</td>
-								<td>{{ $data['result'] }}</td>
+								<td>
+								{{ $data['result'] }}
+								@if(is_numeric($data['result']))
+								({{ $data['result']*100 }}%)
+								@endif
+								</td>
 							</tr>
 							<tr>
 								<td>Hasil Konsistensi</td>
 								<td>
-									@if ($data['result'] <= 0.1)
+									@if(!is_numeric($data['result']))
+										<span class="text-warning">
+											<b>Tidak bisa dievaluasi</b>, karena nilai Ratio Index 0
+										</span>
+									@elseif ($data['result'] <= 0.1)
 										<span class="text-success"><b>Konsisten</b></span>
 									@else
 										<span class="text-danger">

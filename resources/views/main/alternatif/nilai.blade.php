@@ -177,12 +177,9 @@
 							<i class="bi bi-plus-lg"></i>
 							Tambah Nilai Alternatif
 						</button>
-						@if(count($nilaialt)>0)
-						<a href="{{url('alternatif/hasil')}}" class="btn btn-success">
-						@else
-						<a href="{{url('alternatif/hasil')}}" class="btn btn-success disabled">
-						@endif
-						Lihat hasil
+						<a href="{{ url('alternatif/hasil') }}"
+							class="btn btn-success @if (count($nilaialt) == 0) disabled @endif ">
+							Lihat hasil
 						</a>
 					</div>
 					<table class="table table-hover" id="table-nilaialt">
@@ -248,7 +245,7 @@
 				'-edit');
 			formkriteria.value = item.subkriteria;
 		}
-		const addNilaiAlterModal = document.getElementById('AddNilaiAlterModal');;
+		const addNilaiAlterModal = document.getElementById('AddNilaiAlterModal');
 		addNilaiAlterModal.addEventListener('show.bs.modal', event => {
 			const button = event.relatedTarget;
 			const id = button.getAttribute('data-bs-id');

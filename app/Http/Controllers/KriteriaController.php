@@ -14,9 +14,9 @@ class KriteriaController extends Controller
 	public function index()
 	{
 		$krit = Kriteria::get();
-		$ceknilai=Nilai::count();
+		$ceknilai = Nilai::count();
 		$compkr = KriteriaComp::count();
-		return view('main.kriteria.index', compact('krit', 'compkr','ceknilai'));
+		return view('main.kriteria.index', compact('krit', 'compkr', 'ceknilai'));
 	}
 	public function tambah(Request $kritrequest)
 	{
@@ -27,8 +27,8 @@ class KriteriaController extends Controller
 			if ($kriteria) {
 				$cekhasil = KriteriaComp::count();
 				if ($cekhasil > 0) {
-					KriteriaComp::delete();
-					Kriteria::update(['bobot'=>0.0000]);
+					DB::table('kriteria_banding')->delete();
+					DB::table('kriteria')->update(['bobot' => 0.0000]);
 					return back()
 						->withSuccess(
 							'Kriteria sudah ditambahkan. Silahkan input ulang perbandingan kriteria.'
@@ -54,7 +54,6 @@ class KriteriaController extends Controller
 			return back()->withError('Gagal mengupdate data kriteria')
 				->withErrors($db->getMessage());
 		}
-		return back()->withError('Gagal mengupdate data kriteria');
 	}
 	public function hapus($id)
 	{
@@ -65,8 +64,8 @@ class KriteriaController extends Controller
 			if ($del) {
 				$cekhasil = KriteriaComp::count();
 				if ($cekhasil > 0) {
-					KriteriaComp::delete();
-					Kriteria::update(['bobot'=>0.0000]);
+					DB::table('kriteria_banding')->delete();
+					DB::table('kriteria')->update(['bobot' => 0.0000]);
 					return back()
 						->withSuccess(
 							'Data Kriteria sudah dihapus. Silahkan input ulang perbandingan.'
@@ -76,7 +75,7 @@ class KriteriaController extends Controller
 			}
 		} catch (QueryException $e) {
 			return back()->withError('Data kriteria gagal dihapus:')
-			->withErrors($e->getMessage());
+				->withErrors($e->getMessage());
 		}
 		return back()->withError('Data kriteria gagal dihapus');
 	}

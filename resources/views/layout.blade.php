@@ -12,7 +12,7 @@
 	<link rel="stylesheet" href="{{ url('assets/css/shared/iconly.css') }}" />
 	<link rel="stylesheet" type="text/css"
 		href="{{ url('assets/datatables.min.css') }}">
-	<link rel="stylesheet" href="{{ url('assets/apexcharts.css') }}">
+	<link rel="stylesheet" href="{{ url('assets/apexcharts.css')}}">
 </head>
 
 <body>
@@ -250,7 +250,7 @@
 				<footer>
 					<div class="footer clearfix mb-0 text-muted">
 						<div class="float-start">
-							<p><?=date("Y")?> &copy; Mazer</p>
+							<p><?= date('Y') ?> &copy; Mazer</p>
 						</div>
 						<div class="float-end">
 							<p>

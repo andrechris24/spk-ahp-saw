@@ -11,15 +11,15 @@
 	<form action="{{ url('login') }}" method="post" enctype="multipart/form-data">
 		@csrf
 		<div class="form-group position-relative has-icon-left mb-4">
-			<input type="email" placeholder="Email" name="email" required 
-			class="form-control form-control-xl @error('email') is-invalid @enderror"/>
+			<input type="email" placeholder="Email" name="email" required
+				class="form-control form-control-xl @error('email') is-invalid @enderror " />
 			<div class="form-control-icon">
 				<i class="bi bi-envelope"></i>
 			</div>
 		</div>
 		<div class="form-group position-relative has-icon-left mb-4">
-			<input type="password" placeholder="Password" name="password" pattern=".{8,20}" 
-			class="form-control form-control-xl @error('password') is-invalid @enderror"
+			<input type="password" placeholder="Password" name="password" pattern=".{8,20}"
+				class="form-control form-control-xl @error('password') is-invalid @enderror "
 				maxlength="20" id="password" title="8-20 karakter" required />
 			<div class="form-control-icon">
 				<i class="bi bi-shield-lock"></i>

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -45,22 +44,21 @@ class User extends Authenticatable
 		'name' => 'bail|required|regex:/^[\pL\s\-]+$/u',
 		'email' => 'bail|required|email|unique:users,email',
 		'password' => 'bail|required|between:8,20|confirmed',
-		// 'password_confirmation' => 'same:password',
 	];
 	public static $resetpass = [
 		'token' => 'required',
 		'email' => 'bail|required|email|exists:users',
 		'password' => 'bail|required|between:8,20|confirmed',
 	];
-	public static $loginrules=[
+	public static $loginrules = [
 		'email' => 'bail|required|email|exists:users',
 		'password' => 'required|min:8'
 	];
-	public static $resetmsg=[
-		'token.required'=>'Token tidak valid',
-		'email.required'=>'Akun tidak ditemukan',
-		'email.email'=>'Format Email salah',
-		'email.exists'=>'Akun tidak ditemukan',
+	public static $resetmsg = [
+		'token.required' => 'Token tidak valid',
+		'email.required' => 'Akun tidak ditemukan',
+		'email.email' => 'Format Email salah',
+		'email.exists' => 'Akun tidak ditemukan',
 		'password.required' => 'Password harus diisi',
 		'password.between' => 'Panjang password harus 8-20 karakter',
 		'password.confirmed' => 'Password konfirmasi salah',

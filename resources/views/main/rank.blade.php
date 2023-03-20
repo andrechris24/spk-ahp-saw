@@ -12,7 +12,7 @@
 				<div class="card-body">
 					<div id="chart-ranking"></div>
 					Jadi, ranking tertingginya adalah {{ $highest->alternatif->name }}
-					dengan skor {{ $highest->hasil }}
+					dengan skor {{ $highest->skor }}
 				</div>
 			</div>
 		</section>
@@ -40,7 +40,7 @@
 				name: "Nilai",
 				data: [
 					@foreach ($result as $score)
-						{{ $score->hasil }},
+						{{ $score->skor }},
 					@endforeach
 				],
 			}, ],

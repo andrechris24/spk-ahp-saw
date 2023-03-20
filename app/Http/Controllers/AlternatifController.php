@@ -12,8 +12,8 @@ class AlternatifController extends Controller
 	public function index()
 	{
 		$alt = Alternatif::get();
-		$ceknilai=Nilai::count();
-		return view('main.alternatif.index', compact('alt','ceknilai'));
+		$ceknilai = Nilai::count();
+		return view('main.alternatif.index', compact('alt', 'ceknilai'));
 	}
 	public function tambah(Request $altrequest)
 	{

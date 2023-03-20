@@ -6,7 +6,6 @@ use App\Models\Kriteria;
 use App\Models\SubKriteriaComp;
 use App\Models\SubKriteria;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class SubKriteriaCompController extends Controller
@@ -14,14 +13,13 @@ class SubKriteriaCompController extends Controller
 	private function getSubKriteriaPerbandingan($id)
 	{
 		$subkriteria_comp = SubKriteriaComp::join(
-				"subkriteria",
-				"subkriteria_banding.subkriteria1",
-				"subkriteria.id"
-			)
-			->select(
-				"subkriteria_banding.subkriteria1 as idsubkriteria",
-				"subkriteria.name"
-			)
+			"subkriteria",
+			"subkriteria_banding.subkriteria1",
+			"subkriteria.id"
+		)->select(
+			"subkriteria_banding.subkriteria1 as idsubkriteria",
+			"subkriteria.name"
+		)
 			->groupBy("subkriteria1", 'name')
 			->where('kriteria_id', '=', $id)
 			->get();
@@ -29,7 +27,7 @@ class SubKriteriaCompController extends Controller
 	}
 	private function getPerbandinganBySubKriteria1($subkriteria1, $id)
 	{
-		$subkriteria2 =SubKriteriaComp::select('nilai', 'subkriteria2', 'subkriteria1')
+		$subkriteria2 = SubKriteriaComp::select('nilai', 'subkriteria2', 'subkriteria1')
 			->where("subkriteria2", "=", $subkriteria1)
 			->where('idkriteria', '=', $id)
 			->get();
@@ -48,11 +46,6 @@ class SubKriteriaCompController extends Controller
 		$kriteria = Kriteria::where('id', '=', $id)->first();
 		return $kriteria['name'];
 	}
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
 	public function index()
 	{
 		$allkrit = Kriteria::get();
@@ -71,12 +64,6 @@ class SubKriteriaCompController extends Controller
 		}
 		return view('main.subkriteria.select', compact('allkrit'));
 	}
-
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
 	public function create(Request $request)
 	{
 		$validate = $request->validate([
@@ -84,8 +71,8 @@ class SubKriteriaCompController extends Controller
 		]);
 		$idkriteria = $request->kriteria_id;
 		$subkriteria = SubKriteria::where('kriteria_id', '=', $idkriteria)->get();
-		$jmlsubkriteria=count($subkriteria);
-		$array=[];
+		$jmlsubkriteria = count($subkriteria);
+		$array = [];
 		$counter = 0;
 		for ($a = 0; $a < $jmlsubkriteria; $a++) {
 			for ($b = $a; $b < $jmlsubkriteria; $b++) {
@@ -95,16 +82,10 @@ class SubKriteriaCompController extends Controller
 			}
 		}
 		$cek = SubKriteriaComp::where('idkriteria', '=', $idkriteria)->count();
-		return view('main.subkriteria.comp', compact('array', 'cek','jmlsubkriteria'))
-		->with(['kriteria_id' => $idkriteria]);
+		return view('main.subkriteria.comp', compact('array', 'cek', 'jmlsubkriteria'))
+			->with(['kriteria_id' => $idkriteria]);
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @return \Illuminate\Http\Response
-	 */
 	public function store(Request $request)
 	{
 		$request->validate(SubKriteriaComp::$rules, SubKriteriaComp::$message);
@@ -134,13 +115,7 @@ class SubKriteriaCompController extends Controller
 		}
 	}
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  \App\Models\SubKriteriaComp  $subKriteriaComp
-	 * @return \Illuminate\Http\Response
-	 */
-	public function show(SubKriteriaComp $subKriteriaComp, $id)
+	public function show($id)
 	{
 		$subkriteria = $this->getSubKriteriaPerbandingan($id);
 		$a = 0;
@@ -303,7 +278,9 @@ class SubKriteriaCompController extends Controller
 			abs(($average_cm - count($subkriteria)) / (count($subkriteria) - 1)),
 			4
 		);
-		$ratio = [0, 0, 0.58, 0.9, 1.12, 1.24, 1.32, 1.41, 1.45, 1.49, 1.51];
+		$ratio = [0, 0, 0.58, 0.9, 1.12, 1.24, 1.32, 1.41, 1.45, 1.49, 1.51, 1.48, 1.56, 1.57, 1.59, 1.605, 1.61, 1.615, 1.62, 1.625];
+		if($ratio[count($subkriteria) - 1]==0) $result='-';
+		else
 		$result = number_format(abs($total_ci / $ratio[count($subkriteria) - 1]), 4);
 		for ($i = 0; $i < count($subkriteria); $i++) {
 			SubKriteria::where(
@@ -336,7 +313,7 @@ class SubKriteriaCompController extends Controller
 		try {
 			$kr = Kriteria::where('id', '=', $id)->first();
 			SubKriteriaComp::where('idkriteria', '=', $id)->delete();
-			SubKriteria::where('kriteria_id','=',$id)->update(['bobot'=>0.0000]);
+			SubKriteria::where('kriteria_id', '=', $id)->update(['bobot' => 0.0000]);
 			return redirect('/bobot/sub')
 				->withSuccess('Perbandingan Subkriteria ' . $kr->name . ' sudah direset');
 		} catch (QueryException $e) {
@@ -345,9 +322,5 @@ class SubKriteriaCompController extends Controller
 					'Perbandingan Subkriteria ' . $kr->name . ' gagal direset'
 				)->withErrors($e->getMessage());
 		}
-		return redirect('/bobot/sub')
-			->withError(
-				'Perbandingan Subkriteria ' . $kr->name . ' gagal direset'
-			);
 	}
 }
