@@ -1,13 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-// use App\Http\Controllers\KriteriaController;
-// use App\Http\Controllers\KriteriaCompController;
-// use App\Http\Controllers\SubKriteriaController;
-// use App\Http\Controllers\SubKriteriaCompController;
-// use App\Http\Controllers\AlternatifController;
-// use App\Http\Controllers\NilaiController;
-// use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,8 +42,11 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 	});
 
 	Route::group(['middleware' => ['auth']], function () { //Authenticated users
-		Route::get('/akun', 'HomeController@profile')->name('akun.show');
-		Route::post('/akun', 'HomeController@updateProfil')->name('akun.perform');
+		Route::prefix('akun')->group(function(){
+			Route::get('/', 'HomeController@profile')->name('akun.show');
+			Route::post('/', 'HomeController@updateProfil')->name('akun.perform');
+			Route::post('/del','HomeController@delAkun')->name('akun.delete');
+		});
 		Route::prefix('kriteria')->group(function () {
 			Route::get('/', 'KriteriaController@index')->name('kriteria.show');
 			Route::post('add', 'KriteriaController@tambah')->name('kriteria.create');

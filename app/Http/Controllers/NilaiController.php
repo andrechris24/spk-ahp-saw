@@ -12,14 +12,14 @@ use Illuminate\Http\Request;
 
 class NilaiController extends Controller
 {
-	public function normalisasi($arr, $type, $skor)
+	public function normalisasi($arr, $type, $skor): float|string
 	{
 		if ($type == 'cost') $hasil = min($arr) / $skor;
 		else if ($type == 'benefit') $hasil = $skor / max($arr);
 		else return "Invalid type: " . $type;
 		return round($hasil, 5);
 	}
-	public function getNilaiArr($kriteria_id)
+	public function getNilaiArr($kriteria_id): array
 	{
 		$data = array();
 		$kueri = Nilai::select('subkriteria.bobot as bobot')
@@ -27,7 +27,7 @@ class NilaiController extends Controller
 			->where('nilai.kriteria_id', '=', $kriteria_id)
 			->get();
 		foreach ($kueri as $row) {
-			array_push($data, $row->bobot);
+			$data[] = $row->bobot;
 		}
 		return $data;
 	}
@@ -36,11 +36,11 @@ class NilaiController extends Controller
 		$kueri = Kriteria::find($idkriteria)->first();
 		return $kueri->bobot;
 	}
-	public function simpanHasil($alt_id, $jumlah)
+	public function simpanHasil($alt_id, $jumlah): bool
 	{
 		try {
 			Hasil::updateOrInsert(['alternatif_id' => $alt_id], ['skor' => $jumlah]);
-		} catch (QueryException $e) {
+		} catch (QueryException) {
 			return false;
 		}
 		return true;

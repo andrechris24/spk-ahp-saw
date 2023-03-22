@@ -15,14 +15,14 @@ class SubKriteriaComp extends Model
 		"subkriteria2",
 		"nilai",
 	];
-	public static $rules = [
+	public static array $rules = [
 		'kriteria_id' => 'required|numeric',
 		'baris' => 'required',
 		'kolom' => 'required',
 		'baris.*' => 'numeric|between:1,9',
 		'kolom.*' => 'numeric|between:1,9'
 	];
-	public static $message = [
+	public static array $message = [
 		'kriteria_id.required' => 'Kriteria tidak ditemukan',
 		'kriteria_id.numeric' => 'Kriteria tidak valid',
 		'baris.numeric' => 'Nilai baris harus berupa angka',

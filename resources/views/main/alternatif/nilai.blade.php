@@ -240,7 +240,7 @@
 	<script type="text/javascript">
 		var formkriteria;
 
-		function test(item, index, arr) {
+		function test(item) {
 			formkriteria = document.getElementById('subkriteria-' + item.kriteria +
 				'-edit');
 			formkriteria.value = item.subkriteria;

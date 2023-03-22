@@ -16,14 +16,14 @@ class SubKriteriaController extends Controller
 		$kriteria = Kriteria::get();
 		$subkriteria = SubKriteria::get();
 		$compskr = SubKriteriaComp::count();
-		$ceknilai=Nilai::count();
+		$ceknilai = Nilai::count();
 		if (count($kriteria) == 0) {
 			return redirect('kriteria')
 				->withWarning('Tambahkan kriteria dulu sebelum menambah subkriteria');
 		}
 		return view(
 			'main.subkriteria.index',
-			compact('kriteria', 'subkriteria', 'compskr','ceknilai')
+			compact('kriteria', 'subkriteria', 'compskr', 'ceknilai')
 		);
 	}
 
@@ -77,14 +77,14 @@ class SubKriteriaController extends Controller
 			$cek = SubKriteria::find($id);
 			$idkriteria = $cek->kriteria_id;
 			$namakriteria = $cek->kriteria->name;
-			$getalt=Nilai::where('kriteria_id',$id)->first();
+			$getalt = Nilai::where('kriteria_id', $id)->first();
 			if (!$cek) return back()->withError('Data Subkriteria tidak ditemukan');
 			$cek->delete();
-			Nilai::where('alternatif_id',$getalt->alternatif_id)->delete();
+			Nilai::where('alternatif_id', $getalt->alternatif_id)->delete();
 			$subkrcomp = SubKriteriaComp::where('idkriteria', $cek->kriteria_id);
 			if ($subkrcomp->count() > 0) {
 				$subkrcomp->delete();
-				SubKriteria::where('kriteria_id', $idkriteria)->update(['bobot'=>0.0000]);
+				SubKriteria::where('kriteria_id', $idkriteria)->update(['bobot' => 0.0000]);
 				return back()->withSuccess(
 					'Data Subkriteria sudah dihapus. ' .
 						'Silahkan input ulang perbandingan sub kriteria ' . $namakriteria . '.'

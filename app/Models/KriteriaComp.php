@@ -14,13 +14,13 @@ class KriteriaComp extends Model
 		"kriteria2",
 		"nilai",
 	];
-	public static $rules = [
+	public static array $rules = [
 		'baris' => 'required',
 		'kolom' => 'required',
 		'baris.*' => 'numeric|between:1,9',
 		'kolom.*' => 'numeric|between:1,9'
 	];
-	public static $message = [
+	public static array $message = [
 		'baris.numeric' => 'Nilai baris harus berupa angka',
 		'kolom.numeric' => 'Nilai kolom harus berupa angka',
 		'baris.between' => 'Nilai baris harus diantara :min sampai :max sesuai teori AHP',

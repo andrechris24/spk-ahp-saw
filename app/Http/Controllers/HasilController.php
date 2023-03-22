@@ -23,11 +23,7 @@ class HasilController extends Controller
 	}
 	public function test()
 	{
-		try {
-			$test = Alternatif::where('name', 'john doe')->firstOrFail();
-			dd($test);
-		} catch (ModelNotFoundException $e) {
-			dd($e);
-		}
+		dd(csrf_token());
+		return view('welcome');
 	}
 }

@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,10 +23,10 @@ class ForgotPasswordController extends Controller
 	// 	$dt=Carbon::now()->addHours(2);
 	// 	dd(DB::table('password_resets')->where('created_at','>',$dt)->first());
 	// }
-	public function showForgetPasswordForm()
+	public function showForgetPasswordForm(): View|Factory|Application|RedirectResponse
 	{
 		// $this->clearResets();
-		if (Auth::viaRemember() || Auth::check()) return redirect()->intended('/');
+		if (Auth::viaRemember() || Auth::check()) return redirect()->intended();
 		return view('admin.forget-password');
 	}
 
@@ -52,9 +56,9 @@ class ForgotPasswordController extends Controller
 			return back()->withErrors($sql->getMessage());
 		}
 	}
-	public function showResetPasswordForm($token)
+	public function showResetPasswordForm($token): View|Factory|Application|RedirectResponse
 	{
-		if (Auth::viaRemember() || Auth::check()) return redirect()->intended('/');
+		if (Auth::viaRemember() || Auth::check()) return redirect()->intended();
 		return view(
 			'admin.reset-password',
 			['token' => $token, 'email' => $_GET['email']]

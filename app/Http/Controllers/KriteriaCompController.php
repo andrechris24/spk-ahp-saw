@@ -4,7 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Kriteria;
 use App\Models\KriteriaComp;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 
@@ -12,7 +17,7 @@ class KriteriaCompController extends Controller
 {
 	private function getKriteriaPerbandingan()
 	{
-		$kriteria_comp = KriteriaComp::join(
+		return KriteriaComp::join(
 			"kriteria",
 			"kriteria_banding.kriteria1",
 			"kriteria.id"
@@ -22,23 +27,20 @@ class KriteriaCompController extends Controller
 		)
 			->groupBy("kriteria1", 'name')
 			->get();
-		return $kriteria_comp;
 	}
 	private function getPerbandinganByKriteria1($kriteria1)
 	{
-		$kriteria2 = KriteriaComp::select('nilai', 'kriteria2', 'kriteria1')
+		return KriteriaComp::select('nilai', 'kriteria2', 'kriteria1')
 			->where("kriteria2", "=", $kriteria1)
 			->get();
-		return $kriteria2;
 	}
 	private function getNilaiPerbandingan($kode_kriteria)
 	{
-		$nilai_perbandingan = KriteriaComp::select("nilai", "kriteria1")
+		return KriteriaComp::select("nilai", "kriteria1")
 			->where("kriteria1", "=", $kode_kriteria)
 			->get();
-		return $nilai_perbandingan;
 	}
-	public function index()
+	public function index(): Factory|View|Application
 	{
 		$crit = Kriteria::get();
 		$jmlcrit = count($crit);
@@ -54,7 +56,7 @@ class KriteriaCompController extends Controller
 		$cek = KriteriaComp::count();
 		return view('main.kriteria.comp', compact('array', 'cek', 'jmlcrit'));
 	}
-	public function simpan(Request $request)
+	public function simpan(Request $request): Redirector|RedirectResponse|Application
 	{
 		$request->validate(KriteriaComp::$rules, KriteriaComp::$message);
 		try {
@@ -81,7 +83,7 @@ class KriteriaCompController extends Controller
 		}
 		return redirect('/bobot/hasil');
 	}
-	public function hasil()
+	public function hasil(): Factory|View|Application
 	{
 		$kriteria = $this->getKriteriaPerbandingan();
 		$a = 0;
@@ -245,9 +247,9 @@ class KriteriaCompController extends Controller
 			4
 		);
 		$ratio = [0, 0, 0.58, 0.9, 1.12, 1.24, 1.32, 1.41, 1.45, 1.49, 1.51, 1.48, 1.56, 1.57, 1.59, 1.605, 1.61, 1.615, 1.62, 1.625];
-		if($ratio[count($kriteria) - 1]==0) $result='-';
+		if ($ratio[count($kriteria) - 1] == 0) $result = '-';
 		else
-		$result = number_format(abs($total_ci / $ratio[count($kriteria) - 1]), 4);
+			$result = number_format(abs($total_ci / $ratio[count($kriteria) - 1]), 4);
 
 		for ($i = 0; $i < count($kriteria); $i++) {
 			Kriteria::where(

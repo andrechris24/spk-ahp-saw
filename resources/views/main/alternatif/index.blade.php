@@ -62,9 +62,10 @@
 							enctype="multipart/form-data">
 							@csrf
 							<div class="modal-body">
-								<label>Nama Alternatif</label>
+								<label for="name-add">Nama Alternatif</label>
 								<div class="form-group">
-									<input type="text" class="form-control" name="name" required />
+									<input type="text" class="form-control" name="name" id="name-add"
+										required />
 								</div>
 							</div>
 							<div class="modal-footer">
@@ -98,7 +99,7 @@
 							enctype="multipart/form-data" name="editalternatif">
 							@csrf
 							<div class="modal-body">
-								<label>Nama Alternatif</label>
+								<label for="nama-edit">Nama Alternatif</label>
 								<div class="form-group">
 									<input type="text" class="form-control" name="name" id="nama-edit"
 										required />

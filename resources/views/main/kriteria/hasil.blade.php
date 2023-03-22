@@ -140,16 +140,16 @@
 							<tr>
 								<td>Consistency Ratio (CR)</td>
 								<td>
-								{{ $data['result'] }}
-								@if(is_numeric($data['result']))
-								({{ $data['result']*100 }}%)
-								@endif
+									{{ $data['result'] }}
+									@if (is_numeric($data['result']))
+										({{ $data['result'] * 100 }}%)
+									@endif
 								</td>
 							</tr>
 							<tr>
 								<td>Hasil Konsistensi</td>
 								<td>
-									@if(!is_numeric($data['result']))
+									@if (!is_numeric($data['result']))
 										<span class="text-warning">
 											<b>Tidak bisa dievaluasi</b>, karena nilai Ratio Index 0
 										</span>

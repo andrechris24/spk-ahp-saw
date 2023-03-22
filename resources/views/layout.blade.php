@@ -12,7 +12,7 @@
 	<link rel="stylesheet" href="{{ url('assets/css/shared/iconly.css') }}" />
 	<link rel="stylesheet" type="text/css"
 		href="{{ url('assets/datatables.min.css') }}">
-	<link rel="stylesheet" href="{{ url('assets/apexcharts.css')}}">
+	<link rel="stylesheet" href="{{ url('assets/apexcharts.css') }}">
 </head>
 
 <body>

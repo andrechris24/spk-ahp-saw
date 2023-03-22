@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Kriteria;
 use App\Models\KriteriaComp;
 use App\Models\Nilai;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 
 class KriteriaController extends Controller
 {
-	public function index()
+	public function index(): Factory|View|Application
 	{
 		$krit = Kriteria::get();
 		$ceknilai = Nilai::count();

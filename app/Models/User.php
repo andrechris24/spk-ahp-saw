@@ -40,21 +40,21 @@ class User extends Authenticatable
 	protected $casts = [
 		'email_verified_at' => 'datetime',
 	];
-	public static $regrules = [
+	public static array $regrules = [
 		'name' => 'bail|required|regex:/^[\pL\s\-]+$/u',
 		'email' => 'bail|required|email|unique:users,email',
 		'password' => 'bail|required|between:8,20|confirmed',
 	];
-	public static $resetpass = [
+	public static array $resetpass = [
 		'token' => 'required',
 		'email' => 'bail|required|email|exists:users',
 		'password' => 'bail|required|between:8,20|confirmed',
 	];
-	public static $loginrules = [
+	public static array $loginrules = [
 		'email' => 'bail|required|email|exists:users',
 		'password' => 'required|min:8'
 	];
-	public static $resetmsg = [
+	public static array $resetmsg = [
 		'token.required' => 'Token tidak valid',
 		'email.required' => 'Akun tidak ditemukan',
 		'email.email' => 'Format Email salah',
@@ -62,5 +62,8 @@ class User extends Authenticatable
 		'password.required' => 'Password harus diisi',
 		'password.between' => 'Panjang password harus 8-20 karakter',
 		'password.confirmed' => 'Password konfirmasi salah',
+	];
+	public static array $delakunrule=[
+		'del_password'=>'required'
 	];
 }

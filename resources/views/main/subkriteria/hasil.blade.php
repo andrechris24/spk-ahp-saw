@@ -145,16 +145,16 @@
 							<tr>
 								<td>Consistency Ratio (CR)</td>
 								<td>
-								{{ $data['result'] }}
-								@if(is_numeric($data['result']))
-								({{ $data['result']*100 }}%)
-								@endif
+									{{ $data['result'] }}
+									@if (is_numeric($data['result']))
+										({{ $data['result'] * 100 }}%)
+									@endif
 								</td>
 							</tr>
 							<tr>
 								<td>Hasil Konsistensi</td>
 								<td>
-									@if(!is_numeric($data['result']))
+									@if (!is_numeric($data['result']))
 										<span class="text-warning">
 											<b>Tidak bisa dievaluasi</b>, karena nilai Ratio Index 0
 										</span>
@@ -168,14 +168,16 @@
 								</td>
 							</tr>
 						</table>
-						<div class="btn-group">
-							<a href="{{ url('bobot/sub') }}" class="btn btn-secondary">
-								<i class="bi bi-arrow-left"></i> Kembali
-							</a>
-							<a href="{{ url('/bobot/sub/reset/' . $kriteria_id) }}"
-								class="btn btn-warning">
-								<i class="bi bi-arrow-counterclockwise"></i> Reset
-							</a>
+						<div class="col-12 d-flex justify-content-end">
+							<div class="btn-group">
+								<a href="{{ url('bobot/sub') }}" class="btn btn-secondary">
+									<i class="bi bi-arrow-left"></i> Kembali
+								</a>
+								<a href="{{ url('/bobot/sub/reset/' . $kriteria_id) }}"
+									class="btn btn-warning">
+									<i class="bi bi-arrow-counterclockwise"></i> Reset
+								</a>
+							</div>
 						</div>
 					</div>
 				</div>

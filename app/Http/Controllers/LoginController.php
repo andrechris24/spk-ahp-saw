@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -10,9 +14,9 @@ use App\Services\Login\RememberMeExpiration;
 class LoginController extends Controller
 {
 	use RememberMeExpiration;
-	public function show()
+	public function show(): View|Factory|Application|RedirectResponse
 	{
-		if (Auth::viaRemember() || Auth::check()) return redirect()->intended('/');
+		if (Auth::viaRemember() || Auth::check()) return redirect()->intended();
 		return view('admin.login');
 	}
 	public function login(Request $request)

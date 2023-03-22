@@ -10,6 +10,51 @@
 			</p>
 		</div>
 		@include('main.message')
+		<div class="modal fade text-left" id="DelAccountModal" tabindex="-1" role="dialog"
+			aria-labelledby="DelAccountLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+				role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="DelAccountLabel">Hapus Akun</h4>
+						<button type="button" class="close" data-bs-dismiss="modal"
+							aria-label="Close">
+							<i data-feather="x"></i>
+						</button>
+					</div>
+					<form action="{{ url('/akun/del') }}" method="post"
+						enctype="multipart/form-data">
+						@csrf
+						<div class="modal-body">
+							<div class="alert alert-warning d-none" id="capslock2">
+								<i class="bi bi-capslock-fill"></i> CAPS LOCK nyala
+							</div>
+							<p>Apakah Anda yakin ingin menghapus akun?</p>
+							<p>
+							Jika yakin, masukkan password Anda.
+							Anda akan keluar secara otomatis setelah menghapus akun.
+							</p>
+							<div class="form-group">
+								<input type="password" name="del_password" id="pass-del"
+								class="form-control @error('del_password') is-invalid @enderror "
+									pattern=".{8,20}" maxlength="20" placeholder="Password" required />
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-light-secondary"
+								data-bs-dismiss="modal">
+								<i class="bx bx-x d-block d-sm-none"></i>
+								<span class="d-none d-sm-block">Batal</span>
+							</button>
+							<button type="submit" class="btn btn-danger ml-1">
+								<i class="bx bx-check d-block d-sm-none"></i>
+								<span class="d-none d-sm-block">Hapus</span>
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
 		<div class="card">
 			<div class="card-content">
 				<div class="card-body">
@@ -67,7 +112,7 @@
 												class="form-control @error('password') is-invalid @enderror "
 												placeholder="Kosongkan jika tidak ganti password"
 												oninput="checkpassword()" pattern=".{8,20}" id="newpassword"
-												data-bs-toggle="tooltip" data-bs-placement="top"
+												data-bs-toggle="tooltip" maxlength="20" data-bs-placement="top"
 												title="8-20 karakter (Saran: terdiri dari huruf besar, huruf kecil, angka, dan simbol)" />
 											<div class="form-control-icon">
 												<i class="bi bi-lock"></i>
@@ -83,7 +128,7 @@
 											<input type="password" name="password_confirmation"
 												class="form-control @error('password_confirmation') is-invalid @enderror "
 												placeholder="Ketik ulang Password baru" id="conf-password"
-												oninput="checkpassword()" />
+												oninput="checkpassword()" maxlength="20" />
 											<div class="form-control-icon">
 												<i class="bi bi-lock"></i>
 											</div>
@@ -91,12 +136,18 @@
 									</div>
 								</div>
 								<div class="col-12 d-flex justify-content-end">
-									<button type="submit" class="btn btn-primary me-1 mb-1">
-										Simpan
-									</button>
-									<button type="reset" class="btn btn-light-secondary me-1 mb-1">
-										Reset
-									</button>
+									<div class="btn-group">
+										<button type="submit" class="btn btn-primary">
+											Simpan
+										</button>
+										<button type="reset" class="btn btn-light-secondary">
+											Reset
+										</button>
+										<button type="button" class="btn btn-danger" data-bs-toggle="modal"
+										data-bs-target="#DelAccountModal">
+										Hapus Akun Ini
+										</button>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -111,14 +162,19 @@
 	<script type="text/javascript">
 		const accpassword = document.querySelectorAll('input[type="password"]');
 		const message = document.querySelector('#capslock');
+		const popupmsg=document.querySelector('#capslock2');
 		for (a = 0; a < accpassword.length; a++) {
 			accpassword[a].addEventListener('keyup', function(e) {
 				if (e.getModifierState('CapsLock')) {
 					message.classList.remove('d-none');
 					message.classList.add('d-block');
+					popupmsg.classList.remove('d-none');
+					popupmsg.classList.add('d-block');
 				} else {
 					message.classList.remove('d-block');
 					message.classList.add('d-none');
+					popupmsg.classList.remove('d-block');
+					popupmsg.classList.add('d-none');
 				}
 			});
 		}

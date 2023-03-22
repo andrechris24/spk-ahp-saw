@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Alternatif;
 use App\Models\Nilai;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 
 class AlternatifController extends Controller
 {
-	public function index()
+	public function index(): Factory|View|Application
 	{
 		$alt = Alternatif::get();
 		$ceknilai = Nilai::count();

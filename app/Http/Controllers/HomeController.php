@@ -6,15 +6,20 @@ use App\Models\User;
 use App\Models\Kriteria;
 use App\Models\SubKriteria;
 use App\Models\Alternatif;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Database\QueryException;
 
 class HomeController extends Controller
 {
-	public function index()
+	public function index(): Factory|View|Application
 	{
-		if (auth()) {
+		if (Auth::check()) {
 			$jml['kriteria'] = Kriteria::count();
 			$jml['subkriteria'] = SubKriteria::count();
 			$jml['alternatif'] = Alternatif::count();
@@ -22,13 +27,13 @@ class HomeController extends Controller
 		}
 		return view('main.index');
 	}
-	public function profile()
+	public function profile(): Factory|View|Application
 	{
 		return view('main.profil');
 	}
 	public function updateProfil(Request $request)
 	{
-		$id = auth()->user()->id;
+		$id = Auth::user()->id;
 		try {
 			$cek = User::find($id);
 			if (!$cek)
@@ -49,7 +54,7 @@ class HomeController extends Controller
 					'password.confirmed' => 'Password konfirmasi salah',
 				]
 			);
-			$cekpass = Hash::check($request->current_password, auth()->user()->password);
+			$cekpass = Hash::check($request->current_password, Auth::user()->password);
 			if (!$cekpass)
 				return back()->withError('Gagal update akun: Password salah');
 			$req = $request->all();
@@ -61,5 +66,24 @@ class HomeController extends Controller
 				->withErrors($db->getMessage());
 		}
 		return back()->withInput()->withError('Akun gagal diupdate');
+	}
+	public function delAkun(Request $request){
+		$id = Auth::user()->id;
+		try {
+			$cek = User::find($id);
+			if (!$cek)
+				return back()->withInput()->withError('Gagal hapus: Akun tidak ditemukan');
+			$request->validate(User::$delakunrule);
+			$cekpass = Hash::check($request->del_password, Auth::user()->password);
+			if (!$cekpass)
+				return back()->withError('Gagal hapus akun: Password salah');
+			Auth::logout();
+			Session::flush();
+			if($cek->delete()) return redirect('/')->withSuccess('Akun sudah dihapus');
+		} catch (QueryException $db) {
+			return back()->withInput()->withError('Gagal hapus akun:')
+				->withErrors($db->getMessage());
+		}
+		return back()->withInput()->withError('Akun gagal dihapus');
 	}
 }

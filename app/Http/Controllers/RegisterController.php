@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
@@ -10,9 +14,9 @@ use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
-	public function show()
+	public function show(): View|Factory|Application|RedirectResponse
 	{
-		if (Auth::viaRemember() || Auth::check()) return redirect()->intended('/');
+		if (Auth::viaRemember() || Auth::check()) return redirect()->intended();
 		return view('admin.register');
 	}
 
