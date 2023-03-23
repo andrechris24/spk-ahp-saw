@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\Hasil;
 use App\Models\Alternatif;
 

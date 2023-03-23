@@ -160,10 +160,11 @@
 
 @section('js')
 	<script type="text/javascript">
+        // let a;
 		const accpassword = document.querySelectorAll('input[type="password"]');
 		const message = document.querySelector('#capslock');
 		const popupmsg=document.querySelector('#capslock2');
-		for (a = 0; a < accpassword.length; a++) {
+		for (let a = 0; a < accpassword.length; a++) {
 			accpassword[a].addEventListener('keyup', function(e) {
 				if (e.getModifierState('CapsLock')) {
 					message.classList.remove('d-none');
