@@ -7,8 +7,8 @@
 		</div>
 		<section class="section">
 			@include('main.message')
-			<div class="modal fade text-left" id="DelSubCritModal" tabindex="-1" role="dialog"
-				aria-labelledby="myModalLabel160" aria-hidden="true">
+			<div class="modal fade text-left" id="DelSubCritModal" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
 					role="document">
 					<div class="modal-content">
@@ -115,8 +115,8 @@
 							<div class="modal-body">
 								<label for="nama-edit">Nama Subkriteria</label>
 								<div class="form-group">
-									<input type="text" class="form-control" name="name" id="nama-edit"
-										required />
+									<input type="text" class="form-control" name="name"
+										id="nama-edit" required />
 								</div>
 								<div class="input-group mb-3">
 									<label class="input-group-text" for="kriteria-edit">
@@ -149,8 +149,8 @@
 			<div class="card">
 				<div class="card-header">Daftar Subkriteria</div>
 				<div class="card-body">
-					<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal"
-						data-bs-target="#AddSubCritModal">
+					<button type="button" class="btn btn-primary mb-3"
+						data-bs-toggle="modal" data-bs-target="#AddSubCritModal">
 						<i class="bi bi-plus-lg"></i>
 						Tambah Subkriteria
 					</button>
@@ -174,14 +174,16 @@
 									</td>
 									<td>
 										<div class="btn-group" role="button">
-											<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-												data-bs-target="#EditSubCritModal" data-bs-id="{{ $sk->id }}"
+											<button type="button" class="btn btn-primary"
+												data-bs-toggle="modal" data-bs-target="#EditSubCritModal"
+												data-bs-id="{{ $sk->id }}"
 												data-bs-name="{{ $sk->name }}"
 												data-bs-kr="{{ $sk->kriteria->id }}">
 												<i class="bi bi-pencil-square"></i> Edit
 											</button>
-											<button type="button" class="btn btn-danger" data-bs-toggle="modal"
-												data-bs-target="#DelSubCritModal" data-bs-id="{{ $sk->id }}"
+											<button type="button" class="btn btn-danger"
+												data-bs-toggle="modal" data-bs-target="#DelSubCritModal"
+												data-bs-id="{{ $sk->id }}"
 												data-bs-name="{{ $sk->name }}"
 												data-bs-kr="{{ $sk->kriteria->name }}">
 												<i class="bi bi-trash3-fill"></i> Hapus

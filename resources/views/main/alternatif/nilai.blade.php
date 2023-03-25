@@ -63,7 +63,8 @@
 									<label class="input-group-text" for="alternatif">
 										Nama Alternatif
 									</label>
-									<select class="form-select" id="alternatif" name="alternatif_id" required>
+									<select class="form-select" id="alternatif" name="alternatif_id"
+										required>
 										<option value="">Pilih</option>
 										@foreach ($alternatif as $alt)
 											<option value="{{ $alt->id }}">{{ $alt->name }}</option>
@@ -110,7 +111,9 @@
 					role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h4 class="modal-title" id="EditNilaiAlterLabel">Edit Nilai Alternatif</h4>
+							<h4 class="modal-title" id="EditNilaiAlterLabel">
+								Edit Nilai Alternatif
+							</h4>
 							<button type="button" class="close" data-bs-dismiss="modal"
 								aria-label="Close">
 								<i data-feather="x"></i>
@@ -134,15 +137,16 @@
 									</select>
 								</div>
 								@foreach ($kriteria as $kr)
-									<input type="hidden" name="kriteria_id[]" value="{{ $kr->id }}">
+									<input type="hidden" name="kriteria_id[]"
+										value="{{ $kr->id }}">
 									<div class="input-group mb-3">
 										<label class="input-group-text"
 											for="subkriteria-{{ $kr->id }}-edit"
 											title="{{ $kr->desc }}">
 											{{ $kr->name }}
 										</label>
-										<select class="form-select" id="subkriteria-{{ $kr->id }}-edit"
-											name="subkriteria_id[]" required>
+										<select class="form-select" name="subkriteria_id[]"
+											id="subkriteria-{{ $kr->id }}-edit" required>
 											<option value="">Pilih</option>
 											@foreach ($subkriteria as $subkr)
 												@if ($subkr->kriteria_id == $kr->id)
@@ -212,14 +216,16 @@
 										@endforeach
 										<td>
 											<div class="btn-group" role="button">
-												<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-													data-bs-target="#EditNilaiAlterModal"
-													data-bs-id="{{ $alt->id }}" data-bs-name="{{ $alt->id }}"
+												<button type="button" class="btn btn-primary"
+													data-bs-toggle="modal" data-bs-target="#EditNilaiAlterModal"
+													data-bs-id="{{ $alt->id }}"
+													data-bs-name="{{ $alt->id }}"
 													data-bs-score="{{ json_encode($subkr) }}">
 													<i class="bi bi-pencil-square"></i> Edit
 												</button>
-												<button type="button" class="btn btn-danger" data-bs-toggle="modal"
-													data-bs-target="#DelNilaiAlterModal" data-bs-id="{{ $alt->id }}"
+												<button type="button" class="btn btn-danger"
+													data-bs-toggle="modal" data-bs-target="#DelNilaiAlterModal"
+													data-bs-id="{{ $alt->id }}"
 													data-bs-name="{{ $alt->name }}">
 													<i class="bi bi-trash3-fill"></i> Hapus
 												</button>
@@ -262,7 +268,8 @@
 			const id = button.getAttribute('data-bs-id');
 			const data = JSON.parse(button.getAttribute('data-bs-score'));
 			data.forEach(test);
-			const nameval = editNilaiAlterModal.querySelector('#alternatif-edit');
+			const nameval = editNilaiAlterModal.querySelector(
+				'#alternatif-edit');
 			const hiddenval = editNilaiAlterModal.querySelector('#alter');
 			nameval.value = nama;
 			hiddenval.value = nama;
@@ -279,7 +286,8 @@
 			const desc = delNilaiAlterModal.querySelector('#del-desc');
 			var formurl = "{{ url('/alternatif/nilai/del/:id') }}";
 			formurl = formurl.replace(':id', id);
-			desc.innerHTML = "Anda akan menghapus nilai alternatif <b>" + nama +
+			desc.innerHTML = "Anda akan menghapus nilai alternatif <b>" +
+				nama +
 				"</b>.";
 			link.href = formurl;
 		});

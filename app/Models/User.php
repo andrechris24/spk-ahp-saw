@@ -41,7 +41,7 @@ class User extends Authenticatable
 		'email_verified_at' => 'datetime',
 	];
 	public static array $regrules = [
-		'name' => 'bail|required|regex:/^[\pL\s\-]+$/u',
+		'name' => 'bail|required|min:5|regex:/^[\pL\s\-]+$/u',
 		'email' => 'bail|required|email|unique:users,email',
 		'password' => 'bail|required|between:8,20|confirmed',
 	];
@@ -63,7 +63,7 @@ class User extends Authenticatable
 		'password.between' => 'Panjang password harus 8-20 karakter',
 		'password.confirmed' => 'Password konfirmasi salah',
 	];
-	public static array $delakunrule=[
-		'del_password'=>'required'
+	public static array $delakunrule = [
+		'del_password' => 'required'
 	];
 }

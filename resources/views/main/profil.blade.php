@@ -10,8 +10,8 @@
 			</p>
 		</div>
 		@include('main.message')
-		<div class="modal fade text-left" id="DelAccountModal" tabindex="-1" role="dialog"
-			aria-labelledby="DelAccountLabel" aria-hidden="true">
+		<div class="modal fade text-left" id="DelAccountModal" tabindex="-1"
+			role="dialog" aria-labelledby="DelAccountLabel" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
 				role="document">
 				<div class="modal-content">
@@ -31,12 +31,12 @@
 							</div>
 							<p>Apakah Anda yakin ingin menghapus akun?</p>
 							<p>
-							Jika yakin, masukkan password Anda.
-							Anda akan keluar secara otomatis setelah menghapus akun.
+								Jika yakin, masukkan password Anda.
+								Anda akan keluar secara otomatis setelah menghapus akun.
 							</p>
 							<div class="form-group">
 								<input type="password" name="del_password" id="pass-del"
-								class="form-control @error('del_password') is-invalid @enderror "
+									class="form-control @error('del_password') is-invalid @enderror "
 									pattern=".{8,20}" maxlength="20" placeholder="Password" required />
 							</div>
 						</div>
@@ -61,7 +61,8 @@
 					<div class="alert alert-warning d-none" id="capslock">
 						<i class="bi bi-capslock-fill"></i> CAPS LOCK nyala
 					</div>
-					<form class="form form-horizontal" method="post" action="{{ url('/akun') }}">
+					<form class="form form-horizontal" method="post"
+						action="{{ url('/akun') }}">
 						@csrf
 						<div class="form-body">
 							<div class="row">
@@ -71,7 +72,8 @@
 										<div class="position-relative">
 											<input type="text" name="name" placeholder="Name" id="nama-user"
 												class="form-control @error('name') is-invalid @enderror "
-												value="{{ auth()->user()->name }}" required />
+												value="{{ auth()->user()->name }}" pattern="[A-z.,' ]{5,99}"
+												maxlength="99" required />
 											<div class="form-control-icon">
 												<i class="bi bi-person"></i>
 											</div>
@@ -82,9 +84,10 @@
 								<div class="col-md-8">
 									<div class="form-group has-icon-left">
 										<div class="position-relative">
-											<input type="email" name="email" placeholder="Email" id="email-user"
+											<input type="email" name="email" placeholder="Email"
+												id="email-user" value="{{ auth()->user()->email }}"
 												class="form-control @error('email') is-invalid @enderror "
-												value="{{ auth()->user()->email }}" required />
+												required />
 											<div class="form-control-icon">
 												<i class="bi bi-envelope"></i>
 											</div>
@@ -104,7 +107,9 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-md-4"><label for="newpassword">Password Baru</label></div>
+								<div class="col-md-4">
+									<label for="newpassword">Password Baru</label>
+								</div>
 								<div class="col-md-8">
 									<div class="form-group has-icon-left">
 										<div class="position-relative">
@@ -120,7 +125,8 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-md-4"><label for="conf-password">Konfirmasi Password</label>
+								<div class="col-md-4">
+									<label for="conf-password">Konfirmasi Password</label>
 								</div>
 								<div class="col-md-8">
 									<div class="form-group has-icon-left">
@@ -138,14 +144,14 @@
 								<div class="col-12 d-flex justify-content-end">
 									<div class="btn-group">
 										<button type="submit" class="btn btn-primary">
-											Simpan
+											<i class="bi bi-save-fill"></i> Simpan
 										</button>
-										<button type="reset" class="btn btn-light-secondary">
-											Reset
+										<button type="reset" class="btn btn-secondary">
+											<i class="bi bi-arrow-counterclockwise"></i> Reset
 										</button>
 										<button type="button" class="btn btn-danger" data-bs-toggle="modal"
-										data-bs-target="#DelAccountModal">
-										Hapus Akun Ini
+											data-bs-target="#DelAccountModal">
+											<i class="bi bi-trash3-fill"></i> Hapus Akun Ini
 										</button>
 									</div>
 								</div>
@@ -160,10 +166,10 @@
 
 @section('js')
 	<script type="text/javascript">
-        // let a;
+		// let a;
 		const accpassword = document.querySelectorAll('input[type="password"]');
 		const message = document.querySelector('#capslock');
-		const popupmsg=document.querySelector('#capslock2');
+		const popupmsg = document.querySelector('#capslock2');
 		for (let a = 0; a < accpassword.length; a++) {
 			accpassword[a].addEventListener('keyup', function(e) {
 				if (e.getModifierState('CapsLock')) {

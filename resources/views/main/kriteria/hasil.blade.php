@@ -163,9 +163,11 @@
 								</td>
 							</tr>
 						</table>
-						<a href="{{ url('/bobot/reset') }}" class="btn btn-secondary">
-							<i class="bi bi-arrow-counterclockwise"></i> Reset
-						</a>
+						<div class="col-12 d-flex justify-content-end">
+							<a href="{{ url('/bobot/reset') }}" class="btn btn-secondary">
+								<i class="bi bi-arrow-counterclockwise"></i> Reset
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -39,7 +39,7 @@ class ForgotPasswordController extends Controller
 				->addHours(2)->translatedFormat('d F Y G:i');
 		}
 		$request->validate([
-			'email' => 'required|email|exists:users|unique:password_resets,email',
+			'email' => 'required|email|exists:users',
 		], [
 			'email.unique' => 'Anda tidak bisa meminta reset password lagi sebelum ' .
 				($dt_next ?? '...')
@@ -48,6 +48,8 @@ class ForgotPasswordController extends Controller
 			$status = Password::sendResetLink($request->only('email'));
 			if ($status === Password::RESET_LINK_SENT)
 				return back()->withSuccess('Link reset password sudah dikirim.');
+			else if ($status === Password::RESET_THROTTLED)
+				return back()->withError('Tunggu sebentar sebelum meminta reset password lagi.');
 			return back()->withError('Pengiriman link reset password gagal');
 		} catch (TransportException $err) {
 			DB::table('password_resets')->where('email', $request->email)->delete();
@@ -59,6 +61,15 @@ class ForgotPasswordController extends Controller
 	public function showResetPasswordForm($token): View|Factory|Application|RedirectResponse
 	{
 		if (Auth::viaRemember() || Auth::check()) return redirect()->intended();
+		$enctoken = DB::table('password_resets')->where('email', $_GET['email'])->first();
+		if (!$enctoken) {
+			return redirect('/forget-password')->withError(
+				'Link reset password sudah kedaluarsa. Silahkan minta reset password lagi.'
+			);
+		}
+		$cek = Hash::check($token, $enctoken->token);
+		if (!$cek)
+			return redirect('/login')->withError('Token reset password tidak valid');
 		return view(
 			'admin.reset-password',
 			['token' => $token, 'email' => $_GET['email']]

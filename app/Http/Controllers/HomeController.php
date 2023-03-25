@@ -40,7 +40,7 @@ class HomeController extends Controller
 				return back()->withInput()->withError('Gagal update: Akun tidak ditemukan');
 			$request->validate(
 				[
-					'name' => 'required',
+					'name' => 'bail|required|min:5|regex:/^[\pL\s\-]+$/u',
 					'email' => 'bail|required|email|unique:users,email,' . $id,
 					'current_password' => 'bail|required|min:8',
 					'password' => 'nullable|confirmed|between:8,20',
@@ -48,6 +48,8 @@ class HomeController extends Controller
 				],
 				[
 					'name.required' => 'Nama harus diisi',
+					'name.min'=>'Nama minimal 5 huruf',
+					'name.regex' => 'Nama tidak boleh mengandung simbol dan angka',
 					'email.required' => 'Email harus diisi',
 					'email.unique' => 'Email ' . $request->email . ' sudah digunakan',
 					'current_password.required' => 'Password lama harus diisi',
@@ -67,7 +69,8 @@ class HomeController extends Controller
 		}
 		return back()->withInput()->withError('Akun gagal diupdate');
 	}
-	public function delAkun(Request $request){
+	public function delAkun(Request $request)
+	{
 		$id = Auth::user()->id;
 		try {
 			$cek = User::find($id);
@@ -79,7 +82,7 @@ class HomeController extends Controller
 				return back()->withError('Gagal hapus akun: Password salah');
 			Auth::logout();
 			Session::flush();
-			if($cek->delete()) return redirect('/')->withSuccess('Akun sudah dihapus');
+			if ($cek->delete()) return redirect('/')->withSuccess('Akun sudah dihapus');
 		} catch (QueryException $db) {
 			return back()->withInput()->withError('Gagal hapus akun:')
 				->withErrors($db->getMessage());

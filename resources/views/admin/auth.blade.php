@@ -32,7 +32,7 @@
 			</div>
 		</div>
 	</div>
-	<script src="{{url('assets/js/bootstrap.js')}}"></script>
+	<script src="{{ url('assets/js/bootstrap.js') }}"></script>
 	@yield('js')
 	<script type="text/javascript">
 		// If you want to use tooltips in your project, we suggest initializing them globally

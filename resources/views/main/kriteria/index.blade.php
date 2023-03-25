@@ -53,8 +53,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="modal fade text-left" id="AddCritModal" tabindex="-1" role="dialog"
-				aria-labelledby="AddCritLabel" aria-hidden="true">
+			<div class="modal fade text-left" id="AddCritModal" tabindex="-1"
+				role="dialog" aria-labelledby="AddCritLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
 					role="document">
 					<div class="modal-content">
@@ -110,8 +110,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="modal fade text-left" id="EditCritModal" tabindex="-1" role="dialog"
-				aria-labelledby="EditCritLabel" aria-hidden="true">
+			<div class="modal fade text-left" id="EditCritModal" tabindex="-1"
+				role="dialog" aria-labelledby="EditCritLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
 					role="document">
 					<div class="modal-content">
@@ -128,8 +128,8 @@
 							<div class="modal-body">
 								<label for="nama-edit">Nama Kriteria</label>
 								<div class="form-group">
-									<input type="text" class="form-control" name="name" id="nama-edit"
-										required />
+									<input type="text" class="form-control" name="name"
+										id="nama-edit" required />
 								</div>
 								<div class="input-group mb-3">
 									<label class="input-group-text" for="tipe-kriteria-edit">
@@ -166,8 +166,8 @@
 			<div class="card">
 				<div class="card-header">Daftar Kriteria</div>
 				<div class="card-body">
-					<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal"
-						data-bs-target="#AddCritModal">
+					<button type="button" class="btn btn-primary mb-3"
+						data-bs-toggle="modal" data-bs-target="#AddCritModal">
 						<i class="bi bi-plus-lg"></i>
 						Tambah Kriteria
 					</button>
@@ -191,15 +191,17 @@
 									<td>{{ $kriteria->desc }}</td>
 									<td>
 										<div class="btn-group" role="button">
-											<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-												data-bs-target="#EditCritModal" data-bs-id="{{ $kriteria->id }}"
+											<button type="button" class="btn btn-primary"
+												data-bs-toggle="modal" data-bs-target="#EditCritModal"
+												data-bs-id="{{ $kriteria->id }}"
 												data-bs-desc="{{ $kriteria->desc }}"
 												data-bs-name="{{ $kriteria->name }}"
 												data-bs-type="{{ $kriteria->type }}">
 												<i class="bi bi-pencil-square"></i> Edit
 											</button>
-											<button type="button" class="btn btn-danger" data-bs-toggle="modal"
-												data-bs-target="#DelCritModal" data-bs-id="{{ $kriteria->id }}"
+											<button type="button" class="btn btn-danger"
+												data-bs-toggle="modal" data-bs-target="#DelCritModal"
+												data-bs-id="{{ $kriteria->id }}"
 												data-bs-name="{{ $kriteria->name }}">
 												<i class="bi bi-trash3-fill"></i> Hapus
 											</button>
@@ -232,7 +234,8 @@
 			// Update the modal's content.
 			const nameval = editCriteriaModal.querySelector('#nama-edit')
 			const descval = editCriteriaModal.querySelector('#deskripsi-edit')
-			const typeval = editCriteriaModal.querySelector('#tipe-kriteria-edit')
+			const typeval = editCriteriaModal.querySelector(
+				'#tipe-kriteria-edit')
 			nameval.value = nama;
 			typeval.value = tipe;
 			descval.value = desc
@@ -249,7 +252,8 @@
 			const desc = delCriteriaModal.querySelector('#del-desc');
 			var formurl = "{{ url('/kriteria/del/:id') }}";
 			formurl = formurl.replace(':id', id);
-			desc.innerHTML = "Anda akan menghapus kriteria <b>" + nama + "</b>.";
+			desc.innerHTML = "Anda akan menghapus kriteria <b>" + nama +
+				"</b>.";
 			link.href = formurl;
 		});
 		$(document).ready(function() {

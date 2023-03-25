@@ -64,3 +64,15 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## How to use
+
+This Laravel Webpage was made with version 9.52 and PHP version 8.2.0 on Windows 8.1.
+
+1. Download or clone this repository
+2. Navigate to downloaded repository
+3. Type `composer install`. If you receive message "Your lock file does not contain compatible sets of packages", type `composer update`.
+4. Rename `.env.example` to `.env`, then set appropriate Database name.
+5. Type `php artisan key:generate`
+6. Type `php artisan migrate --seed`
+7. Type `php artisan serve`, and you are ready to go!

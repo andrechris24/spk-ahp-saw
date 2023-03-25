@@ -23,8 +23,8 @@
 						@endif
 						<ul class="nav nav-tabs" id="InputCompTab" role="tablist">
 							<li class="nav-item" role="presentation">
-								<a class="nav-link active" id="info-tab" data-bs-toggle="tab" href="#info"
-									role="tab" aria-controls="info" aria-selected="true">
+								<a class="nav-link active" id="info-tab" data-bs-toggle="tab"
+									href="#info" role="tab" aria-controls="info" aria-selected="true">
 									Tabel Nilai Perbandingan
 								</a>
 							</li>

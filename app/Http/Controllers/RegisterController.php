@@ -25,6 +25,7 @@ class RegisterController extends Controller
 		$credentials = $request->validate(User::$regrules, [
 			'name.required' => 'Nama harus diisi',
 			'name.regex' => 'Nama tidak boleh mengandung simbol dan angka',
+			'name.min'=>'Nama minimal 5 huruf',
 			'email.required' => 'Email harus diisi',
 			'email.unique' => 'Email ' . $request->email . ' sudah digunakan',
 			'password.required' => 'Password harus diisi',

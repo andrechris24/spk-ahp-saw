@@ -46,8 +46,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="modal fade text-left" id="AddAlterModal" tabindex="-1" role="dialog"
-				aria-labelledby="AddAlterLabel" aria-hidden="true">
+			<div class="modal fade text-left" id="AddAlterModal" tabindex="-1"
+				role="dialog" aria-labelledby="AddAlterLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
 					role="document">
 					<div class="modal-content">
@@ -123,8 +123,8 @@
 			<div class="card">
 				<div class="card-header">Daftar Alternatif</div>
 				<div class="card-body">
-					<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal"
-						data-bs-target="#AddAlterModal">
+					<button type="button" class="btn btn-primary mb-3"
+						data-bs-toggle="modal" data-bs-target="#AddAlterModal">
 						<i class="bi bi-plus-lg"></i>
 						Tambah Alternatif
 					</button>
@@ -144,13 +144,15 @@
 									<td>{{ $alternatif->name }}</td>
 									<td>
 										<div class="btn-group" role="button">
-											<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-												data-bs-target="#EditAlterModal" data-bs-id="{{ $alternatif->id }}"
+											<button type="button" class="btn btn-primary"
+												data-bs-toggle="modal" data-bs-target="#EditAlterModal"
+												data-bs-id="{{ $alternatif->id }}"
 												data-bs-name="{{ $alternatif->name }}">
 												<i class="bi bi-pencil-square"></i> Edit
 											</button>
-											<button type="button" class="btn btn-danger" data-bs-toggle="modal"
-												data-bs-target="#DelAlterModal" data-bs-id="{{ $alternatif->id }}"
+											<button type="button" class="btn btn-danger"
+												data-bs-toggle="modal" data-bs-target="#DelAlterModal"
+												data-bs-id="{{ $alternatif->id }}"
 												data-bs-name="{{ $alternatif->name }}">
 												<i class="bi bi-trash3-fill"></i> Hapus
 											</button>
@@ -194,7 +196,8 @@
 			const desc = delAlterModal.querySelector('#del-desc');
 			var formurl = "{{ url('/alternatif/del/:id') }}";
 			formurl = formurl.replace(':id', id);
-			desc.innerHTML = "Anda akan menghapus alternatif <b>" + nama + "</b>.";
+			desc.innerHTML = "Anda akan menghapus alternatif <b>" + nama +
+				"</b>.";
 			link.href = formurl;
 		});
 		$(document).ready(function() {
