@@ -36,14 +36,13 @@ class NilaiController extends Controller
 		$kueri = Kriteria::find($idkriteria)->first();
 		return $kueri->bobot;
 	}
-	public function simpanHasil($alt_id, $jumlah): bool
+	public function simpanHasil($alt_id, $jumlah): void
 	{
 		try {
 			Hasil::updateOrInsert(['alternatif_id' => $alt_id], ['skor' => $jumlah]);
 		} catch (QueryException) {
-			return false;
+			return;
 		}
-		return true;
 	}
 	public function index()
 	{

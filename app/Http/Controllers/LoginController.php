@@ -32,6 +32,6 @@ class LoginController extends Controller
 			$request->session()->regenerate();
 			return redirect()->intended('home');
 		}
-		return back()->withErrors(['password'=>'Password salah'])->withInput();
+		return back()->withErrors(['password' => 'Password salah'])->withInput();
 	}
 }

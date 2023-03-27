@@ -36,13 +36,13 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		 * Reset Password Routes
 		 */
 		Route::get('/forget-password', 'ForgotPasswordController@showForgetPasswordForm')
-		->name('password.request');
+			->name('password.request');
 		Route::post('/forget-password', 'ForgotPasswordController@submitForgetPasswordForm')
-		->name('password.email');
+			->name('password.email');
 		Route::get('/reset-password/{token}', 'ForgotPasswordController@showResetPasswordForm')
-		->name('password.reset');
+			->name('password.reset');
 		Route::post('/reset-password', 'ForgotPasswordController@submitResetPasswordForm')
-		->name('password.update');
+			->name('password.update');
 	});
 
 	Route::group(['middleware' => ['auth']], function () { //Authenticated users
@@ -60,9 +60,9 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 				Route::get('/', 'SubKriteriaController@index')->name('subkriteria.show');
 				Route::post('add', 'SubKriteriaController@store')->name('subkriteria.create');
 				Route::post('update/{id}', 'SubKriteriaController@update')
-				->name('subkriteria.update');
+					->name('subkriteria.update');
 				Route::get('del/{id}', 'SubKriteriaController@destroy')
-				->name('subkriteria.delete');
+					->name('subkriteria.delete');
 			});
 		});
 		Route::prefix('bobot')->group(function () {
@@ -70,25 +70,25 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			Route::post('/', 'KriteriaCompController@simpan')->name('bobotkriteria.store');
 			Route::get('hasil', 'KriteriaCompController@hasil')->name('bobotkriteria.result');
 			Route::get('reset', 'KriteriaCompController@destroy')
-			->name('bobotkriteria.reset');
+				->name('bobotkriteria.reset');
 			Route::prefix('sub')->group(function () {
 				Route::get('/', 'SubKriteriaCompController@index')
-				->name('bobotsubkriteria.pick');
+					->name('bobotsubkriteria.pick');
 				Route::get('comp', 'SubKriteriaCompController@create')
-				->name('bobotsubkriteria.index');
+					->name('bobotsubkriteria.index');
 				Route::post('comp', 'SubKriteriaCompController@store')
-				->name('bobotsubkriteria.store');
+					->name('bobotsubkriteria.store');
 				Route::get('hasil/{id}', 'SubKriteriaCompController@show')
-				->name('bobotsubkriteria.result');
+					->name('bobotsubkriteria.result');
 				Route::get('reset/{id}', 'SubKriteriaCompController@destroy')
-				->name('bobotsubkriteria.reset');
+					->name('bobotsubkriteria.reset');
 			});
 		});
 		Route::prefix('alternatif')->group(function () {
 			Route::get('/', 'AlternatifController@index')->name('alternatif.index');
 			Route::post('add', 'AlternatifController@tambah')->name('alternatif.add');
 			Route::post('update/{id}', 'AlternatifController@update')
-			->name('alternatif.update');
+				->name('alternatif.update');
 			Route::get('del/{id}', 'AlternatifController@hapus')->name('alternatif.delete');
 			Route::get('hasil', 'NilaiController@show')->name('nilai.show');
 			Route::prefix('nilai')->group(function () {

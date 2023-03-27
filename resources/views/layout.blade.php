@@ -13,6 +13,10 @@
 	<link rel="stylesheet" type="text/css"
 		href="{{ url('assets/datatables.min.css') }}">
 	<link rel="stylesheet" href="{{ url('assets/apexcharts.css') }}">
+	<link rel="shortcut icon" href="{{ url('assets/images/logo/favicon.svg') }}"
+		type="image/x-icon" />
+	<link rel="shortcut icon" href="{{ url('assets/images/logo/favicon.png') }}"
+		type="image/png" />
 </head>
 
 <body>

@@ -48,7 +48,7 @@ class HomeController extends Controller
 				],
 				[
 					'name.required' => 'Nama harus diisi',
-					'name.min'=>'Nama minimal 5 huruf',
+					'name.min' => 'Nama minimal 5 huruf',
 					'name.regex' => 'Nama tidak boleh mengandung simbol dan angka',
 					'email.required' => 'Email harus diisi',
 					'email.unique' => 'Email ' . $request->email . ' sudah digunakan',

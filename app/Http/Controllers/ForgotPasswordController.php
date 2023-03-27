@@ -32,18 +32,7 @@ class ForgotPasswordController extends Controller
 
 	public function submitForgetPasswordForm(Request $request)
 	{
-		$tanggal = DB::table('password_resets')->where('email', $request->email)->first();
-		if (isset($tanggal)) {
-			Carbon::setLocale('id');
-			$dt_next = Carbon::parse($tanggal->created_at)
-				->addHours(2)->translatedFormat('d F Y G:i');
-		}
-		$request->validate([
-			'email' => 'required|email|exists:users',
-		], [
-			'email.unique' => 'Anda tidak bisa meminta reset password lagi sebelum ' .
-				($dt_next ?? '...')
-		]);
+		$request->validate(['email' => 'bail|required|email|exists:users']);
 		try {
 			$status = Password::sendResetLink($request->only('email'));
 			if ($status === Password::RESET_LINK_SENT)
