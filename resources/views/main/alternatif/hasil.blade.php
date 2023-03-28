@@ -3,7 +3,7 @@
 @php
 	use App\Http\Controllers\NilaiController;
 	$saw = new NilaiController();
-	$simpan = false;
+	$countkriteria = count($data['kriteria']);
 @endphp
 @section('content')
 	<div class="page-heading">
@@ -22,7 +22,7 @@
 							<thead>
 								<tr>
 									<th rowspan="2">Alternatif</th>
-									<th colspan="{{ count($data['kriteria']) }}">Kriteria</th>
+									<th colspan="{{ $countkriteria }}">Kriteria</th>
 								</tr>
 								<tr>
 									@foreach ($data['kriteria'] as $krit)
@@ -59,7 +59,7 @@
 							<thead>
 								<tr>
 									<th rowspan="2">Alternatif</th>
-									<th colspan="{{ count($data['kriteria']) }}">Kriteria</th>
+									<th colspan="{{ $countkriteria }}">Kriteria</th>
 								</tr>
 								<tr>
 									@foreach ($data['kriteria'] as $krit)
@@ -98,12 +98,15 @@
 					<h4 class="card-title">Ranking</h4>
 				</div>
 				<div class="card-body">
+					<a href="{{ url('/ranking') }}" class="btn btn-primary mb-3">
+						Lihat Grafik
+					</a>
 					<div class="table-responsive">
 						<table class="table table-hover text-center" id="table-hasil">
 							<thead class="text-center">
 								<tr>
 									<th rowspan="2">Alternatif</th>
-									<th colspan="{{ count($data['kriteria']) }}">Kriteria</th>
+									<th colspan="{{ $countkriteria }}">Kriteria</th>
 									<th rowspan="2">Jumlah</th>
 								</tr>
 								<tr>
@@ -127,7 +130,7 @@
 													$jml += round($datas, 5); ?>
 												</td>
 											@endforeach
-											@php($simpan = $saw->simpanHasil($alts->id, $jml))
+											@php($saw->simpanHasil($alts->id, $jml))
 											<td>{{ $jml }}</td>
 										</tr>
 									@endif
@@ -135,11 +138,6 @@
 							</tbody>
 						</table>
 					</div>
-					@if (!$simpan)
-						<div class="alert alert-warning">
-							Satu atau lebih hasil tidak tersimpan
-						</div>
-					@endif
 				</div>
 			</div>
 		</section>
@@ -149,9 +147,11 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#table-hasil').DataTable({
-				"stateSave": true,
 				"lengthChange": false,
 				"searching": false,
+				order: [
+					[1 + {{ $countkriteria }}, 'desc']
+				]
 			});
 		});
 	</script>

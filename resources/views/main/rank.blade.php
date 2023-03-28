@@ -11,8 +11,12 @@
 				<div class="card-header">Hasil akhir</div>
 				<div class="card-body">
 					<div id="chart-ranking"></div>
-					Jadi, ranking tertingginya adalah {{ $highest->alternatif->name }}
-					dengan skor {{ $highest->skor }}
+					Jadi, nilai tertingginya (3 besar) adalah:
+					<ol>
+						@foreach ($highest as $top3)
+							<li>{{ $top3->alternatif->name }} dengan nilai {{ $top3->skor }}</li>
+						@endforeach
+					</ol>
 				</div>
 			</div>
 		</section>
@@ -47,8 +51,8 @@
 			colors: "#435ebe",
 			xaxis: {
 				categories: [
-					@foreach ($alt as $alts)
-						'{{ $alts->name }}',
+					@foreach ($result as $alts)
+						'{{ $alts->alternatif->name }}',
 					@endforeach
 				],
 			},

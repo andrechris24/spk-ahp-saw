@@ -60,7 +60,10 @@ class HomeController extends Controller
 			if (!$cekpass)
 				return back()->withError('Gagal update akun: Password salah');
 			$req = $request->all();
-			$req['password'] = Hash::make($req['password']);
+			if (empty($req['password'])) {
+				unset($req['password']);
+				unset($req['password_confirmation']);
+			} else $req['password'] = Hash::make($req['password']);
 			$updprofil = $cek->update($req);
 			if ($updprofil) return back()->withSuccess('Akun sudah diupdate');
 		} catch (QueryException $db) {

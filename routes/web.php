@@ -101,5 +101,4 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		Route::get('ranking', 'HasilController@index')->name('ranking.show');
 		Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
 	});
-	Route::get('/test', 'HasilController@test');
 });

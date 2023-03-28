@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hasil;
-use App\Models\Alternatif;
 
 class HasilController extends Controller
 {
@@ -13,16 +12,10 @@ class HasilController extends Controller
 		if (count($result) == 0) {
 			return redirect('alternatif/nilai')
 				->withWarning(
-					'Nilai Alternatif kosong, mohon untuk diisi dulu lalu klik \'Lihat Hasil\''
+					'Hasil penilaian kosong, pastikan nilai alternatif sudah diisi, lalu klik "Lihat Hasil"'
 				);
 		}
-		$alt = Alternatif::get();
-		$highest = Hasil::orderBy('skor', 'desc')->first();
-		return view('main.rank', compact('alt', 'result', 'highest'));
-	}
-	public function test()
-	{
-		dd(csrf_token());
-		return view('welcome');
+		$highest = Hasil::orderBy('skor', 'desc')->limit(3)->get();
+		return view('main.rank', compact('result', 'highest'));
 	}
 }

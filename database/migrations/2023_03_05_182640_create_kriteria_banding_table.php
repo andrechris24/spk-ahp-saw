@@ -17,7 +17,7 @@ return new class extends Migration
 			$table->id();
 			$table->foreignId('kriteria1')->constrained('kriteria')->cascadeOnDelete();
 			$table->foreignId('kriteria2')->constrained('kriteria')->cascadeOnDelete();
-			$table->float('nilai', 8,6);
+			$table->float('nilai', 8, 4);
 			$table->timestamps();
 		});
 	}
