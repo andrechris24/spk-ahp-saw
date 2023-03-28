@@ -79,6 +79,8 @@ class ForgotPasswordController extends Controller
 		);
 		if ($status === Password::PASSWORD_RESET)
 			return redirect('/login')->withSuccess('Reset password berhasil');
+		else if($status===Password::INVALID_USER)
+			return back()->withErrors('Akun tidak ditemukan');
 		return back()->withError('Reset password gagal');
 	}
 }
