@@ -12,11 +12,15 @@
 	<link rel="stylesheet" href="{{ url('assets/css/shared/iconly.css') }}" />
 	<link rel="stylesheet" type="text/css"
 		href="{{ url('assets/datatables.min.css') }}">
-	<link rel="stylesheet" href="{{ url('assets/apexcharts.css') }}">
+	<link rel="stylesheet" href="{{ url('assets/extensions/apexcharts/apexcharts.css') }}">
 	<link rel="shortcut icon" href="{{ url('assets/images/logo/favicon.svg') }}"
 		type="image/x-icon" />
 	<link rel="shortcut icon" href="{{ url('assets/images/logo/favicon.png') }}"
 		type="image/png" />
+		<link
+      rel="stylesheet"
+      href="{{url('assets/extensions/@fortawesome/fontawesome-free/css/all.min.css')}}"
+    />
 </head>
 
 <body>
@@ -133,7 +137,7 @@
 							</li>
 							<li class="sidebar-item">
 								<a href="{{ url('/ranking') }}" class="sidebar-link">
-									<i class="fa-solid fa-ranking-star"></i>
+									<i class="bi bi-bar-chart-line-fill"></i>
 									<span>Hasil Akhir</span>
 								</a>
 							</li>
@@ -141,8 +145,7 @@
 						@guest
 							<li class="sidebar-item">
 								<a href="{{ url('login') }}" class="sidebar-link">
-									<i class="fa-solid fa-user me-2"></i>
-									Login
+									<i class="bi bi-box-arrow-in-right me-2"></i> Login
 								</a>
 							</li>
 						@endguest
@@ -218,7 +221,7 @@
 											</div>
 											<div class="user-img d-flex">
 												<div class="avatar avatar-md">
-													<i class="fas fa-circle-user fa-2x"></i>
+													<i class="fas fa-user-circle fa-2x"></i>
 												</div>
 											</div>
 										</div>
@@ -267,16 +270,14 @@
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript" src="{{ url('assets/jquery-3.6.3.min.js') }}">
+	<script type="text/javascript" src="{{ url('assets/extensions/jquery/jquery.min.js') }}">
 	</script>
 	<script src="{{ url('assets/js/bootstrap.js') }}"></script>
 	<script src="{{ url('assets/js/app.js') }}"></script>
 	<script src="{{ url('assets/js/initTheme.js') }}"></script>
 	<script type="text/javascript" src="{{ url('assets/datatables.min.js') }}">
 	</script>
-	<script src="https://kit.fontawesome.com/a49b540b68.js" crossorigin="anonymous">
-	</script>
-	<script src="{{ url('assets/apexcharts.min.js') }}"></script>
+	<script src="{{ url('assets/extensions/apexcharts/apexcharts.min.js') }}"></script>
 	@yield('js')
 </body>
 

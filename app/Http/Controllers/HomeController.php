@@ -58,7 +58,7 @@ class HomeController extends Controller
 			);
 			$cekpass = Hash::check($request->current_password, Auth::user()->password);
 			if (!$cekpass)
-				return back()->withError('Gagal update akun: Password salah');
+				return back()->withErrors(['current_password'=>'Password salah']);
 			$req = $request->all();
 			if (empty($req['password'])) {
 				unset($req['password']);
@@ -78,7 +78,7 @@ class HomeController extends Controller
 		try {
 			$cek = User::find($id);
 			if (!$cek)
-				return back()->withInput()->withError('Gagal hapus: Akun tidak ditemukan');
+				return back()->withError('Gagal hapus: Akun tidak ditemukan');
 			$request->validate(User::$delakunrule);
 			$cekpass = Hash::check($request->del_password, Auth::user()->password);
 			if (!$cekpass)
@@ -87,9 +87,9 @@ class HomeController extends Controller
 			Session::flush();
 			if ($cek->delete()) return redirect('/')->withSuccess('Akun sudah dihapus');
 		} catch (QueryException $db) {
-			return back()->withInput()->withError('Gagal hapus akun:')
+			return back()->withError('Gagal hapus akun:')
 				->withErrors($db->getMessage());
 		}
-		return back()->withInput()->withError('Akun gagal dihapus');
+		return back()->withError('Akun gagal dihapus');
 	}
 }

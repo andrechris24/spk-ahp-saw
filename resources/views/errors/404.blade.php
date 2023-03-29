@@ -23,7 +23,7 @@
 						Halaman yang Anda cari tidak ditemukan.
 					</p>
 					<a href="{{ url('/') }}" class="btn btn-lg btn-outline-primary mt-3">
-						Kembali
+						<i class="bi bi-arrow-left-circle-fill"></i> Kembali ke Beranda
 					</a>
 				</div>
 			</div>

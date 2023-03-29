@@ -37,8 +37,10 @@ class ForgotPasswordController extends Controller
 			$status = Password::sendResetLink($request->only('email'));
 			if ($status === Password::RESET_LINK_SENT)
 				return back()->withSuccess('Link reset password sudah dikirim.');
-			else if ($status === Password::RESET_THROTTLED)
-				return back()->withError('Tunggu sebentar sebelum meminta reset password lagi.');
+			else if ($status === Password::RESET_THROTTLED){
+				return back()
+				->withError('Tunggu sebentar sebelum meminta reset password lagi.');
+			}
 			return back()->withError('Pengiriman link reset password gagal');
 		} catch (TransportException $err) {
 			DB::table('password_resets')->where('email', $request->email)->delete();
@@ -79,6 +81,8 @@ class ForgotPasswordController extends Controller
 		);
 		if ($status === Password::PASSWORD_RESET)
 			return redirect('/login')->withSuccess('Reset password berhasil');
+		else if($status===Password::INVALID_TOKEN)
+			return back()->withErrors('Token tidak valid');
 		else if($status===Password::INVALID_USER)
 			return back()->withErrors('Akun tidak ditemukan');
 		return back()->withError('Reset password gagal');

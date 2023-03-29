@@ -18,7 +18,7 @@
 			</div>
 		</div>
 		<button type="submit" class="btn btn-primary btn-block btn-lg shadow-lg mt-5">
-			Kirim
+			<i class="bi bi-send-fill"></i> Kirim
 		</button>
 	</form>
 	<div class="text-center mt-5 text-lg fs-4">

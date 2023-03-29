@@ -31,9 +31,9 @@
 		</div>
 		<div class="form-group position-relative has-icon-left mb-4">
 			<input type="password" name="password_confirmation" id="confirm-password"
-				class="form-control form-control-xl @error('password_confirmation') is-invalid @enderror "
-				placeholder="Confirm Password" maxlength="20" oninput="checkpassword()"
-				required />
+				placeholder="Confirm Password" maxlength="20" class="form-control
+				form-control-xl @error('password_confirmation') is-invalid @enderror "
+				oninput="checkpassword()" required />
 			<div class="form-control-icon">
 				<i class="bi bi-shield-lock"></i>
 			</div>

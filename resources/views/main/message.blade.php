@@ -1,10 +1,3 @@
-<noscript>
-	<div class="alert alert-danger text-center">
-		<i class="fa-solid fa-triangle-exclamation"></i>
-		Peringatan: JavaScript tidak bekerja.
-		Beberapa fungsi tidak akan bekerja dengan baik.
-	</div>
-</noscript>
 @if (Session::has('error') || $errors->any())
 	<div class="alert alert-danger alert-dismissible" role="alert">
 		<i class="bi bi-x-circle-fill"></i>

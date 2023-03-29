@@ -51,14 +51,14 @@ class SubKriteriaCompController extends Controller
 	public function index()
 	{
 		$allkrit = Kriteria::get();
-		if (count($allkrit) == 0) {
+		if (count($allkrit) === 0) {
 			return redirect('/kriteria')
 				->withWarning(
 					'Masukkan kriteria dulu untuk melakukan perbandingan subkriteria'
 				);
 		}
 		$crit = SubKriteria::count();
-		if ($crit == 0) {
+		if ($crit === 0) {
 			return redirect('/kriteria/sub')
 				->withWarning(
 					'Masukkan data sub kriteria dulu untuk melakukan perbandingan subkriteria'

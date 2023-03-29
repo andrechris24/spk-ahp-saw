@@ -118,11 +118,16 @@
 												placeholder="Kosongkan jika tidak ganti password"
 												oninput="checkpassword()" pattern=".{8,20}" id="newpassword"
 												data-bs-toggle="tooltip" maxlength="20" data-bs-placement="top"
-												title="8-20 karakter (Saran: terdiri dari huruf besar, huruf kecil, angka, dan simbol)" />
+												title="8-20 karakter" />
 											<div class="form-control-icon">
 												<i class="bi bi-lock"></i>
 											</div>
 										</div>
+										<p>
+											<small class="text-muted">
+											Saran: terdiri dari huruf besar, huruf kecil, angka, dan simbol
+											</small>
+										</p>
 									</div>
 								</div>
 								<div class="col-md-4">
@@ -132,9 +137,9 @@
 									<div class="form-group has-icon-left">
 										<div class="position-relative">
 											<input type="password" name="password_confirmation"
-												class="form-control @error('password_confirmation') is-invalid @enderror "
-												placeholder="Ketik ulang Password baru" id="conf-password"
-												oninput="checkpassword()" maxlength="20" />
+												maxlength="20" oninput="checkpassword()" class="form-control
+												@error('password_confirmation') is-invalid @enderror "
+												placeholder="Ketik ulang Password baru" id="conf-password"/>
 											<div class="form-control-icon">
 												<i class="bi bi-lock"></i>
 											</div>
@@ -166,7 +171,6 @@
 
 @section('js')
 	<script type="text/javascript">
-		// let a;
 		const accpassword = document.querySelectorAll('input[type="password"]');
 		const message = document.querySelector('#capslock');
 		const popupmsg = document.querySelector('#capslock2');

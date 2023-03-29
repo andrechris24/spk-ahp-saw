@@ -24,21 +24,17 @@ class KriteriaCompController extends Controller
 		)->select(
 			"kriteria_banding.kriteria1 as idkriteria",
 			"kriteria.name"
-		)
-			->groupBy("kriteria1", 'name')
-			->get();
+		)->groupBy("kriteria1", 'name')->get();
 	}
 	private function getPerbandinganByKriteria1($kriteria1)
 	{
 		return KriteriaComp::select('nilai', 'kriteria2', 'kriteria1')
-			->where("kriteria2", "=", $kriteria1)
-			->get();
+			->where("kriteria2", "=", $kriteria1)->get();
 	}
 	private function getNilaiPerbandingan($kode_kriteria)
 	{
 		return KriteriaComp::select("nilai", "kriteria1")
-			->where("kriteria1", "=", $kode_kriteria)
-			->get();
+			->where("kriteria1", "=", $kode_kriteria)->get();
 	}
 	public function index(): Factory|View|Application
 	{
@@ -68,11 +64,9 @@ class KriteriaCompController extends Controller
 					$perbandingan = new KriteriaComp();
 					$perbandingan->kriteria1 = $kriteria[$i]->id;
 					$perbandingan->kriteria2 = $kriteria[$j]->id;
-					if ($request->kolom[$a] > $request->baris[$a]) {
+					if ($request->kolom[$a] > $request->baris[$a]) 
 						$nilai = 0 - $request->kolom[$a];
-					} else {
-						$nilai = $request->baris[$a];
-					}
+					else $nilai = $request->baris[$a];
 					$perbandingan->nilai = $nilai;
 					$perbandingan->save();
 					$a++;
