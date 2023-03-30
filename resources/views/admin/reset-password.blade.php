@@ -54,15 +54,10 @@
 	<script type="text/javascript">
 		const accpassword = document.querySelectorAll('input[type="password"]');
 		const message = document.querySelector('#capslock');
-		for (a = 0; a < accpassword.length; a++) {
-			accpassword[a].addEventListener('keyup', function(e) {
-				if (e.getModifierState('CapsLock')) {
-					message.classList.remove('d-none');
-					message.classList.add('d-block');
-				} else {
-					message.classList.remove('d-block');
-					message.classList.add('d-none');
-				}
+		for (let a = 0; a < accpassword.length; a++) {
+			accpassword[a].addEventListener('keydown', function(e) {
+				if (e.getModifierState('CapsLock')) message.classList.remove('d-none');
+				else message.classList.add('d-none');
 			});
 		}
 		var newpassform = document.getElementById("password");

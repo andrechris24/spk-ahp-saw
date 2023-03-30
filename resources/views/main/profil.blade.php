@@ -175,16 +175,12 @@
 		const message = document.querySelector('#capslock');
 		const popupmsg = document.querySelector('#capslock2');
 		for (let a = 0; a < accpassword.length; a++) {
-			accpassword[a].addEventListener('keyup', function(e) {
+			accpassword[a].addEventListener('keydown', function(e) {
 				if (e.getModifierState('CapsLock')) {
 					message.classList.remove('d-none');
-					message.classList.add('d-block');
 					popupmsg.classList.remove('d-none');
-					popupmsg.classList.add('d-block');
 				} else {
-					message.classList.remove('d-block');
 					message.classList.add('d-none');
-					popupmsg.classList.remove('d-block');
 					popupmsg.classList.add('d-none');
 				}
 			});

@@ -56,14 +56,9 @@
 	<script type="text/javascript">
 		const password = document.querySelector('#password');
 		const message = document.querySelector('#capslock');
-		password.addEventListener('keyup', function(e) {
-			if (e.getModifierState('CapsLock')) {
-				message.classList.remove('d-none');
-				message.classList.add('d-block');
-			} else {
-				message.classList.remove('d-block');
-				message.classList.add('d-none');
-			}
+		password.addEventListener('keydown', function(e) {
+			if (e.getModifierState('CapsLock')) message.classList.remove('d-none');
+			else message.classList.add('d-none');
 		});
 	</script>
 @endsection
