@@ -37,10 +37,12 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		 */
 		Route::get('/forget-password', 'ForgotPasswordController@showForgetPasswordForm')
 			->name('password.request');
-		Route::post('/forget-password', 'ForgotPasswordController@submitForgetPasswordForm')
-			->name('password.email');
-		Route::get('/reset-password/{token}', 'ForgotPasswordController@showResetPasswordForm')
-			->name('password.reset');
+		Route::post(
+			'/forget-password', 'ForgotPasswordController@submitForgetPasswordForm'
+		)->name('password.email');
+		Route::get(
+			'/reset-password/{token}', 'ForgotPasswordController@showResetPasswordForm'
+		)->name('password.reset');
 		Route::post('/reset-password', 'ForgotPasswordController@submitResetPasswordForm')
 			->name('password.update');
 	});

@@ -64,7 +64,7 @@ class KriteriaCompController extends Controller
 					$perbandingan = new KriteriaComp();
 					$perbandingan->kriteria1 = $kriteria[$i]->id;
 					$perbandingan->kriteria2 = $kriteria[$j]->id;
-					if ($request->kolom[$a] > $request->baris[$a]) 
+					if ($request->kolom[$a] > $request->baris[$a])
 						$nilai = 0 - $request->kolom[$a];
 					else $nilai = $request->baris[$a];
 					$perbandingan->nilai = $nilai;
@@ -150,10 +150,7 @@ class KriteriaCompController extends Controller
 					$kriteria[$i]->idkriteria ==
 					$matriks_perbandingan[$j]["kode_kriteria"]
 				) {
-					array_push(
-						$array_filter,
-						$matriks_perbandingan[$j]["nilai"]
-					);
+					$array_filter[] = $matriks_perbandingan[$j]["nilai"];
 				}
 			}
 			for ($k = 0; $k < count($matriks_perbandingan); $k++) {

@@ -14,21 +14,12 @@ use App\Services\Login\RememberMeExpiration;
 class LoginController extends Controller
 {
 	use RememberMeExpiration;
-	/**
-	 * Create a new login controller instance.
-	 *
-	 * @return void
-	 */
-	// public function __construct()
-	// {
-	//     $this->middleware('throttle:3,1')->only('login');
-	// }
 	public function show(): View|Factory|Application|RedirectResponse
 	{
 		if (Auth::viaRemember() || Auth::check()) return redirect()->intended();
 		return view('admin.login');
 	}
-	public function login(Request $request)
+	public function login(Request $request): RedirectResponse
 	{
 		$credentials = $request->validate(User::$loginrules, [
 			'email.required' => 'Email harus diisi',
