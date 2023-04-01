@@ -264,7 +264,10 @@
 				columnDefs: [{
 					orderable: false,
 					targets: 4,
-				}]
+				}],
+				language: {
+					url: '{{ url('assets/DataTables-id.json') }}'
+				}
 			});
 		});
 	</script>

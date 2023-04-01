@@ -151,7 +151,10 @@
 				"searching": false,
 				order: [
 					[1 + {{ $countkriteria }}, 'desc']
-				]
+				],
+				language: {
+					url: '{{ url('assets/DataTables-id.json') }}'
+				}
 			});
 		});
 	</script>

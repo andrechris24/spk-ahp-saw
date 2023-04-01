@@ -92,4 +92,7 @@ class HomeController extends Controller
 		}
 		return back()->withError('Akun gagal dihapus');
 	}
+	public function test(){
+		dd(asset('js/app.js'));
+	}
 }

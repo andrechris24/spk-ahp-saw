@@ -23,7 +23,7 @@
 						Anda telah mengirim terlalu banyak permintaan ke server.
 						Tunggu beberapa menit sebelum mencoba lagi.
 					</p>
-					<a href="{{ url('/') }}" class="btn btn-lg btn-outline-primary mt-3">
+					<a href="{{ route('home.index') }}" class="btn btn-lg btn-outline-primary mt-3">
 						<i class="bi bi-arrow-left-circle-fill"></i> Kembali ke Beranda
 					</a>
 				</div>

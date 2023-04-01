@@ -299,7 +299,10 @@
 				columnDefs: [{
 					orderable: false,
 					targets: {{ $critcount + 1 }},
-				}]
+				}],
+				language: {
+					url: '{{ url('assets/DataTables-id.json') }}'
+				}
 			});
 		});
 	</script>
