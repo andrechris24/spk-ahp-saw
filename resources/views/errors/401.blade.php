@@ -22,7 +22,8 @@
 					<p class="fs-5 text-gray-600">
 						Anda tidak bisa mengakses halaman ini tanpa otorisasi.
 					</p>
-					<a href="{{ route('home.index') }}" class="btn btn-lg btn-outline-primary mt-3">
+					<a href="{{ route('home.index') }}"
+						class="btn btn-lg btn-outline-primary mt-3">
 						<i class="bi bi-arrow-left-circle-fill"></i> Kembali ke Beranda
 					</a>
 				</div>

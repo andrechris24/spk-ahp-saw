@@ -210,7 +210,7 @@
 					targets: 2,
 				}],
 				language: {
-					url: '{{ url('assets/DataTables-id.json') }}'
+					url: "{{ url('assets/DataTables-id.json') }}"
 				}
 			});
 		});

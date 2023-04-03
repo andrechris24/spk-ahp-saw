@@ -153,7 +153,7 @@
 					[1 + {{ $countkriteria }}, 'desc']
 				],
 				language: {
-					url: '{{ url('assets/DataTables-id.json') }}'
+					url: "{{ url('assets/DataTables-id.json') }}"
 				}
 			});
 		});

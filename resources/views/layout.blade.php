@@ -12,15 +12,14 @@
 	<link rel="stylesheet" href="{{ url('assets/css/shared/iconly.css') }}" />
 	<link rel="stylesheet" type="text/css"
 		href="{{ url('assets/datatables.min.css') }}">
-	<link rel="stylesheet" href="{{ url('assets/extensions/apexcharts/apexcharts.css') }}">
+	<link rel="stylesheet"
+		href="{{ url('assets/extensions/apexcharts/apexcharts.css') }}">
 	<link rel="shortcut icon" href="{{ url('assets/images/logo/favicon.svg') }}"
 		type="image/x-icon" />
 	<link rel="shortcut icon" href="{{ url('assets/images/logo/favicon.png') }}"
 		type="image/png" />
-		<link
-      rel="stylesheet"
-      href="{{url('assets/extensions/@fortawesome/fontawesome-free/css/all.min.css')}}"
-    />
+	<link rel="stylesheet"
+		href="{{ url('assets/extensions/@fortawesome/fontawesome-free/css/all.min.css') }}" />
 </head>
 
 <body>
@@ -177,9 +176,9 @@
 										<ul class="dropdown-menu dropdown-menu-end"
 											aria-labelledby="dropdownMenuButton">
 											<li>
-												<h6 class="dropdown-header">Mail</h6>
+												<h6 class="dropdown-header">Pesan</h6>
 											</li>
-											<li><a class="dropdown-item" href="#">No new mail</a></li>
+											<li><a class="dropdown-item" href="#">Tidak ada pesan</a></li>
 										</ul>
 									</li>
 									<li class="nav-item dropdown me-3">
@@ -191,21 +190,11 @@
 										<ul class="dropdown-menu dropdown-menu-end notification-dropdown"
 											aria-labelledby="dropdownMenuButton">
 											<li class="dropdown-header">
-												<h6>Notifications</h6>
+												<h6>Notifikasi</h6>
 											</li>
 											<li class="dropdown-item notification-item">
 												<a class="d-flex align-items-center" href="#">
-													<div class="notification-icon bg-primary">
-														<i class="bi bi-cart-check"></i>
-													</div>
-													<div class="notification-text ms-4">
-														<p class="notification-title font-bold">
-															Successfully check out
-														</p>
-														<p class="notification-subtitle font-thin text-sm">
-															Order ID #256
-														</p>
-													</div>
+													Tidak ada notifikasi
 												</a>
 											</li>
 										</ul>
@@ -270,14 +259,15 @@
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript" src="{{ url('assets/extensions/jquery/jquery.min.js') }}">
-	</script>
+	<script type="text/javascript"
+		src="{{ url('assets/extensions/jquery/jquery.min.js') }}"></script>
 	<script src="{{ url('assets/js/bootstrap.js') }}"></script>
 	<script src="{{ url('assets/js/app.js') }}"></script>
 	<script src="{{ url('assets/js/initTheme.js') }}"></script>
 	<script type="text/javascript" src="{{ url('assets/datatables.min.js') }}">
 	</script>
-	<script src="{{ url('assets/extensions/apexcharts/apexcharts.min.js') }}"></script>
+	<script src="{{ url('assets/extensions/apexcharts/apexcharts.min.js') }}">
+	</script>
 	@yield('js')
 </body>
 

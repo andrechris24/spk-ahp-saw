@@ -125,7 +125,7 @@
 										</div>
 										<p>
 											<small class="text-muted">
-											Saran: terdiri dari huruf besar, huruf kecil, angka, dan simbol
+												Saran: terdiri dari huruf besar, huruf kecil, angka, dan simbol
 											</small>
 										</p>
 									</div>
@@ -136,10 +136,11 @@
 								<div class="col-md-8">
 									<div class="form-group has-icon-left">
 										<div class="position-relative">
-											<input type="password" name="password_confirmation"
-												maxlength="20" oninput="checkpassword()" class="form-control
+											<input type="password" name="password_confirmation" maxlength="20"
+												id="conf-password" oninput="checkpassword()"
+												class="form-control
 												@error('password_confirmation') is-invalid @enderror "
-												placeholder="Ketik ulang Password baru" id="conf-password"/>
+												placeholder="Ketik ulang Password baru" />
 											<div class="form-control-icon">
 												<i class="bi bi-lock"></i>
 											</div>

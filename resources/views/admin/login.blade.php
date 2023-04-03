@@ -19,17 +19,18 @@
 		</div>
 		<div class="form-group position-relative has-icon-left mb-4">
 			<input type="password" placeholder="Password" name="password"
-				pattern=".{8,20}" id="password" maxlength="20" class="form-control
-				form-control-xl @error('password') is-invalid @enderror "
-				title="8-20 karakter" required />
+				pattern=".{8,20}" id="password" required title="8-20 karakter"
+				maxlength="20"
+				class="form-control
+				form-control-xl @error('password') is-invalid @enderror " />
 			<div class="form-control-icon">
 				<i class="bi bi-shield-lock"></i>
 			</div>
 		</div>
 		<div class="form-check form-check-lg d-flex align-items-end">
-			<input class="form-check-input me-2" type="checkbox"
-				id="remember-me" name="remember" data-bs-toggle="tooltip"
-				data-bs-placement="top" value="1"
+			<input class="form-check-input me-2" type="checkbox" id="remember-me"
+				name="remember" data-bs-toggle="tooltip" data-bs-placement="top"
+				value="1"
 				title="Berlaku selama 30 hari, jangan dicentang jika bukan perangkat Anda." />
 			<label class="form-check-label text-gray-600" for="remember-me">
 				Biarkan saya login
@@ -57,7 +58,8 @@
 		const password = document.querySelector('#password');
 		const message = document.querySelector('#capslock');
 		password.addEventListener('keydown', function(e) {
-			if (e.getModifierState('CapsLock')) message.classList.remove('d-none');
+			if (e.getModifierState('CapsLock')) message.classList.remove(
+				'd-none');
 			else message.classList.add('d-none');
 		});
 	</script>

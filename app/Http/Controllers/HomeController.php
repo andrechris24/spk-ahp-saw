@@ -58,7 +58,7 @@ class HomeController extends Controller
 			);
 			$cekpass = Hash::check($request->current_password, Auth::user()->password);
 			if (!$cekpass)
-				return back()->withErrors(['current_password'=>'Password salah']);
+				return back()->withErrors(['current_password' => 'Password salah']);
 			$req = $request->all();
 			if (empty($req['password'])) {
 				unset($req['password']);
@@ -91,8 +91,5 @@ class HomeController extends Controller
 				->withErrors($db->getMessage());
 		}
 		return back()->withError('Akun gagal dihapus');
-	}
-	public function test(){
-		dd(asset('js/app.js'));
 	}
 }

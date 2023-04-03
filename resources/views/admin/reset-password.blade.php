@@ -31,9 +31,10 @@
 		</div>
 		<div class="form-group position-relative has-icon-left mb-4">
 			<input type="password" name="password_confirmation" id="confirm-password"
-				placeholder="Confirm Password" maxlength="20" class="form-control
-				form-control-xl @error('password_confirmation') is-invalid @enderror "
-				oninput="checkpassword()" required />
+				placeholder="Confirm Password" maxlength="20" required
+				oninput="checkpassword()"
+				class="form-control
+				form-control-xl @error('password_confirmation') is-invalid @enderror " />
 			<div class="form-control-icon">
 				<i class="bi bi-shield-lock"></i>
 			</div>
@@ -56,7 +57,8 @@
 		const message = document.querySelector('#capslock');
 		for (let a = 0; a < accpassword.length; a++) {
 			accpassword[a].addEventListener('keydown', function(e) {
-				if (e.getModifierState('CapsLock')) message.classList.remove('d-none');
+				if (e.getModifierState('CapsLock')) message.classList.remove(
+					'd-none');
 				else message.classList.add('d-none');
 			});
 		}

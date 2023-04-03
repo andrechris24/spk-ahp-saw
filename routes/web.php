@@ -38,10 +38,12 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		Route::get('/forget-password', 'ForgotPasswordController@showForgetPasswordForm')
 			->name('password.request');
 		Route::post(
-			'/forget-password', 'ForgotPasswordController@submitForgetPasswordForm'
+			'/forget-password',
+			'ForgotPasswordController@submitForgetPasswordForm'
 		)->name('password.email');
 		Route::get(
-			'/reset-password/{token}', 'ForgotPasswordController@showResetPasswordForm'
+			'/reset-password/{token}',
+			'ForgotPasswordController@showResetPasswordForm'
 		)->name('password.reset');
 		Route::post('/reset-password', 'ForgotPasswordController@submitResetPasswordForm')
 			->name('password.update');
@@ -103,6 +105,4 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		Route::get('ranking', 'HasilController@index')->name('ranking.show');
 		Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
 	});
-
-	Route::get('/test','HomeController@test');
 });

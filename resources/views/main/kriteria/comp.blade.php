@@ -44,6 +44,9 @@
 								aria-labelledby="input-tab">
 								@if ($jmlcrit >= 2)
 									<div class="table-responsive">
+										<div class="alert alert-info">
+											Nilai perbandingan akan dihitung 1 jika Anda memasukkan skala 0.
+										</div>
 										<form method="post" enctype="multipart/form-data"
 											action="{{ url('bobot') }}">
 											@csrf
@@ -60,33 +63,15 @@
 														<tr>
 															<th>{{ $krit['baris'] }}</th>
 															<td>
-																<div class="input-group mb-3">
-																	@if ($krit['baris'] == $krit['kolom'])
-																		<input type="number" name="baris[]"
-																			class="form-control text-center" min="1" max="9"
-																			value="1" readonly />
-																		<div class="input-group-prepend">
-																			<span class="input-group-text">
-																				Banding
-																			</span>
-																		</div>
-																		<input type="number" name="kolom[]"
-																			class="form-control text-center" value="1" min="1"
-																			max="9" readonly />
-																	@else
-																		<input type="number" name="baris[]"
-																			class="form-control text-center" min="1" max="9"
-																			required />
-																		<div class="input-group-prepend">
-																			<span class="input-group-text">
-																				Banding
-																			</span>
-																		</div>
-																		<input type="number" name="kolom[]"
-																			class="form-control text-center" min="1" max="9"
-																			required />
-																	@endif
-																</div>
+																@if ($krit['baris'] == $krit['kolom'])
+																	<input type="range" class="form-range" disabled>
+																	<input type="hidden" name="banding[]" value="1">
+																@else
+																	<input type="range" name="banding[]" min="-9"
+																		max="9" step="1" class="form-range"
+																		oninput="this.nextElementSibling.value=this.value">
+																@endif
+																<output>0</output>
 															</td>
 															<th>{{ $krit['kolom'] }}</th>
 														</tr>

@@ -15,7 +15,7 @@ class HasilController extends Controller
 					'Hasil penilaian kosong, pastikan nilai alternatif sudah diisi, lalu klik "Lihat Hasil"'
 				);
 		}
-		$highest = Hasil::orderBy('skor', 'desc')->limit(3)->get();
+		$highest = Hasil::orderBy('skor', 'desc')->first();
 		return view('main.rank', compact('result', 'highest'));
 	}
 }

@@ -11,12 +11,8 @@
 				<div class="card-header">Hasil akhir</div>
 				<div class="card-body">
 					<div id="chart-ranking"></div>
-					Jadi, nilai tertingginya (3 besar) adalah:
-					<ol>
-						@foreach ($highest as $top3)
-							<li>{{ $top3->alternatif->name }} dengan nilai {{ $top3->skor }}</li>
-						@endforeach
-					</ol>
+					Jadi, nilai tertingginya diraih oleh {{ $highest->alternatif->name }}
+					dengan nilai {{ $highest->skor }}
 				</div>
 			</div>
 		</section>
