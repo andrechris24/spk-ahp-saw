@@ -58,8 +58,8 @@
 		const password = document.querySelector('#password');
 		const message = document.querySelector('#capslock');
 		password.addEventListener('keydown', function(e) {
-			if (e.getModifierState('CapsLock')) message.classList.remove(
-				'd-none');
+			if (e.getModifierState('CapsLock'))
+				message.classList.remove('d-none');
 			else message.classList.add('d-none');
 		});
 	</script>
