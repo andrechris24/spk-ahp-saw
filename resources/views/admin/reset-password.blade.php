@@ -32,8 +32,7 @@
 		<div class="form-group position-relative has-icon-left mb-4">
 			<input type="password" name="password_confirmation" id="confirm-password"
 				placeholder="Confirm Password" maxlength="20" required
-				oninput="checkpassword()"
-				class="form-control
+				oninput="checkpassword()" class="form-control
 				form-control-xl @error('password_confirmation') is-invalid @enderror " />
 			<div class="form-control-icon">
 				<i class="bi bi-shield-lock"></i>
