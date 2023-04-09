@@ -64,8 +64,9 @@ class KriteriaCompController extends Controller
 					$perbandingan = new KriteriaComp();
 					$perbandingan->kriteria1 = $kriteria[$i]->id;
 					$perbandingan->kriteria2 = $kriteria[$j]->id;
-					if ($request->banding[$a] == 0) $nilai = 1;
-					else $nilai = $request->banding[$a];
+					if ($request->kolom[$a] > $request->baris[$a]) 
+						$nilai = 0 - $request->kolom[$a];
+					else $nilai = $request->baris[$a];
 					$perbandingan->nilai = $nilai;
 					$perbandingan->save();
 					$a++;
@@ -240,16 +241,16 @@ class KriteriaCompController extends Controller
 		if ($ratio[count($kriteria) - 1] == 0) $result = '-';
 		else
 			$result = number_format(abs($total_ci / $ratio[count($kriteria) - 1]), 4);
-
-		for ($i = 0; $i < count($kriteria); $i++) {
-			Kriteria::where(
-				"id",
-				$kriteria[$i]->idkriteria
-			)->update([
-				"bobot" => $array_BobotPrioritas[$i]["bobot"],
-			]);
+		if($result<=0.1 || !is_numeric($result)){
+			for ($i = 0; $i < count($kriteria); $i++) {
+				Kriteria::where(
+					"id",
+					$kriteria[$i]->idkriteria
+				)->update([
+					"bobot" => $array_BobotPrioritas[$i]["bobot"],
+				]);
+			}
 		}
-
 		$data = [
 			"kriteria" => $kriteria,
 			"matriks_perbandingan" => $matriks_perbandingan,

@@ -113,12 +113,12 @@ class NilaiController extends Controller
 		$cekbobotskr = SubKriteria::where('bobot', 0.0000)->count();
 		if ($cekbobotkr > 0) {
 			return redirect('bobot')->withWarning(
-				'Lakukan perbandingan kriteria dulu sebelum melihat hasil penilaian alternatif'
+				'Lakukan perbandingan kriteria secara konsisten dulu sebelum melihat hasil penilaian alternatif.'
 			);
 		}
 		if ($cekbobotskr > 0) {
 			return redirect('bobot/sub')->withWarning(
-				'Satu atau lebih perbandingan subkriteria belum dilakukan'
+				'Satu atau lebih perbandingan subkriteria belum dilakukan secara konsisten'
 			);
 		}
 		if ($jml == 0) {

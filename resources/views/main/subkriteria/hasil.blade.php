@@ -156,7 +156,7 @@
 								<td>
 									@if (!is_numeric($data['result']))
 										<span class="text-warning">
-											<b>Tidak bisa dievaluasi</b>, karena nilai Ratio Index 0
+											<b>Tidak bisa dievaluasi</b>
 										</span>
 									@elseif ($data['result'] <= 0.1)
 										<span class="text-success"><b>Konsisten</b></span>

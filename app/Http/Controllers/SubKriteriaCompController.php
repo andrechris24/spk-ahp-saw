@@ -103,8 +103,9 @@ class SubKriteriaCompController extends Controller
 					$perbandingan->subkriteria1 = $subkriteria[$i]->id;
 					$perbandingan->subkriteria2 = $subkriteria[$j]->id;
 					$perbandingan->idkriteria = $request->kriteria_id;
-					if ($request->banding[$a] == 0) $nilai = 1;
-					else $nilai = $request->banding[$a];
+					if ($request->kolom[$a] > $request->baris[$a]) 
+						$nilai = 0 - $request->kolom[$a];
+					else $nilai = $request->baris[$a];
 					$perbandingan->nilai = $nilai;
 					$perbandingan->save();
 					$a++;
@@ -280,14 +281,16 @@ class SubKriteriaCompController extends Controller
 		if ($ratio[count($subkriteria) - 1] == 0) $result = '-';
 		else
 			$result = number_format(abs($total_ci / $ratio[count($subkriteria) - 1]), 4);
-		for ($i = 0; $i < count($subkriteria); $i++) {
-			SubKriteria::where(
-				"id",
-				$subkriteria[$i]->idsubkriteria
-			)->where('kriteria_id', '=', $id)
-				->update([
-					"bobot" => $array_BobotPrioritas[$i]["bobot"],
-				]);
+		if($result<=0.1 || !is_numeric($result)){
+			for ($i = 0; $i < count($subkriteria); $i++) {
+				SubKriteria::where(
+					"id",
+					$subkriteria[$i]->idsubkriteria
+				)->where('kriteria_id', '=', $id)
+					->update([
+						"bobot" => $array_BobotPrioritas[$i]["bobot"],
+					]);
+			}
 		}
 		$data = [
 			"subkriteria" => $subkriteria,

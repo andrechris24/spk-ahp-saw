@@ -15,11 +15,17 @@ class KriteriaComp extends Model
 		"nilai",
 	];
 	public static array $rules = [
-		'banding' => 'required',
-		'banding.*' => 'numeric|between:-9,9',
+		'baris' => 'required',
+		'baris.*' => 'numeric|between:1,9',
+		'kolom' => 'required',
+		'kolom.*' => 'numeric|between:1,9',
 	];
 	public static array $message = [
-		'banding.numeric' => 'Nilai perbandingan harus berupa angka',
-		'banding.between' => 'Nilai perbandingan harus diantara :min sampai :max sesuai teori AHP',
+		'baris.required'=>'Semua nilai perbandingan harus diisi',
+		'baris.numeric' => 'Nilai perbandingan harus berupa angka',
+		'baris.between' => 'Nilai perbandingan harus diantara :min sampai :max sesuai teori AHP',
+		'kolom.required'=>'Semua nilai perbandingan harus diisi',
+		'kolom.numeric' => 'Nilai perbandingan harus berupa angka',
+		'kolom.between' => 'Nilai perbandingan harus diantara :min sampai :max sesuai teori AHP',
 	];
 }

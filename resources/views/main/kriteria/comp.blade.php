@@ -44,9 +44,6 @@
 								aria-labelledby="input-tab">
 								@if ($jmlcrit >= 2)
 									<div class="table-responsive">
-										<div class="alert alert-info">
-											Nilai perbandingan akan dihitung 1 jika Anda memasukkan skala 0.
-										</div>
 										<form method="post" enctype="multipart/form-data"
 											action="{{ url('bobot') }}">
 											@csrf
@@ -63,15 +60,27 @@
 														<tr>
 															<th>{{ $krit['baris'] }}</th>
 															<td>
-																@if ($krit['baris'] == $krit['kolom'])
-																	<input type="range" class="form-range" disabled>
-																	<input type="hidden" name="banding[]" value="1">
-																@else
-																	<input type="range" name="banding[]" min="-9"
-																		max="9" step="1" class="form-range"
-																		oninput="this.nextElementSibling.value=this.value">
-																@endif
-																<output>0</output>
+																<div class="input-group mb-3">
+																	<input type="number" name="baris[]" min="1"
+																		class="form-control text-center" max="9"
+																		id="row[{{ $loop->index }}]" 
+																		@if($krit['baris'] == $krit['kolom'])
+																		value="1" readonly
+																		@endif required
+																		oninput="setscale(this.id,{{ $loop->index }})" />
+																	<div class="input-group-prepend">
+																		<span class="input-group-text">
+																			Banding
+																		</span>
+																	</div>
+																	<input type="number" name="kolom[]" min="1"
+																		class="form-control text-center" max="9"
+																		id="col[{{ $loop->index }}]"
+																		@if($krit['baris'] == $krit['kolom'])
+																		value="1" readonly
+																		@endif required
+																		oninput="setscale(this.id,{{ $loop->index }})" />
+																</div>
 															</td>
 															<th>{{ $krit['kolom'] }}</th>
 														</tr>
@@ -98,4 +107,14 @@
 			</div>
 		</section>
 	</div>
+@endsection
+
+@section('js')
+<script type="text/javascript">
+	function setscale(comp,idx){
+		if(comp==="col["+idx+"]") document.getElementById("row["+idx+"]").value=1;
+		else if(comp==="row["+idx+"]") 
+			document.getElementById("col["+idx+"]").value=1;
+	}
+</script>
 @endsection
