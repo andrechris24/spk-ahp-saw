@@ -1,9 +1,9 @@
 @extends('layout')
-@section('title', 'Perbandingan Subkriteria')
+@section('title', 'Perbandingan Sub Kriteria')
 @section('content')
 	<div class="page-heading">
 		<div class="page-title">
-			<h3>Perbandingan Subkriteria</h3>
+			<h3>Perbandingan Sub Kriteria</h3>
 		</div>
 		<section class="section">
 			@include('main.message')

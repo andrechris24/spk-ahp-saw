@@ -8,7 +8,7 @@
 @section('content')
 	<div class="page-heading">
 		<div class="page-title">
-			<h3>Hasil Perbandingan Subkriteria {{ $title }}</h3>
+			<h3>Hasil Perbandingan Sub Kriteria {{ $title }}</h3>
 		</div>
 		<section class="section">
 			@include('main.message')
@@ -21,7 +21,7 @@
 						<table class="table table-hover text-center">
 							<thead>
 								<tr>
-									<th>Subkriteria</th>
+									<th>Sub Kriteria</th>
 									@foreach ($data['subkriteria'] as $kr)
 										<th>{{ $kr->name }}</th>
 									@endforeach
@@ -52,7 +52,7 @@
 						<table class="table table-hover text-center">
 							<thead>
 								<tr>
-									<th>Subkriteria</th>
+									<th>Sub Kriteria</th>
 									@foreach ($data['subkriteria'] as $kr)
 										<th>{{ $kr->name }}</th>
 									@endforeach
@@ -89,7 +89,7 @@
 						<table class="table table-hover text-center">
 							<thead>
 								<tr>
-									<th>Subkriteria</th>
+									<th>Sub Kriteria</th>
 									@foreach ($data['subkriteria'] as $kr)
 										<th>{{ $kr->name }}</th>
 									@endforeach
@@ -177,6 +177,11 @@
 									class="btn btn-warning">
 									<i class="bi bi-arrow-counterclockwise"></i> Reset
 								</a>
+								@if (!is_numeric($data['result']) || $data['result'] <= 0.1)
+									<a href="{{ url('/alternatif/nilai') }}" class="btn btn-primary">
+										<i class="bi bi-arrow-right"></i>Lanjut
+									</a>
+								@endif
 							</div>
 						</div>
 					</div>

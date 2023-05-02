@@ -22,9 +22,9 @@ class KriteriaCompController extends Controller
 			"kriteria_banding.kriteria1",
 			"kriteria.id"
 		)->select(
-			"kriteria_banding.kriteria1 as idkriteria",
-			"kriteria.name"
-		)->groupBy("kriteria1", 'name')->get();
+				"kriteria_banding.kriteria1 as idkriteria",
+				"kriteria.name"
+			)->groupBy("kriteria1", 'name')->get();
 	}
 	private function getPerbandinganByKriteria1($kriteria1)
 	{
@@ -64,9 +64,10 @@ class KriteriaCompController extends Controller
 					$perbandingan = new KriteriaComp();
 					$perbandingan->kriteria1 = $kriteria[$i]->id;
 					$perbandingan->kriteria2 = $kriteria[$j]->id;
-					if ($request->kolom[$a] > $request->baris[$a]) 
+					if ($request->kolom[$a] > $request->baris[$a])
 						$nilai = 0 - $request->kolom[$a];
-					else $nilai = $request->baris[$a];
+					else
+						$nilai = $request->baris[$a];
 					$perbandingan->nilai = $nilai;
 					$perbandingan->save();
 					$a++;
@@ -207,8 +208,8 @@ class KriteriaCompController extends Controller
 			$cm = number_format(
 				abs(
 					$cm +
-						$matriks_perbandingan[$i]["nilai"] *
-						$array_BobotPrioritas[$indexbobot]["bobot"]
+					$matriks_perbandingan[$i]["nilai"] *
+					$array_BobotPrioritas[$indexbobot]["bobot"]
 				),
 				4
 			);
@@ -237,18 +238,19 @@ class KriteriaCompController extends Controller
 			abs(($average_cm - count($kriteria)) / (count($kriteria) - 1)),
 			4
 		);
-		$ratio = [0, 0, 0.58, 0.9, 1.12, 1.24, 1.32, 1.41, 1.45, 1.49, 1.51, 1.48, 1.56, 1.57, 1.59, 1.605, 1.61, 1.615, 1.62, 1.625];
-		if ($ratio[count($kriteria) - 1] == 0) $result = '-';
+		$ratio = KriteriaComp::$ratio_index[count($kriteria)];
+		if ($ratio == 0)
+			$result = '-';
 		else
-			$result = number_format(abs($total_ci / $ratio[count($kriteria) - 1]), 4);
-		if($result<=0.1 || !is_numeric($result)){
+			$result = number_format(abs($total_ci / $ratio), 4);
+		if ($result <= 0.1 || !is_numeric($result)) {
 			for ($i = 0; $i < count($kriteria); $i++) {
 				Kriteria::where(
 					"id",
 					$kriteria[$i]->idkriteria
 				)->update([
-					"bobot" => $array_BobotPrioritas[$i]["bobot"],
-				]);
+						"bobot" => $array_BobotPrioritas[$i]["bobot"],
+					]);
 			}
 		}
 		$data = [

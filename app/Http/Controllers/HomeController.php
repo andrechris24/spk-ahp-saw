@@ -63,9 +63,11 @@ class HomeController extends Controller
 			if (empty($req['password'])) {
 				unset($req['password']);
 				unset($req['password_confirmation']);
-			} else $req['password'] = Hash::make($req['password']);
+			} else
+				$req['password'] = Hash::make($req['password']);
 			$updprofil = $cek->update($req);
-			if ($updprofil) return back()->withSuccess('Akun sudah diupdate');
+			if ($updprofil)
+				return back()->withSuccess('Akun sudah diupdate');
 		} catch (QueryException $db) {
 			return back()->withInput()->withError('Gagal update akun:')
 				->withErrors($db->getMessage());
@@ -85,7 +87,8 @@ class HomeController extends Controller
 				return back()->withError('Gagal hapus akun: Password salah');
 			Auth::logout();
 			Session::flush();
-			if ($cek->delete()) return redirect('/')->withSuccess('Akun sudah dihapus');
+			if ($cek->delete())
+				return redirect('/')->withSuccess('Akun sudah dihapus');
 		} catch (QueryException $db) {
 			return back()->withError('Gagal hapus akun:')
 				->withErrors($db->getMessage());

@@ -45,8 +45,7 @@
 								@if ($jmlcrit >= 2)
 									<div class="table-responsive">
 										<form method="post" enctype="multipart/form-data"
-											action="{{ url('bobot') }}">
-											@csrf
+											action="{{ url('bobot') }}">@csrf
 											<table class="table table-lg table-hover text-center">
 												<thead>
 													<tr>
@@ -63,10 +62,8 @@
 																<div class="input-group mb-3">
 																	<input type="number" name="baris[]" min="1"
 																		class="form-control text-center" max="9"
-																		id="row[{{ $loop->index }}]" 
-																		@if($krit['baris'] == $krit['kolom'])
-																		value="1" readonly
-																		@endif required
+																		id="row[{{ $loop->index }}]" required
+																		@if ($krit['baris'] == $krit['kolom']) value="1" readonly @endif
 																		oninput="setscale(this.id,{{ $loop->index }})" />
 																	<div class="input-group-prepend">
 																		<span class="input-group-text">
@@ -75,10 +72,8 @@
 																	</div>
 																	<input type="number" name="kolom[]" min="1"
 																		class="form-control text-center" max="9"
-																		id="col[{{ $loop->index }}]"
-																		@if($krit['baris'] == $krit['kolom'])
-																		value="1" readonly
-																		@endif required
+																		id="col[{{ $loop->index }}]" required
+																		@if ($krit['baris'] == $krit['kolom']) value="1" readonly @endif
 																		oninput="setscale(this.id,{{ $loop->index }})" />
 																</div>
 															</td>
@@ -87,7 +82,7 @@
 													@endforeach
 												</tbody>
 											</table>
-											<div class="p-4">
+											<div class="col-12 d-flex justify-content-end">
 												<input type="submit" name="submit" class="btn btn-primary">
 											</div>
 										</form>
@@ -110,11 +105,12 @@
 @endsection
 
 @section('js')
-<script type="text/javascript">
-	function setscale(comp,idx){
-		if(comp==="col["+idx+"]") document.getElementById("row["+idx+"]").value=1;
-		else if(comp==="row["+idx+"]") 
-			document.getElementById("col["+idx+"]").value=1;
-	}
-</script>
+	<script type="text/javascript">
+		function setscale(comp, idx) {
+			if (comp === "col[" + idx + "]") document.getElementById("row[" + idx +
+				"]").value = 1;
+			else if (comp === "row[" + idx + "]")
+				document.getElementById("col[" + idx + "]").value = 1;
+		}
+	</script>
 @endsection

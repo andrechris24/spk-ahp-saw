@@ -19,7 +19,7 @@ class SubKriteriaController extends Controller
 		$ceknilai = Nilai::count();
 		if (count($kriteria) == 0) {
 			return redirect('kriteria')
-				->withWarning('Tambahkan kriteria dulu sebelum menambah subkriteria');
+				->withWarning('Tambahkan kriteria dulu sebelum menambah sub kriteria');
 		}
 		return view(
 			'main.subkriteria.index',
@@ -44,29 +44,30 @@ class SubKriteriaController extends Controller
 						->update(['bobot', 0.0000]);
 					return back()
 						->withSuccess(
-							'Subkriteria sudah ditambahkan. ' .
-								'Silahkan input ulang perbandingan subkriteria ' . $namakriteria . '.'
+							'Sub kriteria sudah ditambahkan. ' .
+							'Silahkan input ulang perbandingan sub kriteria ' . $namakriteria . '.'
 						);
 				}
-				return back()->withSuccess('Subkriteria sudah ditambahkan');
+				return back()->withSuccess('Sub kriteria sudah ditambahkan');
 			}
 		} catch (QueryException $sql) {
-			return back()->withError('Gagal menambah subkriteria')
+			return back()->withError('Gagal menambah sub kriteria')
 				->withErrors($sql->getMessage());
 		}
-		return back()->withError('Gagal menambah subkriteria');
+		return back()->withError('Gagal menambah sub kriteria');
 	}
 
 	public function update(Request $request, $id)
 	{
 		try {
 			$cek = SubKriteria::find($id);
-			if (!$cek) return back()->withError('Data Subkriteria tidak ditemukan');
+			if (!$cek)
+				return back()->withError('Data Sub kriteria tidak ditemukan');
 			$req = $request->all();
 			$cek->update($req);
-			return back()->withSuccess('Data Subkriteria sudah diupdate');
+			return back()->withSuccess('Data Sub kriteria sudah diupdate');
 		} catch (QueryException $sql) {
-			return back()->withError('Gagal mengupdate data subkriteria')
+			return back()->withError('Gagal mengupdate data sub kriteria')
 				->withErrors($sql->getMessage());
 		}
 	}
@@ -78,7 +79,8 @@ class SubKriteriaController extends Controller
 			$idkriteria = $cek->kriteria_id;
 			$namakriteria = $cek->kriteria->name;
 			$getalt = Nilai::where('kriteria_id', $id)->first();
-			if (!$cek) return back()->withError('Data Subkriteria tidak ditemukan');
+			if (!$cek)
+				return back()->withError('Data Sub kriteria tidak ditemukan');
 			$cek->delete();
 			Nilai::where('alternatif_id', $getalt->alternatif_id)->delete();
 			$subkrcomp = SubKriteriaComp::where('idkriteria', $cek->kriteria_id);
@@ -86,13 +88,13 @@ class SubKriteriaController extends Controller
 				$subkrcomp->delete();
 				SubKriteria::where('kriteria_id', $idkriteria)->update(['bobot' => 0.0000]);
 				return back()->withSuccess(
-					'Data Subkriteria sudah dihapus. ' .
-						'Silahkan input ulang perbandingan sub kriteria ' . $namakriteria . '.'
+					'Data Sub kriteria sudah dihapus. ' .
+					'Silahkan input ulang perbandingan sub kriteria ' . $namakriteria . '.'
 				);
 			}
-			return back()->withSuccess('Data Subkriteria sudah dihapus');
+			return back()->withSuccess('Data Sub kriteria sudah dihapus');
 		} catch (QueryException $sql) {
-			return back()->withError('Gagal hapus data subkriteria')
+			return back()->withError('Gagal hapus data sub kriteria')
 				->withErrors($sql->getMessage());
 		}
 	}

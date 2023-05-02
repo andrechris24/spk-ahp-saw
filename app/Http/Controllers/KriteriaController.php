@@ -28,8 +28,8 @@ class KriteriaController extends Controller
 		try {
 			$kriteria = Kriteria::create($krits);
 			if ($kriteria) {
-				$cekhasil = KriteriaComp::count();
-				if ($cekhasil > 0) {
+				// $cekhasil = KriteriaComp::count();
+				if (KriteriaComp::exists()) {
 					DB::table('kriteria_banding')->delete();
 					DB::table('kriteria')->update(['bobot' => 0.0000]);
 					return back()
@@ -49,7 +49,8 @@ class KriteriaController extends Controller
 	{
 		try {
 			$cek = Kriteria::find($id);
-			if (!$cek) return back()->withError('Data Kriteria tidak ditemukan');
+			if (!$cek)
+				return back()->withError('Data Kriteria tidak ditemukan');
 			$req = $updkritrequest->all();
 			$cek->update($req);
 			return back()->withSuccess('Data Kriteria sudah diupdate');
@@ -62,11 +63,12 @@ class KriteriaController extends Controller
 	{
 		try {
 			$cek = Kriteria::find($id);
-			if (!$cek) return back()->withError('Data Kriteria tidak ditemukan');
+			if (!$cek)
+				return back()->withError('Data Kriteria tidak ditemukan');
 			$del = $cek->delete();
 			if ($del) {
-				$cekhasil = KriteriaComp::count();
-				if ($cekhasil > 0) {
+				// $cekhasil = KriteriaComp::count();
+				if (KriteriaComp::exists()) {
 					DB::table('kriteria_banding')->delete();
 					DB::table('kriteria')->update(['bobot' => 0.0000]);
 					return back()

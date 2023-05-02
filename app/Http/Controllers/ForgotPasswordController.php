@@ -26,7 +26,8 @@ class ForgotPasswordController extends Controller
 	public function showForgetPasswordForm(): View|Factory|Application|RedirectResponse
 	{
 		// $this->clearResets();
-		if (Auth::viaRemember() || Auth::check()) return redirect()->intended();
+		if (Auth::viaRemember() || Auth::check())
+			return redirect()->intended();
 		return view('admin.forget-password');
 	}
 
@@ -51,7 +52,8 @@ class ForgotPasswordController extends Controller
 	}
 	public function showResetPasswordForm($token): View|Factory|Application|RedirectResponse
 	{
-		if (Auth::viaRemember() || Auth::check()) return redirect()->intended();
+		if (Auth::viaRemember() || Auth::check())
+			return redirect()->intended();
 		$enctoken = DB::table('password_resets')->where('email', $_GET['email'])->first();
 		if (!$enctoken) {
 			return redirect('/forget-password')->withError(

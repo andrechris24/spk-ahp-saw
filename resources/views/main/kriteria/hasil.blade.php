@@ -164,9 +164,16 @@
 							</tr>
 						</table>
 						<div class="col-12 d-flex justify-content-end">
-							<a href="{{ url('/bobot/reset') }}" class="btn btn-secondary">
-								<i class="bi bi-arrow-counterclockwise"></i> Reset
-							</a>
+							<div class="btn-group">
+								<a href="{{ url('/bobot/reset') }}" class="btn btn-secondary">
+									<i class="bi bi-arrow-counterclockwise"></i> Reset
+								</a>
+								@if (!is_numeric($data['result']) || $data['result'] <= 0.1)
+									<a href="{{ url('/bobot/sub') }}" class="btn btn-primary">
+										<i class="bi bi-arrow-right"></i>Lanjut
+									</a>
+								@endif
+							</div>
 						</div>
 					</div>
 				</div>

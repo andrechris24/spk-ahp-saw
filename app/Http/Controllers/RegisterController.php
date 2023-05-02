@@ -16,7 +16,8 @@ class RegisterController extends Controller
 {
 	public function show(): View|Factory|Application|RedirectResponse
 	{
-		if (Auth::viaRemember() || Auth::check()) return redirect()->intended();
+		if (Auth::viaRemember() || Auth::check())
+			return redirect()->intended();
 		return view('admin.register');
 	}
 

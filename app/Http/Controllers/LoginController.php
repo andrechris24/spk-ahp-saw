@@ -16,7 +16,8 @@ class LoginController extends Controller
 	use RememberMeExpiration;
 	public function show(): View|Factory|Application|RedirectResponse
 	{
-		if (Auth::viaRemember() || Auth::check()) return redirect()->intended();
+		if (Auth::viaRemember() || Auth::check())
+			return redirect()->intended();
 		return view('admin.login');
 	}
 	public function login(Request $request): RedirectResponse
