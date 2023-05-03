@@ -1,7 +1,7 @@
 <?php
 
 namespace Tests\Feature;
-
+use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
 {
-    use RefreshDatabase;
+    // use RefreshDatabase;
     public function test_login_screen_can_be_rendered()
     {
         $response = $this->get('/login');
@@ -27,7 +27,7 @@ class AuthenticationTest extends TestCase
             'remember' => 1
         ]);
         $response->assertSessionHasNoErrors();
-        $response->assertRedirect('/home');
+        $response->assertRedirect(RouteServiceProvider::HOME);
     }
 
     public function test_users_can_not_authenticate_with_invalid_password()

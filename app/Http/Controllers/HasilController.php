@@ -8,8 +8,8 @@ class HasilController extends Controller
 {
 	public function index()
 	{
-		// $result = Hasil::get();
-		if (Hasil::isEmpty()) {
+		$result = Hasil::get();
+		if (count($result)===0) {
 			return redirect('alternatif/nilai')
 				->withWarning(
 					'Hasil penilaian kosong, pastikan nilai alternatif sudah diisi, lalu klik "Lihat Hasil"'

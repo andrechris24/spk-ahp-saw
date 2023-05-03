@@ -93,7 +93,7 @@
 										<a href="{{ url('kriteria') }}">Kriteria</a>
 									</li>
 									<li class="submenu-item">
-										<a href="{{ url('kriteria/sub') }}">Subkriteria</a>
+										<a href="{{ url('kriteria/sub') }}">Sub Kriteria</a>
 									</li>
 									<li class="submenu-item">
 										<a href="{{ url('alternatif') }}">Alternatif</a>
@@ -111,7 +111,7 @@
 									</li>
 									<li class="submenu-item">
 										<a href="{{ url('bobot/sub') }}">
-											Perbandingan Subkriteria
+											Perbandingan Sub Kriteria
 										</a>
 									</li>
 								</ul>

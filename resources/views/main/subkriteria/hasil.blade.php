@@ -179,7 +179,7 @@
 								</a>
 								@if (!is_numeric($data['result']) || $data['result'] <= 0.1)
 									<a href="{{ url('/alternatif/nilai') }}" class="btn btn-primary">
-										<i class="bi bi-arrow-right"></i>Lanjut
+										<i class="bi bi-arrow-right"></i> Lanjut
 									</a>
 								@endif
 							</div>

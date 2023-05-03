@@ -49,22 +49,22 @@ class NilaiController extends Controller
 	}
 	public function index()
 	{
-		// $kriteria = Kriteria::get();
-		if (Kriteria::isEmpty()) {
+		$kriteria = Kriteria::get();
+		if (count($kriteria)===0) {
 			return redirect('kriteria')
 				->withWarning(
 					'Tambahkan kriteria dan subkriteria dulu sebelum melakukan penilaian alternatif'
 				);
 		}
-		// $subkriteria = SubKriteria::get();
-		if (SubKriteria::isEmpty()) {
+		$subkriteria = SubKriteria::get();
+		if (count($subkriteria)==0) {
 			return redirect('kriteria/sub')
 				->withWarning(
-					'Tambahkan subkriteria dulu sebelum melakukan penilaian alternatif'
+					'Tambahkan sub kriteria dulu sebelum melakukan penilaian alternatif'
 				);
 		}
-		// $alternatif = Alternatif::get();
-		if (Alternatif::isEmpty()) {
+		$alternatif = Alternatif::get();
+		if (count($alternatif)===0) {
 			return redirect('alternatif')
 				->withWarning('Tambahkan alternatif dulu sebelum melakukan penilaian');
 		}

@@ -112,5 +112,16 @@
 			else if (comp === "row[" + idx + "]")
 				document.getElementById("col[" + idx + "]").value = 1;
 		}
+		const tabList = document.querySelectorAll(
+			'#InputCompTab a[data-bs-toggle="tab"]');
+		tabList.forEach(tabEl => {
+			tabEl.addEventListener('shown.bs.tab', event => {
+				location.hash = $(event.target).attr('href');
+			});
+		});
+		var hash = location.hash;
+		const triggerEl = document.querySelector('#InputCompTab a[href="' + hash +
+			'"]');
+		bootstrap.Tab.getOrCreateInstance(triggerEl).show();
 	</script>
 @endsection

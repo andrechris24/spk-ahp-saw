@@ -47,7 +47,7 @@
 								aria-labelledby="info-tab">
 								@include('main.ahp')
 								<a href="{{ url('/bobot/sub') }}" class="btn btn-secondary">
-									Kembali
+									<i class="bi bi-arrow-left"></i> Kembali
 								</a>
 							</div>
 							<div class="tab-pane fade" id="input" role="tabpanel"
@@ -128,5 +128,16 @@
 			else if (comp === "row[" + idx + "]")
 				document.getElementById("col[" + idx + "]").value = 1;
 		}
+		const tabList = document.querySelectorAll(
+			'#InputCompTab a[data-bs-toggle="tab"]');
+		tabList.forEach(tabEl => {
+			tabEl.addEventListener('shown.bs.tab', event => {
+				location.hash = $(event.target).attr('href');
+			});
+		});
+		var hash = location.hash;
+		const triggerEl = document.querySelector('#InputCompTab a[href="' + hash +
+			'"]');
+		bootstrap.Tab.getOrCreateInstance(triggerEl).show();
 	</script>
 @endsection
