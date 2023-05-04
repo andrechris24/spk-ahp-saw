@@ -7,19 +7,19 @@
 	<title>
 		@yield('title') | Sistem Pendukung Keputusan metode AHP & SAW
 	</title>
-	<link rel="stylesheet" href="{{ url('assets/css/main/app.css') }}" />
-	<link rel="stylesheet" href="{{ url('assets/css/main/app-dark.css') }}" />
-	<link rel="stylesheet" href="{{ url('assets/css/shared/iconly.css') }}" />
+	<link rel="stylesheet" href="{{ asset('assets/css/main/app.css') }}" />
+	<link rel="stylesheet" href="{{ asset('assets/css/main/app-dark.css') }}" />
+	<link rel="stylesheet" href="{{ asset('assets/css/shared/iconly.css') }}" />
 	<link rel="stylesheet" type="text/css"
-		href="{{ url('assets/datatables.min.css') }}">
+		href="{{ aset('assets/datatables.min.css') }}">
 	<link rel="stylesheet"
-		href="{{ url('assets/extensions/apexcharts/apexcharts.css') }}">
-	<link rel="shortcut icon" href="{{ url('assets/images/logo/favicon.svg') }}"
+		href="{{ asset('assets/extensions/apexcharts/apexcharts.css') }}">
+	<link rel="shortcut icon" href="{{ asset('assets/images/logo/favicon.svg') }}"
 		type="image/x-icon" />
-	<link rel="shortcut icon" href="{{ url('assets/images/logo/favicon.png') }}"
+	<link rel="shortcut icon" href="{{ asset('assets/images/logo/favicon.png') }}"
 		type="image/png" />
 	<link rel="stylesheet"
-		href="{{ url('assets/extensions/@fortawesome/fontawesome-free/css/all.min.css') }}" />
+		href="{{ asset('assets/extensions/@fortawesome/fontawesome-free/css/all.min.css') }}" />
 </head>
 
 <body>
@@ -260,13 +260,13 @@
 		</div>
 	</div>
 	<script type="text/javascript"
-		src="{{ url('assets/extensions/jquery/jquery.min.js') }}"></script>
-	<script src="{{ url('assets/js/bootstrap.js') }}"></script>
-	<script src="{{ url('assets/js/app.js') }}"></script>
-	<script src="{{ url('assets/js/initTheme.js') }}"></script>
-	<script type="text/javascript" src="{{ url('assets/datatables.min.js') }}">
+		src="{{ asset('assets/extensions/jquery/jquery.min.js') }}"></script>
+	<script src="{{ asset('assets/js/bootstrap.js') }}"></script>
+	<script src="{{ asset('assets/js/app.js') }}"></script>
+	<script src="{{ asset('assets/js/initTheme.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('assets/datatables.min.js') }}">
 	</script>
-	<script src="{{ url('assets/extensions/apexcharts/apexcharts.min.js') }}">
+	<script src="{{ asset('assets/extensions/apexcharts/apexcharts.min.js') }}">
 	</script>
 	@yield('js')
 	<script type="text/javascript">
