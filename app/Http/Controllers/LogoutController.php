@@ -13,6 +13,6 @@ class LogoutController extends Controller
 		User::find(Auth::user()->id)->update(['remember_token' => null]);
 		Session::flush();
 		Auth::logout();
-		return redirect('/login')->withWarning('Anda sudah logout.');
+		return redirect('/login')->withSuccess('Anda sudah logout.');
 	}
 }

@@ -56,29 +56,34 @@
 												</thead>
 												<tbody>
 													@foreach ($array as $krit)
+														@if ($krit['baris'] == $krit['kolom'])
+														<input type="hidden" name="kriteria[{{ $loop->index }}]" value="equal" required>
+														<input type="hidden" name="skala[{{$loop->index}}]" value="1">
+														@else
 														<tr>
-															<th>{{ $krit['baris'] }}</th>
+															<th>
+																<div>
+																	<label class="form-check-label" for="left-{{$loop->index}}">
+																	{{ $krit['baris'] }}
+																	</label>
+																	<input type="radio" name="kriteria[{{ $loop->index }}]" class="form-check-input" value="left" id="left-{{$loop->index}}" required>
+																</div>
+															</th>
 															<td>
 																<div class="input-group mb-3">
-																	<input type="number" name="baris[]" min="1"
-																		class="form-control text-center" max="9"
-																		id="row[{{ $loop->index }}]" required
-																		@if ($krit['baris'] == $krit['kolom']) value="1" readonly @endif
-																		oninput="setscale(this.id,{{ $loop->index }})" />
-																	<div class="input-group-prepend">
-																		<span class="input-group-text">
-																			Banding
-																		</span>
-																	</div>
-																	<input type="number" name="kolom[]" min="1"
-																		class="form-control text-center" max="9"
-																		id="col[{{ $loop->index }}]" required
-																		@if ($krit['baris'] == $krit['kolom']) value="1" readonly @endif
-																		oninput="setscale(this.id,{{ $loop->index }})" />
+																	<input type="number" name="skala[{{$loop->index}}]" min="1" max="9" class="form-control text-center" required>
 																</div>
 															</td>
-															<th>{{ $krit['kolom'] }}</th>
+															<th>
+																<div>
+																	<input type="radio" name="kriteria[{{ $loop->index }}]" class="form-check-input" value="right" id="right-{{$loop->index}}">
+																	<label class="form-check-label" for="right-{{$loop->index}}">
+																	{{ $krit['kolom'] }}
+																	</label>
+																</div>
+															</th>
 														</tr>
+														@endif
 													@endforeach
 												</tbody>
 											</table>

@@ -150,13 +150,13 @@
 								<td>Hasil Konsistensi</td>
 								<td>
 									@if (!is_numeric($data['result']))
-										<span class="text-warning">
+										<span class="text-warning" data-bs-toggle="tooltip" data-bs-title="Minimal 3 kriteria untuk melakukan pengecekan hasil Konsistensi">
 											<b>Tidak bisa dievaluasi</b>
 										</span>
 									@elseif ($data['result'] <= 0.1)
 										<span class="text-success"><b>Konsisten</b></span>
 									@else
-										<span class="text-danger">
+										<span class="text-danger" data-bs-toggle="tooltip" data-bs-title="Hasil konsistensi maksimal 10%">
 											<b>Tidak Konsisten</b>, mohon untuk menginput ulang perbandingan!
 										</span>
 									@endif

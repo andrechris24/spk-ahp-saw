@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="{{ asset('assets/css/main/app-dark.css') }}" />
 	<link rel="stylesheet" href="{{ asset('assets/css/shared/iconly.css') }}" />
 	<link rel="stylesheet" type="text/css"
-		href="{{ aset('assets/datatables.min.css') }}">
+		href="{{ asset('assets/datatables.min.css') }}">
 	<link rel="stylesheet"
 		href="{{ asset('assets/extensions/apexcharts/apexcharts.css') }}">
 	<link rel="shortcut icon" href="{{ asset('assets/images/logo/favicon.svg') }}"
