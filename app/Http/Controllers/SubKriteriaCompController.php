@@ -103,11 +103,12 @@ class SubKriteriaCompController extends Controller
 					$perbandingan->subkriteria1 = $subkriteria[$i]->id;
 					$perbandingan->subkriteria2 = $subkriteria[$j]->id;
 					$perbandingan->idkriteria = $request->kriteria_id;
-					if($request->kriteria[$a]==='right')
+					if ($request->kriteria[$a] === 'right')
 						$nilai = 0 - $request->skala[$a];
-					else if($request->kriteria[$a]==='left')
+					else if ($request->kriteria[$a] === 'left')
 						$nilai = $request->skala[$a];
-					else $nilai=1;
+					else
+						$nilai = 1;
 					$perbandingan->nilai = $nilai;
 					$perbandingan->save();
 					$a++;

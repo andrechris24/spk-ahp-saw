@@ -16,7 +16,7 @@ class KriteriaComp extends Model
 	];
 	public static array $rules = [
 		'kriteria' => 'required',
-		'kriteria.*'=>'required',
+		'kriteria.*' => 'required',
 		'skala' => 'required',
 		'skala.*' => 'numeric|between:1,9',
 	];

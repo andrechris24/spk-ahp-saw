@@ -64,11 +64,12 @@ class KriteriaCompController extends Controller
 					$perbandingan = new KriteriaComp();
 					$perbandingan->kriteria1 = $kriteria[$i]->id;
 					$perbandingan->kriteria2 = $kriteria[$j]->id;
-					if($request->kriteria[$a]==='right')
+					if ($request->kriteria[$a] === 'right')
 						$nilai = 0 - $request->skala[$a];
-					else if($request->kriteria[$a]==='left')
+					else if ($request->kriteria[$a] === 'left')
 						$nilai = $request->skala[$a];
-					else $nilai=1;
+					else
+						$nilai = 1;
 					$perbandingan->nilai = $nilai;
 					$perbandingan->save();
 					$a++;

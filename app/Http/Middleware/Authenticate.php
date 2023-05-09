@@ -18,7 +18,7 @@ class Authenticate extends Middleware
 		if (!$request->expectsJson()) {
 			Session::flash(
 				'warning',
-				'Anda harus login dulu. Jika Anda sebelumnya sudah login, '.
+				'Anda harus login dulu. Jika Anda sebelumnya sudah login, ' .
 				'silahkan login ulang untuk melanjutkan karena sesi Anda sudah habis.'
 			);
 			return route('login');
