@@ -7,8 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
-{
+class User extends Authenticatable {
 	use HasApiTokens, HasFactory, Notifiable;
 
 	/**
@@ -52,7 +51,7 @@ class User extends Authenticatable
 	];
 	public static array $loginrules = [
 		'email' => 'bail|required|email|exists:users',
-		'password' => 'required|min:8'
+		'password' => 'required|min:8',
 	];
 	public static array $resetmsg = [
 		'token.required' => 'Token tidak valid',
@@ -64,6 +63,6 @@ class User extends Authenticatable
 		'password.confirmed' => 'Password konfirmasi salah',
 	];
 	public static array $delakunrule = [
-		'del_password' => 'required'
+		'del_password' => 'required',
 	];
 }

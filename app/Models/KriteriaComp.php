@@ -5,8 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class KriteriaComp extends Model
-{
+class KriteriaComp extends Model {
 	use HasFactory;
 	protected $table = "kriteria_banding";
 	protected $fillable = [
@@ -46,6 +45,6 @@ class KriteriaComp extends Model
 		17 => 1.61,
 		18 => 1.615,
 		19 => 1.62,
-		20 => 1.625
+		20 => 1.625,
 	];
 }

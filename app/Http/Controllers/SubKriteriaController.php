@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SubKriteria;
-use App\Models\SubKriteriaComp;
 use App\Models\Kriteria;
 use App\Models\Nilai;
-use Illuminate\Http\Request;
+use App\Models\SubKriteria;
+use App\Models\SubKriteriaComp;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 
-class SubKriteriaController extends Controller
-{
-	public function index()
-	{
+class SubKriteriaController extends Controller {
+	public function index() {
 		$kriteria = Kriteria::get();
 		$subkriteria = SubKriteria::get();
 		$compskr = SubKriteriaComp::count();
@@ -27,8 +25,7 @@ class SubKriteriaController extends Controller
 		);
 	}
 
-	public function store(Request $request)
-	{
+	public function store(Request $request) {
 		$request->validate(SubKriteria::$rules, SubKriteria::$message);
 		$subs = $request->all();
 		try {
@@ -57,12 +54,13 @@ class SubKriteriaController extends Controller
 		return back()->withError('Gagal menambah sub kriteria');
 	}
 
-	public function update(Request $request, $id)
-	{
+	public function update(Request $request, $id) {
 		try {
 			$cek = SubKriteria::find($id);
-			if (!$cek)
+			if (!$cek) {
 				return back()->withError('Data Sub kriteria tidak ditemukan');
+			}
+
 			$req = $request->all();
 			$cek->update($req);
 			return back()->withSuccess('Data Sub kriteria sudah diupdate');
@@ -72,15 +70,16 @@ class SubKriteriaController extends Controller
 		}
 	}
 
-	public function destroy($id)
-	{
+	public function destroy($id) {
 		try {
 			$cek = SubKriteria::find($id);
 			$idkriteria = $cek->kriteria_id;
 			$namakriteria = $cek->kriteria->name;
 			$getalt = Nilai::where('kriteria_id', $id)->first();
-			if (!$cek)
+			if (!$cek) {
 				return back()->withError('Data Sub kriteria tidak ditemukan');
+			}
+
 			$cek->delete();
 			Nilai::where('alternatif_id', $getalt->alternatif_id)->delete();
 			$subkrcomp = SubKriteriaComp::where('idkriteria', $cek->kriteria_id);

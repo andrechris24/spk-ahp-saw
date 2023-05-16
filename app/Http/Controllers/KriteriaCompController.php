@@ -7,37 +7,32 @@ use App\Models\KriteriaComp;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\QueryException;
 
-class KriteriaCompController extends Controller
-{
-	private function getKriteriaPerbandingan()
-	{
+class KriteriaCompController extends Controller {
+	private function getKriteriaPerbandingan() {
 		return KriteriaComp::join(
 			"kriteria",
 			"kriteria_banding.kriteria1",
 			"kriteria.id"
 		)->select(
-				"kriteria_banding.kriteria1 as idkriteria",
-				"kriteria.name"
-			)->groupBy("kriteria1", 'name')->get();
+			"kriteria_banding.kriteria1 as idkriteria",
+			"kriteria.name"
+		)->groupBy("kriteria1", 'name')->get();
 	}
-	private function getPerbandinganByKriteria1($kriteria1)
-	{
+	private function getPerbandinganByKriteria1($kriteria1) {
 		return KriteriaComp::select('nilai', 'kriteria2', 'kriteria1')
 			->where("kriteria2", "=", $kriteria1)->get();
 	}
-	private function getNilaiPerbandingan($kode_kriteria)
-	{
+	private function getNilaiPerbandingan($kode_kriteria) {
 		return KriteriaComp::select("nilai", "kriteria1")
 			->where("kriteria1", "=", $kode_kriteria)->get();
 	}
-	public function index(): Factory|View|Application
-	{
+	public function index(): Factory | View | Application{
 		$crit = Kriteria::get();
 		$jmlcrit = count($crit);
 		$array = [];
@@ -52,8 +47,7 @@ class KriteriaCompController extends Controller
 		$cek = KriteriaComp::count();
 		return view('main.kriteria.comp', compact('array', 'cek', 'jmlcrit'));
 	}
-	public function simpan(Request $request): Redirector|RedirectResponse|Application
-	{
+	public function simpan(Request $request): Redirector | RedirectResponse | Application{
 		$request->validate(KriteriaComp::$rules, KriteriaComp::$message);
 		try {
 			$kriteria = Kriteria::get();
@@ -64,12 +58,14 @@ class KriteriaCompController extends Controller
 					$perbandingan = new KriteriaComp();
 					$perbandingan->kriteria1 = $kriteria[$i]->id;
 					$perbandingan->kriteria2 = $kriteria[$j]->id;
-					if ($request->kriteria[$a] === 'right')
+					if ($request->kriteria[$a] === 'right') {
 						$nilai = 0 - $request->skala[$a];
-					else if ($request->kriteria[$a] === 'left')
+					} else if ($request->kriteria[$a] === 'left') {
 						$nilai = $request->skala[$a];
-					else
+					} else {
 						$nilai = 1;
+					}
+
 					$perbandingan->nilai = $nilai;
 					$perbandingan->save();
 					$a++;
@@ -80,8 +76,7 @@ class KriteriaCompController extends Controller
 		}
 		return redirect('/bobot/hasil');
 	}
-	public function hasil(): Factory|View|Application
-	{
+	public function hasil(): Factory | View | Application{
 		$kriteria = $this->getKriteriaPerbandingan();
 		$a = 0;
 		foreach ($kriteria as $k) {
@@ -241,18 +236,20 @@ class KriteriaCompController extends Controller
 			4
 		);
 		$ratio = KriteriaComp::$ratio_index[count($kriteria)];
-		if ($ratio == 0)
+		if ($ratio == 0) {
 			$result = '-';
-		else
+		} else {
 			$result = number_format(abs($total_ci / $ratio), 4);
+		}
+
 		if ($result <= 0.1 || !is_numeric($result)) {
 			for ($i = 0; $i < count($kriteria); $i++) {
 				Kriteria::where(
 					"id",
 					$kriteria[$i]->idkriteria
 				)->update([
-						"bobot" => $array_BobotPrioritas[$i]["bobot"],
-					]);
+					"bobot" => $array_BobotPrioritas[$i]["bobot"],
+				]);
 			}
 		}
 		$data = [
@@ -270,8 +267,7 @@ class KriteriaCompController extends Controller
 		];
 		return view('main.kriteria.hasil', compact('data'));
 	}
-	public function destroy()
-	{
+	public function destroy() {
 		try {
 			$del = DB::table('kriteria_banding')->delete();
 			if (!$del) {

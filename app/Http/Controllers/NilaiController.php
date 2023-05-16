@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Nilai;
-use App\Models\Kriteria;
-use App\Models\SubKriteria;
 use App\Models\Alternatif;
 use App\Models\Hasil;
+use App\Models\Kriteria;
+use App\Models\Nilai;
+use App\Models\SubKriteria;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
-class NilaiController extends Controller
-{
-	public function normalisasi($arr, $type, $skor): float|string
-	{
-		if ($type == 'cost')
+class NilaiController extends Controller {
+	public function normalisasi($arr, $type, $skor): float | string {
+		if ($type == 'cost') {
 			$hasil = min($arr) / $skor;
-		else if ($type == 'benefit')
+		} else if ($type == 'benefit') {
 			$hasil = $skor / max($arr);
-		else
+		} else {
 			return "Invalid type: " . $type;
+		}
+
 		return round($hasil, 5);
 	}
 	public function getNilaiArr($kriteria_id): array
@@ -34,21 +34,18 @@ class NilaiController extends Controller
 		}
 		return $data;
 	}
-	public function getBobot($idkriteria)
-	{
+	public function getBobot($idkriteria) {
 		$kueri = Kriteria::find($idkriteria)->first();
 		return $kueri->bobot;
 	}
-	public function simpanHasil($alt_id, $jumlah): void
-	{
+	public function simpanHasil($alt_id, $jumlah): void {
 		try {
 			Hasil::updateOrInsert(['alternatif_id' => $alt_id], ['skor' => $jumlah]);
 		} catch (QueryException) {
 			return;
 		}
 	}
-	public function index()
-	{
+	public function index() {
 		$kriteria = Kriteria::get();
 		if (count($kriteria) === 0) {
 			return redirect('kriteria')
@@ -81,13 +78,14 @@ class NilaiController extends Controller
 			compact('kriteria', 'subkriteria', 'alternatif', 'nilaialt')
 		);
 	}
-	public function store(Request $request)
-	{
+	public function store(Request $request) {
 		$request->validate(Nilai::$rules, Nilai::$message);
 		$scores = $request->all();
 		$cek = Nilai::where('alternatif_id', '=', $scores['alternatif_id'])->exists();
-		if ($cek)
+		if ($cek) {
 			return back()->withError('Alternatif sudah digunakan dalam penilaian');
+		}
+
 		for ($a = 0; $a < count($scores['kriteria_id']); $a++) {
 			$nilai = new Nilai();
 			$nilai->alternatif_id = $scores['alternatif_id'];
@@ -98,8 +96,7 @@ class NilaiController extends Controller
 		return back()->withSuccess('Penilaian alternatif sudah ditambahkan');
 	}
 
-	public function show()
-	{
+	public function show() {
 		$alt = Alternatif::get();
 		$kr = Kriteria::get();
 		$skr = SubKriteria::get();
@@ -137,12 +134,13 @@ class NilaiController extends Controller
 		return view('main.alternatif.hasil', compact('hasil', 'data'));
 	}
 
-	public function update(Request $request, $id)
-	{
+	public function update(Request $request, $id) {
 		$success = false;
 		$cek = Nilai::where('alternatif_id', '=', $id)->get();
-		if (!$cek)
+		if (!$cek) {
 			return back()->with('error', 'Penilaian alternatif tidak ditemukan');
+		}
+
 		$request->validate(Nilai::$updrules, Nilai::$message);
 		$scores = $request->all();
 		for ($a = 0; $a < count($scores['kriteria_id']); $a++) {
@@ -150,24 +148,29 @@ class NilaiController extends Controller
 				$upd = Nilai::where('alternatif_id', '=', $id)
 					->where('kriteria_id', '=', $scores['kriteria_id'][$a])
 					->update(['subkriteria_id' => $scores['subkriteria_id'][$a]]);
-				if ($upd)
+				if ($upd) {
 					$success = true;
+				}
+
 			} catch (QueryException $ex) {
 				return back()->withError('Gagal update penilaian alternatif')
 					->withErrors($ex->getMessage());
 			}
 		}
-		if ($success)
+		if ($success) {
 			return back()->withSuccess('Penilaian alternatif sudah diupdate');
+		}
+
 		return back()->withError('Gagal update penilaian alternatif');
 	}
 
-	public function destroy($id)
-	{
+	public function destroy($id) {
 		try {
 			$cek = Nilai::where('alternatif_id', '=', $id);
-			if (!$cek)
+			if (!$cek) {
 				return back()->withError('Penilaian alternatif tidak ditemukan');
+			}
+
 			$cek->delete();
 			return back()->withSuccess('Penilaian alternatif sudah dihapus');
 		} catch (QueryException $err) {

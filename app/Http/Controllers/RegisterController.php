@@ -6,23 +6,22 @@ use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
-class RegisterController extends Controller
-{
-	public function show(): View|Factory|Application|RedirectResponse
-	{
-		if (Auth::viaRemember() || Auth::check())
+class RegisterController extends Controller {
+	public function show(): View | Factory | Application | RedirectResponse {
+		if (Auth::viaRemember() || Auth::check()) {
 			return redirect()->intended();
+		}
+
 		return view('admin.register');
 	}
 
-	public function register(Request $request)
-	{
+	public function register(Request $request) {
 		$credentials = $request->validate(User::$regrules, [
 			'name.required' => 'Nama harus diisi',
 			'name.regex' => 'Nama tidak boleh mengandung simbol dan angka',

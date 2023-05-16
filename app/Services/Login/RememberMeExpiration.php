@@ -5,8 +5,7 @@ namespace App\Services\Login;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 
-trait RememberMeExpiration
-{
+trait RememberMeExpiration {
 	/**
 	 * Set default minutes expiration
 	 *
@@ -15,12 +14,11 @@ trait RememberMeExpiration
 	protected $minutesExpiration = 43200; //equivalent of 30 days
 
 	/**
-	 * Customize the user logged remember me expiration 
-	 * 
+	 * Customize the user logged remember me expiration
+	 *
 	 * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
 	 */
-	public function setRememberMeExpiration($user)
-	{
+	public function setRememberMeExpiration($user) {
 		Cookie::queue(
 			$this->getRememberMeSessionName(),
 			encrypt($this->setRememberMeValue($user)),
@@ -33,8 +31,7 @@ trait RememberMeExpiration
 	 *
 	 * @return string
 	 */
-	protected function setRememberMeValue($user)
-	{
+	protected function setRememberMeValue($user) {
 		return $user->id . "|" . $user->remember_token . "|" . $user->password;
 	}
 
@@ -43,8 +40,7 @@ trait RememberMeExpiration
 	 *
 	 * @return string
 	 */
-	protected function getRememberMeSessionName()
-	{
+	protected function getRememberMeSessionName() {
 		return Auth::getRecallerName();
 	}
 }
