@@ -160,6 +160,7 @@
 								<th>No</th>
 								<th>Nama Sub Kriteria</th>
 								<th>Kriteria</th>
+								<th>Bobot</th>
 								<th>Aksi</th>
 							</tr>
 						</thead>
@@ -172,6 +173,7 @@
 									<td title="{{ $sk->kriteria->desc }}">
 										{{ $sk->kriteria->name }}
 									</td>
+									<td>{{$sk->bobot}}</td>
 									<td>
 										<div class="btn-group" role="button">
 											<button type="button" class="btn btn-primary"
