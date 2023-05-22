@@ -190,7 +190,7 @@
 									<td>{{ $kriteria->name }}</td>
 									<td>{{ $kriteria->type }}</td>
 									<td>{{ $kriteria->desc }}</td>
-									<td>{{$kriteria->bobot}}</td>
+									<td>{{ $kriteria->bobot }}</td>
 									<td>
 										<div class="btn-group" role="button">
 											<button type="button" class="btn btn-primary"

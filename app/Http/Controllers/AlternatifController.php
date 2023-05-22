@@ -10,13 +10,16 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
-class AlternatifController extends Controller {
-	public function index(): Factory | View | Application{
+class AlternatifController extends Controller
+{
+	public function index(): Factory|View|Application
+	{
 		$alt = Alternatif::get();
 		$ceknilai = Nilai::count();
 		return view('main.alternatif.index', compact('alt', 'ceknilai'));
 	}
-	public function tambah(Request $altrequest) {
+	public function tambah(Request $altrequest)
+	{
 		$altrequest->validate(Alternatif::$rules, Alternatif::$message);
 		$alts = $altrequest->all();
 		try {
@@ -31,7 +34,8 @@ class AlternatifController extends Controller {
 		}
 		return back()->withError('Gagal menambah alternatif');
 	}
-	public function update(Request $updaltrequest, $id) {
+	public function update(Request $updaltrequest, $id)
+	{
 		try {
 			$cek = Alternatif::find($id);
 			if (!$cek) {
@@ -50,7 +54,8 @@ class AlternatifController extends Controller {
 		}
 		return back()->withError('Gagal update data Alternatif');
 	}
-	public function hapus($id) {
+	public function hapus($id)
+	{
 		try {
 			$cek = Alternatif::find($id);
 			if (!$cek) {

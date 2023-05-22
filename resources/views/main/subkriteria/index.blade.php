@@ -173,7 +173,7 @@
 									<td title="{{ $sk->kriteria->desc }}">
 										{{ $sk->kriteria->name }}
 									</td>
-									<td>{{$sk->bobot}}</td>
+									<td>{{ $sk->bobot }}</td>
 									<td>
 										<div class="btn-group" role="button">
 											<button type="button" class="btn btn-primary"

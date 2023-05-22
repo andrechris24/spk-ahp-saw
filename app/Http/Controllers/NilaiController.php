@@ -10,8 +10,10 @@ use App\Models\SubKriteria;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
-class NilaiController extends Controller {
-	public function normalisasi($arr, $type, $skor): float | string {
+class NilaiController extends Controller
+{
+	public function normalisasi($arr, $type, $skor): float|string
+	{
 		if ($type == 'cost') {
 			$hasil = min($arr) / $skor;
 		} else if ($type == 'benefit') {
@@ -34,18 +36,21 @@ class NilaiController extends Controller {
 		}
 		return $data;
 	}
-	public function getBobot($idkriteria) {
+	public function getBobot($idkriteria)
+	{
 		$kueri = Kriteria::find($idkriteria)->first();
 		return $kueri->bobot;
 	}
-	public function simpanHasil($alt_id, $jumlah): void {
+	public function simpanHasil($alt_id, $jumlah): void
+	{
 		try {
 			Hasil::updateOrInsert(['alternatif_id' => $alt_id], ['skor' => $jumlah]);
 		} catch (QueryException) {
 			return;
 		}
 	}
-	public function index() {
+	public function index()
+	{
 		$kriteria = Kriteria::get();
 		if (count($kriteria) === 0) {
 			return redirect('kriteria')
@@ -78,7 +83,8 @@ class NilaiController extends Controller {
 			compact('kriteria', 'subkriteria', 'alternatif', 'nilaialt')
 		);
 	}
-	public function store(Request $request) {
+	public function store(Request $request)
+	{
 		$request->validate(Nilai::$rules, Nilai::$message);
 		$scores = $request->all();
 		$cek = Nilai::where('alternatif_id', '=', $scores['alternatif_id'])->exists();
@@ -96,7 +102,8 @@ class NilaiController extends Controller {
 		return back()->withSuccess('Penilaian alternatif sudah ditambahkan');
 	}
 
-	public function show() {
+	public function show()
+	{
 		$alt = Alternatif::get();
 		$kr = Kriteria::get();
 		$skr = SubKriteria::get();
@@ -113,12 +120,13 @@ class NilaiController extends Controller {
 		$cekbobotskr = SubKriteria::where('bobot', 0.0000)->count();
 		if ($cekbobotkr > 0) {
 			return redirect('bobot')->withWarning(
-				'Lakukan perbandingan kriteria secara konsisten dulu sebelum melihat hasil penilaian alternatif.'
+				'Lakukan perbandingan kriteria dengan hasil yang konsisten ' .
+				'sebelum melihat hasil penilaian alternatif.'
 			);
 		}
 		if ($cekbobotskr > 0) {
 			return redirect('bobot/sub')->withWarning(
-				'Satu atau lebih perbandingan sub kriteria belum dilakukan secara konsisten'
+				'Satu atau lebih perbandingan sub kriteria belum dilakukan dengan hasil yang konsisten'
 			);
 		}
 		if ($hasil->isEmpty()) {
@@ -134,7 +142,8 @@ class NilaiController extends Controller {
 		return view('main.alternatif.hasil', compact('hasil', 'data'));
 	}
 
-	public function update(Request $request, $id) {
+	public function update(Request $request, $id)
+	{
 		$success = false;
 		$cek = Nilai::where('alternatif_id', '=', $id)->get();
 		if (!$cek) {
@@ -164,7 +173,8 @@ class NilaiController extends Controller {
 		return back()->withError('Gagal update penilaian alternatif');
 	}
 
-	public function destroy($id) {
+	public function destroy($id)
+	{
 		try {
 			$cek = Nilai::where('alternatif_id', '=', $id);
 			if (!$cek) {

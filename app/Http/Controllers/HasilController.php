@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Hasil;
 
-class HasilController extends Controller {
-	public function index() {
+class HasilController extends Controller
+{
+	public function index()
+	{
 		$result = Hasil::get();
 		if (count($result) === 0) {
 			return redirect('alternatif/nilai')

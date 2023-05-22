@@ -9,8 +9,10 @@ use App\Models\SubKriteriaComp;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
-class SubKriteriaController extends Controller {
-	public function index() {
+class SubKriteriaController extends Controller
+{
+	public function index()
+	{
 		$kriteria = Kriteria::get();
 		$subkriteria = SubKriteria::get();
 		$compskr = SubKriteriaComp::count();
@@ -25,7 +27,8 @@ class SubKriteriaController extends Controller {
 		);
 	}
 
-	public function store(Request $request) {
+	public function store(Request $request)
+	{
 		$request->validate(SubKriteria::$rules, SubKriteria::$message);
 		$subs = $request->all();
 		try {
@@ -54,7 +57,8 @@ class SubKriteriaController extends Controller {
 		return back()->withError('Gagal menambah sub kriteria');
 	}
 
-	public function update(Request $request, $id) {
+	public function update(Request $request, $id)
+	{
 		try {
 			$cek = SubKriteria::find($id);
 			if (!$cek) {
@@ -70,7 +74,8 @@ class SubKriteriaController extends Controller {
 		}
 	}
 
-	public function destroy($id) {
+	public function destroy($id)
+	{
 		try {
 			$cek = SubKriteria::find($id);
 			$idkriteria = $cek->kriteria_id;

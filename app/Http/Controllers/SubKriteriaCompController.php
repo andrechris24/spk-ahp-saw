@@ -12,38 +12,45 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\DB;
 
-class SubKriteriaCompController extends Controller {
-	private function getSubKriteriaPerbandingan($id) {
+class SubKriteriaCompController extends Controller
+{
+	private function getSubKriteriaPerbandingan($id)
+	{
 		return SubKriteriaComp::join(
 			"subkriteria",
 			"subkriteria_banding.subkriteria1",
 			"subkriteria.id"
 		)->select(
-			"subkriteria_banding.subkriteria1 as idsubkriteria",
-			"subkriteria.name"
-		)
+				"subkriteria_banding.subkriteria1 as idsubkriteria",
+				"subkriteria.name"
+			)
 			->groupBy("subkriteria1", 'name')
 			->where('kriteria_id', '=', $id)
 			->get();
 	}
-	private function getPerbandinganBySubKriteria1($subkriteria1, $id) {
+	private function getPerbandinganBySubKriteria1($subkriteria1, $id)
+	{
 		return SubKriteriaComp::select('nilai', 'subkriteria2', 'subkriteria1')
 			->where("subkriteria2", "=", $subkriteria1)
 			->where('idkriteria', '=', $id)
 			->get();
 	}
-	private function getNilaiPerbandingan($kode_kriteria, $id) {
+	private function getNilaiPerbandingan($kode_kriteria, $id)
+	{
 		return SubKriteriaComp::select("nilai", "subkriteria1")
 			->where("subkriteria1", "=", $kode_kriteria)
 			->where('idkriteria', '=', $id)
 			->get();
 	}
-	public function nama_kriteria($id) {
+	public function nama_kriteria($id)
+	{
 		$kriteria = Kriteria::where('id', '=', $id)->first();
 		return $kriteria['name'];
 	}
-	public function index() {
+	public function index()
+	{
 		$allkrit = Kriteria::get();
 		if (count($allkrit) === 0) {
 			return redirect('/kriteria')
@@ -60,7 +67,8 @@ class SubKriteriaCompController extends Controller {
 		}
 		return view('main.subkriteria.select', compact('allkrit'));
 	}
-	public function create(Request $request): Factory | View | Application{
+	public function create(Request $request): Factory|View|Application
+	{
 		$request->validate([
 			'kriteria_id' => 'required|numeric',
 		]);
@@ -81,7 +89,8 @@ class SubKriteriaCompController extends Controller {
 			->with(['kriteria_id' => $idkriteria]);
 	}
 
-	public function store(Request $request): Redirector | Application | RedirectResponse{
+	public function store(Request $request): Redirector|Application|RedirectResponse
+	{
 		$request->validate(SubKriteriaComp::$rules, SubKriteriaComp::$message);
 		try {
 			$subkriteria = SubKriteria::where('kriteria_id', $request->kriteria_id)->get();
@@ -116,7 +125,8 @@ class SubKriteriaCompController extends Controller {
 		}
 	}
 
-	public function show($id): Factory | View | Application{
+	public function show($id): Factory|View|Application
+	{
 		$subkriteria = $this->getSubKriteriaPerbandingan($id);
 		$a = 0;
 		foreach ($subkriteria as $k) {
@@ -292,7 +302,10 @@ class SubKriteriaCompController extends Controller {
 						"bobot" => $array_BobotPrioritas[$i]["bobot"],
 					]);
 			}
+		} else {
+			DB::table('subkriteria')->update(['bobot' => 0.0000]);
 		}
+
 		$data = [
 			"subkriteria" => $subkriteria,
 			"matriks_perbandingan" => $matriks_perbandingan,
@@ -310,7 +323,8 @@ class SubKriteriaCompController extends Controller {
 			->with(['kriteria_id' => $id]);
 	}
 
-	public function destroy($id) {
+	public function destroy($id)
+	{
 		$kr = Kriteria::where('id', '=', $id)->first();
 		try {
 			SubKriteriaComp::where('idkriteria', '=', $id)->delete();

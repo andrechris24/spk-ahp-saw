@@ -12,14 +12,17 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class KriteriaController extends Controller {
-	public function index(): Factory | View | Application{
+class KriteriaController extends Controller
+{
+	public function index(): Factory|View|Application
+	{
 		$krit = Kriteria::get();
 		$ceknilai = Nilai::count();
 		$compkr = KriteriaComp::count();
 		return view('main.kriteria.index', compact('krit', 'compkr', 'ceknilai'));
 	}
-	public function tambah(Request $kritrequest) {
+	public function tambah(Request $kritrequest)
+	{
 		$kritrequest->validate(Kriteria::$rules, Kriteria::$message);
 		$krits = $kritrequest->all();
 		try {
@@ -42,7 +45,8 @@ class KriteriaController extends Controller {
 		}
 		return back()->withError('Gagal menambah kriteria');
 	}
-	public function update(Request $updkritrequest, $id) {
+	public function update(Request $updkritrequest, $id)
+	{
 		try {
 			$cek = Kriteria::find($id);
 			if (!$cek) {
@@ -57,7 +61,8 @@ class KriteriaController extends Controller {
 				->withErrors($db->getMessage());
 		}
 	}
-	public function hapus($id) {
+	public function hapus($id)
+	{
 		try {
 			$cek = Kriteria::find($id);
 			if (!$cek) {

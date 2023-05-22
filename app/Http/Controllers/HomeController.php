@@ -15,8 +15,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
-class HomeController extends Controller {
-	public function index(): Factory | View | Application {
+class HomeController extends Controller
+{
+	public function index(): Factory|View|Application
+	{
 		if (Auth::check()) {
 			$jml['kriteria'] = Kriteria::count();
 			$jml['subkriteria'] = SubKriteria::count();
@@ -25,10 +27,12 @@ class HomeController extends Controller {
 		}
 		return view('main.index');
 	}
-	public function profile(): Factory | View | Application {
+	public function profile(): Factory|View|Application
+	{
 		return view('main.profil');
 	}
-	public function updateProfil(Request $request) {
+	public function updateProfil(Request $request)
+	{
 		$id = Auth::user()->id;
 		try {
 			$cek = User::find($id);
@@ -78,7 +82,8 @@ class HomeController extends Controller {
 		}
 		return back()->withInput()->withError('Akun gagal diupdate');
 	}
-	public function delAkun(Request $request) {
+	public function delAkun(Request $request)
+	{
 		$id = Auth::user()->id;
 		try {
 			$cek = User::find($id);

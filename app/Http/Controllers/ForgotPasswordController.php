@@ -17,12 +17,14 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Symfony\Component\Mailer\Exception\TransportException;
 
-class ForgotPasswordController extends Controller {
+class ForgotPasswordController extends Controller
+{
 	// private function clearResets(){
 	// 	$dt=Carbon::now()->addHours(2);
 	// 	dd(DB::table('password_resets')->where('created_at','>',$dt)->first());
 	// }
-	public function showForgetPasswordForm(): View | Factory | Application | RedirectResponse {
+	public function showForgetPasswordForm(): View|Factory|Application|RedirectResponse
+	{
 		// $this->clearResets();
 		if (Auth::viaRemember() || Auth::check()) {
 			return redirect()->intended();
@@ -31,7 +33,8 @@ class ForgotPasswordController extends Controller {
 		return view('admin.forget-password');
 	}
 
-	public function submitForgetPasswordForm(Request $request) {
+	public function submitForgetPasswordForm(Request $request)
+	{
 		$request->validate(['email' => 'bail|required|email|exists:users']);
 		try {
 			$status = Password::sendResetLink($request->only('email'));
@@ -49,7 +52,8 @@ class ForgotPasswordController extends Controller {
 			return back()->withErrors($sql->getMessage());
 		}
 	}
-	public function showResetPasswordForm($token): View | Factory | Application | RedirectResponse {
+	public function showResetPasswordForm($token): View|Factory|Application|RedirectResponse
+	{
 		if (Auth::viaRemember() || Auth::check()) {
 			return redirect()->intended();
 		}
@@ -70,7 +74,8 @@ class ForgotPasswordController extends Controller {
 			['token' => $token, 'email' => $_GET['email']]
 		);
 	}
-	public function submitResetPasswordForm(Request $request) {
+	public function submitResetPasswordForm(Request $request)
+	{
 		$request->validate(User::$resetpass, User::$resetmsg);
 		$status = Password::reset(
 			$request->only('email', 'password', 'password_confirmation', 'token'),

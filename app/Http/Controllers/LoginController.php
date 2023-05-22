@@ -11,16 +11,19 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class LoginController extends Controller {
+class LoginController extends Controller
+{
 	use RememberMeExpiration;
-	public function show(): View | Factory | Application | RedirectResponse {
+	public function show(): View|Factory|Application|RedirectResponse
+	{
 		if (Auth::viaRemember() || Auth::check()) {
 			return redirect()->intended();
 		}
 
 		return view('admin.login');
 	}
-	public function login(Request $request): RedirectResponse{
+	public function login(Request $request): RedirectResponse
+	{
 		$credentials = $request->validate(User::$loginrules, [
 			'email.required' => 'Email harus diisi',
 			'email.email' => 'Format Email salah',

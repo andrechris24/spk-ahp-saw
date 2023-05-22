@@ -12,8 +12,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class RegisterController extends Controller {
-	public function show(): View | Factory | Application | RedirectResponse {
+class RegisterController extends Controller
+{
+	public function show(): View|Factory|Application|RedirectResponse
+	{
 		if (Auth::viaRemember() || Auth::check()) {
 			return redirect()->intended();
 		}
@@ -21,7 +23,8 @@ class RegisterController extends Controller {
 		return view('admin.register');
 	}
 
-	public function register(Request $request) {
+	public function register(Request $request)
+	{
 		$credentials = $request->validate(User::$regrules, [
 			'name.required' => 'Nama harus diisi',
 			'name.regex' => 'Nama tidak boleh mengandung simbol dan angka',
