@@ -75,14 +75,10 @@
 														@else
 															<tr>
 																<th>
-																	<div>
-																		<label class="form-check-label" for="left-{{ $loop->index }}">
-																			{{ $krit['baris'] }}
-																		</label>
-																		<input type="radio" name="kriteria[{{ $loop->index }}]"
-																			class="form-check-input" value="left"
-																			id="left-{{ $loop->index }}" required>
-																	</div>
+																	<input type="radio" class="btn-check" name="kriteria[{{ $loop->index }}]" id="left-{{ $loop->index }}" value="left" autocomplete="off" required>
+																	<label class="btn btn-outline-light" for="left-{{ $loop->index }}">
+																	{{ $krit['baris'] }}
+																	</label>
 																</th>
 																<td>
 																	<div class="input-group mb-3">
@@ -92,15 +88,10 @@
 																	</div>
 																</td>
 																<th>
-																	<div>
-																		<input type="radio" name="kriteria[{{ $loop->index }}]"
-																			class="form-check-input" value="right"
-																			id="right-{{ $loop->index }}">
-																		<label class="form-check-label"
-																			for="right-{{ $loop->index }}">
-																			{{ $krit['kolom'] }}
-																		</label>
-																	</div>
+																	<input type="radio" class="btn-check" name="kriteria[{{ $loop->index }}]" id="right-{{ $loop->index }}" value="right" autocomplete="off">
+																	<label class="btn btn-outline-light" for="right-{{ $loop->index }}">
+																	{{ $krit['kolom'] }}
+																	</label>
 																</th>
 															</tr>
 														@endif
