@@ -75,8 +75,11 @@
 														@else
 															<tr>
 																<th>
-																	<input type="radio" class="btn-check" name="kriteria[{{ $loop->index }}]" id="left-{{ $loop->index }}" value="left" autocomplete="off" required>
-																	<label class="btn btn-outline-light" for="left-{{ $loop->index }}">
+																	<input type="radio" class="btn-check" value="left"
+																	name="kriteria[{{ $loop->index }}]" autocomplete="off"
+																	id="left-{{ $loop->index }}" required>
+																	<label class="btn btn-outline-light"
+																	for="left-{{ $loop->index }}">
 																	{{ $krit['baris'] }}
 																	</label>
 																</th>
@@ -88,8 +91,11 @@
 																	</div>
 																</td>
 																<th>
-																	<input type="radio" class="btn-check" name="kriteria[{{ $loop->index }}]" id="right-{{ $loop->index }}" value="right" autocomplete="off">
-																	<label class="btn btn-outline-light" for="right-{{ $loop->index }}">
+																	<input type="radio" class="btn-check" value="right" 
+																	name="kriteria[{{ $loop->index }}]"
+																	id="right-{{ $loop->index }}" autocomplete="off">
+																	<label class="btn btn-outline-light"
+																	for="right-{{ $loop->index }}">
 																	{{ $krit['kolom'] }}
 																	</label>
 																</th>
