@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/phpinfo',function(){
 	phpinfo();
 })->name('php.info');
+Route::get('/test',function(){
+	return view('welcome');
+})->name('laravel.welcome');
 Route::group(['namespace' => 'App\Http\Controllers'], function () {
 	/**
 	 * Home Routes

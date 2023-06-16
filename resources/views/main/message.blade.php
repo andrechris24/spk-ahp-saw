@@ -36,6 +36,7 @@
 <noscript>
 	<div class="alert alert-danger" role="alert">
 		<i class="bi bi-exclamation-circle-fill"></i>
-		Gagal memuat JavaScript
+		JavaScript tidak bekerja. Sistem Pendukung Keputusan
+		tidak akan bekerja dengan baik tanpa JavaScript.
 	</div>
 </noscript>
