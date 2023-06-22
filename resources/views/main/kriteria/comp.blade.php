@@ -127,12 +127,16 @@
 			'#InputCompTab a[data-bs-toggle="tab"]');
 		tabList.forEach(tabEl => {
 			tabEl.addEventListener('shown.bs.tab', event => {
-				location.hash = $(event.target).attr('href');
+				if(history.pushState) 
+					history.pushState(null, null, $(event.target).attr('href'));
+				else location.hash = $(event.target).attr('href');
 			});
 		});
 		var hash = location.hash;
-		const triggerEl = document.querySelector('#InputCompTab a[href="' + hash +
-			'"]');
-		bootstrap.Tab.getOrCreateInstance(triggerEl).show();
+		if(!(hash===null || hash==="")){
+			const triggerEl = document.querySelector('#InputCompTab a[href="' + hash +
+				'"]');
+			bootstrap.Tab.getOrCreateInstance(triggerEl).show();
+		}
 	</script>
 @endsection
