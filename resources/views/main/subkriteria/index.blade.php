@@ -160,7 +160,10 @@
 								<th>No</th>
 								<th>Nama Sub Kriteria</th>
 								<th>Kriteria</th>
-								<th>Bobot</th>
+								<th data-bs-toggle="tooltip"
+									data-bs-title="Bobot didapat setelah melakukan perbandingan">
+									Bobot
+								</th>
 								<th>Aksi</th>
 							</tr>
 						</thead>

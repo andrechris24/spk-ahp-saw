@@ -178,7 +178,10 @@
 								<th>Nama Kriteria</th>
 								<th>Atribut</th>
 								<th>Keterangan</th>
-								<th>Bobot</th>
+								<th data-bs-toggle="tooltip"
+									data-bs-title="Bobot didapat setelah melakukan perbandingan">
+									Bobot
+								</th>
 								<th>Aksi</th>
 							</tr>
 						</thead>
