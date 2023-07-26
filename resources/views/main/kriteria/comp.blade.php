@@ -117,12 +117,6 @@
 
 @section('js')
 	<script type="text/javascript">
-		function setscale(comp, idx) {
-			if (comp === "col[" + idx + "]") document.getElementById("row[" + idx +
-				"]").value = 1;
-			else if (comp === "row[" + idx + "]")
-				document.getElementById("col[" + idx + "]").value = 1;
-		}
 		const tabList = document.querySelectorAll(
 			'#InputCompTab a[data-bs-toggle="tab"]');
 		tabList.forEach(tabEl => {
