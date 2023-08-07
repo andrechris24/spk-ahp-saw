@@ -7,12 +7,14 @@
 	<title>
 		@yield('title') | Sistem Pendukung Keputusan metode AHP & SAW
 	</title>
-	<link rel="stylesheet" href="{{ asset('assets/css/main/app.css') }}" />
-	<link rel="stylesheet" href="{{ asset('assets/css/pages/auth.css') }}" />
-	<link rel="shortcut icon" href="{{ asset('assets/images/logo/favicon.svg') }}"
+	<link rel="stylesheet" href="{{ asset('assets/compiled/css/app.css') }}" />
+	<link rel="stylesheet" href="{{ asset('assets/compiled/css/app-dark.css') }}" />
+	<link rel="stylesheet" href="{{ asset('assets/compiled/css/auth.css') }}" />
+	<link rel="shortcut icon" href="{{ asset('assets/compiled/svg/favicon.svg') }}"
 		type="image/x-icon" />
-	<link rel="shortcut icon" href="{{ asset('assets/images/logo/favicon.png') }}"
+	<link rel="shortcut icon" href="{{ asset('assets/static/images/logo/favicon.png') }}"
 		type="image/png" />
+	<script src="{{ asset('assets/static/js/initTheme.js') }}"></script>
 </head>
 
 <body>
@@ -21,7 +23,7 @@
 			<div class="col-lg-7 col-12">
 				<div id="auth-left">
 					<div class="auth-logo">
-						<img src="{{ asset('assets/images/logo/logo.svg') }}" alt="Logo" />
+						<img src="{{ asset('assets/compiled/svg/logo.svg') }}" alt="Logo" />
 					</div>
 					@yield('auth-desc')
 					@include('main.message')
@@ -36,7 +38,7 @@
 			</div>
 		</div>
 	</div>
-	<script src="{{ asset('assets/js/bootstrap.js') }}"></script>
+	<script src="{{ asset('assets/compiled/js/app.js') }}"></script>
 	@yield('js')
 	<script type="text/javascript">
 		// If you want to use tooltips in your project, we suggest initializing them globally

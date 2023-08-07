@@ -7,19 +7,21 @@
 	<title>
 		@yield('title') | Sistem Pendukung Keputusan metode AHP & SAW
 	</title>
-	<link rel="stylesheet" href="{{ asset('assets/css/main/app.css') }}" />
-	<link rel="stylesheet" href="{{ asset('assets/css/main/app-dark.css') }}" />
-	<link rel="stylesheet" href="{{ asset('assets/css/shared/iconly.css') }}" />
+	<link rel="stylesheet" href="{{ asset('assets/compiled/css/app.css') }}" />
+	<link rel="stylesheet" href="{{ asset('assets/compiled/css/app-dark.css') }}" />
+	<link rel="stylesheet" href="{{ asset('assets/compiled/css/iconly.css') }}" />
 	<link rel="stylesheet" type="text/css"
 		href="{{ asset('assets/datatables.min.css') }}">
 	<link rel="stylesheet"
 		href="{{ asset('assets/extensions/apexcharts/apexcharts.css') }}">
-	<link rel="shortcut icon" href="{{ asset('assets/images/logo/favicon.svg') }}"
+	<link rel="shortcut icon" href="{{ asset('assets/compiled/svg/favicon.svg') }}"
 		type="image/x-icon" />
-	<link rel="shortcut icon" href="{{ asset('assets/images/logo/favicon.png') }}"
+	<link rel="shortcut icon" href="{{ asset('assets/static/images/logo/favicon.png') }}"
 		type="image/png" />
+	<link rel="stylesheet" href="{{asset('assets/extensions/toastify-js/src/toastify.css')}}"/>
 	<link rel="stylesheet"
 		href="{{ asset('assets/extensions/@fortawesome/fontawesome-free/css/all.min.css') }}" />
+	<script src="{{ asset('assets/static/js/initTheme.js') }}"></script>
 </head>
 
 <body>
@@ -30,7 +32,7 @@
 					<div class="d-flex justify-content-between align-items-center">
 						<div class="logo">
 							<a href="{{ url('/home') }}">
-								<img src="{{ asset('assets/images/logo/logo.svg') }}" alt="Logo" />
+								<img src="{{ asset('assets/compiled/svg/logo.svg') }}" alt="Logo" />
 							</a>
 						</div>
 						<div class="theme-toggle d-flex gap-2 align-items-center mt-2">
@@ -67,7 +69,7 @@
 							</svg>
 						</div>
 						<div class="sidebar-toggler x">
-							<a href="#" class="sidebar-hide d-xl-none d-block">
+							<a href="javascript:void(0)" class="sidebar-hide d-xl-none d-block">
 								<i class="bi bi-x bi-middle"></i>
 							</a>
 						</div>
@@ -77,64 +79,93 @@
 					<ul class="menu">
 						@auth
 							<li class="sidebar-title">Menu</li>
-							<li class="sidebar-item">
+							<li
+								class="sidebar-item 
+							{{ request()->is('home') ? 'active' : '' }}">
 								<a href="{{ url('/home') }}" class="sidebar-link">
 									<i class="bi bi-house-fill"></i>
 									<span>Beranda</span>
 								</a>
 							</li>
-							<li class="sidebar-item has-sub">
+							<li
+								class="sidebar-item has-sub
+							{{ request()->is('kriteria*') || request()->is('alternatif') ? 'active' : '' }}">
 								<a href="#" class="sidebar-link">
 									<i class="bi bi-clipboard-data-fill"></i>
 									<span>Data Master</span>
 								</a>
 								<ul class="submenu">
-									<li class="submenu-item">
-										<a href="{{ url('kriteria') }}">Kriteria</a>
+									<li
+										class="submenu-item 
+									{{ request()->is('kriteria') ? 'active' : '' }}">
+										<a href="{{ url('kriteria') }}" class="submenu-link">
+											Kriteria
+										</a>
 									</li>
-									<li class="submenu-item">
-										<a href="{{ url('kriteria/sub') }}">Sub Kriteria</a>
+									<li
+										class="submenu-item 
+									{{ request()->is('kriteria/sub') ? 'active' : '' }}">
+										<a href="{{ url('kriteria/sub') }}" class="submenu-link">
+											Sub Kriteria
+										</a>
 									</li>
-									<li class="submenu-item">
-										<a href="{{ url('alternatif') }}">Alternatif</a>
+									<li
+										class="submenu-item 
+									{{ request()->is('alternatif') ? 'active' : '' }}">
+										<a href="{{ url('alternatif') }}" class="submenu-link">
+											Alternatif
+										</a>
 									</li>
 								</ul>
 							</li>
-							<li class="sidebar-item has-sub">
+							<li
+								class="sidebar-item has-sub 
+							{{ request()->is('bobot*') ? 'active' : '' }}">
 								<a href="#" class="sidebar-link">
 									<i class="bi bi-calculator-fill"></i>
 									<span>Perhitungan AHP</span>
 								</a>
 								<ul class="submenu">
-									<li class="submenu-item">
-										<a href="{{ url('bobot') }}">Perbandingan Kriteria</a>
+									<li
+										class="submenu-item
+									 {{ (request()->is('bobot')||request()->is('bobot/hasil')) ? 'active' : '' }}">
+										<a href="{{ url('bobot') }}" class="submenu-link">
+											Perbandingan Kriteria
+										</a>
 									</li>
-									<li class="submenu-item">
-										<a href="{{ url('bobot/sub') }}">
+									<li
+										class="submenu-item
+									 {{ request()->is('bobot/sub*') ? 'active' : '' }}">
+										<a href="{{ url('bobot/sub') }}" class="submenu-link">
 											Perbandingan Sub Kriteria
 										</a>
 									</li>
 								</ul>
 							</li>
-							<li class="sidebar-item has-sub">
+							<li
+								class="sidebar-item has-sub 
+							{{ request()->is('alternatif/*') ? 'active' : '' }}">
 								<a href="#" class="sidebar-link">
 									<i class="bi bi-calculator-fill"></i>
 									<span>Perhitungan SAW</span>
 								</a>
 								<ul class="submenu">
-									<li class="submenu-item">
-										<a href="{{ url('alternatif/nilai') }}">
+									<li class="submenu-item
+									 {{ request()->is('alternatif/nilai') ? 'active' : '' }}">
+										<a href="{{ url('alternatif/nilai') }}" class="submenu-link">
 											Penilaian Alternatif
 										</a>
 									</li>
-									<li class="submenu-item">
-										<a href="{{ url('alternatif/hasil') }}">
+									<li class="submenu-item
+									 {{ request()->is('alternatif/hasil') ? 'active' : '' }}">
+										<a href="{{ url('alternatif/hasil') }}" class="submenu-link">
 											Hasil
 										</a>
 									</li>
 								</ul>
 							</li>
-							<li class="sidebar-item">
+							<li
+								class="sidebar-item {{ request()->is('ranking') ? 'active' : '' }}">
 								<a href="{{ url('/ranking') }}" class="sidebar-link">
 									<i class="bi bi-bar-chart-line-fill"></i>
 									<span>Hasil Akhir</span>
@@ -142,7 +173,7 @@
 							</li>
 						@endauth
 						@guest
-							<li class="sidebar-item">
+							<li class="sidebar-item active">
 								<a href="{{ url('login') }}" class="sidebar-link">
 									<i class="bi bi-box-arrow-in-right me-2"></i> Login
 								</a>
@@ -156,7 +187,7 @@
 			<header class="mb-3">
 				<nav class="navbar navbar-expand navbar-light navbar-top">
 					<div class="container-fluid">
-						<a href="#" class="burger-btn d-block">
+						<a href="javascript:void(0)" class="burger-btn d-block">
 							<i class="bi bi-justify fs-3"></i>
 						</a>
 						<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -259,14 +290,20 @@
 			</div>
 		</div>
 	</div>
+	<script src="{{ asset('assets/static/js/components/dark.js') }}"></script>
+	<script
+		src="{{ asset('assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}">
+	</script>
+	<script src="{{ asset('assets/compiled/js/app.js') }}"></script>
 	<script type="text/javascript"
 		src="{{ asset('assets/extensions/jquery/jquery.min.js') }}"></script>
-	<script src="{{ asset('assets/js/bootstrap.js') }}"></script>
-	<script src="{{ asset('assets/js/app.js') }}"></script>
-	<script src="{{ asset('assets/js/initTheme.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('assets/datatables.min.js') }}">
 	</script>
+	<script src="{{asset('assets/extensions/parsleyjs/parsley.min.js')}}"></script>
+	<script src="{{asset('assets/extensions/parsleyjs/i18n/id.js')}}"></script>
 	<script src="{{ asset('assets/extensions/apexcharts/apexcharts.min.js') }}">
+	</script>
+	<script type="text/javascript" src="{{asset('assets/extensions/toastify-js/src/toastify.js')}}">
 	</script>
 	@yield('js')
 	<script type="text/javascript">

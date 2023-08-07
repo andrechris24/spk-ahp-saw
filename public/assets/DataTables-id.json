@@ -4,8 +4,8 @@
     "infoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
     "infoFiltered": "(disaring dari _MAX_ entri keseluruhan)",
     "lengthMenu": "Tampilkan _MENU_ entri",
-    "loadingRecords": "Sedang memuat...",
-    "processing": "Sedang memproses...",
+    "loadingRecords": "Memuat...",
+    "processing": "Memproses...",
     "search": "Cari:",
     "zeroRecords": "Tidak ditemukan data yang sesuai",
     "thousands": "'",
@@ -16,8 +16,8 @@
         "previous": "Sebelumnya"
     },
     "aria": {
-        "sortAscending": ": aktifkan untuk mengurutkan kolom ke atas",
-        "sortDescending": ": aktifkan untuk mengurutkan kolom menurun"
+        "sortAscending": ": Aktifkan untuk mengurutkan kolom ke atas",
+        "sortDescending": ": Aktifkan untuk mengurutkan kolom menurun"
     },
     "autoFill": {
         "cancel": "Batalkan",
@@ -192,7 +192,7 @@
             "button": "Edit"
         },
         "error": {
-            "system": "Terjadi kesalahan pada system. (<a target=\"\\\" rel=\"\\ nofollow\" href=\"\\\">Informasi Selebihnya<\/a>)."
+            "system": "Terjadi kesalahan pada sistem. (<a target=\"\\\" rel=\"\\ nofollow\" href=\"\\\">Informasi Selebihnya<\/a>)."
         }
     },
     "stateRestore": {
@@ -224,4 +224,4 @@
         "renameLabel": "Nama Baru untuk %s:",
         "renameTitle": "Ganti Nama State"
     }
-}
+} 

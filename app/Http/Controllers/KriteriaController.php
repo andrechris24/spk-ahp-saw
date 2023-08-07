@@ -28,7 +28,6 @@ class KriteriaController extends Controller
 		try {
 			$kriteria = Kriteria::create($krits);
 			if ($kriteria) {
-				// $cekhasil = KriteriaComp::count();
 				if (KriteriaComp::exists()) {
 					DB::table('kriteria_banding')->delete();
 					DB::table('kriteria')->update(['bobot' => 0.0000]);
@@ -37,7 +36,7 @@ class KriteriaController extends Controller
 							'Kriteria sudah ditambahkan. Silahkan input ulang perbandingan kriteria.'
 						);
 				}
-				return back()->withSuccess('Kriteria sudah ditambahkan.');
+				return back()->withSuccess('Kriteria sudah ditambahkan');
 			}
 		} catch (QueryException $db) {
 			return back()->withError('Gagal menambah kriteria:')
@@ -71,7 +70,6 @@ class KriteriaController extends Controller
 
 			$del = $cek->delete();
 			if ($del) {
-				// $cekhasil = KriteriaComp::count();
 				if (KriteriaComp::exists()) {
 					DB::table('kriteria_banding')->delete();
 					DB::table('kriteria')->update(['bobot' => 0.0000]);

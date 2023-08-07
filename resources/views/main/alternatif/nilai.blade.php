@@ -56,7 +56,7 @@
 							</button>
 						</div>
 						<form action="{{ url('/alternatif/nilai/add') }}" method="post"
-							enctype="multipart/form-data">
+							enctype="multipart/form-data" data-parsley-validate>
 							@csrf
 							<div class="modal-body">
 								<div class="input-group mb-3">
@@ -120,7 +120,7 @@
 							</button>
 						</div>
 						<form action="{{ url('/alternatif/nilai/update/:id') }}" method="post"
-							enctype="multipart/form-data" name="editnilaialternatif">
+							enctype="multipart/form-data" name="editnilaialternatif" data-parsley-validate>
 							@csrf
 							<input type="hidden" name="alternatif_id" id="alter">
 							<div class="modal-body">
@@ -292,18 +292,26 @@
 			link.href = formurl;
 		});
 		$(document).ready(function() {
-			$('#table-nilaialt').DataTable({
-				"stateSave": true,
-				"lengthChange": false,
-				"searching": false,
-				columnDefs: [{
-					orderable: false,
-					targets: {{ $critcount + 1 }},
-				}],
-				language: {
-					url: "{{ url('assets/DataTables-id.json') }}"
-				}
-			});
+			try{
+				$('#table-nilaialt').DataTable({
+					"stateSave": true,
+					"lengthChange": false,
+					"searching": false,
+					columnDefs: [{
+						orderable: false,
+						targets: {{ $critcount + 1 }},
+					}],
+					language: {
+						url: "{{ url('assets/DataTables-id.json') }}"
+					}
+				});
+			}catch(dterr){
+				Toastify({
+			    text: "DataTables Error: "+dterr.message,
+			    duration: 4000,
+			    backgroundColor: "#dc3545",
+			  }).showToast();
+			}
 		});
 	</script>
 @endsection

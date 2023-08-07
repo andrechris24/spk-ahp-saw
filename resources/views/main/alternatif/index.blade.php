@@ -59,7 +59,7 @@
 							</button>
 						</div>
 						<form action="{{ url('/alternatif/add') }}" method="post"
-							enctype="multipart/form-data">
+							enctype="multipart/form-data" data-parsley-validate>
 							@csrf
 							<div class="modal-body">
 								<label for="name-add">Nama Alternatif</label>
@@ -96,7 +96,7 @@
 							</button>
 						</div>
 						<form action="{{ url('/alternatif/update/:id') }}" method="post"
-							enctype="multipart/form-data" name="editalternatif">
+							enctype="multipart/form-data" name="editalternatif" data-parsley-validate>
 							@csrf
 							<div class="modal-body">
 								<label for="nama-edit">Nama Alternatif</label>
@@ -201,18 +201,26 @@
 			link.href = formurl;
 		});
 		$(document).ready(function() {
-			$('#table-alter').DataTable({
-				"stateSave": true,
-				"lengthChange": false,
-				"searching": false,
-				columnDefs: [{
-					orderable: false,
-					targets: 2,
-				}],
-				language: {
-					url: "{{ url('assets/DataTables-id.json') }}"
-				}
-			});
+			try{
+				$('#table-alter').DataTable({
+					"stateSave": true,
+					"lengthChange": false,
+					"searching": false,
+					columnDefs: [{
+						orderable: false,
+						targets: 2,
+					}],
+					language: {
+						url: "{{ url('assets/DataTables-id.json') }}"
+					}
+				});
+			}catch(dterr){
+				Toastify({
+			    text: "DataTables Error: "+dterr.message,
+			    duration: 4000,
+			    backgroundColor: "#dc3545",
+			  }).showToast();
+			}
 		});
 	</script>
 @endsection

@@ -7,12 +7,13 @@
 	<title>
 		503 Service Unavailable | Sistem Pendukung Keputusan metode AHP & SAW
 	</title>
-	<link rel="stylesheet" href="{{ asset('assets/css/main/app.css') }}" />
-	<link rel="stylesheet" href="{{ asset('assets/css/pages/error.css') }}" />
-	<link rel="shortcut icon" href="{{ asset('assets/images/logo/favicon.svg') }}"
+	<link rel="stylesheet" href="{{ asset('assets/compiled/css/app.css') }}" />
+	<link rel="stylesheet" href="{{ asset('assets/compiled/css/error.css') }}" />
+	<link rel="shortcut icon" href="{{ asset('assets/compiled/svg/favicon.svg') }}"
 		type="image/x-icon" />
-	<link rel="shortcut icon" href="{{ asset('assets/images/logo/favicon.png') }}"
+	<link rel="shortcut icon" href="{{ asset('assets/static/images/logo/favicon.png') }}"
 		type="image/png" />
+	<script src="{{ asset('assets/static/js/initTheme.js') }}"></script>
 </head>
 
 <body>

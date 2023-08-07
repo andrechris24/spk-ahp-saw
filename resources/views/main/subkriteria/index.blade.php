@@ -62,7 +62,7 @@
 							</button>
 						</div>
 						<form action="{{ url('/kriteria/sub/add') }}" method="post"
-							enctype="multipart/form-data">
+							enctype="multipart/form-data" data-parsley-validate>
 							@csrf
 							<div class="modal-body">
 								<label for="nama">Nama Sub Kriteria</label>
@@ -110,7 +110,7 @@
 							</button>
 						</div>
 						<form action="{{ url('/kriteria/sub/update/:id') }}" method="post"
-							enctype="multipart/form-data" name="editsubkriteria">
+							enctype="multipart/form-data" name="editsubkriteria" data-parsley-validate>
 							@csrf
 							<div class="modal-body">
 								<label for="nama-edit">Nama Sub Kriteria</label>
@@ -245,18 +245,26 @@
 			link.href = formurl;
 		});
 		$(document).ready(function() {
-			$('#table-subcrit').DataTable({
-				"stateSave": true,
-				"lengthChange": false,
-				"searching": false,
-				columnDefs: [{
-					orderable: false,
-					targets: 3,
-				}],
-				language: {
-					url: "{{ url('assets/DataTables-id.json') }}"
-				}
-			});
+			try{
+				$('#table-subcrit').DataTable({
+					"stateSave": true,
+					"lengthChange": false,
+					"searching": false,
+					columnDefs: [{
+						orderable: false,
+						targets: 4,
+					}],
+					language: {
+						url: "{{ url('assets/DataTables-id.json') }}"
+					}
+				});
+			}catch(dterr){
+				Toastify({
+			    text: "DataTables Error: "+dterr.message,
+			    duration: 4000,
+			    backgroundColor: "#dc3545",
+			  }).showToast();
+			}
 		});
 	</script>
 @endsection

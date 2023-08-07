@@ -146,16 +146,24 @@
 @section('js')
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$('#table-hasil').DataTable({
-				"lengthChange": false,
-				"searching": false,
-				order: [
-					[1 + {{ $countkriteria }}, 'desc']
-				],
-				language: {
-					url: "{{ url('assets/DataTables-id.json') }}"
-				}
-			});
+			try{
+				$('#table-hasil').DataTable({
+					"lengthChange": false,
+					"searching": false,
+					order: [
+						[1 + {{ $countkriteria }}, 'desc']
+					],
+					language: {
+						url: "{{ url('assets/DataTables-id.json') }}"
+					}
+				});
+			}catch(dterr){
+				Toastify({
+			    text: "DataTables Error: "+dterr.message,
+			    duration: 4000,
+			    backgroundColor: "#dc3545",
+			  }).showToast();
+			}
 		});
 	</script>
 @endsection

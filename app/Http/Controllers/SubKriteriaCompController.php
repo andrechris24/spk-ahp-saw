@@ -12,7 +12,6 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
-use Illuminate\Support\Facades\DB;
 
 class SubKriteriaCompController extends Controller
 {
@@ -302,8 +301,10 @@ class SubKriteriaCompController extends Controller
 						"bobot" => $array_BobotPrioritas[$i]["bobot"],
 					]);
 			}
+			$subbobotkosong = SubKriteria::where('bobot', '=', 0.0000)->count();
 		} else {
-			DB::table('subkriteria')->update(['bobot' => 0.0000]);
+			SubKriteria::where('kriteria_id', '=', $id)->update(['bobot' => 0.0000]);
+			$subbobotkosong = -1;
 		}
 
 		$data = [
@@ -318,6 +319,7 @@ class SubKriteriaCompController extends Controller
 			"ci" => $total_ci,
 			"result" => $result,
 			"total_jumlah_baris" => $total_jumlah_baris,
+			"bobot_sub_kosong" => $subbobotkosong
 		];
 		return view('main.subkriteria.hasil', compact('data'))
 			->with(['kriteria_id' => $id]);

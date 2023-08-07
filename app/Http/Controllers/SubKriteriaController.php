@@ -40,7 +40,7 @@ class SubKriteriaController extends Controller
 				if ($cek > 0) {
 					SubKriteriaComp::where('idkriteria', '=', $request->kriteria_id)
 						->delete();
-					SubKriteria::where('kriteria_id', $request->kriteria_id)
+					SubKriteria::where('kriteria_id', '=', $request->kriteria_id)
 						->update(['bobot', 0.0000]);
 					return back()
 						->withSuccess(

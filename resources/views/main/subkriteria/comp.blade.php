@@ -55,7 +55,8 @@
 								@if ($jmlsubkriteria >= 2)
 									<div class="table-responsive">
 										<form method="post" enctype="multipart/form-data"
-											action="{{ url('bobot/sub/comp') }}">@csrf
+											action="{{ url('bobot/sub/comp') }}" data-parsley-validate>
+											@csrf
 											<input type="hidden" name="kriteria_id" value="{{ $kriteria_id }}">
 											<table class="table table-lg table-hover text-center">
 												<thead>
@@ -69,7 +70,7 @@
 													@foreach ($array as $krit)
 														@if ($krit['baris'] == $krit['kolom'])
 															<input type="hidden" name="kriteria[{{ $loop->index }}]"
-																value="equal" required>
+																value="equal">
 															<input type="hidden" name="skala[{{ $loop->index }}]"
 																value="1">
 														@else

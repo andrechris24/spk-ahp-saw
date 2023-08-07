@@ -255,11 +255,11 @@ class KriteriaCompController extends Controller
 					"id",
 					$kriteria[$i]->idkriteria
 				)->update([
-						"bobot" => $array_BobotPrioritas[$i]["bobot"],
-					]);
+							"bobot" => $array_BobotPrioritas[$i]["bobot"],
+						]);
 			}
 		} else {
-			DB::table('kriteria')->update(['bobot' => 0.0000]);
+			DB::table('kriteria')->where('bobot', '<>', 0.0000)->update(['bobot' => 0.0000]);
 		}
 		$data = [
 			"kriteria" => $kriteria,
@@ -284,7 +284,7 @@ class KriteriaCompController extends Controller
 				return redirect('/bobot')
 					->withWarning('Perbandingan Kriteria tidak ditemukan');
 			}
-			DB::table('kriteria')->update(['bobot' => 0.0000]);
+			DB::table('kriteria')->where('bobot', '<>', 0.0000)->update(['bobot' => 0.0000]);
 		} catch (QueryException $sql) {
 			return redirect('/bobot')->withError('Perbandingan Kriteria gagal direset:')
 				->withErrors($sql->getMessage());

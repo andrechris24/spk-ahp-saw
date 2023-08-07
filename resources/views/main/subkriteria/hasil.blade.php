@@ -179,7 +179,7 @@
 									class="btn btn-warning">
 									<i class="bi bi-arrow-counterclockwise"></i> Reset
 								</a>
-								@if (!is_numeric($data['result']) || $data['result'] <= 0.1)
+								@if ($data['bobot_sub_kosong'] == 0)
 									<a href="{{ url('/alternatif/nilai') }}" class="btn btn-primary">
 										<i class="bi bi-arrow-right"></i> Lanjut
 									</a>

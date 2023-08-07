@@ -7,12 +7,13 @@
 	<title>
 		500 Internal Server Error | Sistem Pendukung Keputusan metode AHP & SAW
 	</title>
-	<link rel="stylesheet" href="{{ asset('assets/css/main/app.css') }}" />
-	<link rel="stylesheet" href="{{ asset('assets/css/pages/error.css') }}" />
-	<link rel="shortcut icon" href="{{ asset('assets/images/logo/favicon.svg') }}"
+	<link rel="stylesheet" href="{{ asset('assets/compiled/css/app.css') }}" />
+	<link rel="stylesheet" href="{{ asset('assets/compiled/css/error.css') }}" />
+	<link rel="shortcut icon" href="{{ asset('assets/compiled/svg/favicon.svg') }}"
 		type="image/x-icon" />
-	<link rel="shortcut icon" href="{{ asset('assets/images/logo/favicon.png') }}"
+	<link rel="shortcut icon" href="{{ asset('assets/static/images/logo/favicon.png') }}"
 		type="image/png" />
+	<script src="{{ asset('assets/static/js/initTheme.js') }}"></script>
 </head>
 
 <body>
@@ -22,7 +23,7 @@
 				<div class="text-center">
 					<h1 class="error-title">500 Internal Server Error</h1>
 					<p class="fs-5 text-gray-600">
-						Maaf, website sedang tidak tersedia. Cobalah beberapa saat lagi.
+						Terjadi kesalahan internal pada server. Cobalah beberapa saat lagi.
 					</p>
 				</div>
 			</div>

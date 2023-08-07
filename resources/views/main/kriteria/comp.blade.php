@@ -45,7 +45,7 @@
 								@if ($jmlcrit >= 2)
 									<div class="table-responsive">
 										<form method="post" enctype="multipart/form-data"
-											action="{{ url('bobot') }}">@csrf
+											action="{{ url('bobot') }}" data-parsley-validate>@csrf
 											<table class="table table-lg table-hover text-center">
 												<thead>
 													<tr>
