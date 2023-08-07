@@ -62,7 +62,7 @@
 							</button>
 						</div>
 						<form action="{{ url('/kriteria/sub/add') }}" method="post"
-							enctype="multipart/form-data" data-parsley-validate>
+							enctype="multipart/form-data">
 							@csrf
 							<div class="modal-body">
 								<label for="nama">Nama Sub Kriteria</label>
@@ -110,8 +110,7 @@
 							</button>
 						</div>
 						<form action="{{ url('/kriteria/sub/update/:id') }}" method="post"
-							enctype="multipart/form-data" name="editsubkriteria" data-parsley-validate>
-							@csrf
+							enctype="multipart/form-data" name="editsubkriteria">@csrf
 							<div class="modal-body">
 								<label for="nama-edit">Nama Sub Kriteria</label>
 								<div class="form-group">

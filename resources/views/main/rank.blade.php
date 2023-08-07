@@ -11,6 +11,7 @@
 				<div class="card-header">Hasil akhir</div>
 				<div class="card-body">
 					<div id="chart-ranking"></div>
+					<canvas id="bar"></canvas>
 					Jadi, nilai tertingginya diraih oleh {{ $highest->alternatif->name }}
 					dengan nilai {{ $highest->skor }}
 				</div>

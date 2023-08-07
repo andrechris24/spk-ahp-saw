@@ -10,7 +10,7 @@
 			<div class="card">
 				<div class="card-header">Pilih Kriteria</div>
 				<div class="card-body">
-					<form method="get" action="{{ url('bobot/sub/comp') }}" data-parsley-validate>
+					<form method="get" action="{{ url('bobot/sub/comp') }}">
 						{{-- @csrf --}}
 						<div class="input-group mb-3">
 							<label class="input-group-text" for="kriteria">

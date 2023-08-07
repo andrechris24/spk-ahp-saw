@@ -59,8 +59,7 @@
 							</button>
 						</div>
 						<form action="{{ url('/alternatif/add') }}" method="post"
-							enctype="multipart/form-data" data-parsley-validate>
-							@csrf
+							enctype="multipart/form-data">@csrf
 							<div class="modal-body">
 								<label for="name-add">Nama Alternatif</label>
 								<div class="form-group">
@@ -96,8 +95,7 @@
 							</button>
 						</div>
 						<form action="{{ url('/alternatif/update/:id') }}" method="post"
-							enctype="multipart/form-data" name="editalternatif" data-parsley-validate>
-							@csrf
+							enctype="multipart/form-data" name="editalternatif">@csrf
 							<div class="modal-body">
 								<label for="nama-edit">Nama Alternatif</label>
 								<div class="form-group">

@@ -66,8 +66,7 @@
 							</button>
 						</div>
 						<form action="{{ url('/kriteria/add') }}" method="post"
-							enctype="multipart/form-data" data-parsley-validate>
-							@csrf
+							enctype="multipart/form-data">@csrf
 							<div class="modal-body">
 								@if ($compkr > 0)
 									<div class="alert alert-warning">
@@ -123,8 +122,7 @@
 							</button>
 						</div>
 						<form action="{{ url('/kriteria/update/:id') }}" method="post"
-							enctype="multipart/form-data" name="editkriteria" data-parsley-validate>
-							@csrf
+							enctype="multipart/form-data" name="editkriteria">@csrf
 							<div class="modal-body">
 								<label for="nama-edit">Nama Kriteria</label>
 								<div class="form-group">

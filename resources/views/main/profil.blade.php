@@ -23,7 +23,7 @@
 						</button>
 					</div>
 					<form action="{{ url('/akun/del') }}" method="post"
-						enctype="multipart/form-data" data-parsley-validate>
+						enctype="multipart/form-data">
 						@csrf
 						<div class="modal-body">
 							<div class="alert alert-warning d-none" id="capslock2">
@@ -62,8 +62,7 @@
 						<i class="bi bi-capslock-fill"></i> CAPS LOCK nyala
 					</div>
 					<form class="form form-horizontal" method="post"
-						action="{{ url('/akun') }}" data-parsley-validate>
-						@csrf
+						action="{{ url('/akun') }}">@csrf
 						<div class="form-body">
 							<div class="row">
 								<div class="col-md-4"><label for="nama-user">Nama</label></div>

@@ -299,10 +299,9 @@
 		src="{{ asset('assets/extensions/jquery/jquery.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('assets/datatables.min.js') }}">
 	</script>
-	<script src="{{asset('assets/extensions/parsleyjs/parsley.min.js')}}"></script>
-	<script src="{{asset('assets/extensions/parsleyjs/i18n/id.js')}}"></script>
 	<script src="{{ asset('assets/extensions/apexcharts/apexcharts.min.js') }}">
 	</script>
+	<script src="{{asset('assets/extensions/chart.js/chart.umd.js')}}"></script>
 	<script type="text/javascript" src="{{asset('assets/extensions/toastify-js/src/toastify.js')}}">
 	</script>
 	@yield('js')

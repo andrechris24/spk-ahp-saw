@@ -55,8 +55,7 @@
 								@if ($jmlsubkriteria >= 2)
 									<div class="table-responsive">
 										<form method="post" enctype="multipart/form-data"
-											action="{{ url('bobot/sub/comp') }}" data-parsley-validate>
-											@csrf
+											action="{{ url('bobot/sub/comp') }}">@csrf
 											<input type="hidden" name="kriteria_id" value="{{ $kriteria_id }}">
 											<table class="table table-lg table-hover text-center">
 												<thead>
