@@ -65,11 +65,11 @@
 															<tr>
 																<th>
 																	<input type="radio" class="btn-check" autocomplete="off"
-																	name="kriteria[{{ $loop->index }}]" value="left"
-																	id="left-{{ $loop->index }}" required>
+																		name="kriteria[{{ $loop->index }}]" value="left"
+																		id="left-{{ $loop->index }}" required>
 																	<label class="btn btn-outline-light"
-																	for="left-{{ $loop->index }}">
-																	{{ $krit['baris'] }}
+																		for="left-{{ $loop->index }}">
+																		{{ $krit['baris'] }}
 																	</label>
 																</th>
 																<td>
@@ -81,11 +81,11 @@
 																</td>
 																<th>
 																	<input type="radio" class="btn-check"
-																	name="kriteria[{{ $loop->index }}]" value="right"
-																	id="right-{{ $loop->index }}" autocomplete="off">
+																		name="kriteria[{{ $loop->index }}]" value="right"
+																		id="right-{{ $loop->index }}" autocomplete="off">
 																	<label class="btn btn-outline-light"
-																	for="right-{{ $loop->index }}">
-																	{{ $krit['kolom'] }}
+																		for="right-{{ $loop->index }}">
+																		{{ $krit['kolom'] }}
 																	</label>
 																</th>
 															</tr>
@@ -121,13 +121,14 @@
 			'#InputCompTab a[data-bs-toggle="tab"]');
 		tabList.forEach(tabEl => {
 			tabEl.addEventListener('shown.bs.tab', event => {
-				if(history.pushState) 
-					history.pushState(null, null, $(event.target).attr('href'));
+				if (history.pushState)
+					history.pushState(null, null, $(event.target).attr(
+						'href'));
 				else location.hash = $(event.target).attr('href');
 			});
 		});
 		var hash = location.hash;
-		if(!(hash===null || hash==="")){
+		if (!(hash === null || hash === "")) {
 			const triggerEl = document.querySelector('#InputCompTab a[href="' + hash +
 				'"]');
 			bootstrap.Tab.getOrCreateInstance(triggerEl).show();

@@ -11,7 +11,8 @@
 	<link rel="stylesheet" href="{{ asset('assets/compiled/css/error.css') }}" />
 	<link rel="shortcut icon" href="{{ asset('assets/compiled/svg/favicon.svg') }}"
 		type="image/x-icon" />
-	<link rel="shortcut icon" href="{{ asset('assets/static/images/logo/favicon.png') }}"
+	<link rel="shortcut icon"
+		href="{{ asset('assets/static/images/logo/favicon.png') }}"
 		type="image/png" />
 	<script src="{{ asset('assets/static/js/initTheme.js') }}"></script>
 </head>

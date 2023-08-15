@@ -16,9 +16,11 @@
 		href="{{ asset('assets/extensions/apexcharts/apexcharts.css') }}">
 	<link rel="shortcut icon" href="{{ asset('assets/compiled/svg/favicon.svg') }}"
 		type="image/x-icon" />
-	<link rel="shortcut icon" href="{{ asset('assets/static/images/logo/favicon.png') }}"
+	<link rel="shortcut icon"
+		href="{{ asset('assets/static/images/logo/favicon.png') }}"
 		type="image/png" />
-	<link rel="stylesheet" href="{{asset('assets/extensions/toastify-js/src/toastify.css')}}"/>
+	<link rel="stylesheet"
+		href="{{ asset('assets/extensions/toastify-js/src/toastify.css') }}" />
 	<link rel="stylesheet"
 		href="{{ asset('assets/extensions/@fortawesome/fontawesome-free/css/all.min.css') }}" />
 	<script src="{{ asset('assets/static/js/initTheme.js') }}"></script>
@@ -32,7 +34,8 @@
 					<div class="d-flex justify-content-between align-items-center">
 						<div class="logo">
 							<a href="{{ url('/home') }}">
-								<img src="{{ asset('assets/compiled/svg/logo.svg') }}" alt="Logo" />
+								<img src="{{ asset('assets/compiled/svg/logo.svg') }}"
+									alt="Logo" />
 							</a>
 						</div>
 						<div class="theme-toggle d-flex gap-2 align-items-center mt-2">
@@ -128,7 +131,7 @@
 								<ul class="submenu">
 									<li
 										class="submenu-item
-									 {{ (request()->is('bobot')||request()->is('bobot/hasil')) ? 'active' : '' }}">
+									 {{ request()->is('bobot') || request()->is('bobot/hasil') ? 'active' : '' }}">
 										<a href="{{ url('bobot') }}" class="submenu-link">
 											Perbandingan Kriteria
 										</a>
@@ -150,13 +153,15 @@
 									<span>Perhitungan SAW</span>
 								</a>
 								<ul class="submenu">
-									<li class="submenu-item
+									<li
+										class="submenu-item
 									 {{ request()->is('alternatif/nilai') ? 'active' : '' }}">
 										<a href="{{ url('alternatif/nilai') }}" class="submenu-link">
 											Penilaian Alternatif
 										</a>
 									</li>
-									<li class="submenu-item
+									<li
+										class="submenu-item
 									 {{ request()->is('alternatif/hasil') ? 'active' : '' }}">
 										<a href="{{ url('alternatif/hasil') }}" class="submenu-link">
 											Hasil
@@ -164,8 +169,7 @@
 									</li>
 								</ul>
 							</li>
-							<li
-								class="sidebar-item {{ request()->is('ranking') ? 'active' : '' }}">
+							<li class="sidebar-item {{ request()->is('ranking') ? 'active' : '' }}">
 								<a href="{{ url('/ranking') }}" class="sidebar-link">
 									<i class="bi bi-bar-chart-line-fill"></i>
 									<span>Hasil Akhir</span>
@@ -301,8 +305,8 @@
 	</script>
 	<script src="{{ asset('assets/extensions/apexcharts/apexcharts.min.js') }}">
 	</script>
-	<script src="{{asset('assets/extensions/chart.js/chart.umd.js')}}"></script>
-	<script type="text/javascript" src="{{asset('assets/extensions/toastify-js/src/toastify.js')}}">
+	<script type="text/javascript"
+		src="{{ asset('assets/extensions/toastify-js/src/toastify.js') }}">
 	</script>
 	@yield('js')
 	<script type="text/javascript">

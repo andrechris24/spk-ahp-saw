@@ -17,7 +17,8 @@
 				<i class="bi bi-envelope"></i>
 			</div>
 		</div>
-		<button type="submit" class="btn btn-primary btn-block btn-lg shadow-lg mt-5" id="submitBtn">
+		<button type="submit" class="btn btn-primary btn-block btn-lg shadow-lg mt-5"
+			id="submitBtn">
 			<i class="bi bi-send-fill"></i> Kirim
 		</button>
 	</form>

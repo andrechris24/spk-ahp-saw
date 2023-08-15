@@ -146,7 +146,7 @@
 @section('js')
 	<script type="text/javascript">
 		$(document).ready(function() {
-			try{
+			try {
 				$('#table-hasil').DataTable({
 					"lengthChange": false,
 					"searching": false,
@@ -157,12 +157,12 @@
 						url: "{{ url('assets/DataTables-id.json') }}"
 					}
 				});
-			}catch(dterr){
+			} catch (dterr) {
 				Toastify({
-			    text: "DataTables Error: "+dterr.message,
-			    duration: 4000,
-			    backgroundColor: "#dc3545",
-			  }).showToast();
+					text: "DataTables Error: " + dterr.message,
+					duration: 4000,
+					backgroundColor: "#dc3545",
+				}).showToast();
 			}
 		});
 	</script>
