@@ -10,6 +10,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -35,11 +36,6 @@ class HomeController extends Controller
 	{
 		$id = Auth::user()->id;
 		try {
-			$cek = User::find($id);
-			if (!$cek) {
-				return back()->withInput()->withError('Gagal update: Akun tidak ditemukan');
-			}
-
 			$request->validate(
 				[
 					'name' => 'bail|required|min:5|regex:/^[\pL\s\-]+$/u',
@@ -59,54 +55,41 @@ class HomeController extends Controller
 				]
 			);
 			$cekpass = Hash::check($request->current_password, Auth::user()->password);
-			if (!$cekpass) {
+			if (!$cekpass)
 				return back()->withErrors(['current_password' => 'Password salah']);
-			}
-
 			$req = $request->all();
 			if (empty($req['password'])) {
 				unset($req['password']);
 				unset($req['password_confirmation']);
-			} else {
-				$req['password'] = Hash::make($req['password']);
-			}
-
-			$updprofil = $cek->update($req);
-			if ($updprofil) {
-				return back()->withSuccess('Akun sudah diupdate');
-			}
-
+			} else $req['password'] = Hash::make($req['password']);
+			$updprofil = User::findOrFail($id)->update($req);
+			if ($updprofil) return back()->withSuccess('Akun sudah diupdate');
+		} catch (ModelNotFoundException $e) {
+			return back()->withError('Gagal update: Akun tidak ditemukan')
+				->withErrors($e->getMessage());
 		} catch (QueryException $db) {
-			return back()->withInput()->withError('Gagal update akun:')
-				->withErrors($db->getMessage());
+			return back()->withError('Gagal update akun: ' . $db->getMessage());
 		}
-		return back()->withInput()->withError('Akun gagal diupdate');
+		return back()->withError('Gagal update akun: Kesalahan tidak diketahui');
 	}
 	public function delAkun(Request $request)
 	{
 		$id = Auth::user()->id;
 		try {
-			$cek = User::find($id);
-			if (!$cek) {
-				return back()->withError('Gagal hapus: Akun tidak ditemukan');
-			}
-
 			$request->validate(User::$delakunrule);
 			$cekpass = Hash::check($request->del_password, Auth::user()->password);
-			if (!$cekpass) {
+			if (!$cekpass)
 				return back()->withError('Gagal hapus akun: Password salah');
-			}
-
 			Auth::logout();
 			Session::flush();
-			if ($cek->delete()) {
-				return redirect('/')->withSuccess('Akun sudah dihapus');
-			}
-
+			$delacc=User::findOrFail($id)->delete();
+			if ($delacc) return redirect('/')->withSuccess('Akun sudah dihapus');
+		} catch (ModelNotFoundException $e) {
+			return back()->withError('Gagal hapus: Akun tidak ditemukan')
+				->withErrors($e->getMessage());
 		} catch (QueryException $db) {
-			return back()->withError('Gagal hapus akun:')
-				->withErrors($db->getMessage());
+			return back()->withError('Gagal hapus:' . $db->getMessage());
 		}
-		return back()->withError('Akun gagal dihapus');
+		return back()->withError('Gagal hapus akun: Kesalahan tidak diketahui');
 	}
 }

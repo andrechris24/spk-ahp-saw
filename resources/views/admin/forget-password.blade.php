@@ -8,14 +8,17 @@
 @endsection
 
 @section('content')
-	<form action="{{ url('forget-password') }}" method="post">
-		@csrf
+	<form action="{{ url('forget-password') }}" method="post">@csrf
 		<div class="form-group position-relative has-icon-left mb-4">
-			<input type="email" placeholder="Email" name="email" required
+			<input type="email" placeholder="Email" name="email"
+				value="{{ old('email') }}" required
 				class="form-control form-control-xl @error('email') is-invalid @enderror " />
 			<div class="form-control-icon">
 				<i class="bi bi-envelope"></i>
 			</div>
+			@error('email')
+			<div class="invalid-feedback">{{$message}}</div>
+			@enderror
 		</div>
 		<button type="submit" class="btn btn-primary btn-block btn-lg shadow-lg mt-5"
 			id="submitBtn">

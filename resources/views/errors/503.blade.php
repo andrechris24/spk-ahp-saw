@@ -24,7 +24,7 @@
 				<div class="text-center">
 					<h1 class="error-title">503 Service Unavailable</h1>
 					<p class="fs-5 text-gray-600">
-						Maaf, server sedang kelebihan beban. Cobalah beberapa saat lagi.
+						Maaf, website sedang tidak tersedia. Cobalah beberapa saat lagi.
 					</p>
 				</div>
 			</div>

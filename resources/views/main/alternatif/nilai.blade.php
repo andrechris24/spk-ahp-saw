@@ -6,7 +6,10 @@
 			<h3>Nilai Alternatif</h3>
 		</div>
 		<section class="section">
-			@include('main.message')
+			@include('components.error-multi')
+			@include('components.warning')
+			@include('components.success')
+			@include('components.noscript')
 			<div class="modal fade text-left" id="DelNilaiAlterModal" tabindex="-1"
 				role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
@@ -22,8 +25,8 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<p>
-								<span id="del-desc">Anda akan menghapus sebuah nilai alternatif.</span>
+							<p id="del-desc">
+								Anda akan menghapus sebuah nilai alternatif.
 							</p>
 							<p>Lanjutkan?</p>
 						</div>
@@ -82,7 +85,9 @@
 											<option value="">Pilih</option>
 											@foreach ($subkriteria as $subkr)
 												@if ($subkr->kriteria_id == $kr->id)
-													<option value="{{ $subkr->id }}">{{ $subkr->name }}</option>
+													<option value="{{ $subkr->id }}">
+														{{ $subkr->name }}
+													</option>
 												@endif
 											@endforeach
 										</select>
@@ -148,7 +153,9 @@
 											<option value="">Pilih</option>
 											@foreach ($subkriteria as $subkr)
 												@if ($subkr->kriteria_id == $kr->id)
-													<option value="{{ $subkr->id }}">{{ $subkr->name }}</option>
+													<option value="{{ $subkr->id }}">
+														{{ $subkr->name }}
+													</option>
 												@endif
 											@endforeach
 										</select>
@@ -180,7 +187,7 @@
 							Tambah Nilai Alternatif
 						</button>
 						<a href="{{ url('alternatif/hasil') }}"
-							class="btn btn-success @if (count($nilaialt) == 0) disabled @endif ">
+							class="btn btn-success @if (count($nilaialt) === 0) disabled @endif ">
 							Lihat hasil
 						</a>
 					</div>
@@ -206,7 +213,8 @@
 										<td>{{ $alt->name }}</td>
 										@foreach ($skor as $skoralt)
 											@php
-												$subkr[$subcount]['subkriteria'] = $skoralt->subkriteria->id;
+												$subkr[$subcount]['subkriteria'] = 
+												$skoralt->subkriteria->id;
 												$subkr[$subcount]['kriteria'] = $skoralt->kriteria->id;
 											@endphp
 											<td>{{ $skoralt->subkriteria->name }}</td>
@@ -219,13 +227,13 @@
 													data-bs-id="{{ $alt->id }}"
 													data-bs-name="{{ $alt->id }}"
 													data-bs-score="{{ json_encode($subkr) }}">
-													<i class="bi bi-pencil-square"></i> Edit
+													<i class="bi bi-pencil-square"></i>
 												</button>
 												<button type="button" class="btn btn-danger"
 													data-bs-toggle="modal" data-bs-target="#DelNilaiAlterModal"
 													data-bs-id="{{ $alt->id }}"
 													data-bs-name="{{ $alt->name }}">
-													<i class="bi bi-trash3-fill"></i> Hapus
+													<i class="bi bi-trash3-fill"></i>
 												</button>
 											</div>
 										</td>
@@ -290,17 +298,23 @@
 			link.href = formurl;
 		});
 		$(document).ready(function() {
+			var nilaialtdt;
 			try {
-				$('#table-nilaialt').DataTable({
+				nilaialtdt = $('#table-nilaialt').DataTable({
 					"stateSave": true,
 					"lengthChange": false,
 					"searching": false,
+					// serverSide:true,
+					// ajax: "{{ route('nilai.table') }}",
+					// columns: [
+					// {data: "alternatif_id"}
+					// ],
 					columnDefs: [{
 						orderable: false,
 						targets: {{ $critcount + 1 }},
 					}],
 					language: {
-						url: "{{ url('assets/DataTables-id.json') }}"
+						url: "{{ asset('assets/DataTables-id.json') }}"
 					}
 				});
 			} catch (dterr) {

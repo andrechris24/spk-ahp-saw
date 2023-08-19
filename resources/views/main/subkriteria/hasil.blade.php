@@ -11,7 +11,10 @@
 			<h3>Hasil Perbandingan Sub Kriteria {{ $title }}</h3>
 		</div>
 		<section class="section">
-			@include('main.message')
+			@include('components.error-multi')
+			@include('components.warning')
+			@include('components.success')
+			@include('components.noscript')
 			<div class="card">
 				<div class="card-header">
 					<h4 class="card-title">Matriks Perbandingan Awal</h4>
@@ -163,8 +166,9 @@
 										<span class="text-success"><b>Konsisten</b></span>
 									@else
 										<span class="text-danger" data-bs-toggle="tooltip"
-											data-bs-title="Hasil konsistensi maksimal 10%">
-											<b>Tidak Konsisten</b>, mohon untuk menginput ulang perbandingan!
+											data-bs-title="Nilai CR maksimal 10%">
+											<b>Tidak Konsisten</b>,
+											mohon untuk menginput ulang perbandingan!
 										</span>
 									@endif
 								</td>

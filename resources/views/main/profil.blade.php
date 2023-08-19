@@ -9,7 +9,10 @@
 				Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 			</p>
 		</div>
-		@include('main.message')
+		@include('components.error-single')
+		@include('components.warning')
+		@include('components.success')
+		@include('components.noscript')
 		<div class="modal fade text-left" id="DelAccountModal" tabindex="-1"
 			role="dialog" aria-labelledby="DelAccountLabel" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
@@ -76,6 +79,9 @@
 											<div class="form-control-icon">
 												<i class="bi bi-person"></i>
 											</div>
+											@error('name')
+												<div class="invalid-feedback">{{ $message }}</div>
+											@enderror
 										</div>
 									</div>
 								</div>
@@ -90,6 +96,9 @@
 											<div class="form-control-icon">
 												<i class="bi bi-envelope"></i>
 											</div>
+											@error('email')
+												<div class="invalid-feedback">{{ $message }}</div>
+											@enderror
 										</div>
 									</div>
 								</div>
@@ -103,6 +112,9 @@
 											<div class="form-control-icon">
 												<i class="bi bi-lock"></i>
 											</div>
+											@error('current_password')
+												<div class="invalid-feedback">{{ $message }}</div>
+											@enderror
 										</div>
 									</div>
 								</div>
@@ -121,6 +133,9 @@
 											<div class="form-control-icon">
 												<i class="bi bi-lock"></i>
 											</div>
+											@error('password')
+												<div class="invalid-feedback">{{ $message }}</div>
+											@enderror
 										</div>
 										<p>
 											<small class="text-muted">
@@ -143,6 +158,9 @@
 											<div class="form-control-icon">
 												<i class="bi bi-lock"></i>
 											</div>
+											@error('password_confirmation')
+												<div class="invalid-feedback">{{ $message }}</div>
+											@enderror
 										</div>
 									</div>
 								</div>

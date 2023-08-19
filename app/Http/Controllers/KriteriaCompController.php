@@ -21,10 +21,8 @@ class KriteriaCompController extends Controller
 			"kriteria",
 			"kriteria_banding.kriteria1",
 			"kriteria.id"
-		)->select(
-				"kriteria_banding.kriteria1 as idkriteria",
-				"kriteria.name"
-			)->groupBy("kriteria1", 'name')->get();
+		)->select("kriteria_banding.kriteria1 as idkriteria","kriteria.name")
+		->groupBy("kriteria1", 'name')->get();
 	}
 	private function getPerbandinganByKriteria1($kriteria1)
 	{
@@ -64,14 +62,11 @@ class KriteriaCompController extends Controller
 					$perbandingan = new KriteriaComp();
 					$perbandingan->kriteria1 = $kriteria[$i]->id;
 					$perbandingan->kriteria2 = $kriteria[$j]->id;
-					if ($request->kriteria[$a] === 'right') {
+					if ($request->kriteria[$a] === 'right') 
 						$nilai = 0 - $request->skala[$a];
-					} else if ($request->kriteria[$a] === 'left') {
+					else if ($request->kriteria[$a] === 'left') 
 						$nilai = $request->skala[$a];
-					} else {
-						$nilai = 1;
-					}
-
+					else $nilai = 1;
 					$perbandingan->nilai = $nilai;
 					$perbandingan->save();
 					$a++;
@@ -137,11 +132,7 @@ class KriteriaCompController extends Controller
 		$array_jumlah = null;
 		for ($j = 0; $j < count($kriteria); $j++) {
 			$jumlah = 0;
-			for (
-				$i = $j;
-				$i < count($matriks_perbandingan);
-				$i = $i + count($kriteria)
-			) {
+			for ($i = $j;$i < count($matriks_perbandingan);$i+= count($kriteria)) {
 				$jumlah = $jumlah + $matriks_perbandingan[$i]["nilai"];
 			}
 			$array_jumlah[$j] = ["jumlah" => number_format(abs($jumlah), 4)];
@@ -152,11 +143,9 @@ class KriteriaCompController extends Controller
 		for ($i = 0; $i < count($kriteria); $i++) {
 			for ($j = 0; $j < count($matriks_perbandingan); $j++) {
 				if (
-					$kriteria[$i]->idkriteria ==
+					$kriteria[$i]->idkriteria ===
 					$matriks_perbandingan[$j]["kode_kriteria"]
-				) {
-					$array_filter[] = $matriks_perbandingan[$j]["nilai"];
-				}
+				) $array_filter[] = $matriks_perbandingan[$j]["nilai"];
 			}
 			for ($k = 0; $k < count($matriks_perbandingan); $k++) {
 				for ($m = 0; $m < count($array_filter); $m++) {
@@ -200,9 +189,7 @@ class KriteriaCompController extends Controller
 				$j++;
 				$jumlah_baris = 0;
 				$index_kriteria = 0;
-			} else {
-				$index_kriteria++;
-			}
+			} else $index_kriteria++;
 		}
 		$array_CM = null;
 		$cm = 0;
@@ -229,9 +216,7 @@ class KriteriaCompController extends Controller
 				$j++;
 				$cm = 0;
 				$indexbobot = 0;
-			} else {
-				$indexbobot++;
-			}
+			} else $indexbobot++;
 		}
 		$total_cm = 0;
 		foreach ($array_CM as $cm) {
@@ -243,23 +228,16 @@ class KriteriaCompController extends Controller
 			4
 		);
 		$ratio = KriteriaComp::$ratio_index[count($kriteria)];
-		if ($ratio == 0) {
-			$result = '-';
-		} else {
-			$result = number_format(abs($total_ci / $ratio), 4);
-		}
-
+		if ($ratio == 0) $result = '-';
+		else $result = number_format(abs($total_ci / $ratio), 4);
 		if ($result <= 0.1 || !is_numeric($result)) {
 			for ($i = 0; $i < count($kriteria); $i++) {
-				Kriteria::where(
-					"id",
-					$kriteria[$i]->idkriteria
-				)->update([
-							"bobot" => $array_BobotPrioritas[$i]["bobot"],
-						]);
+				Kriteria::where("id",$kriteria[$i]->idkriteria)
+				->update(["bobot" => $array_BobotPrioritas[$i]["bobot"]]);
 			}
 		} else {
-			DB::table('kriteria')->where('bobot', '<>', 0.0000)->update(['bobot' => 0.0000]);
+			DB::table('kriteria')->where('bobot', '<>', 0.0000)
+			->update(['bobot' => 0.0000]);
 		}
 		$data = [
 			"kriteria" => $kriteria,
@@ -284,11 +262,13 @@ class KriteriaCompController extends Controller
 				return redirect('/bobot')
 					->withWarning('Perbandingan Kriteria tidak ditemukan');
 			}
-			DB::table('kriteria')->where('bobot', '<>', 0.0000)->update(['bobot' => 0.0000]);
+			DB::table('kriteria')->where('bobot', '<>', 0.0000)
+			->update(['bobot' => 0.0000]);
+			return redirect('/bobot')
+			->withSuccess('Perbandingan Kriteria sudah direset');
 		} catch (QueryException $sql) {
 			return redirect('/bobot')->withError('Perbandingan Kriteria gagal direset:')
 				->withErrors($sql->getMessage());
 		}
-		return redirect('/bobot')->withSuccess('Perbandingan Kriteria sudah direset');
 	}
 }

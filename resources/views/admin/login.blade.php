@@ -11,21 +11,27 @@
 	<form action="{{ url('login') }}" method="post" enctype="multipart/form-data">
 		@csrf
 		<div class="form-group position-relative has-icon-left mb-4">
-			<input type="email" placeholder="Email" name="email" required
+			<input type="email" placeholder="Email" name="email"
+				value="{{ old('email') }}" required
 				class="form-control form-control-xl @error('email') is-invalid @enderror " />
 			<div class="form-control-icon">
 				<i class="bi bi-envelope"></i>
 			</div>
+			@error('email')
+			<div class="invalid-feedback">{{$message}}</div>
+			@enderror
 		</div>
 		<div class="form-group position-relative has-icon-left mb-4">
 			<input type="password" placeholder="Password" name="password"
-				pattern=".{8,20}" id="password" required title="8-20 karakter"
-				maxlength="20"
-				class="form-control
+				pattern=".{8,20}" id="password" title="8-20 karakter" required
+				maxlength="20" class="form-control
 				form-control-xl @error('password') is-invalid @enderror " />
 			<div class="form-control-icon">
 				<i class="bi bi-shield-lock"></i>
 			</div>
+			@error('password')
+			<div class="invalid-feedback">{{$message}}</div>
+			@enderror
 		</div>
 		<div class="form-check form-check-lg d-flex align-items-end">
 			<input class="form-check-input me-2" type="checkbox" id="remember-me"

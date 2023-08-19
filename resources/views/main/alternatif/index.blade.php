@@ -6,7 +6,10 @@
 			<h3>Alternatif</h3>
 		</div>
 		<section class="section">
-			@include('main.message')
+			@include('components.error-multi')
+			@include('components.warning')
+			@include('components.success')
+			@include('components.noscript')
 			<div class="modal fade text-left" id="DelAlterModal" tabindex="-1" role="dialog"
 				aria-labelledby="myModalLabel160" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
@@ -22,9 +25,7 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<p>
-								<span id="del-desc">Anda akan menghapus sebuah alternatif.</span>
-							</p>
+							<p id="del-desc">Anda akan menghapus sebuah alternatif.</p>
 							<p>Lanjutkan?</p>
 							@if ($ceknilai > 0)
 								<div class="alert alert-warning">
@@ -144,15 +145,15 @@
 										<div class="btn-group" role="button">
 											<button type="button" class="btn btn-primary"
 												data-bs-toggle="modal" data-bs-target="#EditAlterModal"
-												data-bs-id="{{ $alternatif->id }}"
+												data-bs-id="{{ $alternatif->id }}" title="Edit" 
 												data-bs-name="{{ $alternatif->name }}">
-												<i class="bi bi-pencil-square"></i> Edit
+												<i class="bi bi-pencil-square"></i>
 											</button>
 											<button type="button" class="btn btn-danger"
 												data-bs-toggle="modal" data-bs-target="#DelAlterModal"
-												data-bs-id="{{ $alternatif->id }}"
+												data-bs-id="{{ $alternatif->id }}" title="Hapus" 
 												data-bs-name="{{ $alternatif->name }}">
-												<i class="bi bi-trash3-fill"></i> Hapus
+												<i class="bi bi-trash3-fill"></i>
 											</button>
 										</div>
 									</td>
@@ -179,7 +180,7 @@
 			// and then do the updating in a callback.
 
 			// Update the modal's content.
-			const nameval = editAlterModal.querySelector('#nama-edit')
+			const nameval = editAlterModal.querySelector('#nama-edit');
 			nameval.value = nama;
 			var formurl = "{{ url('/alternatif/update/:id') }}";
 			formurl = formurl.replace(':id', id);
@@ -192,7 +193,7 @@
 			const nama = button.getAttribute('data-bs-name');
 			const link = delAlterModal.querySelector('#del-action');
 			const desc = delAlterModal.querySelector('#del-desc');
-			var formurl = "{{ url('/alternatif/del/:id') }}";
+			var formurl = "{{ asset('/alternatif/del/:id') }}";
 			formurl = formurl.replace(':id', id);
 			desc.innerHTML = "Anda akan menghapus alternatif <b>" + nama +
 				"</b>.";
@@ -209,7 +210,7 @@
 						targets: 2,
 					}],
 					language: {
-						url: "{{ url('assets/DataTables-id.json') }}"
+						url: "{{ asset('assets/DataTables-id.json') }}"
 					}
 				});
 			} catch (dterr) {

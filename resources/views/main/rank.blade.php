@@ -6,7 +6,7 @@
 			<h3>Ranking</h3>
 		</div>
 		<section class="section">
-			@include('main.message')
+			@include('components.noscript')
 			<div class="card">
 				<div class="card-header">Hasil akhir</div>
 				<div class="card-body">
@@ -43,7 +43,7 @@
 						{{ $score->skor }},
 					@endforeach
 				],
-			}, ],
+			}],
 			colors: "#435ebe",
 			xaxis: {
 				categories: [

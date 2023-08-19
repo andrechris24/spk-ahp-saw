@@ -11,19 +11,26 @@
 	<form action="{{ url('register') }}" method="post" enctype="multipart/form-data">
 		@csrf
 		<div class="form-group position-relative has-icon-left mb-4">
-			<input type="text" name="email" placeholder="Email" required
+			<input type="text" name="email" placeholder="Email"
+				value="{{ old('email') }}" required
 				class="form-control form-control-xl @error('email') is-invalid @enderror " />
 			<div class="form-control-icon">
 				<i class="bi bi-envelope"></i>
 			</div>
+			@error('email')
+			<div class="invalid-feedback">{{$message}}</div>
+			@enderror
 		</div>
 		<div class="form-group position-relative has-icon-left mb-4">
 			<input type="text" name="name" maxlength="99" placeholder="Nama lengkap"
 				class="form-control form-control-xl @error('name') is-invalid @enderror "
-				pattern="[A-z.,' ]{5,99}" required />
+				pattern="[A-z.,' ]{5,99}" value="{{ old('name') }}" required />
 			<div class="form-control-icon">
 				<i class="bi bi-person"></i>
 			</div>
+			@error('name')
+			<div class="invalid-feedback">{{$message}}</div>
+			@enderror
 		</div>
 		<div class="form-group position-relative has-icon-left mb-4">
 			<input type="password" placeholder="Password" name="password"
@@ -34,6 +41,9 @@
 			<div class="form-control-icon">
 				<i class="bi bi-shield-lock"></i>
 			</div>
+			@error('password')
+			<div class="invalid-feedback">{{$message}}</div>
+			@enderror
 		</div>
 		<div class="form-group position-relative has-icon-left mb-4">
 			<input type="password" placeholder="Confirm Password" maxlength="20"
@@ -43,6 +53,9 @@
 			<div class="form-control-icon">
 				<i class="bi bi-shield-lock"></i>
 			</div>
+			@error('password_confirmation')
+			<div class="invalid-feedback">{{$message}}</div>
+			@enderror
 		</div>
 		<button type="submit" class="btn btn-primary btn-block btn-lg shadow-lg mt-5">
 			Daftar

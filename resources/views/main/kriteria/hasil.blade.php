@@ -6,7 +6,10 @@
 			<h3>Hasil Perbandingan Kriteria</h3>
 		</div>
 		<section class="section">
-			@include('main.message')
+			@include('components.error-multi')
+			@include('components.warning')
+			@include('components.success')
+			@include('components.noscript')
 			<div class="card">
 				<div class="card-header">
 					<h4 class="card-title">Matriks Perbandingan Awal</h4>
@@ -27,7 +30,7 @@
 									<tr>
 										<th>{{ $kr->name }}</th>
 										@foreach ($data['matriks_awal'] as $ma)
-											@if ($ma['kode_kriteria'] == $kr->idkriteria)
+											@if ($ma['kode_kriteria'] === $kr->idkriteria)
 												<td>{{ $ma['nilai'] }}</td>
 											@endif
 										@endforeach
@@ -58,7 +61,7 @@
 									<tr>
 										<th>{{ $kr->name }}</th>
 										@foreach ($data['matriks_perbandingan'] as $mp)
-											@if ($mp['kode_kriteria'] == $kr->idkriteria)
+											@if ($mp['kode_kriteria'] === $kr->idkriteria)
 												<td>{{ $mp['nilai'] }}</td>
 											@endif
 										@endforeach
@@ -97,12 +100,12 @@
 									<tr>
 										<th>{{ $kr->name }}</th>
 										@foreach ($data['matriks_normalisasi'] as $mn)
-											@if ($mn['kode_kriteria'] == $kr->idkriteria)
+											@if ($mn['kode_kriteria'] === $kr->idkriteria)
 												<td>{{ $mn['nilai'] }}</td>
 											@endif
 										@endforeach
 										@foreach ($data['bobot_prioritas'] as $bp)
-											@if ($bp['kode_kriteria'] == $kr->idkriteria)
+											@if ($bp['kode_kriteria'] === $kr->idkriteria)
 												<td>{{ $bp['jumlah_baris'] }}</td>
 												<td>{{ $bp['bobot'] }}
 											@endif
@@ -151,14 +154,14 @@
 								<td>
 									@if (!is_numeric($data['result']))
 										<span class="text-warning" data-bs-toggle="tooltip"
-											data-bs-title="Minimal 3 kriteria untuk melakukan pengecekan hasil Konsistensi">
+											title="Minimal 3 kriteria untuk melakukan pengecekan hasil Konsistensi">
 											<b>Tidak bisa dievaluasi</b>
 										</span>
 									@elseif ($data['result'] <= 0.1)
 										<span class="text-success"><b>Konsisten</b></span>
 									@else
 										<span class="text-danger" data-bs-toggle="tooltip"
-											data-bs-title="Hasil konsistensi maksimal 10%">
+											title="Nilai CR maksimal 10%">
 											<b>Tidak Konsisten</b>, mohon untuk menginput ulang perbandingan!
 										</span>
 									@endif

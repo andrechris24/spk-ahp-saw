@@ -11,7 +11,10 @@
 			<h3>Hasil Penilaian Alternatif</h3>
 		</div>
 		<section class="section">
-			@include('main.message')
+			@include('components.error-multi')
+			@include('components.warning')
+			@include('components.success')
+			@include('components.noscript')
 			<div class="card">
 				<div class="card-header">
 					<h4 class="card-title">Matriks Keputusan</h4>
@@ -78,11 +81,18 @@
 											<th>{{ $alts->name }}</th>
 											@foreach ($norm as $nilai)
 												<td>
-													<?php $arrays = $saw->getNilaiArr($nilai->kriteria_id);
-													$result = $saw->normalisasi($arrays, $nilai->kriteria->type, $nilai->subkriteria->bobot);
+													@php
+													$arrays = $saw->getNilaiArr($nilai->kriteria_id);
+													$result = $saw->normalisasi(
+														$arrays, 
+														$nilai->kriteria->type, 
+														$nilai->subkriteria->bobot
+													);
 													echo $result;
-													$lresult[$alts->id][$counter] = $result * $saw->getBobot($nilai->kriteria_id);
-													$counter++; ?>
+													$lresult[$alts->id][$counter] = 
+													$result * $saw->getBobot($nilai->kriteria_id);
+													$counter++;
+													@endphp
 												</td>
 											@endforeach
 										</tr>
@@ -154,7 +164,7 @@
 						[1 + {{ $countkriteria }}, 'desc']
 					],
 					language: {
-						url: "{{ url('assets/DataTables-id.json') }}"
+						url: "{{ asset('assets/DataTables-id.json') }}"
 					}
 				});
 			} catch (dterr) {

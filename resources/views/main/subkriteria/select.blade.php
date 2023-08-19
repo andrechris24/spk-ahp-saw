@@ -6,12 +6,14 @@
 			<h3>Perbandingan Sub Kriteria</h3>
 		</div>
 		<section class="section">
-			@include('main.message')
+			@include('components.error-multi')
+			@include('components.warning')
+			@include('components.success')
+			@include('components.noscript')
 			<div class="card">
 				<div class="card-header">Pilih Kriteria</div>
 				<div class="card-body">
-					<form method="get" action="{{ url('bobot/sub/comp') }}">
-						{{-- @csrf --}}
+					<form action="{{ url('bobot/sub/comp') }}">
 						<div class="input-group mb-3">
 							<label class="input-group-text" for="kriteria">
 								Kriteria

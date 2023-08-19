@@ -8,20 +8,39 @@ use App\Models\Kriteria;
 use App\Models\Nilai;
 use App\Models\SubKriteria;
 use Illuminate\Database\QueryException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class NilaiController extends Controller
 {
+	public function idxDataTables()
+	{
+		if (request()->ajax()) {
+			$kriteria = Kriteria::get();
+			$nilaialt = Nilai::leftJoin(
+				'alternatif',
+				'alternatif.id',
+				'=',
+				'nilai.alternatif_id'
+			)->leftJoin('kriteria', 'kriteria.id', '=', 'nilai.kriteria_id')
+				->leftJoin('subkriteria', 'subkriteria.id', '=', 'nilai.subkriteria_id')
+				->get();
+			$dtnilai = DataTables::of($nilaialt);
+			foreach ($kriteria as $allkriteria) {
+				$dtnilai->addColumn($allkriteria->name, function ($object) {
+					return $object;
+				});
+			}
+			return $dtnilai->make();
+		}
+		return response('Not an AJAX request', 405);
+	}
 	public function normalisasi($arr, $type, $skor): float|string
 	{
-		if ($type == 'cost') {
-			$hasil = min($arr) / $skor;
-		} else if ($type == 'benefit') {
-			$hasil = $skor / max($arr);
-		} else {
-			return "Invalid type: " . $type;
-		}
-
+		if ($type === 'cost') $hasil = min($arr) / $skor;
+		else if ($type === 'benefit') $hasil = $skor / max($arr);
+		else return "Atribut salah: " . $type;
 		return round($hasil, 5);
 	}
 	public function getNilaiArr($kriteria_id): array
@@ -38,8 +57,12 @@ class NilaiController extends Controller
 	}
 	public function getBobot($idkriteria)
 	{
-		$kueri = Kriteria::find($idkriteria)->first();
-		return $kueri->bobot;
+		try {
+			$kueri = Kriteria::findOrFail($idkriteria)->first();
+			return $kueri->bobot;
+		} catch (ModelNotFoundException | QueryException) {
+			return 0;
+		}
 	}
 	public function simpanHasil($alt_id, $jumlah): void
 	{
@@ -53,10 +76,10 @@ class NilaiController extends Controller
 	{
 		$kriteria = Kriteria::get();
 		if (count($kriteria) === 0) {
-			return redirect('kriteria')
-				->withWarning(
-					'Tambahkan kriteria dan subkriteria dulu sebelum melakukan penilaian alternatif'
-				);
+			return redirect('kriteria')->withWarning(
+				'Tambahkan kriteria dan subkriteria dulu '.
+				'sebelum melakukan penilaian alternatif'
+			);
 		}
 		$subkriteria = SubKriteria::get();
 		if (count($subkriteria) === 0) {
@@ -88,10 +111,8 @@ class NilaiController extends Controller
 		$request->validate(Nilai::$rules, Nilai::$message);
 		$scores = $request->all();
 		$cek = Nilai::where('alternatif_id', '=', $scores['alternatif_id'])->exists();
-		if ($cek) {
+		if ($cek) 
 			return back()->withError('Alternatif sudah digunakan dalam penilaian');
-		}
-
 		for ($a = 0; $a < count($scores['kriteria_id']); $a++) {
 			$nilai = new Nilai();
 			$nilai->alternatif_id = $scores['alternatif_id'];
@@ -115,18 +136,18 @@ class NilaiController extends Controller
 		)->leftJoin('kriteria', 'kriteria.id', '=', 'nilai.kriteria_id')
 			->leftJoin('subkriteria', 'subkriteria.id', '=', 'nilai.subkriteria_id')
 			->get();
-		// $jml = $hasil->count();
 		$cekbobotkr = Kriteria::where('bobot', 0.0000)->count();
 		$cekbobotskr = SubKriteria::where('bobot', 0.0000)->count();
 		if ($cekbobotkr > 0) {
 			return redirect('bobot')->withWarning(
-				'Lakukan perbandingan kriteria dengan hasil yang konsisten ' .
+				'Lakukan perbandingan kriteria secara konsisten ' .
 				'sebelum melihat hasil penilaian alternatif.'
 			);
 		}
 		if ($cekbobotskr > 0) {
 			return redirect('bobot/sub')->withWarning(
-				'Satu atau lebih perbandingan sub kriteria belum dilakukan dengan hasil yang konsisten'
+				'Satu atau lebih perbandingan sub kriteria '.
+				'belum dilakukan secara konsisten'
 			);
 		}
 		if ($hasil->isEmpty()) {
@@ -146,41 +167,34 @@ class NilaiController extends Controller
 	{
 		$success = false;
 		$cek = Nilai::where('alternatif_id', '=', $id)->get();
-		if (!$cek) {
-			return back()->with('error', 'Penilaian alternatif tidak ditemukan');
-		}
-
+		if (!$cek) return back()->withError('Penilaian alternatif tidak ditemukan');
 		$request->validate(Nilai::$updrules, Nilai::$message);
 		$scores = $request->all();
 		for ($a = 0; $a < count($scores['kriteria_id']); $a++) {
 			try {
-				$upd = Nilai::where('alternatif_id', '=', $id)
-					->where('kriteria_id', '=', $scores['kriteria_id'][$a])
-					->update(['subkriteria_id' => $scores['subkriteria_id'][$a]]);
-				if ($upd) {
-					$success = true;
-				}
-
+				$upd = Nilai::updateOrInsert(
+					['alternatif_id'=> $id,'kriteria_id'=>$scores['kriteria_id'][$a]],
+					['subkriteria_id' => $scores['subkriteria_id'][$a]]
+				);
+				if ($upd) $success = true;
 			} catch (QueryException $ex) {
-				return back()->withError('Gagal update penilaian alternatif')
+				return back()->withError('Gagal update penilaian alternatif:')
 					->withErrors($ex->getMessage());
 			}
 		}
-		if ($success) {
+		if ($success) 
 			return back()->withSuccess('Penilaian alternatif sudah diupdate');
-		}
-
-		return back()->withError('Gagal update penilaian alternatif');
+		return back()->withError(
+			'Gagal update penilaian alternatif: Kesalahan tidak diketahui'
+		);
 	}
 
 	public function destroy($id)
 	{
 		try {
 			$cek = Nilai::where('alternatif_id', '=', $id);
-			if (!$cek) {
+			if (!$cek) 
 				return back()->withError('Penilaian alternatif tidak ditemukan');
-			}
-
 			$cek->delete();
 			return back()->withSuccess('Penilaian alternatif sudah dihapus');
 		} catch (QueryException $err) {

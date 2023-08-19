@@ -6,7 +6,10 @@
 			<h3>Perbandingan Kriteria</h3>
 		</div>
 		<section class="section">
-			@include('main.message')
+			@include('components.error-multi')
+			@include('components.warning')
+			@include('components.success')
+			@include('components.noscript')
 			<div class="card">
 				<div class="card-header">
 					<h4 class="card-title">Masukkan Perbandingan</h4>
@@ -103,7 +106,6 @@
 										<i class="bi bi-sign-stop-fill"></i>
 										Masukkan data <a href="{{ url('kriteria') }}">Kriteria</a>
 										dulu (Minimal 2) untuk melakukan perbandingan.
-										(Jumlah sekarang: {{ $jmlcrit }})
 									</div>
 								@endif
 							</div>

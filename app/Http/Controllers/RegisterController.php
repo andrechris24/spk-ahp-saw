@@ -16,34 +16,32 @@ class RegisterController extends Controller
 {
 	public function show(): View|Factory|Application|RedirectResponse
 	{
-		if (Auth::viaRemember() || Auth::check()) {
-			return redirect()->intended();
-		}
-
+		if (Auth::viaRemember() || Auth::check()) return redirect()->intended();
 		return view('admin.register');
 	}
 
 	public function register(Request $request)
 	{
-		$credentials = $request->validate(User::$regrules, [
-			'name.required' => 'Nama harus diisi',
-			'name.regex' => 'Nama tidak boleh mengandung simbol dan angka',
-			'name.min' => 'Nama minimal 5 huruf',
-			'email.required' => 'Email harus diisi',
-			'email.unique' => 'Email ' . $request->email . ' sudah digunakan',
-			'password.required' => 'Password harus diisi',
-			'password.between' => 'Panjang password harus 8-20 karakter',
-			'password.confirmed' => 'Password konfirmasi salah',
-		]);
-		$credentials['password'] = Hash::make($credentials['password']);
 		try {
+			$credentials = $request->validate(User::$regrules, [
+				'name.required' => 'Nama harus diisi',
+				'name.regex' => 'Nama tidak boleh mengandung simbol dan angka',
+				'name.min' => 'Nama minimal 5 huruf',
+				'email.required' => 'Email harus diisi',
+				'email.unique' => 'Email ' . $request->email . ' sudah digunakan',
+				'password.required' => 'Password harus diisi',
+				'password.between' => 'Panjang password harus 8-20 karakter',
+				'password.confirmed' => 'Password konfirmasi salah',
+			]);
+			$credentials['password'] = Hash::make($credentials['password']);
 			$user = User::create($credentials);
 			Auth::login($user);
 			$request->session()->regenerate();
 			return redirect('/home')
 				->withSuccess("Registrasi akun berhasil, selamat datang");
 		} catch (QueryException $e) {
-			return back()->withInput()->withErrors($e->getMessage());
+			return back()->withInput()
+			->withError("Registrasi akun gagal: " . $e->getMessage());
 		}
 	}
 }

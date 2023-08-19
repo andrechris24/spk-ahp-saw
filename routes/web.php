@@ -29,7 +29,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		 * Register Routes
 		 */
 		Route::get('/register', 'RegisterController@show')->name('register.show');
-		Route::post('/register', 'RegisterController@register')->name('register.perform');
+		Route::post('/register', 'RegisterController@register')
+		->name('register.perform');
 
 		/**
 		 * Login Routes
@@ -40,8 +41,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		/**
 		 * Reset Password Routes
 		 */
-		Route::get('/forget-password', 'ForgotPasswordController@showForgetPasswordForm')
-			->name('password.request');
+		Route::get(
+			'/forget-password', 
+			'ForgotPasswordController@showForgetPasswordForm'
+		)->name('password.request');
 		Route::post(
 			'/forget-password',
 			'ForgotPasswordController@submitForgetPasswordForm'
@@ -50,8 +53,9 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			'/reset-password/{token}',
 			'ForgotPasswordController@showResetPasswordForm'
 		)->name('password.reset');
-		Route::post('/reset-password', 'ForgotPasswordController@submitResetPasswordForm')
-			->name('password.update');
+		Route::post(
+			'/reset-password', 'ForgotPasswordController@submitResetPasswordForm'
+		)->name('password.update');
 	});
 
 	Route::group(['middleware' => ['auth']], function () { //Authenticated users
@@ -63,11 +67,13 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		Route::prefix('kriteria')->group(function () {
 			Route::get('/', 'KriteriaController@index')->name('kriteria.show');
 			Route::post('add', 'KriteriaController@tambah')->name('kriteria.create');
-			Route::post('update/{id}', 'KriteriaController@update')->name('kriteria.update');
+			Route::post('update/{id}', 'KriteriaController@update')
+			->name('kriteria.update');
 			Route::get('del/{id}', 'KriteriaController@hapus')->name('kriteria.delete');
 			Route::prefix('sub')->group(function () {
 				Route::get('/', 'SubKriteriaController@index')->name('subkriteria.show');
-				Route::post('add', 'SubKriteriaController@store')->name('subkriteria.create');
+				Route::post('add', 'SubKriteriaController@store')
+				->name('subkriteria.create');
 				Route::post('update/{id}', 'SubKriteriaController@update')
 					->name('subkriteria.update');
 				Route::get('del/{id}', 'SubKriteriaController@destroy')
@@ -76,8 +82,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		});
 		Route::prefix('bobot')->group(function () {
 			Route::get('/', 'KriteriaCompController@index')->name('bobotkriteria.index');
-			Route::post('/', 'KriteriaCompController@simpan')->name('bobotkriteria.store');
-			Route::get('hasil', 'KriteriaCompController@hasil')->name('bobotkriteria.result');
+			Route::post('/', 'KriteriaCompController@simpan')
+			->name('bobotkriteria.store');
+			Route::get('hasil', 'KriteriaCompController@hasil')
+			->name('bobotkriteria.result');
 			Route::get('reset', 'KriteriaCompController@destroy')
 				->name('bobotkriteria.reset');
 			Route::prefix('sub')->group(function () {
@@ -85,7 +93,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 					->name('bobotsubkriteria.pick');
 				Route::get('comp', 'SubKriteriaCompController@create')
 					->name('bobotsubkriteria.index');
-				Route::post('comp', 'SubKriteriaCompController@store')
+				Route::post('comp/{kriteria_id}', 'SubKriteriaCompController@store')
 					->name('bobotsubkriteria.store');
 				Route::get('hasil/{id}', 'SubKriteriaCompController@show')
 					->name('bobotsubkriteria.result');
@@ -98,10 +106,12 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			Route::post('add', 'AlternatifController@tambah')->name('alternatif.add');
 			Route::post('update/{id}', 'AlternatifController@update')
 				->name('alternatif.update');
-			Route::get('del/{id}', 'AlternatifController@hapus')->name('alternatif.delete');
+			Route::get('del/{id}', 'AlternatifController@hapus')
+			->name('alternatif.delete');
 			Route::get('hasil', 'NilaiController@show')->name('nilai.show');
 			Route::prefix('nilai')->group(function () {
 				Route::get('/', 'NilaiController@index')->name('nilai.index');
+				Route::get('/data', 'NilaiController@idxDataTables')->name('nilai.table');
 				Route::post('add', 'NilaiController@store')->name('nilai.add');
 				Route::post('update/{id}', 'NilaiController@update')->name('nilai.update');
 				Route::get('del/{id}', 'NilaiController@destroy')->name('nilai.delete');

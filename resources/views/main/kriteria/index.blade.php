@@ -6,7 +6,10 @@
 			<h3>Kriteria</h3>
 		</div>
 		<section class="section">
-			@include('main.message')
+			@include('components.error-multi')
+			@include('components.warning')
+			@include('components.success')
+			@include('components.noscript')
 			<div class="modal fade text-left" id="DelCritModal" tabindex="-1" role="dialog"
 				aria-labelledby="myModalLabel160" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
@@ -177,7 +180,7 @@
 								<th>Atribut</th>
 								<th>Keterangan</th>
 								<th data-bs-toggle="tooltip"
-									data-bs-title="Bobot didapat setelah melakukan perbandingan">
+									title="Bobot didapat setelah melakukan perbandingan">
 									Bobot
 								</th>
 								<th>Aksi</th>
@@ -196,17 +199,17 @@
 										<div class="btn-group" role="button">
 											<button type="button" class="btn btn-primary"
 												data-bs-toggle="modal" data-bs-target="#EditCritModal"
-												data-bs-id="{{ $kriteria->id }}"
+												data-bs-id="{{ $kriteria->id }}" title="Edit" 
 												data-bs-desc="{{ $kriteria->desc }}"
 												data-bs-name="{{ $kriteria->name }}"
 												data-bs-type="{{ $kriteria->type }}">
-												<i class="bi bi-pencil-square"></i> Edit
+												<i class="bi bi-pencil-square"></i>
 											</button>
 											<button type="button" class="btn btn-danger"
 												data-bs-toggle="modal" data-bs-target="#DelCritModal"
-												data-bs-id="{{ $kriteria->id }}"
+												data-bs-id="{{ $kriteria->id }}" title="Hapus" 
 												data-bs-name="{{ $kriteria->name }}">
-												<i class="bi bi-trash3-fill"></i> Hapus
+												<i class="bi bi-trash3-fill"></i>
 											</button>
 										</div>
 									</td>
@@ -235,13 +238,13 @@
 			// and then do the updating in a callback.
 
 			// Update the modal's content.
-			const nameval = editCriteriaModal.querySelector('#nama-edit')
-			const descval = editCriteriaModal.querySelector('#deskripsi-edit')
+			const nameval = editCriteriaModal.querySelector('#nama-edit');
+			const descval = editCriteriaModal.querySelector('#deskripsi-edit');
 			const typeval = editCriteriaModal.querySelector(
-				'#tipe-kriteria-edit')
+				'#tipe-kriteria-edit');
 			nameval.value = nama;
 			typeval.value = tipe;
-			descval.value = desc
+			descval.value = desc;
 			var formurl = "{{ url('/kriteria/update/:id') }}";
 			formurl = formurl.replace(':id', id);
 			document.editkriteria.action = formurl;
@@ -260,7 +263,7 @@
 			link.href = formurl;
 		});
 		$(document).ready(function() {
-			try{
+			try {
 				$('#table-crit').DataTable({
 					"stateSave": true,
 					"lengthChange": false,
@@ -273,12 +276,12 @@
 						url: "{{ asset('assets/DataTables-id.json') }}"
 					}
 				});
-			}catch(dterr){
+			} catch (dterr) {
 				Toastify({
-			    text: "DataTables Error: "+dterr.message,
-			    duration: 4000,
-			    backgroundColor: "#dc3545",
-			  }).showToast();
+					text: "DataTables Error: " + dterr.message,
+					duration: 4000,
+					backgroundColor: "#dc3545",
+				}).showToast();
 			}
 		});
 	</script>

@@ -6,7 +6,10 @@
 			<h3>Sub Kriteria</h3>
 		</div>
 		<section class="section">
-			@include('main.message')
+			@include('components.error-multi')
+			@include('components.warning')
+			@include('components.success')
+			@include('components.noscript')
 			<div class="modal fade text-left" id="DelSubCritModal" tabindex="-1"
 				role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
@@ -55,7 +58,9 @@
 					role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h4 class="modal-title" id="AddSubCritLabel">Tambah Sub Kriteria</h4>
+							<h4 class="modal-title" id="AddSubCritLabel">
+							Tambah Sub Kriteria
+							</h4>
 							<button type="button" class="close" data-bs-dismiss="modal"
 								aria-label="Close">
 								<i data-feather="x"></i>
@@ -103,7 +108,9 @@
 					role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h4 class="modal-title" id="EditSubCritLabel">Edit Sub Kriteria</h4>
+							<h4 class="modal-title" id="EditSubCritLabel">
+							Edit Sub Kriteria
+							</h4>
 							<button type="button" class="close" data-bs-dismiss="modal"
 								aria-label="Close">
 								<i data-feather="x"></i>
@@ -160,7 +167,7 @@
 								<th>Nama Sub Kriteria</th>
 								<th>Kriteria</th>
 								<th data-bs-toggle="tooltip"
-									data-bs-title="Bobot didapat setelah melakukan perbandingan">
+									title="Bobot didapat setelah melakukan perbandingan">
 									Bobot
 								</th>
 								<th>Aksi</th>
@@ -180,17 +187,17 @@
 										<div class="btn-group" role="button">
 											<button type="button" class="btn btn-primary"
 												data-bs-toggle="modal" data-bs-target="#EditSubCritModal"
-												data-bs-id="{{ $sk->id }}"
+												data-bs-id="{{ $sk->id }}" title="Edit" 
 												data-bs-name="{{ $sk->name }}"
 												data-bs-kr="{{ $sk->kriteria->id }}">
-												<i class="bi bi-pencil-square"></i> Edit
+												<i class="bi bi-pencil-square"></i>
 											</button>
 											<button type="button" class="btn btn-danger"
 												data-bs-toggle="modal" data-bs-target="#DelSubCritModal"
-												data-bs-id="{{ $sk->id }}"
+												data-bs-id="{{ $sk->id }}" title="Hapus" 
 												data-bs-name="{{ $sk->name }}"
 												data-bs-kr="{{ $sk->kriteria->name }}">
-												<i class="bi bi-trash3-fill"></i> Hapus
+												<i class="bi bi-trash3-fill"></i>
 											</button>
 										</div>
 									</td>
@@ -218,8 +225,8 @@
 			// and then do the updating in a callback.
 
 			// Update the modal's content.
-			const nameval = editCriteriaModal.querySelector('#nama-edit')
-			const typeval = editCriteriaModal.querySelector('#kriteria-edit')
+			const nameval = editCriteriaModal.querySelector('#nama-edit');
+			const typeval = editCriteriaModal.querySelector('#kriteria-edit');
 			nameval.value = nama;
 			typeval.value = idk;
 			var formurl = "{{ url('/kriteria/sub/update/:id') }}";
@@ -254,7 +261,7 @@
 						targets: 4,
 					}],
 					language: {
-						url: "{{ url('assets/DataTables-id.json') }}"
+						url: "{{ asset('assets/DataTables-id.json') }}"
 					}
 				});
 			} catch (dterr) {

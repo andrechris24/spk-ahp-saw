@@ -11,7 +11,10 @@
 			<h3>Perbandingan Sub Kriteria {{ $title }}</h3>
 		</div>
 		<section class="section">
-			@include('main.message')
+			@include('components.error-multi')
+			@include('components.warning')
+			@include('components.success')
+			@include('components.noscript')
 			<div class="card">
 				<div class="card-header">
 					<h4 class="card-title">
@@ -55,8 +58,7 @@
 								@if ($jmlsubkriteria >= 2)
 									<div class="table-responsive">
 										<form method="post" enctype="multipart/form-data"
-											action="{{ url('bobot/sub/comp') }}">@csrf
-											<input type="hidden" name="kriteria_id" value="{{ $kriteria_id }}">
+											action="{{ url('bobot/sub/comp/' . $kriteria_id) }}">@csrf
 											<table class="table table-lg table-hover text-center">
 												<thead>
 													<tr>
@@ -119,7 +121,6 @@
 										<i class="bi bi-sign-stop-fill"></i>
 										Masukkan data <a href="{{ url('kriteria/sub') }}">Sub Kriteria</a>
 										{{ $title }} dulu (Minimal 2) untuk melakukan perbandingan.
-										(Jumlah sekarang: {{ $jmlsubkriteria }})
 									</div>
 								@endif
 							</div>

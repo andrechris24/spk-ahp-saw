@@ -10,10 +10,10 @@ class HasilController extends Controller
 	{
 		$result = Hasil::get();
 		if (count($result) === 0) {
-			return redirect('alternatif/nilai')
-				->withWarning(
-					'Hasil penilaian kosong, pastikan nilai alternatif sudah diisi, lalu klik "Lihat Hasil"'
-				);
+			return redirect('alternatif/nilai')->withWarning(
+				'Hasil penilaian kosong, pastikan nilai alternatif sudah diisi, '.
+				'lalu klik "Lihat Hasil"'
+			);
 		}
 		$highest = Hasil::orderBy('skor', 'desc')->first();
 		return view('main.rank', compact('result', 'highest'));
