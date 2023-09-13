@@ -82,16 +82,11 @@
 											@foreach ($norm as $nilai)
 												<td>
 													@php
-													$arrays = $saw->getNilaiArr($nilai->kriteria_id);
-													$result = $saw->normalisasi(
-														$arrays, 
-														$nilai->kriteria->type, 
-														$nilai->subkriteria->bobot
-													);
-													echo $result;
-													$lresult[$alts->id][$counter] = 
-													$result * $saw->getBobot($nilai->kriteria_id);
-													$counter++;
+														$arrays = $saw->getNilaiArr($nilai->kriteria_id);
+														$result = $saw->normalisasi($arrays, $nilai->kriteria->type, $nilai->subkriteria->bobot);
+														echo $result;
+														$lresult[$alts->id][$counter] = $result * $saw->getBobot($nilai->kriteria_id);
+														$counter++;
 													@endphp
 												</td>
 											@endforeach
@@ -108,15 +103,15 @@
 					<h4 class="card-title">Ranking</h4>
 				</div>
 				<div class="card-body">
-					<a href="{{ url('/ranking') }}" class="btn btn-primary mb-3">
+					<a href="{{ route('ranking.show') }}" class="btn btn-primary mb-3">
 						Lihat Grafik
 					</a>
 					<div class="table-responsive">
-						<table class="table table-hover text-center" id="table-hasil">
+						<table class="table table-hover text-center" id="table-hasil" style="width: 100%">
 							<thead class="text-center">
 								<tr>
 									<th rowspan="2">Alternatif</th>
-									<th colspan="{{ $countkriteria }}">Kriteria</th>
+									<th colspan="{{ count($data['kriteria']) }}">Kriteria</th>
 									<th rowspan="2">Jumlah</th>
 								</tr>
 								<tr>
@@ -160,11 +155,12 @@
 				$('#table-hasil').DataTable({
 					"lengthChange": false,
 					"searching": false,
+					responsive:true,
 					order: [
 						[1 + {{ $countkriteria }}, 'desc']
 					],
 					language: {
-						url: "{{ asset('assets/DataTables-id.json') }}"
+						url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
 					}
 				});
 			} catch (dterr) {

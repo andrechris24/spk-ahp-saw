@@ -22,7 +22,7 @@
 				<div class="text-center">
 					<h1 class="error-title">404 Not found</h1>
 					<p class="fs-5 text-gray-600">
-						Halaman yang Anda cari tidak ditemukan.
+						Halaman atau Data yang Anda cari tidak ditemukan.
 					</p>
 					<a href="{{ route('home.index') }}"
 						class="btn btn-lg btn-outline-primary mt-3">

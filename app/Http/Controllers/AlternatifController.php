@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class AlternatifController extends Controller
 {
@@ -19,48 +20,57 @@ class AlternatifController extends Controller
 		$ceknilai = Nilai::count();
 		return view('main.alternatif.index', compact('alt', 'ceknilai'));
 	}
-	public function tambah(Request $altrequest)
+	public function show(Request $request)
 	{
-		$altrequest->validate(Alternatif::$rules, Alternatif::$message);
-		$alts = $altrequest->all();
 		try {
-			$alternatif = Alternatif::create($alts);
-			if ($alternatif) return back()->withSuccess('Alternatif sudah ditambahkan');
+			return DataTables::of(Alternatif::query())->make();
 		} catch (QueryException $e) {
-			return back()->withError('Gagal menambah alternatif')
-				->withErrors($e->getMessage());
+			return response()->json(['message' => $e->getMessage()], 500);
 		}
-		return back()
-		->withError('Gagal menambah alternatif: Kesalahan tidak diketahui');
 	}
-	public function update(Request $updaltrequest, $id)
+	public function store(Request $request)
+	{
+		$request->validate(Alternatif::$rules, Alternatif::$message);
+		$alterID = $request->id;
+		try {
+			if ($alterID) {
+				$alter = Alternatif::updateOrCreate(
+					['id' => $alterID],
+					['name' => $request->name]
+				);
+				$querytype = "diupdate.";
+			} else {
+				$alter = Alternatif::create($request->all());
+				$querytype = "ditambah.";
+			}
+		} catch (QueryException $e) {
+			return response()->json(['message' => $e->getMessage()], 500);
+		}
+		if ($alter) {
+			return response()->json(['message' => 'Alternatif sudah ' . $querytype]);
+		}
+		return response()->json(['message' => 'Kesalahan tidak diketahui'], 500);
+	}
+	public function edit($id)
 	{
 		try {
-			$req = $updaltrequest->all();
-			$upd = Alternatif::findOrFail($id)->update($req);
-			if ($upd) return back()->withSuccess('Data Alternatif sudah diupdate');
-		} catch (ModelNotFoundException $e) {
-			return back()->withError('Gagal update: Alternatif tidak ditemukan')
-				->withErrors($e->getMessage());
-		} catch (QueryException $sql) {
-			return back()->withError('Gagal update alternatif:')
-				->withErrors($sql->getMessage());
+			$alter = Alternatif::where('id', $id)->firstOrFail();
+			return response()->json($alter);
+		} catch (QueryException $e) {
+			return response()->json(["message" => $e->getMessage()], 500);
+		} catch (ModelNotFoundException $err) {
+			return response()->json(['message' => $err->getMessage()], 404);
 		}
-		return back()->withError('Gagal update alternatif: Kesalahan tidak diketahui');
 	}
 	public function hapus($id)
 	{
 		try {
-			$del = Alternatif::findOrFail($id)->delete();
-			if ($del)
-				return back()->withSuccess('Data Alternatif sudah dihapus');
+			Alternatif::findOrFail($id)->delete();
+			return response()->json(['message' => 'Alternatif sudah dihapus']);
 		} catch (ModelNotFoundException $e) {
-			return back()->withError('Gagal hapus: Data Alternatif tidak ditemukan')
-				->withErrors($e->getMessage());
+			return response()->json(['message' => 'Data Alternatif tidak ditemukan'], 404);
 		} catch (QueryException $sql) {
-			return back()->withError('Gagal hapus:')
-				->withErrors($sql->getMessage());
+			return response()->json(['message' => $sql->getMessage()], 500);
 		}
-		return back()->withError('Gagal hapus alternatif: Kesalahan tidak diketahui');
 	}
 }

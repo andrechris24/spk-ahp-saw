@@ -12,6 +12,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class KriteriaController extends Controller
 {
@@ -22,65 +23,69 @@ class KriteriaController extends Controller
 		$compkr = KriteriaComp::count();
 		return view('main.kriteria.index', compact('krit', 'compkr', 'ceknilai'));
 	}
-	public function tambah(Request $kritrequest)
+	public function show(Request $request)
 	{
-		$kritrequest->validate(Kriteria::$rules, Kriteria::$message);
-		$krits = $kritrequest->all();
 		try {
-			$kriteria = Kriteria::create($krits);
-			if ($kriteria) {
-				if (KriteriaComp::exists()) {
-					DB::table('kriteria_banding')->delete();
-					DB::table('kriteria')->update(['bobot' => 0.0000]);
-					return back()->withSuccess(
-						'Kriteria sudah ditambahkan. '.
-						'Silahkan input ulang perbandingan kriteria.'
-					);
-				}
-				return back()->withSuccess('Kriteria sudah ditambahkan');
-			}
-		} catch (QueryException $db) {
-			return back()->withError('Gagal menambah kriteria:')
-				->withErrors($db->getMessage());
+			return DataTables::of(Kriteria::query())->make();
+		} catch (QueryException $e) {
+			return response()->json(['message' => $e->getMessage()], 500);
 		}
-		return back()->withError('Gagal menambah kriteria: Kesalahan tidak diketahui');
 	}
-	public function update(Request $updkritrequest, $id)
+	public function store(Request $request)
+	{
+		$request->validate(Kriteria::$rules, Kriteria::$message);
+		$kritID = $request->id;
+		try {
+			if ($kritID) {
+				$krit = Kriteria::updateOrCreate(
+					['id' => $kritID],
+					['name' => $request->name, 'type' => $request->type, 'desc' => $request->desc]
+				);
+				$querytype = "diupdate.";
+			} else {
+				$krit = Kriteria::create($request->all());
+				$querytype = "diinput. ";
+				if (KriteriaComp::exists()) {
+					KriteriaComp::truncate();
+					Kriteria::where('bobot', '<>', 0.0000)->update(['bobot' => 0.0000]);
+					$querytype .= "Silahkan input ulang perbandingan kriteria.";
+				}
+			}
+		} catch (QueryException $e) {
+			return response()->json(['message' => $e->getMessage()], 500);
+		}
+		if ($krit) {
+			return response()->json(['message' => 'Kriteria sudah ' . $querytype]);
+		}
+		return response()->json(['message' => 'Kesalahan tidak diketahui'], 500);
+	}
+	public function edit($id)
 	{
 		try {
-			$req = $updkritrequest->all();
-			$upd=Kriteria::findOrFail($id)->update($req);
-			if($upd) return back()->withSuccess('Kriteria sudah diupdate');
-		} catch (ModelNotFoundException $e) {
-			return back()->withError('Gagal update: Kriteria tidak ditemukan')
-				->withErrors($e->getMessage());
-		} catch (QueryException $db) {
-			return back()->withError('Gagal update kriteria:')
-				->withErrors($db->getMessage());
+			$kriteria = Kriteria::where('id', $id)->firstOrFail();
+			return response()->json($kriteria);
+		} catch (QueryException $e) {
+			return response()->json(["message" => $e->getMessage()], 500);
+		} catch (ModelNotFoundException $err) {
+			return response()->json(['message' => $err->getMessage()], 404);
 		}
-		return back()->withError('Gagal update Kriteria: Kesalahan tidak diketahui');
 	}
 	public function hapus($id)
 	{
 		try {
 			$del = Kriteria::findOrFail($id)->delete();
-			if ($del) {
-				if (KriteriaComp::exists()) {
-					DB::table('kriteria_banding')->delete();
-					DB::table('kriteria')->update(['bobot' => 0.0000]);
-					return back()->withSuccess(
-						'Kriteria sudah dihapus. Silahkan input ulang perbandingan.'
-					);
-				}
-				return back()->withSuccess('Kriteria sudah dihapus');
+			if (KriteriaComp::exists()) {
+				KriteriaComp::truncate();
+				Kriteria::where('bobot', '<>', 0.0000)->update(['bobot' => 0.0000]);
+				return response()->json([
+					'message' => 'Kriteria sudah dihapus. Silahkan input ulang perbandingan.'
+				]);
 			}
+			return response()->json(['message' => 'Kriteria sudah dihapus']);
 		} catch (ModelNotFoundException $e) {
-			return back()->withError('Gagal hapus: Kriteria tidak ditemukan')
-				->withErrors($e->getMessage());
+			return response()->json(['message' => 'Kriteria tidak ditemukan'], 404);
 		} catch (QueryException $e) {
-			return back()->withError('Gagal hapus kriteria:')
-				->withErrors($e->getMessage());
+			return response()->json(['message' => $e->getMessage()], 500);
 		}
-		return back()->withError('Gagal hapus kriteria: Kesalahan tidak diketahui');
 	}
 }

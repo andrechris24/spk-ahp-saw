@@ -21,22 +21,16 @@
 			<div class="card">
 				<div class="card-header">
 					<h4 class="card-title">
-					Selamat datang di Sistem Pendukung Keputusan
+						Selamat datang di Sistem Pendukung Keputusan
 					</h4>
 				</div>
 				<div class="card-body">
-					<p>
-						Sistem ini akan membantu seseorang membuat keputusan dengan metode Simple
-						Additive Weighting (SAW) dan Analytical Hierarchy Process (AHP).
-					</p>
-					<p>
-						Pembobotan Kriteria dan Sub Kriteria menggunakan metode AHP,
-						sedangkan pembobotan Alternatif menggunakan metode SAW.
-					</p>
-					<p>
-					Bobot Kriteria dan Sub Kriteria didapat dengan cara
-					melakukan perbandingan secara konsisten (Nilai CR <=10%).
-					</p>
+					<p>Sistem ini akan membantu seseorang membuat keputusan dengan metode Simple
+						Additive Weighting (SAW) dan Analytical Hierarchy Process (AHP).</p>
+					<p>Pembobotan Kriteria dan Sub Kriteria menggunakan metode AHP,
+						sedangkan pembobotan Alternatif menggunakan metode SAW.</p>
+					<p>Bobot Kriteria dan Sub Kriteria didapat dengan cara
+						melakukan perbandingan secara konsisten (Nilai CR <=10%). </p>
 				</div>
 			</div>
 			@auth
@@ -72,7 +66,7 @@
 									<div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
 										<h6 class="text-muted font-semibold">Jumlah Sub Kriteria</h6>
 										<h6 class="font-extrabold mb-0">
-										{{ $jml['subkriteria'] }}
+											{{ $jml['subkriteria'] }}
 										</h6>
 									</div>
 								</div>

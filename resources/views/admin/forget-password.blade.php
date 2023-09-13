@@ -17,7 +17,7 @@
 				<i class="bi bi-envelope"></i>
 			</div>
 			@error('email')
-			<div class="invalid-feedback">{{$message}}</div>
+				<div class="invalid-feedback">{{ $message }}</div>
 			@enderror
 		</div>
 		<button type="submit" class="btn btn-primary btn-block btn-lg shadow-lg mt-5"

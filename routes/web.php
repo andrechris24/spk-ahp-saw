@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/phpinfo', function () {
 	phpinfo();
 })->name('php.info');
-Route::get('/test', function () {
+Route::get('/laravel-info', function () {
 	return view('welcome');
 })->name('laravel.welcome');
 Route::group(['namespace' => 'App\Http\Controllers'], function () {
@@ -30,7 +30,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		 */
 		Route::get('/register', 'RegisterController@show')->name('register.show');
 		Route::post('/register', 'RegisterController@register')
-		->name('register.perform');
+			->name('register.perform');
 
 		/**
 		 * Login Routes
@@ -42,7 +42,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		 * Reset Password Routes
 		 */
 		Route::get(
-			'/forget-password', 
+			'/forget-password',
 			'ForgotPasswordController@showForgetPasswordForm'
 		)->name('password.request');
 		Route::post(
@@ -54,10 +54,11 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			'ForgotPasswordController@showResetPasswordForm'
 		)->name('password.reset');
 		Route::post(
-			'/reset-password', 'ForgotPasswordController@submitResetPasswordForm'
+			'/reset-password',
+			'ForgotPasswordController@submitResetPasswordForm'
 		)->name('password.update');
 	});
-
+	// Route::resource('user', 'AlternatifController');
 	Route::group(['middleware' => ['auth']], function () { //Authenticated users
 		Route::prefix('akun')->group(function () {
 			Route::get('/', 'HomeController@profile')->name('akun.show');
@@ -65,27 +66,29 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			Route::post('/del', 'HomeController@delAkun')->name('akun.delete');
 		});
 		Route::prefix('kriteria')->group(function () {
-			Route::get('/', 'KriteriaController@index')->name('kriteria.show');
-			Route::post('add', 'KriteriaController@tambah')->name('kriteria.create');
-			Route::post('update/{id}', 'KriteriaController@update')
-			->name('kriteria.update');
-			Route::get('del/{id}', 'KriteriaController@hapus')->name('kriteria.delete');
+			Route::get('/', 'KriteriaController@index')->name('kriteria.index');
+			Route::get('data', 'KriteriaController@show')->name('kriteria.data');
+			Route::post('store', 'KriteriaController@store')->name('kriteria.store');
+			Route::get('edit/{id}', 'KriteriaController@edit')->name('kriteria.edit');
+			Route::delete('del/{id}', 'KriteriaController@hapus')
+				->name('kriteria.delete');
 			Route::prefix('sub')->group(function () {
-				Route::get('/', 'SubKriteriaController@index')->name('subkriteria.show');
-				Route::post('add', 'SubKriteriaController@store')
-				->name('subkriteria.create');
-				Route::post('update/{id}', 'SubKriteriaController@update')
-					->name('subkriteria.update');
-				Route::get('del/{id}', 'SubKriteriaController@destroy')
+				Route::get('/', 'SubKriteriaController@index')->name('subkriteria.index');
+				Route::get('data', 'SubKriteriaController@show')->name('subkriteria.data');
+				Route::get('edit/{id}', 'SubKriteriaController@edit')
+					->name('subkriteria.edit');
+				Route::post('store', 'SubKriteriaController@store')
+					->name('subkriteria.store');
+				Route::delete('del/{id}', 'SubKriteriaController@destroy')
 					->name('subkriteria.delete');
 			});
 		});
 		Route::prefix('bobot')->group(function () {
 			Route::get('/', 'KriteriaCompController@index')->name('bobotkriteria.index');
 			Route::post('/', 'KriteriaCompController@simpan')
-			->name('bobotkriteria.store');
+				->name('bobotkriteria.store');
 			Route::get('hasil', 'KriteriaCompController@hasil')
-			->name('bobotkriteria.result');
+				->name('bobotkriteria.result');
 			Route::get('reset', 'KriteriaCompController@destroy')
 				->name('bobotkriteria.reset');
 			Route::prefix('sub')->group(function () {
@@ -103,18 +106,22 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		});
 		Route::prefix('alternatif')->group(function () {
 			Route::get('/', 'AlternatifController@index')->name('alternatif.index');
-			Route::post('add', 'AlternatifController@tambah')->name('alternatif.add');
-			Route::post('update/{id}', 'AlternatifController@update')
-				->name('alternatif.update');
-			Route::get('del/{id}', 'AlternatifController@hapus')
-			->name('alternatif.delete');
-			Route::get('hasil', 'NilaiController@show')->name('nilai.show');
+			Route::get('data', 'AlternatifController@show')->name('alternatif.data');
+			Route::get('edit/{id}', 'AlternatifController@edit')
+				->name('alternatif.edit');
+			Route::post('store', 'AlternatifController@store')->name('alternatif.store');
+			Route::delete('del/{id}', 'AlternatifController@hapus')
+				->name('alternatif.delete');
+			Route::prefix('hasil')->group(function () {
+				Route::get('/', 'NilaiController@show')->name('nilai.show');
+				Route::get('data', 'NilaiController@resultDataTables')->name('nilai.rank');
+			});
 			Route::prefix('nilai')->group(function () {
 				Route::get('/', 'NilaiController@index')->name('nilai.index');
-				Route::get('/data', 'NilaiController@idxDataTables')->name('nilai.table');
-				Route::post('add', 'NilaiController@store')->name('nilai.add');
-				Route::post('update/{id}', 'NilaiController@update')->name('nilai.update');
-				Route::get('del/{id}', 'NilaiController@destroy')->name('nilai.delete');
+				Route::get('data', 'NilaiController@idxDataTables')->name('nilai.table');
+				Route::put('store', 'NilaiController@store')->name('nilai.put');
+				Route::patch('store', 'NilaiController@update')->name('nilai.patch');
+				Route::delete('del/{id}', 'NilaiController@destroy')->name('nilai.delete');
 			});
 		});
 		Route::get('ranking', 'HasilController@index')->name('ranking.show');

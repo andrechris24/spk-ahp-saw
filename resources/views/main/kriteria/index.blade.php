@@ -10,75 +10,30 @@
 			@include('components.warning')
 			@include('components.success')
 			@include('components.noscript')
-			<div class="modal fade text-left" id="DelCritModal" tabindex="-1" role="dialog"
-				aria-labelledby="myModalLabel160" aria-hidden="true">
+			<div class="modal fade text-left" id="CritModal" tabindex="-1" role="dialog"
+				aria-labelledby="CritLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
 					role="document">
 					<div class="modal-content">
-						<div class="modal-header bg-warning">
-							<h5 class="modal-title white" id="myModalLabel160">
-								Hapus Kriteria
-							</h5>
+						<div class="modal-header">
+							<h4 class="modal-title" id="CritLabel">Tambah Kriteria</h4>
 							<button type="button" class="close" data-bs-dismiss="modal"
 								aria-label="Close">
 								<i data-feather="x"></i>
 							</button>
 						</div>
 						<div class="modal-body">
-							<p id="del-desc">
-								Anda akan menghapus sebuah kriteria.
-							</p>
-							<p>Lanjutkan?</p>
-							<div class="alert alert-warning">
-								@if ($compkr > 0 && $ceknilai > 0)
-									Data sub kriteria yang berkaitan juga akan dihapus,
-									begitu juga dengan penilaian alternatif.
-									Perbandingan kriteria juga akan direset.
-								@elseif ($compkr > 0)
-									Data sub kriteria yang berkaitan juga akan dihapus,
-									serta mereset perbandingan kriteria.
-								@else
-									Data sub kriteria yang berkaitan juga akan dihapus.
-								@endif
-							</div>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-light-secondary"
-								data-bs-dismiss="modal">
-								<i class="bx bx-x d-block d-sm-none"></i>
-								<span class="d-none d-sm-block">Tidak</span>
-							</button>
-							<a href="" class="btn btn-warning ml-1" id="del-action">
-								<i class="bx bx-check d-block d-sm-none"></i>
-								<span class="d-none d-sm-block">Ya</span>
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="modal fade text-left" id="AddCritModal" tabindex="-1"
-				role="dialog" aria-labelledby="AddCritLabel" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-					role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title" id="AddCritLabel">Tambah Kriteria</h4>
-							<button type="button" class="close" data-bs-dismiss="modal"
-								aria-label="Close">
-								<i data-feather="x"></i>
-							</button>
-						</div>
-						<form action="{{ url('/kriteria/add') }}" method="post"
-							enctype="multipart/form-data">@csrf
-							<div class="modal-body">
+							<form action="{{ url('/kriteria/add') }}" method="post"
+								enctype="multipart/form-data" id="CritForm">@csrf
+								<input type="hidden" name="id" id="kriteria-id">
 								@if ($compkr > 0)
-									<div class="alert alert-warning">
+									<div class="alert alert-warning" id="kriteria-alert">
 										Menambahkan kriteria akan mereset perbandingan kriteria.
 									</div>
 								@endif
 								<label for="nama">Nama Kriteria</label>
 								<div class="form-group">
-									<input type="text" class="form-control" name="name" id="nama"
+									<input type="text" class="form-control" name="name" id="nama-krit"
 										required />
 								</div>
 								<div class="input-group mb-3">
@@ -96,83 +51,27 @@
 									<input type="text" class="form-control" name="desc" id="deskripsi"
 										required />
 								</div>
-							</div>
+							</form>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-light-secondary"
 									data-bs-dismiss="modal">
 									<i class="bx bx-x d-block d-sm-none"></i>
 									<span class="d-none d-sm-block">Batal</span>
 								</button>
-								<button type="submit" class="btn btn-primary ml-1">
+								<button type="submit" class="btn btn-primary ml-1 data-submit"
+									form="CritForm">
 									<i class="bx bx-check d-block d-sm-none"></i>
-									<span class="d-none d-sm-block">Tambah</span>
+									<span class="d-none d-sm-block">Simpan</span>
 								</button>
 							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-			<div class="modal fade text-left" id="EditCritModal" tabindex="-1"
-				role="dialog" aria-labelledby="EditCritLabel" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-					role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title" id="EditCritLabel">Edit Kriteria</h4>
-							<button type="button" class="close" data-bs-dismiss="modal"
-								aria-label="Close">
-								<i data-feather="x"></i>
-							</button>
 						</div>
-						<form action="{{ url('/kriteria/update/:id') }}" method="post"
-							enctype="multipart/form-data" name="editkriteria">@csrf
-							<div class="modal-body">
-								<label for="nama-edit">Nama Kriteria</label>
-								<div class="form-group">
-									<input type="text" class="form-control" name="name"
-										id="nama-edit" required />
-								</div>
-								<div class="input-group mb-3">
-									<label class="input-group-text" for="tipe-kriteria-edit">
-										Atribut
-									</label>
-									<select class="form-select" id="tipe-kriteria-edit" name="type"
-										required>
-										<option value="">Pilih</option>
-										<option value="cost">Cost</option>
-										<option value="benefit">Benefit</option>
-									</select>
-								</div>
-								<label for="deskripsi-edit">Keterangan</label>
-								<div class="form-group">
-									<input type="text" class="form-control" name="desc"
-										id="deskripsi-edit" required />
-								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-light-secondary"
-									data-bs-dismiss="modal">
-									<i class="bx bx-x d-block d-sm-none"></i>
-									<span class="d-none d-sm-block">Batal</span>
-								</button>
-								<button type="submit" class="btn btn-primary ml-1">
-									<i class="bx bx-check d-block d-sm-none"></i>
-									<span class="d-none d-sm-block">Edit</span>
-								</button>
-							</div>
-						</form>
 					</div>
 				</div>
 			</div>
 			<div class="card">
 				<div class="card-header">Daftar Kriteria</div>
 				<div class="card-body">
-					<button type="button" class="btn btn-primary mb-3"
-						data-bs-toggle="modal" data-bs-target="#AddCritModal">
-						<i class="bi bi-plus-lg"></i>
-						Tambah Kriteria
-					</button>
-					<table class="table table-hover" id="table-crit">
+					<table class="table table-hover" id="table-crit" style="width: 100%">
 						<thead>
 							<tr>
 								<th>No</th>
@@ -186,36 +85,6 @@
 								<th>Aksi</th>
 							</tr>
 						</thead>
-						<tbody>
-							@php($count = 0)
-							@foreach ($krit as $kriteria)
-								<tr>
-									<td>{{ ++$count }}</td>
-									<td>{{ $kriteria->name }}</td>
-									<td>{{ $kriteria->type }}</td>
-									<td>{{ $kriteria->desc }}</td>
-									<td>{{ $kriteria->bobot }}</td>
-									<td>
-										<div class="btn-group" role="button">
-											<button type="button" class="btn btn-primary"
-												data-bs-toggle="modal" data-bs-target="#EditCritModal"
-												data-bs-id="{{ $kriteria->id }}" title="Edit" 
-												data-bs-desc="{{ $kriteria->desc }}"
-												data-bs-name="{{ $kriteria->name }}"
-												data-bs-type="{{ $kriteria->type }}">
-												<i class="bi bi-pencil-square"></i>
-											</button>
-											<button type="button" class="btn btn-danger"
-												data-bs-toggle="modal" data-bs-target="#DelCritModal"
-												data-bs-id="{{ $kriteria->id }}" title="Hapus" 
-												data-bs-name="{{ $kriteria->name }}">
-												<i class="bi bi-trash3-fill"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-							@endforeach
-						</tbody>
 					</table>
 				</div>
 			</div>
@@ -225,64 +94,254 @@
 
 @section('js')
 	<script type="text/javascript">
-		const editCriteriaModal = document.getElementById('EditCritModal');
-		editCriteriaModal.addEventListener('show.bs.modal', event => {
-			// Button that triggered the modal
-			const button = event.relatedTarget;
-			// Extract info from data-bs-* attributes
-			const nama = button.getAttribute('data-bs-name');
-			const tipe = button.getAttribute('data-bs-type');
-			const desc = button.getAttribute('data-bs-desc');
-			const id = button.getAttribute('data-bs-id');
-			// If necessary, you could initiate an AJAX request here
-			// and then do the updating in a callback.
-
-			// Update the modal's content.
-			const nameval = editCriteriaModal.querySelector('#nama-edit');
-			const descval = editCriteriaModal.querySelector('#deskripsi-edit');
-			const typeval = editCriteriaModal.querySelector(
-				'#tipe-kriteria-edit');
-			nameval.value = nama;
-			typeval.value = tipe;
-			descval.value = desc;
-			var formurl = "{{ url('/kriteria/update/:id') }}";
-			formurl = formurl.replace(':id', id);
-			document.editkriteria.action = formurl;
-		});
-		const delCriteriaModal = document.getElementById('DelCritModal');
-		delCriteriaModal.addEventListener('show.bs.modal', event => {
-			const button = event.relatedTarget;
-			const id = button.getAttribute('data-bs-id');
-			const nama = button.getAttribute('data-bs-name');
-			const link = delCriteriaModal.querySelector('#del-action');
-			const desc = delCriteriaModal.querySelector('#del-desc');
-			var formurl = "{{ url('/kriteria/del/:id') }}";
-			formurl = formurl.replace(':id', id);
-			desc.innerHTML = "Anda akan menghapus kriteria <b>" + nama +
-				"</b>.";
-			link.href = formurl;
-		});
+		var dt_kriteria;
 		$(document).ready(function() {
-			try {
-				$('#table-crit').DataTable({
-					"stateSave": true,
-					"lengthChange": false,
-					"searching": false,
-					columnDefs: [{
-						orderable: false,
-						targets: 5,
-					}],
-					language: {
-						url: "{{ asset('assets/DataTables-id.json') }}"
+			dt_kriteria = $('#table-crit').DataTable({
+				"stateSave": true,
+				"lengthChange": false,
+				"searching": false,
+				serverSide: true,
+				processing: true,
+				responsive:true,
+				ajax: "{{ route('kriteria.data') }}",
+				columns: [{
+						data: 'id'
+					},
+					{
+						data: 'name'
+					},
+					{
+						data: 'type'
+					},
+					{
+						data: 'desc'
+					},
+					{
+						data: 'bobot'
+					},
+					{
+						data: 'id'
 					}
+				],
+				columnDefs: [{
+					targets:0,
+					render:function(data,type,full,meta){
+						return meta.row + meta.settings._iDisplayStart + 1;
+					}
+				},
+				{ //Aksi
+					orderable: false,
+					targets: -1,
+					render: function(data, type, full) {
+						return (
+							'<div class="btn-group" role="group">' +
+							`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#CritModal"><i class="bi bi-pencil-square"></i></button>` +
+							`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}"><i class="bi bi-trash3-fill"></i></button>` +
+							'</div>'
+						);
+					}
+				}],
+				language: {
+					url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
+				},
+				dom: 'Bfrtip',
+				buttons: [{
+						text: '<i class="bi bi-plus-lg me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Tambah Kriteria</span>',
+						className: 'add-new btn btn-primary',
+						attr: {
+							'data-bs-toggle': 'modal',
+							'data-bs-target': '#CritModal'
+						}
+					},
+					{
+						extend: 'collection',
+						text: 'Ekspor',
+						buttons: [{
+								extend: 'print',
+								title: 'Kriteria',
+								text: '<i class="bi bi-printer me-2"></i>Print',
+								className: 'dropdown-item',
+								exportOptions: {
+									columns: [1, 2, 3, 4]
+								}
+							},
+							{
+								extend: 'csv',
+								title: 'Kriteria',
+								text: '<i class="bi bi-file-text me-2"></i>CSV',
+								className: 'dropdown-item',
+								exportOptions: {
+									columns: [1, 2, 3, 4]
+								}
+							},
+							{
+								extend: 'excel',
+								title: 'Kriteria',
+								text: '<i class="bi bi-file-spreadsheet me-2"></i>Excel',
+								className: 'dropdown-item',
+								exportOptions: {
+									columns: [1, 2, 3, 4]
+								}
+							},
+							{
+								extend: 'pdf',
+								title: 'Kriteria',
+								text: '<i class="bi bi-file-text me-2"></i>PDF',
+								className: 'dropdown-item',
+								exportOptions: {
+									columns: [1, 2, 3, 4]
+								}
+							},
+							{
+								extend: 'copy',
+								title: 'Kriteria',
+								text: '<i class="bi bi-clipboard me-2"></i>Copy',
+								className: 'dropdown-item',
+								exportOptions: {
+									columns: [1, 2, 3, 4]
+								}
+							}
+						]
+					}
+				],
+			});
+		});
+		// Delete Record
+		$(document).on('click', '.delete-record', function() {
+			var kr_id = $(this).data('id'),
+				kr_name = $(this).data('name');
+
+			Swal.fire({
+				title: 'Hapus kriteria?',
+				text: "Anda akan menghapus sub kriteria " + kr_name +
+					". Jika sudah dilakukan perbandingan, perbandingan akan dihapus!",
+				icon: 'question',
+				showCancelButton: true,
+				confirmButtonText: 'Ya',
+				cancelButtonText: 'Tidak',
+				customClass: {
+					confirmButton: 'btn btn-primary me-3',
+					cancelButton: 'btn btn-label-secondary'
+				},
+				buttonsStyling: false
+			}).then(function(result) {
+				if (result.value) {
+					// delete the data
+					$.ajax({
+						type: 'DELETE',
+						url: '/kriteria/del/' + kr_id,
+						data: {
+							"_token": "{{ csrf_token() }}"
+						},
+						success: function(data) {
+							dt_kriteria.draw();
+							// success sweetalert
+							Swal.fire({
+								icon: 'success',
+								title: 'Dihapus',
+								text: data.message,
+								customClass: {
+									confirmButton: 'btn btn-success'
+								}
+							});
+						},
+						error: function(xhr, stat) {
+							Swal.fire({
+								icon: 'error',
+								title: 'Gagal hapus',
+								text: xhr
+									.responseJSON
+									.message ??
+									stat,
+								customClass: {
+									confirmButton: 'btn btn-success'
+								}
+							});
+						}
+					});
+				} else if (result.dismiss === Swal.DismissReason
+					.cancel) {
+					Swal.fire({
+						title: 'Dibatalkan',
+						text: 'Kriteria tidak dihapus.',
+						icon: 'warning',
+						customClass: {
+							confirmButton: 'btn btn-success'
+						}
+					});
+				}
+			});
+		});
+		$('#CritForm').on('submit', function(event) {
+			event.preventDefault();
+			$.ajax({
+				data: $('#CritForm').serialize(),
+				url: '/kriteria/store',
+				type: 'POST',
+				beforeSend: function() {
+					$('.data-submit').prop('disabled', true);
+				},
+				complete: function() {
+					$('.data-submit').prop('disabled', false);
+				},
+				success: function(status) {
+					dt_kriteria.draw();
+					$('#CritModal').modal('hide');
+
+					// sweetalert
+					Swal.fire({
+						icon: 'success',
+						title: 'Sukses',
+						text: status.message,
+						customClass: {
+							confirmButton: 'btn btn-success'
+						}
+					});
+				},
+				error: function(xhr, code) {
+					Swal.fire({
+						title: 'Gagal',
+						text: xhr.responseJSON.message ??
+							code,
+						icon: 'error',
+						customClass: {
+							confirmButton: 'btn btn-success'
+						}
+					});
+				}
+			});
+		});
+		// edit record
+		$(document).on('click', '.edit-record', function() {
+			var kr_id = $(this).data('id');
+			$('#CritForm :input').prop('disabled', true);
+			// changing the title of offcanvas
+			$('#CritLabel').html('Edit Kriteria');
+
+			// get data
+			$.get('/kriteria/edit/' + kr_id, function(data) {
+					$('#kriteria-id').val(data.id);
+					$('#nama-krit').val(data.name);
+					$('#tipe-kriteria').val(data.type);
+					$('#deskripsi').val(data.desc);
+				}).fail(function(xhr, status) {
+					Swal.fire({
+						icon: 'error',
+						title: 'Kesalahan',
+						text: xhr.responseJSON.message ?? status,
+						customClass: {
+							confirmButton: 'btn btn-success'
+						}
+					});
+				})
+				.always(function() {
+					$('#CritForm :input').prop('disabled', false);
 				});
-			} catch (dterr) {
-				Toastify({
-					text: "DataTables Error: " + dterr.message,
-					duration: 4000,
-					backgroundColor: "#dc3545",
-				}).showToast();
-			}
+		});
+		// clearing form data when modal hidden
+		$('#CritModal').on('hidden.bs.modal', function() {
+			$('#CritForm')[0].reset();
+			$('#CritLabel').html('Tambah Kriteria');
 		});
 	</script>
 @endsection

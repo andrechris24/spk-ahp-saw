@@ -10,124 +10,48 @@
 			@include('components.warning')
 			@include('components.success')
 			@include('components.noscript')
-			<div class="modal fade text-left" id="DelAlterModal" tabindex="-1" role="dialog"
-				aria-labelledby="myModalLabel160" aria-hidden="true">
+			<div class="modal fade text-left" id="AlterModal" tabindex="-1"
+				role="dialog" aria-labelledby="AlterLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
 					role="document">
 					<div class="modal-content">
-						<div class="modal-header bg-warning">
-							<h5 class="modal-title white" id="myModalLabel160">
-								Hapus Alternatif
-							</h5>
+						<div class="modal-header">
+							<h4 class="modal-title" id="AlterLabel">Tambah Alternatif</h4>
 							<button type="button" class="close" data-bs-dismiss="modal"
 								aria-label="Close">
 								<i data-feather="x"></i>
 							</button>
 						</div>
 						<div class="modal-body">
-							<p id="del-desc">Anda akan menghapus sebuah alternatif.</p>
-							<p>Lanjutkan?</p>
-							@if ($ceknilai > 0)
-								<div class="alert alert-warning">
-									Menghapus alternatif akan menghapus Penilaian yang bersangkutan.
+							<form method="post" enctype="multipart/form-data" id="AlterForm">
+								@csrf
+								<input type="hidden" name="id" id="alter-id">
+								<label for="alter-name">Nama Alternatif</label>
+								<div class="form-group">
+									<input type="text" class="form-control" name="name"
+										id="alter-name" required />
 								</div>
-							@endif
+							</form>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-light-secondary"
 								data-bs-dismiss="modal">
 								<i class="bx bx-x d-block d-sm-none"></i>
-								<span class="d-none d-sm-block">Tidak</span>
+								<span class="d-none d-sm-block">Batal</span>
 							</button>
-							<a href="" class="btn btn-warning ml-1" id="del-action">
+							<button type="submit" class="btn btn-primary ml-1 data-submit"
+								form="AlterForm">
 								<i class="bx bx-check d-block d-sm-none"></i>
-								<span class="d-none d-sm-block">Ya</span>
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="modal fade text-left" id="AddAlterModal" tabindex="-1"
-				role="dialog" aria-labelledby="AddAlterLabel" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-					role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title" id="AddAlterLabel">Tambah Alternatif</h4>
-							<button type="button" class="close" data-bs-dismiss="modal"
-								aria-label="Close">
-								<i data-feather="x"></i>
+								<span class="d-none d-sm-block">Simpan</span>
 							</button>
 						</div>
-						<form action="{{ url('/alternatif/add') }}" method="post"
-							enctype="multipart/form-data">@csrf
-							<div class="modal-body">
-								<label for="name-add">Nama Alternatif</label>
-								<div class="form-group">
-									<input type="text" class="form-control" name="name" id="name-add"
-										required />
-								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-light-secondary"
-									data-bs-dismiss="modal">
-									<i class="bx bx-x d-block d-sm-none"></i>
-									<span class="d-none d-sm-block">Batal</span>
-								</button>
-								<button type="submit" class="btn btn-primary ml-1">
-									<i class="bx bx-check d-block d-sm-none"></i>
-									<span class="d-none d-sm-block">Tambah</span>
-								</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-			<div class="modal fade text-left" id="EditAlterModal" tabindex="-1"
-				role="dialog" aria-labelledby="EditAlterLabel" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-					role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title" id="EditAlterLabel">Edit Alternatif</h4>
-							<button type="button" class="close" data-bs-dismiss="modal"
-								aria-label="Close">
-								<i data-feather="x"></i>
-							</button>
-						</div>
-						<form action="{{ url('/alternatif/update/:id') }}" method="post"
-							enctype="multipart/form-data" name="editalternatif">@csrf
-							<div class="modal-body">
-								<label for="nama-edit">Nama Alternatif</label>
-								<div class="form-group">
-									<input type="text" class="form-control" name="name" id="nama-edit"
-										required />
-								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-light-secondary"
-									data-bs-dismiss="modal">
-									<i class="bx bx-x d-block d-sm-none"></i>
-									<span class="d-none d-sm-block">Batal</span>
-								</button>
-								<button type="submit" class="btn btn-primary ml-1">
-									<i class="bx bx-check d-block d-sm-none"></i>
-									<span class="d-none d-sm-block">Edit</span>
-								</button>
-							</div>
-						</form>
 					</div>
 				</div>
 			</div>
 			<div class="card">
 				<div class="card-header">Daftar Alternatif</div>
 				<div class="card-body">
-					<button type="button" class="btn btn-primary mb-3"
-						data-bs-toggle="modal" data-bs-target="#AddAlterModal">
-						<i class="bi bi-plus-lg"></i>
-						Tambah Alternatif
-					</button>
-					<table class="table table-hover" id="table-alter">
+					<table class="table table-hover" id="table-alter" style="width: 100%">
 						<thead>
 							<tr>
 								<th>No</th>
@@ -135,31 +59,6 @@
 								<th>Aksi</th>
 							</tr>
 						</thead>
-						<tbody>
-							@php($count = 0)
-							@foreach ($alt as $alternatif)
-								<tr>
-									<td>{{ ++$count }}</td>
-									<td>{{ $alternatif->name }}</td>
-									<td>
-										<div class="btn-group" role="button">
-											<button type="button" class="btn btn-primary"
-												data-bs-toggle="modal" data-bs-target="#EditAlterModal"
-												data-bs-id="{{ $alternatif->id }}" title="Edit" 
-												data-bs-name="{{ $alternatif->name }}">
-												<i class="bi bi-pencil-square"></i>
-											</button>
-											<button type="button" class="btn btn-danger"
-												data-bs-toggle="modal" data-bs-target="#DelAlterModal"
-												data-bs-id="{{ $alternatif->id }}" title="Hapus" 
-												data-bs-name="{{ $alternatif->name }}">
-												<i class="bi bi-trash3-fill"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-							@endforeach
-						</tbody>
 					</table>
 				</div>
 			</div>
@@ -169,57 +68,246 @@
 
 @section('js')
 	<script type="text/javascript">
-		const editAlterModal = document.getElementById('EditAlterModal');
-		editAlterModal.addEventListener('show.bs.modal', event => {
-			// Button that triggered the modal
-			const button = event.relatedTarget;
-			// Extract info from data-bs-* attributes
-			const nama = button.getAttribute('data-bs-name');
-			const id = button.getAttribute('data-bs-id');
-			// If necessary, you could initiate an AJAX request here
-			// and then do the updating in a callback.
-
-			// Update the modal's content.
-			const nameval = editAlterModal.querySelector('#nama-edit');
-			nameval.value = nama;
-			var formurl = "{{ url('/alternatif/update/:id') }}";
-			formurl = formurl.replace(':id', id);
-			document.editalternatif.action = formurl;
-		});
-		const delAlterModal = document.getElementById('DelAlterModal');
-		delAlterModal.addEventListener('show.bs.modal', event => {
-			const button = event.relatedTarget;
-			const id = button.getAttribute('data-bs-id');
-			const nama = button.getAttribute('data-bs-name');
-			const link = delAlterModal.querySelector('#del-action');
-			const desc = delAlterModal.querySelector('#del-desc');
-			var formurl = "{{ asset('/alternatif/del/:id') }}";
-			formurl = formurl.replace(':id', id);
-			desc.innerHTML = "Anda akan menghapus alternatif <b>" + nama +
-				"</b>.";
-			link.href = formurl;
-		});
+		var dt_alternatif;
 		$(document).ready(function() {
-			try {
-				$('#table-alter').DataTable({
-					"stateSave": true,
-					"lengthChange": false,
-					"searching": false,
-					columnDefs: [{
-						orderable: false,
-						targets: 2,
-					}],
-					language: {
-						url: "{{ asset('assets/DataTables-id.json') }}"
+			dt_alternatif = $('#table-alter').DataTable({
+				"stateSave": true,
+				"lengthChange": false,
+				"searching": false,
+				responsive:true,
+				serverSide: true,
+				processing: true,
+				ajax: "{{ route('alternatif.data') }}",
+				columns: [{
+						data: 'id'
+					},
+					{
+						data: 'name'
+					},
+					{
+						data: 'id'
 					}
+				],
+				columnDefs: [{
+					targets:0,
+					render:function(data,type,full,meta){
+						return meta.row + meta.settings._iDisplayStart + 1;
+					}
+				},
+				{ //Aksi
+					orderable: false,
+					targets: -1,
+					render: function(data, type, full) {
+						return (
+							'<div class="btn-group" role="group">' +
+							`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#AlterModal"><i class="bi bi-pencil-square"></i></button>` +
+							`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}"><i class="bi bi-trash3-fill"></i></button>` +
+							'</div>'
+						);
+					}
+				}],
+				language: {
+					url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
+				},
+				dom: 'Bfrtip',
+				buttons: [{
+						text: '<i class="bi bi-plus-lg me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Tambah Alternatif</span>',
+						className: 'add-new btn btn-primary',
+						attr: {
+							'data-bs-toggle': 'modal',
+							'data-bs-target': '#AlterModal'
+						}
+					},
+					{
+						extend: 'collection',
+						text: 'Ekspor',
+						buttons: [{
+								extend: 'print',
+								title: 'Alternatif',
+								text: '<i class="bi bi-printer me-2"></i>Print',
+								className: 'dropdown-item',
+								exportOptions: {
+									columns: [1]
+								}
+							},
+							{
+								extend: 'csv',
+								title: 'Alternatif',
+								text: '<i class="bi bi-file-text me-2"></i>CSV',
+								className: 'dropdown-item',
+								exportOptions: {
+									columns: [1]
+								}
+							},
+							{
+								extend: 'excel',
+								title: 'Alternatif',
+								text: '<i class="bi bi-file-spreadsheet me-2"></i>Excel',
+								className: 'dropdown-item',
+								exportOptions: {
+									columns: [1]
+								}
+							},
+							{
+								extend: 'pdf',
+								title: 'Alternatif',
+								text: '<i class="bi bi-file-text me-2"></i>PDF',
+								className: 'dropdown-item',
+								exportOptions: {
+									columns: [1]
+								}
+							},
+							{
+								extend: 'copy',
+								title: 'Alternatif',
+								text: '<i class="bi bi-clipboard me-2"></i>Copy',
+								className: 'dropdown-item',
+								exportOptions: {
+									columns: [1]
+								}
+							}
+						]
+					}
+				],
+			});
+			// dt_alternatif.buttons().container().appendTo('#table-alter_wrapper col-md-6:eq(0)');
+		});
+		// Delete Record
+		$(document).on('click', '.delete-record', function() {
+			var alt_id = $(this).data('id'),
+				alt_name = $(this).data('name');
+
+			Swal.fire({
+				title: 'Hapus alternatif?',
+				text: "Anda akan menghapus alternatif " + alt_name +
+					". Jika sudah dilakukan penilaian, penilaian terkait akan dihapus!",
+				icon: 'question',
+				showCancelButton: true,
+				confirmButtonText: 'Ya',
+				cancelButtonText: 'Tidak',
+				customClass: {
+					confirmButton: 'btn btn-primary me-3',
+					cancelButton: 'btn btn-label-secondary'
+				},
+				buttonsStyling: false
+			}).then(function(result) {
+				if (result.value) {
+					// delete the data
+					$.ajax({
+						type: 'DELETE',
+						url: '/alternatif/del/' + alt_id,
+						data: {
+							"_token": '{{ csrf_token() }}'
+						},
+						success: function() {
+							dt_alternatif.draw();
+							// success sweetalert
+							Swal.fire({
+								icon: 'success',
+								title: 'Dihapus',
+								text: 'Alternatif ' +
+									alt_name +
+									' sudah dihapus.',
+								customClass: {
+									confirmButton: 'btn btn-success'
+								}
+							});
+						},
+						error: function(xhr, stat) {
+							Swal.fire({
+								icon: 'error',
+								title: 'Gagal hapus',
+								text: xhr
+									.responseJSON
+									.message ??
+									stat,
+								customClass: {
+									confirmButton: 'btn btn-success'
+								}
+							});
+						}
+					});
+				} else if (result.dismiss === Swal.DismissReason
+					.cancel) {
+					Swal.fire({
+						title: 'Dibatalkan',
+						text: 'Alternatif tidak dihapus.',
+						icon: 'warning',
+						customClass: {
+							confirmButton: 'btn btn-success'
+						}
+					});
+				}
+			});
+		});
+		$('#AlterForm').on('submit', function(event) {
+			event.preventDefault();
+			$.ajax({
+				data: $('#AlterForm').serialize(),
+				url: '/alternatif/store',
+				type: 'POST',
+				beforeSend: function() {
+					$('.data-submit').prop('disabled', true);
+				},
+				complete: function() {
+					$('.data-submit').prop('disabled', false);
+				},
+				success: function(status) {
+					dt_alternatif.draw();
+					$('#AlterModal').modal('hide');
+
+					// sweetalert
+					Swal.fire({
+						icon: 'success',
+						title: 'Sukses',
+						text: status.message,
+						customClass: {
+							confirmButton: 'btn btn-success'
+						}
+					});
+				},
+				error: function(xhr, code) {
+					Swal.fire({
+						title: 'Gagal',
+						text: xhr.responseJSON.message ??
+							code,
+						icon: 'error',
+						customClass: {
+							confirmButton: 'btn btn-success'
+						}
+					});
+				}
+			});
+		});
+		// edit record
+		$(document).on('click', '.edit-record', function() {
+			var alt_id = $(this).data('id');
+			$('#AlterForm :input').prop('disabled', true);
+			// changing the title of offcanvas
+			$('#AlterLabel').html('Edit Alternatif');
+
+			// get data
+			$.get('/alternatif/edit/' + alt_id, function(data) {
+				$('#alter-id').val(data.id);
+				$('#alter-name').val(data.name);
+			}).fail(function(xhr, status) {
+					Swal.fire({
+						icon: 'error',
+						title: 'Kesalahan',
+						text: xhr.responseJSON.message ?? status,
+						customClass: {
+							confirmButton: 'btn btn-success'
+						}
+					});
+				})
+				.always(function() {
+					$('#AlterForm :input').prop('disabled', false);
 				});
-			} catch (dterr) {
-				Toastify({
-					text: "DataTables Error: " + dterr.message,
-					duration: 4000,
-					backgroundColor: "#dc3545",
-				}).showToast();
-			}
+		});
+		// clearing form data when modal hidden
+		$('#AlterModal').on('hidden.bs.modal', function() {
+			$('#AlterForm')[0].reset();
+			$('#AlterLabel').html('Tambah Alternatif');
 		});
 	</script>
 @endsection

@@ -20,7 +20,8 @@ class ForgotPasswordController extends Controller
 {
 	public function showForgetPasswordForm(): View|Factory|Application|RedirectResponse
 	{
-		if (Auth::viaRemember() || Auth::check()) return redirect()->intended();
+		if (Auth::viaRemember() || Auth::check())
+			return redirect()->intended();
 		return view('admin.forget-password');
 	}
 
@@ -44,22 +45,17 @@ class ForgotPasswordController extends Controller
 				->withError("Gagal mengirim link reset password: " . $sql->getMessage());
 		}
 		return back()
-		->withError('Gagal mengirim link reset password: Kesalahan tidak diketahui');
+			->withError('Gagal mengirim link reset password: Kesalahan tidak diketahui');
 	}
 	public function showResetPasswordForm($token): View|Factory|Application|RedirectResponse
 	{
-		if (Auth::viaRemember() || Auth::check()) return redirect()->intended();
+		if (Auth::viaRemember() || Auth::check())
+			return redirect()->intended();
 		try {
 			$enctoken = DB::table('password_resets')->where('email', $_GET['email'])
-			->first();
-			if (!$enctoken) {
-				return redirect('/forget-password')->withError(
-					'Link reset password sudah kedaluarsa. '.
-					'Silahkan minta reset password lagi.'
-				);
-			}
+				->firstOrFail();
 			$cek = Hash::check($token, $enctoken->token);
-			if (!$cek) 
+			if (!$cek)
 				return redirect('/login')->withError('Token reset password tidak valid');
 			return view(
 				'admin.reset-password',
@@ -67,7 +63,12 @@ class ForgotPasswordController extends Controller
 			);
 		} catch (QueryException $e) {
 			return redirect('/forget-password')
-			->withError('Kesalahan: ' . $e->getMessage());
+				->withError('Kesalahan: ' . $e->getMessage());
+		}catch(ModelNotFoundException){
+			return redirect('/forget-password')->withError(
+					'Link reset password sudah kedaluarsa. ' .
+					'Silahkan minta reset password lagi.'
+				);
 		}
 	}
 	public function submitResetPasswordForm(Request $request)

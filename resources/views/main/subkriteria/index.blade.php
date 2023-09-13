@@ -10,125 +10,35 @@
 			@include('components.warning')
 			@include('components.success')
 			@include('components.noscript')
-			<div class="modal fade text-left" id="DelSubCritModal" tabindex="-1"
-				role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
+			<div class="modal fade text-left" id="SubCritModal" tabindex="-1" role="dialog"
+				aria-labelledby="SubCritLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
 					role="document">
 					<div class="modal-content">
-						<div class="modal-header bg-warning">
-							<h5 class="modal-title white" id="myModalLabel160">
-								Hapus Sub Kriteria
-							</h5>
+						<div class="modal-header">
+							<h4 class="modal-title" id="SubCritLabel">
+								Tambah Sub Kriteria
+							</h4>
 							<button type="button" class="close" data-bs-dismiss="modal"
 								aria-label="Close">
 								<i data-feather="x"></i>
 							</button>
 						</div>
 						<div class="modal-body">
-							<p id="del-desc">Anda akan menghapus sebuah sub kriteria.</p>
-							<p>Lanjutkan?</p>
-							@if ($compskr > 0)
-								<div class="alert alert-warning">
-									Menghapus sub kriteria akan mereset perbandingan sub kriteria
-									<b><span id="warning-msg">...</span></b>
-									jika perbandingan sudah dilakukan.
-									@if ($ceknilai > 0)
-										Penilaian alternatif yang berkaitan juga akan dihapus.
-									@endif
-								</div>
-							@endif
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-light-secondary"
-								data-bs-dismiss="modal">
-								<i class="bx bx-x d-block d-sm-none"></i>
-								<span class="d-none d-sm-block">Tidak</span>
-							</button>
-							<a href="" class="btn btn-warning ml-1" id="del-action">
-								<i class="bx bx-check d-block d-sm-none"></i>
-								<span class="d-none d-sm-block">Ya</span>
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="modal fade text-left" id="AddSubCritModal" tabindex="-1"
-				role="dialog" aria-labelledby="AddCritLabel" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-					role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title" id="AddSubCritLabel">
-							Tambah Sub Kriteria
-							</h4>
-							<button type="button" class="close" data-bs-dismiss="modal"
-								aria-label="Close">
-								<i data-feather="x"></i>
-							</button>
-						</div>
-						<form action="{{ url('/kriteria/sub/add') }}" method="post"
-							enctype="multipart/form-data">
-							@csrf
-							<div class="modal-body">
+							<form action="{{ url('/kriteria/sub/store') }}" method="post"
+								enctype="multipart/form-data" id="SubCritForm">
+								@csrf
+								<input type="hidden" name="id" id="subkriteria-id">
 								<label for="nama">Nama Sub Kriteria</label>
 								<div class="form-group">
-									<input type="text" class="form-control" name="name" id="nama"
+									<input type="text" class="form-control" name="name" id="nama-sub"
 										required />
 								</div>
 								<div class="input-group mb-3">
 									<label class="input-group-text" for="kriteria">
 										Kriteria
 									</label>
-									<select class="form-select" id="kriteria" name="kriteria_id" required>
-										<option value="">Pilih</option>
-										@foreach ($kriteria as $kr)
-											<option value="{{ $kr->id }}">{{ $kr->name }}</option>
-										@endforeach
-									</select>
-								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-light-secondary"
-									data-bs-dismiss="modal">
-									<i class="bx bx-x d-block d-sm-none"></i>
-									<span class="d-none d-sm-block">Batal</span>
-								</button>
-								<button type="submit" class="btn btn-primary ml-1">
-									<i class="bx bx-check d-block d-sm-none"></i>
-									<span class="d-none d-sm-block">Tambah</span>
-								</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-			<div class="modal fade text-left" id="EditSubCritModal" tabindex="-1"
-				role="dialog" aria-labelledby="EditSubCritLabel" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-					role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title" id="EditSubCritLabel">
-							Edit Sub Kriteria
-							</h4>
-							<button type="button" class="close" data-bs-dismiss="modal"
-								aria-label="Close">
-								<i data-feather="x"></i>
-							</button>
-						</div>
-						<form action="{{ url('/kriteria/sub/update/:id') }}" method="post"
-							enctype="multipart/form-data" name="editsubkriteria">@csrf
-							<div class="modal-body">
-								<label for="nama-edit">Nama Sub Kriteria</label>
-								<div class="form-group">
-									<input type="text" class="form-control" name="name"
-										id="nama-edit" required />
-								</div>
-								<div class="input-group mb-3">
-									<label class="input-group-text" for="kriteria-edit">
-										Kriteria
-									</label>
-									<select class="form-select" id="kriteria-edit" name="kriteria_id"
+									<select class="form-select" id="kriteria-select" name="kriteria_id"
 										required>
 										<option value="">Pilih</option>
 										@foreach ($kriteria as $kr)
@@ -136,31 +46,27 @@
 										@endforeach
 									</select>
 								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-light-secondary"
-									data-bs-dismiss="modal">
-									<i class="bx bx-x d-block d-sm-none"></i>
-									<span class="d-none d-sm-block">Batal</span>
-								</button>
-								<button type="submit" class="btn btn-primary ml-1">
-									<i class="bx bx-check d-block d-sm-none"></i>
-									<span class="d-none d-sm-block">Edit</span>
-								</button>
-							</div>
-						</form>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-light-secondary"
+								data-bs-dismiss="modal">
+								<i class="bx bx-x d-block d-sm-none"></i>
+								<span class="d-none d-sm-block">Batal</span>
+							</button>
+							<button type="submit" class="btn btn-primary ml-1 data-submit"
+								form="SubCritForm">
+								<i class="bx bx-check d-block d-sm-none"></i>
+								<span class="d-none d-sm-block">Tambah</span>
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="card">
 				<div class="card-header">Daftar Sub Kriteria</div>
 				<div class="card-body">
-					<button type="button" class="btn btn-primary mb-3"
-						data-bs-toggle="modal" data-bs-target="#AddSubCritModal">
-						<i class="bi bi-plus-lg"></i>
-						Tambah Sub Kriteria
-					</button>
-					<table class="table table-hover" id="table-subcrit">
+					<table class="table table-hover" id="table-subcrit" style="width: 100%">
 						<thead>
 							<tr>
 								<th>No</th>
@@ -173,37 +79,6 @@
 								<th>Aksi</th>
 							</tr>
 						</thead>
-						<tbody>
-							@php($count = 0)
-							@foreach ($subkriteria as $sk)
-								<tr>
-									<td>{{ ++$count }}</td>
-									<td>{{ $sk->name }}</td>
-									<td title="{{ $sk->kriteria->desc }}">
-										{{ $sk->kriteria->name }}
-									</td>
-									<td>{{ $sk->bobot }}</td>
-									<td>
-										<div class="btn-group" role="button">
-											<button type="button" class="btn btn-primary"
-												data-bs-toggle="modal" data-bs-target="#EditSubCritModal"
-												data-bs-id="{{ $sk->id }}" title="Edit" 
-												data-bs-name="{{ $sk->name }}"
-												data-bs-kr="{{ $sk->kriteria->id }}">
-												<i class="bi bi-pencil-square"></i>
-											</button>
-											<button type="button" class="btn btn-danger"
-												data-bs-toggle="modal" data-bs-target="#DelSubCritModal"
-												data-bs-id="{{ $sk->id }}" title="Hapus" 
-												data-bs-name="{{ $sk->name }}"
-												data-bs-kr="{{ $sk->kriteria->name }}">
-												<i class="bi bi-trash3-fill"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-							@endforeach
-						</tbody>
 					</table>
 				</div>
 			</div>
@@ -213,64 +88,250 @@
 
 @section('js')
 	<script type="text/javascript">
-		const editCriteriaModal = document.getElementById('EditSubCritModal');
-		editCriteriaModal.addEventListener('show.bs.modal', event => {
-			// Button that triggered the modal
-			const button = event.relatedTarget;
-			// Extract info from data-bs-* attributes
-			const nama = button.getAttribute('data-bs-name');
-			const idk = button.getAttribute('data-bs-kr');
-			const id = button.getAttribute('data-bs-id');
-			// If necessary, you could initiate an AJAX request here
-			// and then do the updating in a callback.
-
-			// Update the modal's content.
-			const nameval = editCriteriaModal.querySelector('#nama-edit');
-			const typeval = editCriteriaModal.querySelector('#kriteria-edit');
-			nameval.value = nama;
-			typeval.value = idk;
-			var formurl = "{{ url('/kriteria/sub/update/:id') }}";
-			formurl = formurl.replace(':id', id);
-			document.editsubkriteria.action = formurl;
-		});
-		const delCriteriaModal = document.getElementById('DelSubCritModal');
-		delCriteriaModal.addEventListener('show.bs.modal', event => {
-			const button = event.relatedTarget;
-			const id = button.getAttribute('data-bs-id');
-			const nama = button.getAttribute('data-bs-name');
-			const krnama = button.getAttribute('data-bs-kr');
-			const link = delCriteriaModal.querySelector('#del-action');
-			const desc = delCriteriaModal.querySelector('#del-desc');
-			const warnmsg = delCriteriaModal.querySelector('#warning-msg');
-			var formurl = "{{ url('/kriteria/sub/del/:id') }}";
-			formurl = formurl.replace(':id', id);
-			desc.innerHTML =
-				"Anda akan menghapus sub kriteria <b>" +
-				nama + "</b> (Kriteria " + krnama + ").";
-			warnmsg.textContent = krnama;
-			link.href = formurl;
-		});
+		var dt_subkriteria;
 		$(document).ready(function() {
-			try {
-				$('#table-subcrit').DataTable({
-					"stateSave": true,
-					"lengthChange": false,
-					"searching": false,
-					columnDefs: [{
-						orderable: false,
-						targets: 4,
-					}],
-					language: {
-						url: "{{ asset('assets/DataTables-id.json') }}"
+			dt_subkriteria = $('#table-subcrit').DataTable({
+				"stateSave": true,
+				"lengthChange": false,
+				"searching": false,
+				serverSide: true,
+				processing: true,
+				responsive:true,
+				ajax: "{{ route('subkriteria.data') }}",
+				columns: [{
+						data: 'id'
+					},
+					{
+						data: 'name'
+					},
+					{
+						data: 'kriteria_id'
+					},
+					{
+						data: 'bobot'
+					},
+					{
+						data: 'id'
 					}
+				],
+				columnDefs: [{
+					targets:0,
+					render:function(data,type,full,meta){
+						return meta.row + meta.settings._iDisplayStart + 1;
+					}
+				},
+				{ //Aksi
+					orderable: false,
+					targets: -1,
+					render: function(data, type, full) {
+						return (
+							'<div class="btn-group" role="group">' +
+							`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#SubCritModal"><i class="bi bi-pencil-square"></i></button>` +
+							`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}"><i class="bi bi-trash3-fill"></i></button>` +
+							'</div>'
+						);
+					}
+				}],
+				language: {
+					url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
+				},
+				dom: 'Bfrtip',
+				buttons: [{
+						text: '<i class="bi bi-plus-lg me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Tambah Sub Kriteria</span>',
+						className: 'add-new btn btn-primary',
+						attr: {
+							'data-bs-toggle': 'modal',
+							'data-bs-target': '#SubCritModal'
+						}
+					},
+					{
+						extend: 'collection',
+						text: 'Ekspor',
+						buttons: [{
+								extend: 'print',
+								title: 'Sub Kriteria',
+								text: '<i class="bi bi-printer me-2"></i>Print',
+								className: 'dropdown-item',
+								exportOptions: {
+									columns: [1, 2, 3]
+								}
+							},
+							{
+								extend: 'csv',
+								title: 'Sub Kriteria',
+								text: '<i class="bi bi-file-text me-2"></i>CSV',
+								className: 'dropdown-item',
+								exportOptions: {
+									columns: [1, 2, 3]
+								}
+							},
+							{
+								extend: 'excel',
+								title: 'Sub Kriteria',
+								text: '<i class="bi bi-file-spreadsheet me-2"></i>Excel',
+								className: 'dropdown-item',
+								exportOptions: {
+									columns: [1, 2, 3]
+								}
+							},
+							{
+								extend: 'pdf',
+								title: 'Sub Kriteria',
+								text: '<i class="bi bi-file-text me-2"></i>PDF',
+								className: 'dropdown-item',
+								exportOptions: {
+									columns: [1, 2, 3]
+								}
+							},
+							{
+								extend: 'copy',
+								title: 'Sub Kriteria',
+								text: '<i class="bi bi-clipboard me-2"></i>Copy',
+								className: 'dropdown-item',
+								exportOptions: {
+									columns: [1, 2, 3]
+								}
+							}
+						]
+					}
+				],
+			});
+		});
+		// Delete Record
+		$(document).on('click', '.delete-record', function() {
+			var sub_id = $(this).data('id'),
+				sub_name = $(this).data('name');
+
+			Swal.fire({
+				title: 'Hapus sub kriteria?',
+				text: "Anda akan menghapus sub kriteria " + sub_name +
+					". Jika sudah dilakukan perbandingan, perbandingan terkait akan dihapus!",
+				icon: 'question',
+				showCancelButton: true,
+				confirmButtonText: 'Ya',
+				cancelButtonText: 'Tidak',
+				customClass: {
+					confirmButton: 'btn btn-primary me-3',
+					cancelButton: 'btn btn-label-secondary'
+				},
+				buttonsStyling: false
+			}).then(function(result) {
+				if (result.value) {
+					// delete the data
+					$.ajax({
+						type: 'DELETE',
+						url: '/kriteria/sub/del/' + sub_id,
+						data: {
+							"_token": "{{ csrf_token() }}"
+						},
+						success: function(data) {
+							dt_subkriteria.draw();
+							// success sweetalert
+							Swal.fire({
+								icon: 'success',
+								title: 'Dihapus',
+								text: data.message,
+								customClass: {
+									confirmButton: 'btn btn-success'
+								}
+							});
+						},
+						error: function(xhr, stat) {
+							Swal.fire({
+								icon: 'error',
+								title: 'Gagal hapus',
+								text: xhr
+									.responseJSON
+									.message ??
+									stat,
+								customClass: {
+									confirmButton: 'btn btn-success'
+								}
+							});
+						}
+					});
+				} else if (result.dismiss === Swal.DismissReason
+					.cancel) {
+					Swal.fire({
+						title: 'Dibatalkan',
+						text: 'Sub Kriteria tidak dihapus.',
+						icon: 'warning',
+						customClass: {
+							confirmButton: 'btn btn-success'
+						}
+					});
+				}
+			});
+		});
+		$('#SubCritForm').on('submit', function(event) {
+			event.preventDefault();
+			$.ajax({
+				data: $('#SubCritForm').serialize(),
+				url: '/kriteria/sub/store',
+				type: 'POST',
+				beforeSend: function() {
+					$('.data-submit').prop('disabled', true);
+				},
+				complete: function() {
+					$('.data-submit').prop('disabled', false);
+				},
+				success: function(status) {
+					dt_subkriteria.draw();
+					$('#SubCritModal').modal('hide');
+
+					// sweetalert
+					Swal.fire({
+						icon: 'success',
+						title: 'Sukses',
+						text: status.message,
+						customClass: {
+							confirmButton: 'btn btn-success'
+						}
+					});
+				},
+				error: function(xhr, code) {
+					Swal.fire({
+						title: 'Gagal',
+						text: xhr.responseJSON.message ??
+							code,
+						icon: 'error',
+						customClass: {
+							confirmButton: 'btn btn-success'
+						}
+					});
+				}
+			});
+		});
+		// edit record
+		$(document).on('click', '.edit-record', function() {
+			var sub_id = $(this).data('id');
+			$('#SubCritForm :input').prop('disabled', true);
+			// changing the title of offcanvas
+			$('#SubCritLabel').html('Edit Sub Kriteria');
+
+			// get data
+			$.get('/kriteria/sub/edit/' + sub_id, function(data) {
+					$('#subkriteria-id').val(data.id);
+					$('#nama-sub').val(data.name);
+					$('#kriteria-select').val(data.kriteria_id);
+				}).fail(function(xhr, status) {
+					Swal.fire({
+						icon: 'error',
+						title: 'Kesalahan',
+						text: xhr.responseJSON.message ?? status,
+						customClass: {
+							confirmButton: 'btn btn-success'
+						}
+					});
+				})
+				.always(function() {
+					$('#SubCritForm :input').prop('disabled', false);
 				});
-			} catch (dterr) {
-				Toastify({
-					text: "DataTables Error: " + dterr.message,
-					duration: 4000,
-					backgroundColor: "#dc3545",
-				}).showToast();
-			}
+		});
+		// clearing form data when modal hidden
+		$('#SubCritModal').on('hidden.bs.modal', function() {
+			$('#SubCritForm')[0].reset();
+			$('#SubCritLabel').html('Tambah Sub Kriteria');
 		});
 	</script>
 @endsection

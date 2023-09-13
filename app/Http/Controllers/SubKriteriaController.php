@@ -9,6 +9,7 @@ use App\Models\SubKriteriaComp;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class SubKriteriaController extends Controller
 {
@@ -27,15 +28,33 @@ class SubKriteriaController extends Controller
 			compact('kriteria', 'subkriteria', 'compskr', 'ceknilai')
 		);
 	}
-
+	public function show(Request $request)
+	{
+		try {
+			$subkriteria = SubKriteria::query();
+			return DataTables::eloquent($subkriteria)
+				->editColumn('kriteria_id', function (SubKriteria $skr) {
+					return $skr->kriteria->name;
+				})->toJson();
+		} catch (QueryException $e) {
+			return response()->json(['message' => $e->getMessage()], 500);
+		}
+	}
 	public function store(Request $request)
 	{
 		$request->validate(SubKriteria::$rules, SubKriteria::$message);
-		$subs = $request->all();
+		$subID = $request->id;
 		try {
-			$subkriteria = SubKriteria::create($subs);
-			$namakriteria = $subkriteria->kriteria->name;
-			if ($subkriteria) {
+			if ($subID) {
+				$sub = SubKriteria::updateOrCreate(
+					['id' => $subID],
+					['name' => $request->name, 'kriteria_id' => $request->kriteria_id]
+				);
+				$querytype = "diupdate.";
+			} else {
+				$sub = SubKriteria::create($request->all());
+				$namakriteria = $sub->kriteria->name;
+				$querytype = "ditambah. ";
 				$cek = SubKriteriaComp::where('idkriteria', '=', $request->kriteria_id)
 					->count();
 				if ($cek > 0) {
@@ -43,36 +62,27 @@ class SubKriteriaController extends Controller
 						->delete();
 					SubKriteria::where('kriteria_id', '=', $request->kriteria_id)
 						->update(['bobot', 0.0000]);
-					return back()->withSuccess(
-						'Sub kriteria sudah ditambahkan. ' .
-						'Silahkan input ulang perbandingan sub kriteria ' . $namakriteria . '.'
-					);
+					$querytype .= "Silahkan input ulang perbandingan sub kriteria $namakriteria.";
 				}
-				return back()->withSuccess('Sub kriteria sudah ditambahkan');
 			}
-		} catch (QueryException $sql) {
-			return back()->withError('Gagal menambah sub kriteria: ')
-				->withErrors($sql->getMessage());
+		} catch (QueryException $e) {
+			return response()->json(['message' => $e->getMessage()], 500);
 		}
-		return back()
-		->withError('Gagal menambah sub kriteria: Kesalahan tidak diketahui');
+		if ($sub) {
+			return response()->json(['message' => 'Sub Kriteria sudah ' . $querytype]);
+		}
+		return response()->json(['message' => 'Kesalahan tidak diketahui'], 500);
 	}
-
-	public function update(Request $request, $id)
+	public function edit($id)
 	{
 		try {
-			$req = $request->all();
-			$upd=SubKriteria::findOrFail($id)->update($req);
-			if($upd) return back()->withSuccess('Data Sub Kriteria sudah diupdate');
-		} catch (ModelNotFoundException $e) {
-			return back()->withError('Gagal update: Sub Kriteria tidak ditemukan')
-				->withErrors($e->getMessage());
-		} catch (QueryException $sql) {
-			return back()->withError('Gagal update sub kriteria:')
-				->withErrors($sql->getMessage());
+			$sub = SubKriteria::where('id', $id)->firstOrFail();
+			return response()->json($sub);
+		} catch (QueryException $e) {
+			return response()->json(["message" => $e->getMessage()], 500);
+		} catch (ModelNotFoundException $err) {
+			return response()->json(['message' => $err->getMessage()], 404);
 		}
-		return back()
-		->withError('Gagal update Sub Kriteria: Kesalahan tidak diketahui');
 	}
 
 	public function destroy($id)
@@ -88,19 +98,18 @@ class SubKriteriaController extends Controller
 			if ($subkrcomp->count() > 0) {
 				$subkrcomp->delete();
 				SubKriteria::where('kriteria_id', $idkriteria)
-				->update(['bobot' => 0.0000]);
-				return back()->withSuccess(
+					->update(['bobot' => 0.0000]);
+				return response()->json([
+					'message' =>
 					'Data Sub Kriteria sudah dihapus. ' .
 					'Silahkan input ulang perbandingan sub kriteria ' . $namakriteria . '.'
-				);
+				]);
 			}
-			return back()->withSuccess('Data Sub Kriteria sudah dihapus');
+			return response()->json(['message' => 'Data Sub Kriteria sudah dihapus']);
 		} catch (ModelNotFoundException $e) {
-			return back()->withError('Gagal hapus: Data Sub Kriteria tidak ditemukan')
-				->withErrors($e->getMessage());
+			return response()->json(['message' => 'Data Sub Kriteria tidak ditemukan'], 404);
 		} catch (QueryException $sql) {
-			return back()->withError('Gagal hapus:')
-				->withErrors($sql->getMessage());
+			return response()->json(['message' => $sql->getMessage()], 500);
 		}
 	}
 }

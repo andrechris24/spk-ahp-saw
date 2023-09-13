@@ -33,10 +33,8 @@
 								<i class="bi bi-capslock-fill"></i> CAPS LOCK nyala
 							</div>
 							<p>Apakah Anda yakin ingin menghapus akun?</p>
-							<p>
-								Jika yakin, masukkan password Anda.
-								Anda akan keluar secara otomatis setelah menghapus akun.
-							</p>
+							<p>Jika yakin, masukkan password Anda.
+								Anda akan keluar secara otomatis setelah menghapus akun.</p>
 							<div class="form-group">
 								<input type="password" name="del_password" id="pass-del"
 									class="form-control @error('del_password') is-invalid @enderror "

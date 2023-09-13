@@ -71,13 +71,11 @@ This Laravel Webpage was made with version 9.52 and PHP version 8.1.
 
 1. Download or clone this repository
 2. Navigate to downloaded repository, then open Terminal window.
-3. Enter `composer install`. If you receive message _Your lock file does not contain compatible sets of packages_, enter `composer update`.
+3. Enter `composer install`.
 4. Rename `.env.example` to `.env`, then set appropriate Database name.
 5. Enter `php artisan key:generate`
 6. Enter `php artisan migrate --seed`
 7. Enter `php artisan serve`, then open http://localhost:8000/
-
-If step 3 fails, delete *composer.lock* file, then try again.
 
 ### Credentials
 

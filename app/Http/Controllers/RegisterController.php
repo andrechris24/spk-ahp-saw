@@ -16,7 +16,8 @@ class RegisterController extends Controller
 {
 	public function show(): View|Factory|Application|RedirectResponse
 	{
-		if (Auth::viaRemember() || Auth::check()) return redirect()->intended();
+		if (Auth::viaRemember() || Auth::check())
+			return redirect()->intended();
 		return view('admin.register');
 	}
 
@@ -41,7 +42,7 @@ class RegisterController extends Controller
 				->withSuccess("Registrasi akun berhasil, selamat datang");
 		} catch (QueryException $e) {
 			return back()->withInput()
-			->withError("Registrasi akun gagal: " . $e->getMessage());
+				->withError("Registrasi akun gagal: " . $e->getMessage());
 		}
 	}
 }

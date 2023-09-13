@@ -12,9 +12,7 @@
 				<td>1</td>
 			</tr>
 			<tr>
-				<td>
-					Satu elemen sedikit lebih penting daripada elemen lain
-				</td>
+				<td>Satu elemen sedikit lebih penting daripada elemen lain</td>
 				<td>3</td>
 			</tr>
 			<tr>
@@ -22,9 +20,7 @@
 				<td>5</td>
 			</tr>
 			<tr>
-				<td>
-					Satu elemen lebih mutlak penting daripada elemen lain
-				</td>
+				<td>Satu elemen lebih mutlak penting daripada elemen lain</td>
 				<td>7</td>
 			</tr>
 			<tr>
