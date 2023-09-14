@@ -10,8 +10,8 @@
 			@include('components.warning')
 			@include('components.success')
 			@include('components.noscript')
-			<div class="modal fade text-left" id="AlterModal" tabindex="-1"
-				role="dialog" aria-labelledby="AlterLabel" aria-hidden="true">
+			<div class="modal fade text-left" id="AlterModal" tabindex="-1" role="dialog"
+				aria-labelledby="AlterLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
 					role="document">
 					<div class="modal-content">
@@ -51,6 +51,10 @@
 			<div class="card">
 				<div class="card-header">Daftar Alternatif</div>
 				<div class="card-body">
+					<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#AlterModal" id="spare-button">
+						<i class="bi bi-plus-lg me-0 me-sm-1"></i>
+						Tambah Alternatif
+					</button>
 					<table class="table table-hover" id="table-alter" style="width: 100%">
 						<thead>
 							<tr>
@@ -70,107 +74,119 @@
 	<script type="text/javascript">
 		var dt_alternatif;
 		$(document).ready(function() {
-			dt_alternatif = $('#table-alter').DataTable({
-				"stateSave": true,
-				"lengthChange": false,
-				"searching": false,
-				responsive:true,
-				serverSide: true,
-				processing: true,
-				ajax: "{{ route('alternatif.data') }}",
-				columns: [{
-						data: 'id'
-					},
-					{
-						data: 'name'
-					},
-					{
-						data: 'id'
-					}
-				],
-				columnDefs: [{
-					targets:0,
-					render:function(data,type,full,meta){
-						return meta.row + meta.settings._iDisplayStart + 1;
-					}
-				},
-				{ //Aksi
-					orderable: false,
-					targets: -1,
-					render: function(data, type, full) {
-						return (
-							'<div class="btn-group" role="group">' +
-							`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#AlterModal"><i class="bi bi-pencil-square"></i></button>` +
-							`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}"><i class="bi bi-trash3-fill"></i></button>` +
-							'</div>'
-						);
-					}
-				}],
-				language: {
-					url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
-				},
-				dom: 'Bfrtip',
-				buttons: [{
-						text: '<i class="bi bi-plus-lg me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Tambah Alternatif</span>',
-						className: 'add-new btn btn-primary',
-						attr: {
-							'data-bs-toggle': 'modal',
-							'data-bs-target': '#AlterModal'
+			try{
+				dt_alternatif = $('#table-alter').DataTable({
+					"stateSave": true,
+					"lengthChange": false,
+					"searching": false,
+					responsive: true,
+					serverSide: true,
+					processing: true,
+					ajax: "{{ route('alternatif.data') }}",
+					columns: [{
+							data: 'id'
+						},
+						{
+							data: 'name'
+						},
+						{
+							data: 'id'
 						}
-					},
-					{
-						extend: 'collection',
-						text: 'Ekspor',
-						buttons: [{
-								extend: 'print',
-								title: 'Alternatif',
-								text: '<i class="bi bi-printer me-2"></i>Print',
-								className: 'dropdown-item',
-								exportOptions: {
-									columns: [1]
-								}
-							},
-							{
-								extend: 'csv',
-								title: 'Alternatif',
-								text: '<i class="bi bi-file-text me-2"></i>CSV',
-								className: 'dropdown-item',
-								exportOptions: {
-									columns: [1]
-								}
-							},
-							{
-								extend: 'excel',
-								title: 'Alternatif',
-								text: '<i class="bi bi-file-spreadsheet me-2"></i>Excel',
-								className: 'dropdown-item',
-								exportOptions: {
-									columns: [1]
-								}
-							},
-							{
-								extend: 'pdf',
-								title: 'Alternatif',
-								text: '<i class="bi bi-file-text me-2"></i>PDF',
-								className: 'dropdown-item',
-								exportOptions: {
-									columns: [1]
-								}
-							},
-							{
-								extend: 'copy',
-								title: 'Alternatif',
-								text: '<i class="bi bi-clipboard me-2"></i>Copy',
-								className: 'dropdown-item',
-								exportOptions: {
-									columns: [1]
-								}
+					],
+					columnDefs: [{
+							targets: 0,
+							render: function(data, type, full, meta) {
+								return meta.row + meta.settings
+									._iDisplayStart + 1;
 							}
-						]
-					}
-				],
-			});
-			// dt_alternatif.buttons().container().appendTo('#table-alter_wrapper col-md-6:eq(0)');
+						},
+						{ //Aksi
+							orderable: false,
+							targets: -1,
+							render: function(data, type, full) {
+								return (
+									'<div class="btn-group" role="group">' +
+									`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#AlterModal"><i class="bi bi-pencil-square"></i></button>` +
+									`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}"><i class="bi bi-trash3-fill"></i></button>` +
+									'</div>'
+								);
+							}
+						}
+					],
+					language: {
+						url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
+					},
+					dom: 'Bfrtip',
+					buttons: [{
+							text: '<i class="bi bi-plus-lg me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Tambah Alternatif</span>',
+							className: 'add-new btn btn-primary',
+							attr: {
+								'data-bs-toggle': 'modal',
+								'data-bs-target': '#AlterModal'
+							}
+						},
+						{
+							extend: 'collection',
+							text: 'Ekspor',
+							buttons: [{
+									extend: 'print',
+									title: 'Alternatif',
+									text: '<i class="bi bi-printer me-2"></i>Print',
+									className: 'dropdown-item',
+									exportOptions: {
+										columns: [1]
+									}
+								},
+								{
+									extend: 'csv',
+									title: 'Alternatif',
+									text: '<i class="bi bi-file-text me-2"></i>CSV',
+									className: 'dropdown-item',
+									exportOptions: {
+										columns: [1]
+									}
+								},
+								{
+									extend: 'excel',
+									title: 'Alternatif',
+									text: '<i class="bi bi-file-spreadsheet me-2"></i>Excel',
+									className: 'dropdown-item',
+									exportOptions: {
+										columns: [1]
+									}
+								},
+								{
+									extend: 'pdf',
+									title: 'Alternatif',
+									text: '<i class="bi bi-file-text me-2"></i>PDF',
+									className: 'dropdown-item',
+									exportOptions: {
+										columns: [1]
+									}
+								},
+								{
+									extend: 'copy',
+									title: 'Alternatif',
+									text: '<i class="bi bi-clipboard me-2"></i>Copy',
+									className: 'dropdown-item',
+									exportOptions: {
+										columns: [1]
+									}
+								}
+							]
+						}
+					],
+				});
+			}catch(dterr){
+				Toastify({
+					text: "DataTables Error: " + dterr.message,
+					duration: 7000,
+					className: "danger",
+				}).showToast();
+				if ( ! $.fn.DataTable.isDataTable( '#table-alter' ) ) {
+				  $('#spare-button').removeClass('d-none');
+				}
+			}
 		});
 		// Delete Record
 		$(document).on('click', '.delete-record', function() {
@@ -288,9 +304,9 @@
 
 			// get data
 			$.get('/alternatif/edit/' + alt_id, function(data) {
-				$('#alter-id').val(data.id);
-				$('#alter-name').val(data.name);
-			}).fail(function(xhr, status) {
+					$('#alter-id').val(data.id);
+					$('#alter-name').val(data.name);
+				}).fail(function(xhr, status) {
 					Swal.fire({
 						icon: 'error',
 						title: 'Kesalahan',

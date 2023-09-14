@@ -214,7 +214,9 @@
 											<li>
 												<h6 class="dropdown-header">Pesan</h6>
 											</li>
-											<li><a class="dropdown-item" href="#">Tidak ada pesan</a></li>
+											<li>
+												<a class="dropdown-item" href="#">Tidak ada pesan</a>
+											</li>
 										</ul>
 									</li>
 									<li class="nav-item dropdown me-3">
@@ -245,7 +247,7 @@
 												</h6>
 											</div>
 											<div class="user-img d-flex">
-												<div class="avatar avatar-md">
+												<div class="avatar">
 													<i class="fas fa-user-circle fa-2x"></i>
 												</div>
 											</div>

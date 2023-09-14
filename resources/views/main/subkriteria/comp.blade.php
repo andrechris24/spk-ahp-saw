@@ -79,7 +79,8 @@
 																<th>
 																	<input type="radio" class="btn-check" value="left"
 																		name="kriteria[{{ $loop->index }}]" autocomplete="off"
-																		id="left-{{ $loop->index }}" required>
+																		id="left-{{ $loop->index }}" required
+																		@if (old('kriteria[' . $loop->index . ']') == 'left') checked @endif>
 																	<label class="btn btn-outline-light"
 																		for="left-{{ $loop->index }}">
 																		{{ $krit['baris'] }}
@@ -89,13 +90,14 @@
 																	<div class="input-group mb-3">
 																		<input type="number" name="skala[{{ $loop->index }}]"
 																			min="1" max="9" class="form-control text-center"
-																			required>
+																			value="{{ old('skala[' . $loop->index . ']') }}" required>
 																	</div>
 																</td>
 																<th>
 																	<input type="radio" class="btn-check" value="right"
 																		name="kriteria[{{ $loop->index }}]"
-																		id="right-{{ $loop->index }}" autocomplete="off">
+																		id="right-{{ $loop->index }}" autocomplete="off"
+																		@if (old('kriteria[' . $loop->index . ']') == 'right') checked @endif>
 																	<label class="btn btn-outline-light"
 																		for="right-{{ $loop->index }}">
 																		{{ $krit['kolom'] }}

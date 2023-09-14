@@ -106,8 +106,8 @@
 					<a href="{{ route('ranking.show') }}" class="btn btn-primary mb-3">
 						Lihat Grafik
 					</a>
-					<div class="table-responsive">
-						<table class="table table-hover text-center" id="table-hasil" style="width: 100%">
+						<table class="table table-hover text-center" id="table-hasil"
+							style="width: 100%">
 							<thead class="text-center">
 								<tr>
 									<th rowspan="2">Alternatif</th>
@@ -131,8 +131,10 @@
 											<th>{{ $alts->name }}</th>
 											@foreach ($lresult[$alts->id] as $datas)
 												<td>
-													<?php echo round($datas, 5);
-													$jml += round($datas, 5); ?>
+													@php
+													echo round($datas, 5);
+													$jml += round($datas, 5);
+													@endphp
 												</td>
 											@endforeach
 											@php($saw->simpanHasil($alts->id, $jml))
@@ -142,7 +144,6 @@
 								@endforeach
 							</tbody>
 						</table>
-					</div>
 				</div>
 			</div>
 		</section>
@@ -155,7 +156,7 @@
 				$('#table-hasil').DataTable({
 					"lengthChange": false,
 					"searching": false,
-					responsive:true,
+					responsive: true,
 					order: [
 						[1 + {{ $countkriteria }}, 'desc']
 					],
@@ -166,8 +167,8 @@
 			} catch (dterr) {
 				Toastify({
 					text: "DataTables Error: " + dterr.message,
-					duration: 4000,
-					backgroundColor: "#dc3545",
+					duration: 7000,
+					className: "danger",
 				}).showToast();
 			}
 		});

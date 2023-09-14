@@ -71,6 +71,10 @@
 			<div class="card">
 				<div class="card-header">Daftar Kriteria</div>
 				<div class="card-body">
+					<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#CritModal" id="spare-button">
+						<i class="bi bi-plus-lg me-0 me-sm-1"></i>
+						Tambah Kriteria
+					</button>
 					<table class="table table-hover" id="table-crit" style="width: 100%">
 						<thead>
 							<tr>
@@ -96,115 +100,128 @@
 	<script type="text/javascript">
 		var dt_kriteria;
 		$(document).ready(function() {
-			dt_kriteria = $('#table-crit').DataTable({
-				"stateSave": true,
-				"lengthChange": false,
-				"searching": false,
-				serverSide: true,
-				processing: true,
-				responsive:true,
-				ajax: "{{ route('kriteria.data') }}",
-				columns: [{
-						data: 'id'
-					},
-					{
-						data: 'name'
-					},
-					{
-						data: 'type'
-					},
-					{
-						data: 'desc'
-					},
-					{
-						data: 'bobot'
-					},
-					{
-						data: 'id'
-					}
-				],
-				columnDefs: [{
-					targets:0,
-					render:function(data,type,full,meta){
-						return meta.row + meta.settings._iDisplayStart + 1;
-					}
-				},
-				{ //Aksi
-					orderable: false,
-					targets: -1,
-					render: function(data, type, full) {
-						return (
-							'<div class="btn-group" role="group">' +
-							`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#CritModal"><i class="bi bi-pencil-square"></i></button>` +
-							`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}"><i class="bi bi-trash3-fill"></i></button>` +
-							'</div>'
-						);
-					}
-				}],
-				language: {
-					url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
-				},
-				dom: 'Bfrtip',
-				buttons: [{
-						text: '<i class="bi bi-plus-lg me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Tambah Kriteria</span>',
-						className: 'add-new btn btn-primary',
-						attr: {
-							'data-bs-toggle': 'modal',
-							'data-bs-target': '#CritModal'
+			try{
+				dt_kriteria = $('#table-crit').DataTable({
+					"stateSave": true,
+					"lengthChange": false,
+					"searching": false,
+					serverSide: true,
+					processing: true,
+					responsive: true,
+					ajax: "{{ route('kriteria.data') }}",
+					columns: [{
+							data: 'id'
+						},
+						{
+							data: 'name'
+						},
+						{
+							data: 'type'
+						},
+						{
+							data: 'desc'
+						},
+						{
+							data: 'bobot'
+						},
+						{
+							data: 'id'
 						}
-					},
-					{
-						extend: 'collection',
-						text: 'Ekspor',
-						buttons: [{
-								extend: 'print',
-								title: 'Kriteria',
-								text: '<i class="bi bi-printer me-2"></i>Print',
-								className: 'dropdown-item',
-								exportOptions: {
-									columns: [1, 2, 3, 4]
-								}
-							},
-							{
-								extend: 'csv',
-								title: 'Kriteria',
-								text: '<i class="bi bi-file-text me-2"></i>CSV',
-								className: 'dropdown-item',
-								exportOptions: {
-									columns: [1, 2, 3, 4]
-								}
-							},
-							{
-								extend: 'excel',
-								title: 'Kriteria',
-								text: '<i class="bi bi-file-spreadsheet me-2"></i>Excel',
-								className: 'dropdown-item',
-								exportOptions: {
-									columns: [1, 2, 3, 4]
-								}
-							},
-							{
-								extend: 'pdf',
-								title: 'Kriteria',
-								text: '<i class="bi bi-file-text me-2"></i>PDF',
-								className: 'dropdown-item',
-								exportOptions: {
-									columns: [1, 2, 3, 4]
-								}
-							},
-							{
-								extend: 'copy',
-								title: 'Kriteria',
-								text: '<i class="bi bi-clipboard me-2"></i>Copy',
-								className: 'dropdown-item',
-								exportOptions: {
-									columns: [1, 2, 3, 4]
-								}
+					],
+					columnDefs: [{
+							targets: 0,
+							render: function(data, type, full, meta) {
+								return meta.row + meta.settings
+									._iDisplayStart + 1;
 							}
-						]
-					}
-				],
-			});
+						},
+						{ //Aksi
+							orderable: false,
+							targets: -1,
+							render: function(data, type, full) {
+								return (
+									'<div class="btn-group" role="group">' +
+									`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#CritModal"><i class="bi bi-pencil-square"></i></button>` +
+									`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}"><i class="bi bi-trash3-fill"></i></button>` +
+									'</div>'
+								);
+							}
+						}
+					],
+					language: {
+						url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
+					},
+					dom: 'Bfrtip',
+					buttons: [{
+							text: '<i class="bi bi-plus-lg me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Tambah Kriteria</span>',
+							className: 'add-new btn btn-primary',
+							attr: {
+								'data-bs-toggle': 'modal',
+								'data-bs-target': '#CritModal'
+							}
+						},
+						{
+							extend: 'collection',
+							text: 'Ekspor',
+							buttons: [{
+									extend: 'print',
+									title: 'Kriteria',
+									text: '<i class="bi bi-printer me-2"></i>Print',
+									className: 'dropdown-item',
+									exportOptions: {
+										columns: [1, 2, 3, 4]
+									}
+								},
+								{
+									extend: 'csv',
+									title: 'Kriteria',
+									text: '<i class="bi bi-file-text me-2"></i>CSV',
+									className: 'dropdown-item',
+									exportOptions: {
+										columns: [1, 2, 3, 4]
+									}
+								},
+								{
+									extend: 'excel',
+									title: 'Kriteria',
+									text: '<i class="bi bi-file-spreadsheet me-2"></i>Excel',
+									className: 'dropdown-item',
+									exportOptions: {
+										columns: [1, 2, 3, 4]
+									}
+								},
+								{
+									extend: 'pdf',
+									title: 'Kriteria',
+									text: '<i class="bi bi-file-text me-2"></i>PDF',
+									className: 'dropdown-item',
+									exportOptions: {
+										columns: [1, 2, 3, 4]
+									}
+								},
+								{
+									extend: 'copy',
+									title: 'Kriteria',
+									text: '<i class="bi bi-clipboard me-2"></i>Copy',
+									className: 'dropdown-item',
+									exportOptions: {
+										columns: [1, 2, 3, 4]
+									}
+								}
+							]
+						}
+					],
+				});
+			}catch(dterr){
+				Toastify({
+					text: "DataTables Error: " + dterr.message,
+					duration: 7000,
+					className: "danger",
+				}).showToast();
+				if ( ! $.fn.DataTable.isDataTable( '#table-crit' ) ) {
+				  $('#spare-button').removeClass('d-none');
+				}
+			}
 		});
 		// Delete Record
 		$(document).on('click', '.delete-record', function() {

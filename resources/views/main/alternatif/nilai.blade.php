@@ -32,6 +32,7 @@
 								enctype="multipart/form-data" id="NilaiAlterForm">@csrf
 								<input type="hidden" name="alternatif_id" id="alternatif-hidden">
 								<input type="hidden" name="_method" value="PUT" id="form-method">
+								<input type="hidden" name="datatables_idx" id="edit-index">
 								<div class="input-group mb-3">
 									<label class="input-group-text" for="alternatif-value">
 										Nama Alternatif
@@ -64,72 +65,77 @@
 										</select>
 									</div>
 								@endforeach
-								</form>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-light-secondary"
-									data-bs-dismiss="modal">
-									<i class="bx bx-x d-block d-sm-none"></i>
-									<span class="d-none d-sm-block">Batal</span>
-								</button>
-								<button type="submit" class="btn btn-primary ml-1 data-submit" 
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-light-secondary"
+								data-bs-dismiss="modal">
+								<i class="bx bx-x d-block d-sm-none"></i>
+								<span class="d-none d-sm-block">Batal</span>
+							</button>
+							<button type="submit" class="btn btn-primary ml-1 data-submit"
 								form="NilaiAlterForm">
-									<i class="bx bx-check d-block d-sm-none"></i>
-									<span class="d-none d-sm-block">Simpan</span>
-								</button>
-							</div>
+								<i class="bx bx-check d-block d-sm-none"></i>
+								<span class="d-none d-sm-block">Simpan</span>
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="card">
 				<div class="card-header">Daftar Nilai Alternatif</div>
 				<div class="card-body">
+					<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#NilaiAlterModal" id="spare-button">
+						<i class="bi bi-plus-lg me-0 me-sm-1"></i>
+						Tambah Nilai Alternatif
+					</button>
 					<table class="table table-hover" id="table-nilaialt" style="width: 100%">
-							<thead>
-								<tr>
-									<th>Nama Alternatif</th>
-									@foreach ($kriteria as $kr)
-										<th title="{{ $kr->desc }}">{{ $kr->name }}</th>
-									@endforeach
-									<th>Aksi</th>
-								</tr>
-							</thead>
-							<tbody>
-								@foreach ($alternatif as $alt)
-									@php
-										$subcount = 0;
-										$subkr = [];
-										$skor = $nilaialt->where('alternatif_id', '=', $alt->id)->all();
-									@endphp
-									@if (count($skor) > 0)
-										<tr>
-											<td>{{ $alt->name }}</td>
-											@foreach ($skor as $skoralt)
-												@php
-													$subkr[$subcount]['subkriteria'] = $skoralt->subkriteria->id;
-													$subkr[$subcount]['kriteria'] = $skoralt->kriteria->id;
-												@endphp
-												<td>{{ $skoralt->subkriteria->name }}</td>
-												@php($subcount++)
-											@endforeach
-											<td>
-												<div class="btn-group" role="button">
-													<button type="button" class="btn btn-primary edit-record"
-													data-bs-toggle="modal" data-bs-target="#NilaiAlterModal"
-														data-bs-name="{{ $alt->id }}"
-														data-bs-score="{{ json_encode($subkr) }}">
-														<i class="bi bi-pencil-square"></i>
-													</button>
-													<button type="button" class="btn btn-danger delete-record"
-														data-bs-id="{{ $alt->id }}" data-bs-name="{{ $alt->name }}">
-														<i class="bi bi-trash3-fill"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-									@endif
+						<thead>
+							<tr>
+								<th>Nama Alternatif</th>
+								@foreach ($kriteria as $kr)
+									<th title="{{ $kr->desc }}">{{ $kr->name }}</th>
 								@endforeach
-							</tbody>
+								<th>Aksi</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach ($alternatif as $alt)
+								@php
+									$subcount = 0;
+									$subkr = [];
+									$skor = $nilaialt->where('alternatif_id', '=', $alt->id)->all();
+								@endphp
+								@if (count($skor) > 0)
+									<tr>
+										<td>{{ $alt->name }}</td>
+										@foreach ($skor as $skoralt)
+											@php
+												$subkr[$subcount]['subkriteria'] = $skoralt->subkriteria->id;
+												$subkr[$subcount]['kriteria'] = $skoralt->kriteria->id;
+											@endphp
+											<td>{{ $skoralt->subkriteria->name }}</td>
+											@php($subcount++)
+										@endforeach
+										<td>
+											<div class="btn-group" role="button">
+												<button type="button" class="btn btn-primary edit-record"
+													data-bs-toggle="modal" data-bs-target="#NilaiAlterModal"
+													data-bs-name="{{ $alt->id }}"
+													data-bs-score="{{ json_encode($subkr) }}">
+													<i class="bi bi-pencil-square"></i>
+												</button>
+												<button type="button" class="btn btn-danger delete-record"
+													data-bs-id="{{ $alt->id }}"
+													data-bs-name="{{ $alt->name }}">
+													<i class="bi bi-trash3-fill"></i>
+												</button>
+											</div>
+										</td>
+									</tr>
+								@endif
+							@endforeach
+						</tbody>
 					</table>
 					@if (count($nilaialt) > 0)
 						<a href="{{ route('nilai.show') }}" class="btn btn-success">
@@ -156,13 +162,10 @@
 					"stateSave": true,
 					"lengthChange": false,
 					"searching": false,
-					responsive:true,
-					// processing:true,
-					// serverSide:true,
-					// ajax:"{{route('nilai.table')}}",
+					responsive: true,
 					columnDefs: [{
-							orderable: false,
-							targets: -1
+						orderable: false,
+						targets: -1
 					}],
 					language: {
 						url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
@@ -231,18 +234,22 @@
 			} catch (dterr) {
 				Toastify({
 					text: "DataTables Error: " + dterr.message,
-					duration: 5000,
+					duration: 7000,
 					className: "danger",
 				}).showToast();
+				if ( ! $.fn.DataTable.isDataTable( '#table-nilaialt' ) ) {
+				  $('#spare-button').removeClass('d-none');
+				}
 			}
 		});
 		$(document).on('click', '.delete-record', function() {
 			var score_id = $(this).data('bs-id'),
 				score_name = $(this).data('bs-name'),
-				rowParent=$(this).parents('tr');
+				rowParent = $(this).parents('tr');
 			Swal.fire({
 				title: 'Hapus nilai alternatif?',
-				text: "Anda akan menghapus nilai alternatif " + score_name + ".",
+				text: "Anda akan menghapus nilai alternatif " +
+					score_name + ".",
 				icon: 'question',
 				showCancelButton: true,
 				confirmButtonText: 'Ya',
@@ -257,12 +264,14 @@
 					// delete the data
 					$.ajax({
 						type: 'DELETE',
-						url: '/alternatif/nilai/del/' + score_id,
+						url: '/alternatif/nilai/del/' +
+							score_id,
 						data: {
 							"_token": "{{ csrf_token() }}"
 						},
 						success: function(data) {
-							nilaialtdt.row(rowParent).remove().draw();
+							nilaialtdt.row(rowParent)
+								.remove().draw();
 							// success sweetalert
 							Swal.fire({
 								icon: 'success',
@@ -301,11 +310,12 @@
 			});
 		});
 		$('#NilaiAlterForm').on('submit', function(event) {
+			formmethod=$('#form-method').val()??'PUT';
 			event.preventDefault();
 			$.ajax({
 				data: $('#NilaiAlterForm').serialize(),
 				url: '/alternatif/nilai/store',
-				type: $('#form-method').val(),
+				type: formmethod,
 				beforeSend: function() {
 					$('.data-submit').prop('disabled', true);
 				},
@@ -314,6 +324,10 @@
 				},
 				success: function(status) {
 					$('#NilaiAlterModal').modal('hide');
+					if(formmethod=='PUT')
+						nilaialtdt.row.add(status).draw(false);
+					else
+						nilaialtdt.row($('#edit-index').val()).data(status).draw();
 
 					// sweetalert
 					Swal.fire({
@@ -324,11 +338,6 @@
 							confirmButton: 'btn btn-success'
 						}
 					});
-					Toastify({
-						text: 'Terdapat perubahan pada data Nilai Alternatif. Muat ulang untuk melihat perubahan.',
-						className: 'info',
-						duration: 15000
-					}).showToast();
 				},
 				error: function(xhr, code) {
 					Swal.fire({
@@ -345,12 +354,15 @@
 		});
 		// edit record
 		$(document).on('click', '.edit-record', function() {
-			// console.log($(this).data('bsScore'));
+			var dtparent=$(this).parents('tr');
+			var rownum=nilaialtdt.row(dtparent).index();
 			// changing the title of offcanvas
 			$('#NilaiAlterLabel').html('Edit Nilai Alternatif');
 			$('#form-method').val('PATCH');
 			$('#alternatif-value').val($(this).data('bsName'));
 			$('#alternatif-hidden').val($(this).data('bsName'));
+			$('#alternatif-value').prop('disabled',true);
+			$('#edit-index').val(rownum);
 			const data = $(this).data('bsScore');
 			data.forEach(split);
 		});
@@ -358,6 +370,7 @@
 		$('#NilaiAlterModal').on('hidden.bs.modal', function() {
 			$('#NilaiAlterForm')[0].reset();
 			$('#NilaiAlterLabel').html('Tambah Nilai Alternatif');
+			$('#alternatif-value').prop('disabled',false);
 		});
 	</script>
 @endsection

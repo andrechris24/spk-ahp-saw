@@ -17,17 +17,17 @@ class NilaiController extends Controller
 {
 	public function idxDataTables(Request $request)
 	{
-		$nilaialternatif=Nilai::query()->leftJoin(
+		$nilaialternatif = Nilai::query()->leftJoin(
 			'alternatif',
 			'alternatif.id',
 			'=',
 			'nilai.alternatif_id'
 		)->leftJoin('kriteria', 'kriteria.id', '=', 'nilai.kriteria_id')
 			->leftJoin('subkriteria', 'subkriteria.id', '=', 'nilai.subkriteria_id');
-			return DataTables::eloquent($nilaialternatif)
-				->editColumn('subkriteria_id', function (Nilai $skr) {
-					return $skr->subkriteria->name;
-				})->setRowId('alternatif_id')->toJson();
+		return DataTables::eloquent($nilaialternatif)
+			->editColumn('subkriteria_id', function (Nilai $skr) {
+				return $skr->subkriteria->name;
+			})->setRowId('alternatif_id')->toJson();
 	}
 
 	public function normalisasi($arr, $type, $skor): float|string
@@ -110,22 +110,39 @@ class NilaiController extends Controller
 		$scores = $request->all();
 		try {
 			$cek = Nilai::where('alternatif_id', '=', $scores['alternatif_id'])
-			->exists();
-			if ($cek){
+				->exists();
+			if ($cek) {
 				return response()->json([
-					'message'=>'Alternatif sudah digunakan dalam penilaian'
-				],422);
+					'message' => 'Alternatif sudah digunakan dalam penilaian'
+				], 422);
 			}
 			for ($a = 0; $a < count($scores['kriteria_id']); $a++) {
-				$nilai = new Nilai();
-				$nilai->alternatif_id = $scores['alternatif_id'];
-				$nilai->kriteria_id = $scores['kriteria_id'][$a];
-				$nilai->subkriteria_id = $scores['subkriteria_id'][$a];
-				$nilai->save();
+				$nilai[]=Nilai::create([
+					'alternatif_id'=>$scores['alternatif_id'],
+					'kriteria_id'=>$scores['kriteria_id'][$a],
+					'subkriteria_id'=>$scores['subkriteria_id'][$a]
+				]);
+				$hasil[$a+1]=$nilai[$a]->subkriteria->name;
+				$datas[]['subkriteria']=$scores['subkriteria_id'][$a];
+				$datas[]['kriteria']=$scores['subkriteria_id'][$a];
 			}
-			return response()->json(['message'=>'Penilaian alternatif sudah ditambahkan']);
+			$hasil[0]=$nilai[0]->alternatif->name;
+			$hasil[count($scores['kriteria_id'])+1]=
+			'<div class="btn-group" role="button">
+				<button type="button" class="btn btn-primary edit-record"
+					data-bs-toggle="modal" data-bs-target="#NilaiAlterModal"
+					data-bs-name="'.$request->alternatif_id.'" data-bs-score="'.json_encode($datas).'">
+					<i class="bi bi-pencil-square"></i>
+				</button>
+				<button type="button" class="btn btn-danger delete-record"
+					data-bs-id="'.$request->alternatif_id.'" data-bs-name="'.$hasil[0].'">
+					<i class="bi bi-trash3-fill"></i>
+				</button>
+			</div>';
+			$hasil['message']='Penilaian alternatif sudah ditambahkan';
+			return response()->json($hasil);
 		} catch (QueryException $e) {
-			return response()->json(['message'=>$e->getMessage()],500);
+			return response()->json(['message' => $e->getMessage()], 500);
 		}
 	}
 
@@ -175,19 +192,31 @@ class NilaiController extends Controller
 			$request->validate(Nilai::$updrules, Nilai::$message);
 			$scores = $request->all();
 			for ($a = 0; $a < count($scores['kriteria_id']); $a++) {
-				$Nilai[]=Nilai::updateOrCreate(
+				$Nilai[] = Nilai::updateOrCreate(
 					['alternatif_id' => $scores['alternatif_id'], 'kriteria_id' => $scores['kriteria_id'][$a]],
 					['subkriteria_id' => $scores['subkriteria_id'][$a]]
 				);
+				$hasil[$a+1]=$Nilai[$a]->subkriteria->name;
+				$datas[]['subkriteria']=$scores['subkriteria_id'][$a];
+				$datas[]['kriteria']=$scores['subkriteria_id'][$a];
 			}
-			// for($b=0;$b<count($scores['kriteria_id']);$b++){
-			// 	$scores['subkriteria_id'][$b]=(int)$scores['subkriteria_id'][$b];
-			// 	$scores['subkriteria_id'][$b]=$request->input('subkriteria.'.$b)->name;
-			// }
-			$scores['message']="Nilai Alternatif sudah diupdate";
-			return response()->json($scores);
+			$hasil[0]=$Nilai[0]->alternatif->name;
+			$hasil[count($scores['kriteria_id'])+1]=
+			'<div class="btn-group" role="button">
+				<button type="button" class="btn btn-primary edit-record"
+					data-bs-toggle="modal" data-bs-target="#NilaiAlterModal"
+					data-bs-name="'.$request->alternatif_id.'" data-bs-score="'.json_encode($datas).'">
+					<i class="bi bi-pencil-square"></i>
+				</button>
+				<button type="button" class="btn btn-danger delete-record"
+					data-bs-id="'.$request->alternatif_id.'" data-bs-name="'.$hasil[0].'">
+					<i class="bi bi-trash3-fill"></i>
+				</button>
+			</div>';
+			$hasil['message'] = "Nilai Alternatif sudah diupdate. Muat ulang untuk melihat perubahan.";
+			return response()->json($hasil);
 		} catch (QueryException $e) {
-			return response()->json(['message'=>$e->getMessage()],500);
+			return response()->json(['message' => $e->getMessage()], 500);
 		}
 	}
 
@@ -196,11 +225,12 @@ class NilaiController extends Controller
 		try {
 			$cek = Nilai::where('alternatif_id', '=', $id);
 			if (!$cek)
-				return response()->json(['message'=>'Penilaian alternatif tidak ditemukan'],404);
+				return response()->json(['message' => 'Penilaian alternatif tidak ditemukan'], 404);
 			$cek->delete();
-			return response()->json(['message'=>'Penilaian alternatif sudah dihapus']);
+			if(Nilai::count()===0) Nilai::trunate();
+			return response()->json(['message' => 'Penilaian alternatif sudah dihapus']);
 		} catch (QueryException $err) {
-			return response()->json(['message'=>$err->getMessage()],500);
+			return response()->json(['message' => $err->getMessage()], 500);
 		}
 	}
 }

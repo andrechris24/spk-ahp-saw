@@ -64,11 +64,11 @@ class ForgotPasswordController extends Controller
 		} catch (QueryException $e) {
 			return redirect('/forget-password')
 				->withError('Kesalahan: ' . $e->getMessage());
-		}catch(ModelNotFoundException){
+		} catch (ModelNotFoundException) {
 			return redirect('/forget-password')->withError(
-					'Link reset password sudah kedaluarsa. ' .
-					'Silahkan minta reset password lagi.'
-				);
+				'Link reset password sudah kedaluarsa. ' .
+				'Silahkan minta reset password lagi.'
+			);
 		}
 	}
 	public function submitResetPasswordForm(Request $request)

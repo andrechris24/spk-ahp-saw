@@ -25,15 +25,15 @@ class HasilController extends Controller
 	}
 	public function resultDataTables(Request $request)
 	{
-		$allcriterias=Kriteria::get();
+		$allcriterias = Kriteria::get();
 		$columns = [
 			1 => 'alternatif.id',
 			2 => 'alternatif.name',
 		];
 		foreach ($allcriterias as $krit) {
-			$columns[$krit->id+2]=Str::slug($krit->name,'-');
+			$columns[$krit->id + 2] = Str::slug($krit->name, '-');
 		}
-		$columns[]='skor';
+		$columns[] = 'skor';
 		// dd(array_key_last($columns));
 		$search = [];
 		$totalAlternatif = Alternatif::get();
@@ -52,10 +52,10 @@ class HasilController extends Controller
 
 		$totalFiltered = $totalData + Alternatif::count();
 
-		$limit = $request->input('length')??10;
+		$limit = $request->input('length') ?? 10;
 		$start = $request->input('start');
-		$order = $columns[$request->input('order.0.column')??array_key_last($columns)];
-		$dir = $request->input('order.0.dir')??'asc';
+		$order = $columns[$request->input('order.0.column') ?? array_key_last($columns)];
+		$dir = $request->input('order.0.dir') ?? 'asc';
 
 		if (empty($request->input('search.value'))) {
 			$alter = Nilai::leftJoin(
@@ -112,7 +112,7 @@ class HasilController extends Controller
 				$nestedData['fake_id'] = ++$ids;
 				$nestedData['name'] = $alternative->name;
 				foreach ($allcriterias as $krit) {
-					$nestedData[Str::slug($krit->name,'-')];
+					$nestedData[Str::slug($krit->name, '-')];
 				}
 				$data[] = $nestedData;
 			}
