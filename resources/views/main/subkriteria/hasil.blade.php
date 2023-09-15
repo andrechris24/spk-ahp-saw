@@ -179,8 +179,7 @@
 								<a href="{{ url('bobot/sub') }}" class="btn btn-secondary">
 									<i class="bi bi-arrow-left"></i> Kembali
 								</a>
-								<a href="{{ url('/bobot/sub/reset/' . $kriteria_id) }}"
-									class="btn btn-warning">
+								<a href="{{ url('/bobot/sub/reset/' . $kriteria_id) }}" class="btn btn-warning" onclick="event.preventDefault(); document.getElementById('reset-subkriteria').submit();">
 									<i class="bi bi-arrow-counterclockwise"></i> Reset
 								</a>
 								@if ($data['bobot_sub_kosong'] == 0)
@@ -189,6 +188,10 @@
 									</a>
 								@endif
 							</div>
+							<form action="{{ url('/bobot/sub/reset/' . $kriteria_id) }}" id="reset-subkriteria">
+								@csrf
+								@method('DELETE')
+							</form>
 						</div>
 					</div>
 				</div>

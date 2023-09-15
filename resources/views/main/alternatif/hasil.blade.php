@@ -106,44 +106,44 @@
 					<a href="{{ route('ranking.show') }}" class="btn btn-primary mb-3">
 						Lihat Grafik
 					</a>
-						<table class="table table-hover text-center" id="table-hasil"
-							style="width: 100%">
-							<thead class="text-center">
-								<tr>
-									<th rowspan="2">Alternatif</th>
-									<th colspan="{{ count($data['kriteria']) }}">Kriteria</th>
-									<th rowspan="2">Jumlah</th>
-								</tr>
-								<tr>
-									@foreach ($data['kriteria'] as $krit)
-										<th>{{ $krit->name }}</th>
-									@endforeach
-								</tr>
-							</thead>
-							<tbody>
-								@foreach ($data['alternatif'] as $alts)
-									@php
-										$rank = $hasil->where('alternatif_id', '=', $alts->id)->all();
-										$jml = 0;
-									@endphp
-									@if (count($rank) > 0)
-										<tr>
-											<th>{{ $alts->name }}</th>
-											@foreach ($lresult[$alts->id] as $datas)
-												<td>
-													@php
+					<table class="table table-hover text-center" id="table-hasil"
+						style="width: 100%">
+						<thead class="text-center">
+							<tr>
+								<th rowspan="2">Alternatif</th>
+								<th colspan="{{ count($data['kriteria']) }}">Kriteria</th>
+								<th rowspan="2">Jumlah</th>
+							</tr>
+							<tr>
+								@foreach ($data['kriteria'] as $krit)
+									<th>{{ $krit->name }}</th>
+								@endforeach
+							</tr>
+						</thead>
+						<tbody>
+							@foreach ($data['alternatif'] as $alts)
+								@php
+									$rank = $hasil->where('alternatif_id', '=', $alts->id)->all();
+									$jml = 0;
+								@endphp
+								@if (count($rank) > 0)
+									<tr>
+										<th>{{ $alts->name }}</th>
+										@foreach ($lresult[$alts->id] as $datas)
+											<td>
+												@php
 													echo round($datas, 5);
 													$jml += round($datas, 5);
-													@endphp
-												</td>
-											@endforeach
-											@php($saw->simpanHasil($alts->id, $jml))
-											<td>{{ $jml }}</td>
-										</tr>
-									@endif
-								@endforeach
-							</tbody>
-						</table>
+												@endphp
+											</td>
+										@endforeach
+										@php($saw->simpanHasil($alts->id, $jml))
+										<td>{{ $jml }}</td>
+									</tr>
+								@endif
+							@endforeach
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</section>
@@ -151,9 +151,10 @@
 @endsection
 @section('js')
 	<script type="text/javascript">
+		var dt_hasil;
 		$(document).ready(function() {
 			try {
-				$('#table-hasil').DataTable({
+				dt_hasil=$('#table-hasil').DataTable({
 					"lengthChange": false,
 					"searching": false,
 					responsive: true,
@@ -168,9 +169,10 @@
 				Toastify({
 					text: "DataTables Error: " + dterr.message,
 					duration: 7000,
-					className: "danger",
+					backgroundColor: "#dc3545"
 				}).showToast();
 			}
+	    dt_hasil.on('draw',setTableColor);
 		});
 	</script>
 @endsection

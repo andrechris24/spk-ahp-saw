@@ -35,7 +35,7 @@ class LoginController extends Controller
 				$request->session()->regenerate();
 				return redirect()->intended('home');
 			}
-			return back()->withErrors(['password' => 'Password salah'])->withInput();
+			return back()->withInput()->withErrors(['password' => 'Password salah']);
 		} catch (QueryException $e) {
 			return back()->withInput()->withError('Gagal login: ' . $e->getMessage());
 		}

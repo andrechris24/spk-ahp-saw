@@ -18,10 +18,8 @@ class KriteriaController extends Controller
 {
 	public function index(): Factory|View|Application
 	{
-		$krit = Kriteria::get();
-		$ceknilai = Nilai::count();
 		$compkr = KriteriaComp::count();
-		return view('main.kriteria.index', compact('krit', 'compkr', 'ceknilai'));
+		return view('main.kriteria.index', compact('compkr'));
 	}
 	public function show(Request $request)
 	{
@@ -54,9 +52,8 @@ class KriteriaController extends Controller
 		} catch (QueryException $e) {
 			return response()->json(['message' => $e->getMessage()], 500);
 		}
-		if ($krit) {
+		if ($krit)
 			return response()->json(['message' => 'Kriteria sudah ' . $querytype]);
-		}
 		return response()->json(['message' => 'Kesalahan tidak diketahui'], 500);
 	}
 	public function edit($id)

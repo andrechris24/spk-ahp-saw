@@ -16,16 +16,14 @@ class SubKriteriaController extends Controller
 	public function index()
 	{
 		$kriteria = Kriteria::get();
-		$subkriteria = SubKriteria::get();
 		$compskr = SubKriteriaComp::count();
-		$ceknilai = Nilai::count();
 		if (count($kriteria) === 0) {
 			return redirect('kriteria')
 				->withWarning('Tambahkan kriteria dulu sebelum menambah sub kriteria');
 		}
 		return view(
 			'main.subkriteria.index',
-			compact('kriteria', 'subkriteria', 'compskr', 'ceknilai')
+			compact('kriteria', 'compskr')
 		);
 	}
 	public function show(Request $request)
@@ -65,13 +63,10 @@ class SubKriteriaController extends Controller
 					$querytype .= "Silahkan input ulang perbandingan sub kriteria $namakriteria.";
 				}
 			}
+			return response()->json(['message' => 'Sub Kriteria sudah ' . $querytype]);
 		} catch (QueryException $e) {
 			return response()->json(['message' => $e->getMessage()], 500);
 		}
-		if ($sub) {
-			return response()->json(['message' => 'Sub Kriteria sudah ' . $querytype]);
-		}
-		return response()->json(['message' => 'Kesalahan tidak diketahui'], 500);
 	}
 	public function edit($id)
 	{
@@ -101,13 +96,15 @@ class SubKriteriaController extends Controller
 					->update(['bobot' => 0.0000]);
 				return response()->json([
 					'message' =>
-					'Data Sub Kriteria sudah dihapus. ' .
-					'Silahkan input ulang perbandingan sub kriteria ' . $namakriteria . '.'
+						'Data Sub Kriteria sudah dihapus. ' .
+						'Silahkan input ulang perbandingan sub kriteria ' . $namakriteria . '.'
 				]);
 			}
 			return response()->json(['message' => 'Data Sub Kriteria sudah dihapus']);
 		} catch (ModelNotFoundException $e) {
-			return response()->json(['message' => 'Data Sub Kriteria tidak ditemukan'], 404);
+			return response()->json([
+				'message' => 'Data Sub Kriteria tidak ditemukan'
+			], 404);
 		} catch (QueryException $sql) {
 			return response()->json(['message' => $sql->getMessage()], 500);
 		}

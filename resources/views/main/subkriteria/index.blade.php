@@ -26,9 +26,13 @@
 						</div>
 						<div class="modal-body">
 							<form action="{{ url('/kriteria/sub/store') }}" method="post"
-								enctype="multipart/form-data" id="SubCritForm">
-								@csrf
+								enctype="multipart/form-data" id="SubCritForm">@csrf
 								<input type="hidden" name="id" id="subkriteria-id">
+								@if ($compskr > 0)
+									<div class="alert alert-warning" id="subkriteria-alert">
+										Menambahkan sub kriteria akan mereset perbandingan sub kriteria terkait.
+									</div>
+								@endif
 								<label for="nama">Nama Sub Kriteria</label>
 								<div class="form-group">
 									<input type="text" class="form-control" name="name" id="nama-sub"
@@ -66,7 +70,8 @@
 			<div class="card">
 				<div class="card-header">Daftar Sub Kriteria</div>
 				<div class="card-body">
-					<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#SubCritModal" id="spare-button">
+					<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal"
+						data-bs-target="#SubCritModal" id="spare-button">
 						<i class="bi bi-plus-lg me-0 me-sm-1"></i>
 						Tambah Sub Kriteria
 					</button>
@@ -94,7 +99,7 @@
 	<script type="text/javascript">
 		var dt_subkriteria;
 		$(document).ready(function() {
-			try{
+			try {
 				dt_subkriteria = $('#table-subcrit').DataTable({
 					"stateSave": true,
 					"lengthChange": false,
@@ -121,7 +126,8 @@
 					],
 					columnDefs: [{
 							targets: 0,
-							render: function(data, type, full, meta) {
+							render: function(data, type, full,
+								meta) {
 								return meta.row + meta.settings
 									._iDisplayStart + 1;
 							}
@@ -203,16 +209,27 @@
 						}
 					],
 				});
-			}catch(dterr){
+			} catch (dterr) {
 				Toastify({
 					text: "DataTables Error: " + dterr.message,
 					duration: 7000,
-					className: "danger",
+					backgroundColor: "#dc3545"
 				}).showToast();
-				if ( ! $.fn.DataTable.isDataTable( '#table-subcrit' ) ) {
-				  $('#spare-button').removeClass('d-none');
+				if (!$.fn.DataTable.isDataTable('#table-subcrit')) {
+					$('#spare-button').removeClass('d-none');
 				}
 			}
+			$.fn.dataTable.ext.errMode = 'none';
+ 
+			dt_subkriteria.on( 'error.dt', function ( e, settings, techNote, message ) {
+				Toastify({
+					text: message,
+					backgroundColor: "#ffc107",
+					duration: 10000
+				}).showToast();
+				console.warn(techNote);
+	    });
+	    dt_subkriteria.on('draw',setTableColor);
 		});
 		// Delete Record
 		$(document).on('click', '.delete-record', function() {
@@ -325,6 +342,8 @@
 			$('#SubCritForm :input').prop('disabled', true);
 			// changing the title of offcanvas
 			$('#SubCritLabel').html('Edit Sub Kriteria');
+			if($('#subkriteria-alert').length)
+				$('#subkriteria-alert').addClass('d-none');
 
 			// get data
 			$.get('/kriteria/sub/edit/' + sub_id, function(data) {
@@ -349,6 +368,8 @@
 		$('#SubCritModal').on('hidden.bs.modal', function() {
 			$('#SubCritForm')[0].reset();
 			$('#SubCritLabel').html('Tambah Sub Kriteria');
+			if($('#subkriteria-alert').length)
+				$('#subkriteria-alert').removeClass('d-none');
 		});
 	</script>
 @endsection

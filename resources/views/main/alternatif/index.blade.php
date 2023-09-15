@@ -51,7 +51,8 @@
 			<div class="card">
 				<div class="card-header">Daftar Alternatif</div>
 				<div class="card-body">
-					<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#AlterModal" id="spare-button">
+					<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal"
+						data-bs-target="#AlterModal" id="spare-button">
 						<i class="bi bi-plus-lg me-0 me-sm-1"></i>
 						Tambah Alternatif
 					</button>
@@ -74,7 +75,7 @@
 	<script type="text/javascript">
 		var dt_alternatif;
 		$(document).ready(function() {
-			try{
+			try {
 				dt_alternatif = $('#table-alter').DataTable({
 					"stateSave": true,
 					"lengthChange": false,
@@ -95,7 +96,8 @@
 					],
 					columnDefs: [{
 							targets: 0,
-							render: function(data, type, full, meta) {
+							render: function(data, type, full,
+								meta) {
 								return meta.row + meta.settings
 									._iDisplayStart + 1;
 							}
@@ -177,16 +179,27 @@
 						}
 					],
 				});
-			}catch(dterr){
+			} catch (dterr) {
 				Toastify({
 					text: "DataTables Error: " + dterr.message,
 					duration: 7000,
-					className: "danger",
+					backgroundColor: "#dc3545"
 				}).showToast();
-				if ( ! $.fn.DataTable.isDataTable( '#table-alter' ) ) {
-				  $('#spare-button').removeClass('d-none');
+				if (!$.fn.DataTable.isDataTable('#table-alter')) {
+					$('#spare-button').removeClass('d-none');
 				}
 			}
+			$.fn.dataTable.ext.errMode = 'none';
+ 
+			dt_alternatif.on( 'error.dt', function ( e, settings, techNote, message ) {
+				Toastify({
+					text: message,
+					backgroundColor: "#ffc107",
+					duration: 10000
+				}).showToast();
+				console.warn(techNote);
+	    });
+	    dt_alternatif.on('draw',setTableColor);
 		});
 		// Delete Record
 		$(document).on('click', '.delete-record', function() {

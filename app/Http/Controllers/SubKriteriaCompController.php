@@ -55,8 +55,7 @@ class SubKriteriaCompController extends Controller
 				'Masukkan kriteria dulu untuk melakukan perbandingan sub kriteria'
 			);
 		}
-		$crit = SubKriteria::count();
-		if ($crit === 0) {
+		if (SubKriteria::count() === 0) {
 			return redirect('/kriteria/sub')->withWarning(
 				'Masukkan data sub kriteria dulu ' .
 				'untuk melakukan perbandingan sub kriteria'

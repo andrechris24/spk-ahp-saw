@@ -31,7 +31,7 @@
 							<form action="{{ url('/alternatif/nilai/store') }}" method="post"
 								enctype="multipart/form-data" id="NilaiAlterForm">@csrf
 								<input type="hidden" name="alternatif_id" id="alternatif-hidden">
-								<input type="hidden" name="_method" value="PUT" id="form-method">
+								<input type="hidden" name="_method" value="POST" id="form-method">
 								<input type="hidden" name="datatables_idx" id="edit-index">
 								<div class="input-group mb-3">
 									<label class="input-group-text" for="alternatif-value">
@@ -85,7 +85,8 @@
 			<div class="card">
 				<div class="card-header">Daftar Nilai Alternatif</div>
 				<div class="card-body">
-					<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#NilaiAlterModal" id="spare-button">
+					<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal"
+						data-bs-target="#NilaiAlterModal" id="spare-button">
 						<i class="bi bi-plus-lg me-0 me-sm-1"></i>
 						Tambah Nilai Alternatif
 					</button>
@@ -235,12 +236,13 @@
 				Toastify({
 					text: "DataTables Error: " + dterr.message,
 					duration: 7000,
-					className: "danger",
+					backgroundColor: "#dc3545"
 				}).showToast();
-				if ( ! $.fn.DataTable.isDataTable( '#table-nilaialt' ) ) {
-				  $('#spare-button').removeClass('d-none');
+				if (!$.fn.DataTable.isDataTable('#table-nilaialt')) {
+					$('#spare-button').removeClass('d-none');
 				}
 			}
+	    nilaialtdt.on('draw',setTableColor);
 		});
 		$(document).on('click', '.delete-record', function() {
 			var score_id = $(this).data('bs-id'),
@@ -310,7 +312,7 @@
 			});
 		});
 		$('#NilaiAlterForm').on('submit', function(event) {
-			formmethod=$('#form-method').val()??'PUT';
+			formmethod = $('#form-method').val() ?? 'PUT';
 			event.preventDefault();
 			$.ajax({
 				data: $('#NilaiAlterForm').serialize(),
@@ -324,10 +326,11 @@
 				},
 				success: function(status) {
 					$('#NilaiAlterModal').modal('hide');
-					if(formmethod=='PUT')
+					if (formmethod == 'PUT')
 						nilaialtdt.row.add(status).draw(false);
 					else
-						nilaialtdt.row($('#edit-index').val()).data(status).draw();
+						nilaialtdt.row($('#edit-index').val())
+						.data(status).draw();
 
 					// sweetalert
 					Swal.fire({
@@ -354,14 +357,14 @@
 		});
 		// edit record
 		$(document).on('click', '.edit-record', function() {
-			var dtparent=$(this).parents('tr');
-			var rownum=nilaialtdt.row(dtparent).index();
+			var dtparent = $(this).parents('tr');
+			var rownum = nilaialtdt.row(dtparent).index();
 			// changing the title of offcanvas
 			$('#NilaiAlterLabel').html('Edit Nilai Alternatif');
-			$('#form-method').val('PATCH');
+			$('#form-method').val('PUT');
 			$('#alternatif-value').val($(this).data('bsName'));
 			$('#alternatif-hidden').val($(this).data('bsName'));
-			$('#alternatif-value').prop('disabled',true);
+			$('#alternatif-value').prop('disabled', true);
 			$('#edit-index').val(rownum);
 			const data = $(this).data('bsScore');
 			data.forEach(split);
@@ -370,7 +373,7 @@
 		$('#NilaiAlterModal').on('hidden.bs.modal', function() {
 			$('#NilaiAlterForm')[0].reset();
 			$('#NilaiAlterLabel').html('Tambah Nilai Alternatif');
-			$('#alternatif-value').prop('disabled',false);
+			$('#alternatif-value').prop('disabled', false);
 		});
 	</script>
 @endsection

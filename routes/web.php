@@ -24,7 +24,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 	 */
 	Route::get('/', 'HomeController@index')->name('home.index');
 	Route::get('/home', 'HomeController@index')->name('home.index');
-	Route::group(['middleware' => ['guest']], function () {
+	Route::middleware(['guest'])->group(function () {
 		/**
 		 * Register Routes
 		 */
@@ -58,12 +58,11 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			'ForgotPasswordController@submitResetPasswordForm'
 		)->name('password.update');
 	});
-	// Route::resource('user', 'AlternatifController');
-	Route::group(['middleware' => ['auth']], function () { //Authenticated users
+	Route::middleware(['auth'])->group(function () { //Authenticated users
 		Route::prefix('akun')->group(function () {
 			Route::get('/', 'HomeController@profile')->name('akun.show');
 			Route::post('/', 'HomeController@updateProfil')->name('akun.perform');
-			Route::post('/del', 'HomeController@delAkun')->name('akun.delete');
+			Route::delete('/del', 'HomeController@delAkun')->name('akun.delete');
 		});
 		Route::prefix('kriteria')->group(function () {
 			Route::get('/', 'KriteriaController@index')->name('kriteria.index');
@@ -89,7 +88,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 				->name('bobotkriteria.store');
 			Route::get('hasil', 'KriteriaCompController@hasil')
 				->name('bobotkriteria.result');
-			Route::get('reset', 'KriteriaCompController@destroy')
+			Route::delete('reset', 'KriteriaCompController@destroy')
 				->name('bobotkriteria.reset');
 			Route::prefix('sub')->group(function () {
 				Route::get('/', 'SubKriteriaCompController@index')
@@ -100,7 +99,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 					->name('bobotsubkriteria.store');
 				Route::get('hasil/{id}', 'SubKriteriaCompController@show')
 					->name('bobotsubkriteria.result');
-				Route::get('reset/{id}', 'SubKriteriaCompController@destroy')
+				Route::delete('reset/{id}', 'SubKriteriaCompController@destroy')
 					->name('bobotsubkriteria.reset');
 			});
 		});
@@ -112,19 +111,15 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			Route::post('store', 'AlternatifController@store')->name('alternatif.store');
 			Route::delete('del/{id}', 'AlternatifController@hapus')
 				->name('alternatif.delete');
-			Route::prefix('hasil')->group(function () {
-				Route::get('/', 'NilaiController@show')->name('nilai.show');
-				Route::get('data', 'NilaiController@resultDataTables')->name('nilai.rank');
-			});
+			Route::get('hasil', 'NilaiController@show')->name('nilai.show');
 			Route::prefix('nilai')->group(function () {
 				Route::get('/', 'NilaiController@index')->name('nilai.index');
-				Route::get('data', 'NilaiController@idxDataTables')->name('nilai.table');
-				Route::put('store', 'NilaiController@store')->name('nilai.put');
-				Route::patch('store', 'NilaiController@update')->name('nilai.patch');
+				Route::post('store', 'NilaiController@store')->name('nilai.put');
+				Route::put('store', 'NilaiController@update')->name('nilai.patch');
 				Route::delete('del/{id}', 'NilaiController@destroy')->name('nilai.delete');
 			});
 		});
-		Route::get('ranking', 'HasilController@index')->name('ranking.show');
-		Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
+		Route::get('/ranking', 'HasilController@index')->name('ranking.show');
+		Route::post('/logout', 'LogoutController@perform')->name('logout');
 	});
 });

@@ -25,10 +25,11 @@
 							<i data-feather="x"></i>
 						</button>
 					</div>
-					<form action="{{ url('/akun/del') }}" method="post"
-						enctype="multipart/form-data">
-						@csrf
-						<div class="modal-body">
+					<div class="modal-body">
+						<form action="{{ url('/akun/del') }}" method="post"
+							enctype="multipart/form-data" id="form-delete-account">
+							@csrf
+							@method('DELETE')
 							<div class="alert alert-warning d-none" id="capslock2">
 								<i class="bi bi-capslock-fill"></i> CAPS LOCK nyala
 							</div>
@@ -40,19 +41,19 @@
 									class="form-control @error('del_password') is-invalid @enderror "
 									pattern=".{8,20}" maxlength="20" placeholder="Password" required />
 							</div>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-light-secondary"
-								data-bs-dismiss="modal">
-								<i class="bx bx-x d-block d-sm-none"></i>
-								<span class="d-none d-sm-block">Batal</span>
-							</button>
-							<button type="submit" class="btn btn-danger ml-1">
-								<i class="bx bx-check d-block d-sm-none"></i>
-								<span class="d-none d-sm-block">Hapus</span>
-							</button>
-						</div>
-					</form>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-light-secondary"
+							data-bs-dismiss="modal">
+							<i class="bx bx-x d-block d-sm-none"></i>
+							<span class="d-none d-sm-block">Batal</span>
+						</button>
+						<button type="submit" class="btn btn-danger ml-1" form="form-delete-account">
+							<i class="bx bx-check d-block d-sm-none"></i>
+							<span class="d-none d-sm-block">Hapus</span>
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>

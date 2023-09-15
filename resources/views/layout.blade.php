@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="{{ asset('assets/compiled/css/iconly.css') }}" />
 	<link rel="stylesheet" type="text/css"
 		href="{{ asset('assets/extensions/DataTables/datatables.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{asset('assets/compiled/css/table-datatable-jquery.css')}}">
 	<link rel="stylesheet"
 		href="{{ asset('assets/extensions/apexcharts/apexcharts.css') }}">
 	<link rel="shortcut icon" href="{{ asset('assets/compiled/svg/favicon.svg') }}"
@@ -179,8 +180,9 @@
 							</li>
 						@else
 							<li class="sidebar-item active">
-								<a href="{{ url('login') }}" class="sidebar-link">
-									<i class="bi bi-box-arrow-in-right me-2"></i> Login
+								<a href="{{ route('login') }}" class="sidebar-link">
+									<i class="bi bi-box-arrow-in-right me-2"></i>
+									<span>Login</span>
 								</a>
 							</li>
 						@endauth
@@ -242,13 +244,14 @@
 									<a href="#" data-bs-toggle="dropdown" aria-expanded="false">
 										<div class="user-menu d-flex">
 											<div class="user-name text-end me-3">
-												<h6 class="my-0 text-gray-600">
+												<p class="mb-0 text-gray-600">
 													{{ auth()->user()->name }}
-												</h6>
+												</p>
 											</div>
-											<div class="user-img d-flex">
-												<div class="avatar">
-													<i class="fas fa-user-circle fa-2x"></i>
+											<div class="user-img d-flex align-items-center">
+												<div class="avatar me-3 bg-primary">
+													<span
+														class="avatar-content">{{ substr(auth()->user()->name, 0, 1) }}</span>
 												</div>
 											</div>
 										</div>
@@ -267,13 +270,16 @@
 											<hr class="dropdown-divider" />
 										</li>
 										<li>
-											<a class="dropdown-item" href="{{ url('logout') }}">
+											<a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
 												<i class="icon-mid bi bi-box-arrow-left me-2"></i>
 												Logout
 											</a>
 										</li>
 									</ul>
 								</div>
+								<form method="POST" id="logout-form" action="{{ route('logout') }}">
+	                @csrf
+	              </form>
 							@endauth
 						</div>
 					</div>
@@ -315,7 +321,6 @@
 	<script type="text/javascript"
 		src="{{ asset('assets/extensions/sweetalert2/sweetalert2.min.js') }}">
 	</script>
-	@yield('js')
 	<script type="text/javascript">
 		document.addEventListener(
 			"DOMContentLoaded",
@@ -329,7 +334,13 @@
 			},
 			false
 		);
+		const setTableColor = () => {
+			document.querySelectorAll('.dataTables_paginate .pagination').forEach(dt => {
+				dt.classList.add('pagination-primary');
+			});
+		};
 	</script>
+	@yield('js')
 </body>
 
 </html>

@@ -16,9 +16,7 @@ class AlternatifController extends Controller
 {
 	public function index(): Factory|View|Application
 	{
-		$alt = Alternatif::get();
-		$ceknilai = Nilai::count();
-		return view('main.alternatif.index', compact('alt', 'ceknilai'));
+		return view('main.alternatif.index');
 	}
 	public function show(Request $request)
 	{
@@ -46,9 +44,8 @@ class AlternatifController extends Controller
 		} catch (QueryException $e) {
 			return response()->json(['message' => $e->getMessage()], 500);
 		}
-		if ($alter) {
+		if ($alter)
 			return response()->json(['message' => 'Alternatif sudah ' . $querytype]);
-		}
 		return response()->json(['message' => 'Kesalahan tidak diketahui'], 500);
 	}
 	public function edit($id)
@@ -68,7 +65,9 @@ class AlternatifController extends Controller
 			Alternatif::findOrFail($id)->delete();
 			return response()->json(['message' => 'Alternatif sudah dihapus']);
 		} catch (ModelNotFoundException $e) {
-			return response()->json(['message' => 'Data Alternatif tidak ditemukan'], 404);
+			return response()->json([
+				'message' => 'Data Alternatif tidak ditemukan'
+			], 404);
 		} catch (QueryException $sql) {
 			return response()->json(['message' => $sql->getMessage()], 500);
 		}
