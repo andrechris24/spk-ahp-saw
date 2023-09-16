@@ -44,7 +44,7 @@
 					@endforeach
 				],
 			}],
-			colors: "#435ebe",
+			// colors: "#33ff33",
 			xaxis: {
 				categories: [
 					@foreach ($result as $alts)

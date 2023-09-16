@@ -114,11 +114,13 @@ class NilaiController extends Controller
 				'<div class="btn-group" role="button">
 				<button type="button" class="btn btn-primary edit-record"
 					data-bs-toggle="modal" data-bs-target="#NilaiAlterModal"
-					data-bs-name="' . $request->alternatif_id . '" data-bs-score="' . json_encode($datas) . '">
+					data-bs-name="' . $request->alternatif_id . '" title="Edit"
+					data-bs-score="' . json_encode($datas) . '">
 					<i class="bi bi-pencil-square"></i>
 				</button>
 				<button type="button" class="btn btn-danger delete-record"
-					data-bs-id="' . $request->alternatif_id . '" data-bs-name="' . $hasil[0] . '">
+					data-bs-id="' . $request->alternatif_id . '" title="Hapus"
+					data-bs-name="' . $hasil[0] . '">
 					<i class="bi bi-trash3-fill"></i>
 				</button>
 			</div>';
@@ -184,15 +186,17 @@ class NilaiController extends Controller
 				'<div class="btn-group" role="button">
 				<button type="button" class="btn btn-primary edit-record"
 					data-bs-toggle="modal" data-bs-target="#NilaiAlterModal"
-					data-bs-name="' . $request->alternatif_id . '" data-bs-score="' . json_encode($datas) . '">
+					data-bs-name="' . $request->alternatif_id . '" title="Edit"
+					data-bs-score="' . json_encode($datas) . '">
 					<i class="bi bi-pencil-square"></i>
 				</button>
 				<button type="button" class="btn btn-danger delete-record"
-					data-bs-id="' . $request->alternatif_id . '" data-bs-name="' . $hasil[0] . '">
+					data-bs-id="' . $request->alternatif_id . '" title="Hapus"
+					data-bs-name="' . $hasil[0] . '">
 					<i class="bi bi-trash3-fill"></i>
 				</button>
 			</div>';
-			$hasil['message'] = "Nilai Alternatif sudah diupdate. Muat ulang untuk melihat perubahan.";
+			$hasil['message'] = "Nilai Alternatif sudah diupdate.";
 			return response()->json($hasil);
 		} catch (QueryException $e) {
 			return response()->json(['message' => $e->getMessage()], 500);

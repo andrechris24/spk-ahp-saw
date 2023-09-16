@@ -87,7 +87,7 @@
 							<li class="sidebar-title">Menu</li>
 							<li
 								class="sidebar-item 
-							{{ request()->is('home') ? 'active' : '' }}">
+							{{ request()->is('/home')||request()->is('/') ? 'active' : '' }}">
 								<a href="{{ url('/home') }}" class="sidebar-link">
 									<i class="bi bi-house-fill"></i>
 									<span>Beranda</span>

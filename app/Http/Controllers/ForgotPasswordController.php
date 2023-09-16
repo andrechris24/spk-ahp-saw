@@ -60,8 +60,7 @@ class ForgotPasswordController extends Controller
 					'Silahkan minta reset password lagi.'
 				);
 			}
-			$cek = Hash::check($token, $enctoken->token);
-			if (!$cek)
+			if (!Hash::check($token, $enctoken->token))
 				return redirect('/login')->withError('Token reset password tidak valid');
 			return view(
 				'admin.reset-password',
