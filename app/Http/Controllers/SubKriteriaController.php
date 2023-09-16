@@ -86,9 +86,9 @@ class SubKriteriaController extends Controller
 			$cek = SubKriteria::findOrFail($id);
 			$idkriteria = $cek->kriteria_id;
 			$namakriteria = $cek->kriteria->name;
-			$getalt = Nilai::where('kriteria_id', $id)->first();
+			// $getalt = Nilai::where('kriteria_id', $id)->first();
 			$cek->delete();
-			Nilai::where('alternatif_id', $getalt->alternatif_id)->delete();
+			// Nilai::where('alternatif_id', $getalt->alternatif_id)->delete();
 			$subkrcomp = SubKriteriaComp::where('idkriteria', $cek->kriteria_id);
 			if ($subkrcomp->count() > 0) {
 				$subkrcomp->delete();

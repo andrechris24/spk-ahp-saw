@@ -23,7 +23,7 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<form method="post" enctype="multipart/form-data" id="AlterForm">
+							<form method="POST" enctype="multipart/form-data" id="AlterForm">
 								@csrf
 								<input type="hidden" name="id" id="alter-id">
 								<label for="alter-name">Nama Alternatif</label>

@@ -41,14 +41,14 @@
 						<div class="tab-content" id="InputCompTabContent">
 							<div class="tab-pane fade show active" id="info" role="tabpanel"
 								aria-labelledby="info-tab">
-								@include('main.ahp')
+								@include('components.ahp')
 							</div>
 							<div class="tab-pane fade" id="input" role="tabpanel"
 								aria-labelledby="input-tab">
 								@if ($jmlcrit >= 2)
 									<div class="table-responsive">
-										<form method="post" enctype="multipart/form-data"
-											action="{{ url('bobot') }}">@csrf
+										<form method="POST" enctype="multipart/form-data"
+											action="{{ route('bobotkriteria.store') }}">@csrf
 											<table class="table table-lg table-hover text-center">
 												<thead>
 													<tr>
@@ -106,7 +106,7 @@
 								@else
 									<div class="alert alert-warning mt-3">
 										<i class="bi bi-sign-stop-fill"></i>
-										Masukkan data <a href="{{ url('kriteria') }}">Kriteria</a>
+										Masukkan data <a href="{{ route('kriteria.index') }}">Kriteria</a>
 										dulu (Minimal 2) untuk melakukan perbandingan.
 									</div>
 								@endif

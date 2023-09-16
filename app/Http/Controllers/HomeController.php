@@ -54,8 +54,7 @@ class HomeController extends Controller
 					'password.confirmed' => 'Password konfirmasi salah',
 				]
 			);
-			$cekpass = Hash::check($request->current_password, Auth::user()->password);
-			if (!$cekpass)
+			if (!Hash::check($request->current_password, Auth::user()->password))
 				return back()->withErrors(['current_password' => 'Password salah']);
 			$req = $request->all();
 			if (empty($req['password'])) {
@@ -77,13 +76,14 @@ class HomeController extends Controller
 		$id = Auth::user()->id;
 		try {
 			$request->validate(User::$delakunrule);
-			$cekpass = Hash::check($request->del_password, Auth::user()->password);
-			if (!$cekpass)
+			if (!Hash::check($request->del_password, Auth::user()->password))
 				return back()->withError('Gagal hapus akun: Password salah');
 			Auth::logout();
 			Session::flush();
 			$delacc = User::findOrFail($id)->delete();
-				return redirect('/')->withSuccess('Akun sudah dihapus');
+			return redirect('/')->withSuccess(
+				'Akun sudah dihapus. Terima kasih sudah menggunakan Sistem Pendukung Keputusan.'
+			);
 		} catch (ModelNotFoundException $e) {
 			return back()->withError('Gagal hapus: Akun tidak ditemukan')
 				->withErrors($e->getMessage());

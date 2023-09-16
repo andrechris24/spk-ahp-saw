@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hasil;
-use App\Models\Kriteria;
-use App\Models\Alternatif;
-use App\Models\Nilai;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 

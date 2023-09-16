@@ -33,8 +33,7 @@ class AlternatifController extends Controller
 		try {
 			if ($alterID) {
 				$alter = Alternatif::updateOrCreate(
-					['id' => $alterID],
-					['name' => $request->name]
+					['id' => $alterID], ['name' => $request->name]
 				);
 				$querytype = "diupdate.";
 			} else {

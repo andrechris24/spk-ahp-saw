@@ -27,7 +27,7 @@
 							<div class="alert alert-primary">
 								<i class="bi bi-info-circle-fill"></i>
 								Perbandingan sub kriteria {{ $title }} sudah dilakukan,
-								<a href="{{ url('bobot/sub/hasil/' . $kriteria_id) }}">klik disini</a>
+								<a href="{{ url('/bobot/sub/hasil/' . $kriteria_id) }}">klik disini</a>
 								untuk melihat hasil perbandingan
 							</div>
 						@endif
@@ -48,7 +48,7 @@
 						<div class="tab-content" id="InputCompTabContent">
 							<div class="tab-pane fade show active" id="info" role="tabpanel"
 								aria-labelledby="info-tab">
-								@include('main.ahp')
+								@include('components.ahp')
 								<a href="{{ url('/bobot/sub') }}" class="btn btn-secondary">
 									<i class="bi bi-arrow-left"></i> Kembali
 								</a>
@@ -57,8 +57,8 @@
 								aria-labelledby="input-tab">
 								@if ($jmlsubkriteria >= 2)
 									<div class="table-responsive">
-										<form method="post" enctype="multipart/form-data"
-											action="{{ url('bobot/sub/comp/' . $kriteria_id) }}">@csrf
+										<form method="POST" enctype="multipart/form-data"
+											action="{{ url('/bobot/sub/comp/' . $kriteria_id) }}">@csrf
 											<table class="table table-lg table-hover text-center">
 												<thead>
 													<tr>
@@ -110,7 +110,7 @@
 											</table>
 											<div class="col-12 d-flex justify-content-end">
 												<div class="btn-group">
-													<a href="{{ url('bobot/sub') }}" class="btn btn-secondary">
+													<a href="{{ route('bobotsubkriteria.pick') }}" class="btn btn-secondary">
 														<i class="bi bi-arrow-left"></i> Kembali
 													</a>
 													<input type="submit" name="submit" class="btn btn-primary">
@@ -121,7 +121,7 @@
 								@else
 									<div class="alert alert-warning mt-3">
 										<i class="bi bi-sign-stop-fill"></i>
-										Masukkan data <a href="{{ url('kriteria/sub') }}">Sub Kriteria</a>
+										Masukkan data <a href="{{ route('subkriteria.index') }}">Sub Kriteria</a>
 										{{ $title }} dulu (Minimal 2) untuk melakukan perbandingan.
 									</div>
 								@endif

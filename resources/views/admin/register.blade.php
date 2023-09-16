@@ -8,7 +8,7 @@
 @endsection
 
 @section('content')
-	<form action="{{ url('register') }}" method="post" enctype="multipart/form-data">
+	<form action="{{ route('register.perform') }}" method="post" enctype="multipart/form-data">
 		@csrf
 		<div class="form-group position-relative has-icon-left mb-4">
 			<input type="text" name="email" placeholder="Email"
@@ -64,7 +64,7 @@
 	<div class="text-center mt-5 text-lg fs-4">
 		<p class="text-gray-600">
 			Sudah punya akun?
-			<a href="{{ url('login') }}" class="font-bold">Masuk</a>
+			<a href="{{ route('login') }}" class="font-bold">Masuk</a>
 		</p>
 	</div>
 @endsection

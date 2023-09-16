@@ -8,7 +8,7 @@
 @endsection
 
 @section('content')
-	<form action="{{ url('login') }}" method="post" enctype="multipart/form-data">
+	<form action="{{ route('login.perform') }}" method="post" enctype="multipart/form-data">
 		@csrf
 		<div class="form-group position-relative has-icon-left mb-4">
 			<input type="email" placeholder="Email" name="email"
@@ -50,10 +50,10 @@
 	<div class="text-center mt-5 text-lg fs-4">
 		<p class="text-gray-600">
 			Belum punya akun?
-			<a href="{{ url('register') }}" class="font-bold">Daftar</a>
+			<a href="{{ route('register.show') }}" class="font-bold">Daftar</a>
 		</p>
 		<p>
-			<a class="font-bold" href="{{ url('forget-password') }}">
+			<a class="font-bold" href="{{ route('password.request') }}">
 				Lupa Password
 			</a>
 		</p>

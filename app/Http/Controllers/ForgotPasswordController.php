@@ -53,7 +53,13 @@ class ForgotPasswordController extends Controller
 			return redirect()->intended();
 		try {
 			$enctoken = DB::table('password_resets')->where('email', $_GET['email'])
-				->firstOrFail();
+			->first();
+			if($enctoken===null){
+				return redirect('/forget-password')->withError(
+					'Link reset password sudah kedaluarsa. ' .
+					'Silahkan minta reset password lagi.'
+				);
+			}
 			$cek = Hash::check($token, $enctoken->token);
 			if (!$cek)
 				return redirect('/login')->withError('Token reset password tidak valid');
@@ -64,11 +70,6 @@ class ForgotPasswordController extends Controller
 		} catch (QueryException $e) {
 			return redirect('/forget-password')
 				->withError('Kesalahan: ' . $e->getMessage());
-		} catch (ModelNotFoundException) {
-			return redirect('/forget-password')->withError(
-				'Link reset password sudah kedaluarsa. ' .
-				'Silahkan minta reset password lagi.'
-			);
 		}
 	}
 	public function submitResetPasswordForm(Request $request)

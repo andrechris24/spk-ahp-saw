@@ -176,7 +176,7 @@
 						</table>
 						<div class="col-12 d-flex justify-content-end">
 							<div class="btn-group">
-								<a href="{{ url('bobot/sub') }}" class="btn btn-secondary">
+								<a href="{{ route('bobotsubkriteria.pick') }}" class="btn btn-secondary">
 									<i class="bi bi-arrow-left"></i> Kembali
 								</a>
 								<a href="{{ url('/bobot/sub/reset/' . $kriteria_id) }}" class="btn btn-warning" onclick="event.preventDefault(); document.getElementById('reset-subkriteria').submit();">

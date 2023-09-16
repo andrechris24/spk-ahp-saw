@@ -61,7 +61,7 @@
 							<button type="submit" class="btn btn-primary ml-1 data-submit"
 								form="SubCritForm">
 								<i class="bx bx-check d-block d-sm-none"></i>
-								<span class="d-none d-sm-block">Tambah</span>
+								<span class="d-none d-sm-block">Simpan</span>
 							</button>
 						</div>
 					</div>

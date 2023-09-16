@@ -13,7 +13,7 @@
 			<div class="card">
 				<div class="card-header">Pilih Kriteria</div>
 				<div class="card-body">
-					<form action="{{ url('bobot/sub/comp') }}">
+					<form action="{{ url('/bobot/sub/comp') }}">
 						<div class="input-group mb-3">
 							<label class="input-group-text" for="kriteria">
 								Kriteria

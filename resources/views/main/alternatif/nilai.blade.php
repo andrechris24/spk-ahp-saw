@@ -28,8 +28,8 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<form action="{{ url('/alternatif/nilai/store') }}" method="post"
-								enctype="multipart/form-data" id="NilaiAlterForm">@csrf
+							<form method="POST" enctype="multipart/form-data" id="NilaiAlterForm">
+								@csrf
 								<input type="hidden" name="alternatif_id" id="alternatif-hidden">
 								<input type="hidden" name="_method" value="POST" id="form-method">
 								<input type="hidden" name="datatables_idx" id="edit-index">

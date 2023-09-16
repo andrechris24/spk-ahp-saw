@@ -67,7 +67,7 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 ## How to use
 
-This Laravel Webpage was made with version 9.52 and PHP version 8.1.
+This Laravel Webpage was made with version 10.23.1 and PHP version 8.2.9.
 
 1. Download or clone this repository
 2. Navigate to downloaded repository, then open Terminal window.

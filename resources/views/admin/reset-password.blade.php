@@ -3,12 +3,12 @@
 @section('auth-desc')
 	<h1 class="auth-title">Reset Password</h1>
 	<p class="auth-subtitle mb-5">
-		Selamat datang kembali! Untuk melanjutkan, masukkan password baru.
+		Selamat datang kembali! Silahkan masukkan password baru untuk melanjutkan.
 	</p>
 @endsection
 
 @section('content')
-	<form action="{{ url('reset-password') }}" method="post">@csrf
+	<form action="{{ route('password.update') }}" method="post">@csrf
 		<input type="hidden" name="token" value="{{ $token }}">
 		<div class="form-group position-relative has-icon-left mb-4">
 			<input type="email" placeholder="Email" name="email"
@@ -54,7 +54,7 @@
 	<div class="text-center mt-5 text-lg fs-4">
 		<p class="text-gray-600">
 			Ingat akun Anda?
-			<a href="{{ url('login') }}" class="font-bold">Login</a>
+			<a href="{{ route('login') }}" class="font-bold">Login</a>
 		</p>
 	</div>
 @endsection

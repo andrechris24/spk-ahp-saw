@@ -23,8 +23,8 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<form action="{{ url('/kriteria/add') }}" method="post"
-								enctype="multipart/form-data" id="CritForm">@csrf
+							<form method="POST" enctype="multipart/form-data" id="CritForm">
+								@csrf
 								<input type="hidden" name="id" id="kriteria-id">
 								@if ($compkr > 0)
 									<div class="alert alert-warning" id="kriteria-alert">
@@ -218,7 +218,6 @@
 				Toastify({
 					text: "DataTables Error: " + dterr.message,
 					backgroundColor: "#dc3545"
-					className: "danger",
 				}).showToast();
 				if (!$.fn.DataTable.isDataTable('#table-crit')) {
 					$('#spare-button').removeClass('d-none');
