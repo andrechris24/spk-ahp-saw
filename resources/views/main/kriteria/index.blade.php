@@ -224,16 +224,17 @@
 				}
 			}
 			$.fn.dataTable.ext.errMode = 'none';
- 
-			dt_kriteria.on( 'error.dt', function ( e, settings, techNote, message ) {
+
+			dt_kriteria.on('error.dt', function(e, settings, techNote,
+				message) {
 				Toastify({
 					text: message,
 					backgroundColor: "#ffc107",
 					duration: 10000
 				}).showToast();
 				console.warn(techNote);
-	    });
-	    dt_kriteria.on('draw',setTableColor);
+			});
+			dt_kriteria.on('draw', setTableColor);
 		});
 		// Delete Record
 		$(document).on('click', '.delete-record', function() {
@@ -346,7 +347,7 @@
 			$('#CritForm :input').prop('disabled', true);
 			// changing the title of offcanvas
 			$('#CritLabel').html('Edit Kriteria');
-			if($('#kriteria-alert').length)
+			if ($('#kriteria-alert').length)
 				$('#kriteria-alert').addClass('d-none');
 			// get data
 			$.get('/kriteria/edit/' + kr_id, function(data) {
@@ -372,7 +373,7 @@
 		$('#CritModal').on('hidden.bs.modal', function() {
 			$('#CritForm')[0].reset();
 			$('#CritLabel').html('Tambah Kriteria');
-			if($('#kriteria-alert').length)
+			if ($('#kriteria-alert').length)
 				$('#kriteria-alert').removeClass('d-none');
 		});
 	</script>

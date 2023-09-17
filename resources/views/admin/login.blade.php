@@ -8,7 +8,8 @@
 @endsection
 
 @section('content')
-	<form action="{{ route('login.perform') }}" method="post" enctype="multipart/form-data">
+	<form action="{{ route('login.perform') }}" method="post"
+		enctype="multipart/form-data">
 		@csrf
 		<div class="form-group position-relative has-icon-left mb-4">
 			<input type="email" placeholder="Email" name="email"

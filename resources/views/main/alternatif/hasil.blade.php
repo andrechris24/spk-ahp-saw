@@ -154,7 +154,7 @@
 		var dt_hasil;
 		$(document).ready(function() {
 			try {
-				dt_hasil=$('#table-hasil').DataTable({
+				dt_hasil = $('#table-hasil').DataTable({
 					"lengthChange": false,
 					"searching": false,
 					responsive: true,
@@ -172,7 +172,7 @@
 					backgroundColor: "#dc3545"
 				}).showToast();
 			}
-	    dt_hasil.on('draw',setTableColor);
+			dt_hasil.on('draw', setTableColor);
 		});
 	</script>
 @endsection

@@ -30,7 +30,8 @@
 								<input type="hidden" name="id" id="subkriteria-id">
 								@if ($compskr > 0)
 									<div class="alert alert-warning" id="subkriteria-alert">
-										Menambahkan sub kriteria akan mereset perbandingan sub kriteria terkait.
+										Menambahkan sub kriteria akan mereset perbandingan sub kriteria
+										terkait.
 									</div>
 								@endif
 								<label for="nama">Nama Sub Kriteria</label>
@@ -220,16 +221,17 @@
 				}
 			}
 			$.fn.dataTable.ext.errMode = 'none';
- 
-			dt_subkriteria.on( 'error.dt', function ( e, settings, techNote, message ) {
+
+			dt_subkriteria.on('error.dt', function(e, settings, techNote,
+				message) {
 				Toastify({
 					text: message,
 					backgroundColor: "#ffc107",
 					duration: 10000
 				}).showToast();
 				console.warn(techNote);
-	    });
-	    dt_subkriteria.on('draw',setTableColor);
+			});
+			dt_subkriteria.on('draw', setTableColor);
 		});
 		// Delete Record
 		$(document).on('click', '.delete-record', function() {
@@ -342,7 +344,7 @@
 			$('#SubCritForm :input').prop('disabled', true);
 			// changing the title of offcanvas
 			$('#SubCritLabel').html('Edit Sub Kriteria');
-			if($('#subkriteria-alert').length)
+			if ($('#subkriteria-alert').length)
 				$('#subkriteria-alert').addClass('d-none');
 
 			// get data
@@ -368,7 +370,7 @@
 		$('#SubCritModal').on('hidden.bs.modal', function() {
 			$('#SubCritForm')[0].reset();
 			$('#SubCritLabel').html('Tambah Sub Kriteria');
-			if($('#subkriteria-alert').length)
+			if ($('#subkriteria-alert').length)
 				$('#subkriteria-alert').removeClass('d-none');
 		});
 	</script>

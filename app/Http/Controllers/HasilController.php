@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hasil;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 
 class HasilController extends Controller
 {

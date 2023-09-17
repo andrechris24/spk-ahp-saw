@@ -242,7 +242,7 @@
 					$('#spare-button').removeClass('d-none');
 				}
 			}
-	    nilaialtdt.on('draw',setTableColor);
+			nilaialtdt.on('draw', setTableColor);
 		});
 		$(document).on('click', '.delete-record', function() {
 			var score_id = $(this).data('bs-id'),

@@ -53,8 +53,8 @@ class ForgotPasswordController extends Controller
 			return redirect()->intended();
 		try {
 			$enctoken = DB::table('password_resets')->where('email', $_GET['email'])
-			->first();
-			if($enctoken===null){
+				->first();
+			if ($enctoken === null) {
 				return redirect('/forget-password')->withError(
 					'Link reset password sudah kedaluarsa. ' .
 					'Silahkan minta reset password lagi.'
@@ -82,9 +82,11 @@ class ForgotPasswordController extends Controller
 				event(new PasswordReset($user));
 			}
 		);
-		if ($status === Password::PASSWORD_RESET)
-			return redirect('/login')->withSuccess('Reset password berhasil');
-		else if ($status === Password::INVALID_TOKEN)
+		if ($status === Password::PASSWORD_RESET){
+			return redirect('/login')->withSuccess(
+				'Reset password berhasil. Silahkan login menggunakan password yang Anda buat.'
+			);
+		}else if ($status === Password::INVALID_TOKEN)
 			return back()->withError('Reset password gagal: Token tidak valid');
 		else if ($status === Password::INVALID_USER)
 			return back()->withError('Reset password gagal: Akun tidak ditemukan');

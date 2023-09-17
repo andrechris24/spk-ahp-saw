@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Alternatif;
-use App\Models\Nilai;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -33,7 +32,8 @@ class AlternatifController extends Controller
 		try {
 			if ($alterID) {
 				$alter = Alternatif::updateOrCreate(
-					['id' => $alterID], ['name' => $request->name]
+					['id' => $alterID],
+					['name' => $request->name]
 				);
 				$querytype = "diupdate.";
 			} else {

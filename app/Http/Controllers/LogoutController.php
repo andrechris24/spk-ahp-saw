@@ -20,7 +20,7 @@ class LogoutController extends Controller
 		} catch (ModelNotFoundException $e) {
 			return back()->withError($e->getMessage());
 		} catch (QueryException $e) {
-			return back()->withError('Gagal logout: '.$e->getMessage());
+			return back()->withError('Gagal logout: ' . $e->getMessage());
 		}
 	}
 }

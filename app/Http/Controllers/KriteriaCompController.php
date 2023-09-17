@@ -240,7 +240,7 @@ class KriteriaCompController extends Controller
 				Kriteria::where("id", $kriteria[$i]->idkriteria)
 					->update(["bobot" => $array_BobotPrioritas[$i]["bobot"]]);
 			}
-		} else 
+		} else
 			Kriteria::where('bobot', '<>', 0.0000)->update(['bobot' => 0.0000]);
 		$data = [
 			"kriteria" => $kriteria,

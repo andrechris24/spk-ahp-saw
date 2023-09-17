@@ -170,7 +170,8 @@
 						</table>
 						<div class="col-12 d-flex justify-content-end">
 							<div class="btn-group">
-								<a href="{{ url('/bobot/reset') }}" class="btn btn-warning" onclick="event.preventDefault(); document.getElementById('reset-kriteria').submit();">
+								<a href="{{ url('/bobot/reset') }}" class="btn btn-warning"
+									onclick="event.preventDefault(); document.getElementById('reset-kriteria').submit();">
 									<i class="bi bi-arrow-counterclockwise"></i> Reset
 								</a>
 								@if (!is_numeric($data['result']) || $data['result'] <= 0.1)

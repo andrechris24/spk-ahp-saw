@@ -12,7 +12,8 @@
 	<link rel="stylesheet" href="{{ asset('assets/compiled/css/iconly.css') }}" />
 	<link rel="stylesheet" type="text/css"
 		href="{{ asset('assets/extensions/DataTables/datatables.min.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{asset('assets/compiled/css/table-datatable-jquery.css')}}">
+	<link rel="stylesheet" type="text/css"
+		href="{{ asset('assets/compiled/css/table-datatable-jquery.css') }}">
 	<link rel="stylesheet"
 		href="{{ asset('assets/extensions/apexcharts/apexcharts.css') }}">
 	<link rel="shortcut icon" href="{{ asset('assets/compiled/svg/favicon.svg') }}"
@@ -87,8 +88,8 @@
 							<li class="sidebar-title">Menu</li>
 							<li
 								class="sidebar-item 
-							{{ request()->is('/home')||request()->is('/') ? 'active' : '' }}">
-								<a href="{{ url('/home') }}" class="sidebar-link">
+							{{ request()->is('/') ? 'active' : '' }}">
+								<a href="{{ url('/') }}" class="sidebar-link">
 									<i class="bi bi-house-fill"></i>
 									<span>Beranda</span>
 								</a>
@@ -270,7 +271,8 @@
 											<hr class="dropdown-divider" />
 										</li>
 										<li>
-											<a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+											<a class="dropdown-item" href="{{ route('logout') }}"
+												onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
 												<i class="icon-mid bi bi-box-arrow-left me-2"></i>
 												Logout
 											</a>
@@ -278,8 +280,8 @@
 									</ul>
 								</div>
 								<form method="POST" id="logout-form" action="{{ route('logout') }}">
-	                @csrf
-	              </form>
+									@csrf
+								</form>
 							@endauth
 						</div>
 					</div>
@@ -335,9 +337,10 @@
 			false
 		);
 		const setTableColor = () => {
-			document.querySelectorAll('.dataTables_paginate .pagination').forEach(dt => {
-				dt.classList.add('pagination-primary');
-			});
+			document.querySelectorAll('.dataTables_paginate .pagination').forEach(
+				dt => {
+					dt.classList.add('pagination-primary');
+				});
 		};
 	</script>
 	@yield('js')

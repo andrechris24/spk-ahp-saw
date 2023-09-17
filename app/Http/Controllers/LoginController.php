@@ -30,10 +30,10 @@ class LoginController extends Controller
 				'email.exists' => 'Akun dengan Email ' . $request->email . ' tidak ditemukan',
 			]);
 			if (Auth::attempt($credentials, $request->get('remember'))) {
-				$user = User::where('email', '=', $request->email)->first();
+				$user = User::firstWhere('email', '=', $request->email);
 				Auth::login($user, $request->get('remember'));
 				$request->session()->regenerate();
-				return redirect()->intended('home');
+				return redirect()->intended('/');
 			}
 			return back()->withInput()->withErrors(['password' => 'Password salah']);
 		} catch (QueryException $e) {

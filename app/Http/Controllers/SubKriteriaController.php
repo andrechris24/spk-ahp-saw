@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kriteria;
-use App\Models\Nilai;
 use App\Models\SubKriteria;
 use App\Models\SubKriteriaComp;
 use Illuminate\Database\QueryException;

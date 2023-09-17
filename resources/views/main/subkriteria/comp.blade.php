@@ -110,7 +110,8 @@
 											</table>
 											<div class="col-12 d-flex justify-content-end">
 												<div class="btn-group">
-													<a href="{{ route('bobotsubkriteria.pick') }}" class="btn btn-secondary">
+													<a href="{{ route('bobotsubkriteria.pick') }}"
+														class="btn btn-secondary">
 														<i class="bi bi-arrow-left"></i> Kembali
 													</a>
 													<input type="submit" name="submit" class="btn btn-primary">
@@ -121,7 +122,8 @@
 								@else
 									<div class="alert alert-warning mt-3">
 										<i class="bi bi-sign-stop-fill"></i>
-										Masukkan data <a href="{{ route('subkriteria.index') }}">Sub Kriteria</a>
+										Masukkan data <a href="{{ route('subkriteria.index') }}">Sub
+											Kriteria</a>
 										{{ $title }} dulu (Minimal 2) untuk melakukan perbandingan.
 									</div>
 								@endif

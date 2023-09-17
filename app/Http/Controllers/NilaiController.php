@@ -10,7 +10,6 @@ use App\Models\SubKriteria;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class NilaiController extends Controller
 {
@@ -20,7 +19,7 @@ class NilaiController extends Controller
 			$hasil = min($arr) / $skor;
 		else if ($type === 'benefit')
 			$hasil = $skor / max($arr);
-		else 
+		else
 			return $skor;
 		return round($hasil, 4);
 	}
@@ -163,7 +162,7 @@ class NilaiController extends Controller
 				'Masukkan data penilaian alternatif dulu'
 			);
 		}
-		$data = ['alternatif' => $alt,'kriteria' => $kr,'subkriteria' => $skr];
+		$data = ['alternatif' => $alt, 'kriteria' => $kr, 'subkriteria' => $skr];
 		return view('main.alternatif.hasil', compact('hasil', 'data'));
 	}
 
@@ -207,7 +206,7 @@ class NilaiController extends Controller
 	{
 		try {
 			$cek = Nilai::where('alternatif_id', '=', $id);
-			if (!$cek){
+			if (!$cek) {
 				return response()->json([
 					'message' => 'Penilaian alternatif tidak ditemukan'
 				], 404);

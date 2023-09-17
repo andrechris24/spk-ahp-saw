@@ -62,8 +62,8 @@ class HomeController extends Controller
 				unset($req['password_confirmation']);
 			} else
 				$req['password'] = Hash::make($req['password']);
-			$updprofil = User::findOrFail($id)->update($req);
-				return back()->withSuccess('Akun sudah diupdate');
+			User::findOrFail($id)->update($req);
+			return back()->withSuccess('Akun sudah diupdate');
 		} catch (ModelNotFoundException $e) {
 			return back()->withError('Gagal update: Akun tidak ditemukan')
 				->withErrors($e->getMessage());
@@ -80,7 +80,7 @@ class HomeController extends Controller
 				return back()->withError('Gagal hapus akun: Password salah');
 			Auth::logout();
 			Session::flush();
-			$delacc = User::findOrFail($id)->delete();
+			User::findOrFail($id)->delete();
 			return redirect('/')->withSuccess(
 				'Akun sudah dihapus. Terima kasih sudah menggunakan Sistem Pendukung Keputusan.'
 			);

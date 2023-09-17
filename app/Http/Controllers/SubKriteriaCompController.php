@@ -44,7 +44,7 @@ class SubKriteriaCompController extends Controller
 	}
 	public function nama_kriteria($id)
 	{
-		$kriteria = Kriteria::where('id', '=', $id)->first();
+		$kriteria = Kriteria::firstWhere('id', '=', $id);
 		return $kriteria['name'];
 	}
 	public function index()
@@ -308,7 +308,7 @@ class SubKriteriaCompController extends Controller
 	public function destroy($id)
 	{
 		try {
-			$kr = Kriteria::where('id', '=', $id)->first();
+			$kr = Kriteria::firstWhere('id', '=', $id);
 			SubKriteriaComp::where('idkriteria', '=', $id)->delete();
 			SubKriteria::where('kriteria_id', '=', $id)->update(['bobot' => 0.0000]);
 			return redirect('/bobot/sub')
