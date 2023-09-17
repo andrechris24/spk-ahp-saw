@@ -122,12 +122,12 @@
 											<div class="btn-group" role="button">
 												<button type="button" class="btn btn-primary edit-record"
 													data-bs-toggle="modal" data-bs-target="#NilaiAlterModal"
-													data-bs-name="{{ $alt->id }}"
+													data-bs-name="{{ $alt->id }}" title="Edit" 
 													data-bs-score="{{ json_encode($subkr) }}">
 													<i class="bi bi-pencil-square"></i>
 												</button>
 												<button type="button" class="btn btn-danger delete-record"
-													data-bs-id="{{ $alt->id }}"
+													data-bs-id="{{ $alt->id }}" title="Hapus" 
 													data-bs-name="{{ $alt->name }}">
 													<i class="bi bi-trash3-fill"></i>
 												</button>
@@ -312,16 +312,18 @@
 			});
 		});
 		$('#NilaiAlterForm').on('submit', function(event) {
-			formmethod = $('#form-method').val() ?? 'PUT';
+			formmethod = $('#form-method').val() ?? 'POST';
 			event.preventDefault();
 			$.ajax({
 				data: $('#NilaiAlterForm').serialize(),
 				url: '/alternatif/nilai/store',
 				type: formmethod,
 				beforeSend: function() {
+					$('#NilaiAlterForm :input').prop('disabled', true);
 					$('.data-submit').prop('disabled', true);
 				},
 				complete: function() {
+					$('#NilaiAlterForm :input').prop('disabled', false);
 					$('.data-submit').prop('disabled', false);
 				},
 				success: function(status) {

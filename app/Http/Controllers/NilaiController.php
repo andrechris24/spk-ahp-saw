@@ -158,9 +158,8 @@ class NilaiController extends Controller
 			);
 		}
 		if ($hasil->isEmpty()) {
-			return redirect('alternatif/nilai')->withWarning(
-				'Masukkan data penilaian alternatif dulu'
-			);
+			return redirect('alternatif/nilai')
+			->withWarning('Masukkan data penilaian alternatif dulu');
 		}
 		$data = ['alternatif' => $alt, 'kriteria' => $kr, 'subkriteria' => $skr];
 		return view('main.alternatif.hasil', compact('hasil', 'data'));
@@ -169,7 +168,7 @@ class NilaiController extends Controller
 	public function update(Request $request)
 	{
 		try {
-			$request->validate(Nilai::$updrules, Nilai::$message);
+			$request->validate(Nilai::$rules, Nilai::$message);
 			$scores = $request->all();
 			for ($a = 0; $a < count($scores['kriteria_id']); $a++) {
 				$Nilai[] = Nilai::updateOrCreate(

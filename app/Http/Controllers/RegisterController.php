@@ -17,7 +17,7 @@ class RegisterController extends Controller
 	public function show(): View|Factory|Application|RedirectResponse
 	{
 		if (Auth::viaRemember() || Auth::check())
-			return redirect()->intended();
+			return redirect('/');
 		return view('admin.register');
 	}
 
@@ -38,7 +38,7 @@ class RegisterController extends Controller
 			$user = User::create($credentials);
 			Auth::login($user);
 			$request->session()->regenerate();
-			return redirect('/home')
+			return redirect('/')
 				->withSuccess("Registrasi akun berhasil, selamat datang");
 		} catch (QueryException $e) {
 			return back()->withInput()

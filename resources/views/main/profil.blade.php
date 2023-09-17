@@ -65,7 +65,7 @@
 						<i class="bi bi-capslock-fill"></i> CAPS LOCK nyala
 					</div>
 					<form class="form form-horizontal" method="post"
-						action="{{ url('/akun') }}">@csrf
+						action="{{ url('/akun') }}" id="form-edit-account">@csrf
 						<div class="form-body">
 							<div class="row">
 								<div class="col-md-4"><label for="nama-user">Nama</label></div>
@@ -79,9 +79,9 @@
 											<div class="form-control-icon">
 												<i class="bi bi-person"></i>
 											</div>
-											@error('name')
-												<div class="invalid-feedback">{{ $message }}</div>
-											@enderror
+											<div class="invalid-feedback" id="name-error">
+											Masukkan Nama
+											</div>
 										</div>
 									</div>
 								</div>
@@ -96,9 +96,9 @@
 											<div class="form-control-icon">
 												<i class="bi bi-envelope"></i>
 											</div>
-											@error('email')
-												<div class="invalid-feedback">{{ $message }}</div>
-											@enderror
+											<div class="invalid-feedback" id="email-error">
+												Masukkan Email
+											</div>
 										</div>
 									</div>
 								</div>
@@ -106,15 +106,15 @@
 								<div class="col-md-8">
 									<div class="form-group has-icon-left">
 										<div class="position-relative">
-											<input type="password" name="current_password"
+											<input type="password" name="current_password" id="password-current" 
 												class="form-control @error('current_password') is-invalid @enderror "
 												placeholder="Password Anda" maxlength="20" required />
 											<div class="form-control-icon">
 												<i class="bi bi-lock"></i>
 											</div>
-											@error('current_password')
-												<div class="invalid-feedback">{{ $message }}</div>
-											@enderror
+											<div class="invalid-feedback" id="current-password-error">
+											Masukkan Password Anda
+											</div>
 										</div>
 									</div>
 								</div>
@@ -133,9 +133,7 @@
 											<div class="form-control-icon">
 												<i class="bi bi-lock"></i>
 											</div>
-											@error('password')
-												<div class="invalid-feedback">{{ $message }}</div>
-											@enderror
+											<div class="invalid-feedback" id="newpassword-error"></div>
 										</div>
 										<p>
 											<small class="text-muted">
@@ -158,19 +156,16 @@
 											<div class="form-control-icon">
 												<i class="bi bi-lock"></i>
 											</div>
-											@error('password_confirmation')
-												<div class="invalid-feedback">{{ $message }}</div>
-											@enderror
+											<div class="invalid-feedback" id="confirm-password-error">
+												Password konfirmasi salah
+											</div>
 										</div>
 									</div>
 								</div>
 								<div class="col-12 d-flex justify-content-end">
 									<div class="btn-group">
-										<button type="submit" class="btn btn-primary">
+										<button type="submit" class="btn btn-primary data-submit">
 											<i class="bi bi-save-fill"></i> Simpan
-										</button>
-										<button type="reset" class="btn btn-secondary">
-											<i class="bi bi-arrow-counterclockwise"></i> Reset
 										</button>
 										<button type="button" class="btn btn-danger" data-bs-toggle="modal"
 											data-bs-target="#DelAccountModal">
@@ -214,5 +209,66 @@
 			);
 			else passcekform.setCustomValidity("");
 		}
+		$('#form-edit-account').on('submit',function(e){
+			e.preventDefault();
+			$.ajax({
+				data: $('#form-edit-account').serialize(),
+				url: '{{route("akun.perform")}}',
+				type: 'POST',
+				beforeSend: function() {
+					$('#form-edit-account :input').removeClass('is-invalid');
+					$('#form-edit-account :input').prop('disabled', true);
+					$('.data-submit').prop('disabled', true);
+				},
+				complete: function() {
+					$('#form-edit-account :input').prop('disabled', false);
+					$('.data-submit').prop('disabled', false);
+				},
+				success: function(status) {
+					$('input[type=password]').val("");
+
+					// sweetalert
+					Swal.fire({
+						icon: 'success',
+						title: 'Sukses',
+						text: status.message,
+						customClass: {
+							confirmButton: 'btn btn-success'
+						}
+					});
+				},
+				error: function(xhr, code) {
+					if(xhr.responseJSON.name){
+						$('#nama-user').addClass('is-invalid');
+						$('#name-error').text(xhr.responseJSON.name);
+					}
+					if(xhr.responseJSON.email){
+						$('#email-user').addClass('is-invalid');
+						$('#email-error').text(xhr.responseJSON.email);
+					}
+					if(xhr.responseJSON.current_password){
+						$('#password-current').addClass('is-invalid');
+						$('#current-password-error').text(xhr.responseJSON.current_password);
+					}
+					if(xhr.responseJSON.password){
+						$('#newpassword').addClass('is-invalid');
+						$('#newpassword-error').text(xhr.responseJSON.password);
+					}
+					if(xhr.responseJSON.password_confirmation){
+						$('#conf-password').addClass('is-invalid');
+						$('#confirm-password-error').text(xhr.responseJSON.password_confirmation);
+					}
+					Swal.fire({
+						title: 'Gagal update akun',
+						text: xhr.responseJSON.message ??
+							code,
+						icon: 'error',
+						customClass: {
+							confirmButton: 'btn btn-success'
+						}
+					});
+				}
+			});
+		});
 	</script>
 @endsection

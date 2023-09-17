@@ -6,6 +6,9 @@
 			<h3>Ranking</h3>
 		</div>
 		<section class="section">
+			@include('components.error-multi')
+			@include('components.warning')
+			@include('components.success')
 			@include('components.noscript')
 			<div class="card">
 				<div class="card-header">Hasil akhir</div>

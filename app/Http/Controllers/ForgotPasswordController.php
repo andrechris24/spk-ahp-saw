@@ -21,7 +21,7 @@ class ForgotPasswordController extends Controller
 	public function showForgetPasswordForm(): View|Factory|Application|RedirectResponse
 	{
 		if (Auth::viaRemember() || Auth::check())
-			return redirect()->intended();
+			return redirect('/');
 		return view('admin.forget-password');
 	}
 

@@ -11,14 +11,14 @@ class Nilai extends Model
 	use HasFactory;
 	protected $table = "nilai";
 	protected $fillable = ['alternatif_id', 'kriteria_id', 'subkriteria_id'];
+	// public static array $rules = [
+	// 	'alternatif_id' => 'bail|required|unique:nilai,alternatif_id',
+	// 	'kriteria_id' => 'required',
+	// 	'kriteria_id.*' => 'numeric',
+	// 	'subkriteria_id' => 'required',
+	// 	'subkriteria_id.*' => 'numeric',
+	// ];
 	public static array $rules = [
-		'alternatif_id' => 'bail|required|unique:nilai,alternatif_id',
-		'kriteria_id' => 'required',
-		'kriteria_id.*' => 'numeric',
-		'subkriteria_id' => 'required',
-		'subkriteria_id.*' => 'numeric',
-	];
-	public static array $updrules = [
 		'alternatif_id' => 'required',
 		'kriteria_id' => 'required',
 		'kriteria_id.*' => 'numeric',

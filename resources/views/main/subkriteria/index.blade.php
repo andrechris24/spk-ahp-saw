@@ -139,8 +139,8 @@
 							render: function(data, type, full) {
 								return (
 									'<div class="btn-group" role="group">' +
-									`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#SubCritModal"><i class="bi bi-pencil-square"></i></button>` +
-									`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}"><i class="bi bi-trash3-fill"></i></button>` +
+									`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#SubCritModal" title="Edit"><i class="bi bi-pencil-square"></i></button>` +
+									`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}" title="Hapus"><i class="bi bi-trash3-fill"></i></button>` +
 									'</div>'
 								);
 							}
@@ -306,9 +306,11 @@
 				url: '/kriteria/sub/store',
 				type: 'POST',
 				beforeSend: function() {
+					$('#SubCritForm :input').prop('disabled', true);
 					$('.data-submit').prop('disabled', true);
 				},
 				complete: function() {
+					$('#SubCritForm :input').prop('disabled', false);
 					$('.data-submit').prop('disabled', false);
 				},
 				success: function(status) {

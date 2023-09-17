@@ -18,6 +18,10 @@
 			</div>
 		</div>
 		<section class="section">
+			@include('components.error-multi')
+			@include('components.warning')
+			@include('components.success')
+			@include('components.noscript')
 			<div class="card">
 				<div class="card-header">
 					<h4 class="card-title">

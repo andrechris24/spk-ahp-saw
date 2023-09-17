@@ -18,7 +18,7 @@ class LoginController extends Controller
 	public function show(): View|Factory|Application|RedirectResponse
 	{
 		if (Auth::viaRemember() || Auth::check())
-			return redirect()->intended();
+			return redirect('/');
 		return view('admin.login');
 	}
 	public function login(Request $request): RedirectResponse
@@ -33,7 +33,7 @@ class LoginController extends Controller
 				$user = User::firstWhere('email', '=', $request->email);
 				Auth::login($user, $request->get('remember'));
 				$request->session()->regenerate();
-				return redirect()->intended('/');
+				return redirect('/');
 			}
 			return back()->withInput()->withErrors(['password' => 'Password salah']);
 		} catch (QueryException $e) {
