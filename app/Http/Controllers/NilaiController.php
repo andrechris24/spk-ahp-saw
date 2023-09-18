@@ -159,7 +159,7 @@ class NilaiController extends Controller
 		}
 		if ($hasil->isEmpty()) {
 			return redirect('alternatif/nilai')
-			->withWarning('Masukkan data penilaian alternatif dulu');
+				->withWarning('Masukkan data penilaian alternatif dulu');
 		}
 		$data = ['alternatif' => $alt, 'kriteria' => $kr, 'subkriteria' => $skr];
 		return view('main.alternatif.hasil', compact('hasil', 'data'));

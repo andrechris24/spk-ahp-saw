@@ -6,10 +6,7 @@
 			<h3>Kriteria</h3>
 		</div>
 		<section class="section">
-			@include('components.error-multi')
-			@include('components.warning')
-			@include('components.success')
-			@include('components.noscript')
+			@include('components.message')
 			<div class="modal fade text-left" id="CritModal" tabindex="-1" role="dialog"
 				aria-labelledby="CritLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
@@ -31,10 +28,11 @@
 										Menambahkan kriteria akan mereset perbandingan kriteria.
 									</div>
 								@endif
-								<label for="nama">Nama Kriteria</label>
+								<label for="nama-krit">Nama Kriteria</label>
 								<div class="form-group">
 									<input type="text" class="form-control" name="name" id="nama-krit"
 										required />
+									<div class="invalid-feedback" id="nama-error"></div>
 								</div>
 								<div class="input-group mb-3">
 									<label class="input-group-text" for="tipe-kriteria">
@@ -45,11 +43,13 @@
 										<option value="cost">Cost</option>
 										<option value="benefit">Benefit</option>
 									</select>
+									<div class="invalid-feedback" id="type-error"></div>
 								</div>
 								<label for="deskripsi">Keterangan</label>
 								<div class="form-group">
 									<input type="text" class="form-control" name="desc" id="deskripsi"
 										required />
+									<div class="invalid-feedback" id="desc-error"></div>
 								</div>
 							</form>
 							<div class="modal-footer">
@@ -164,7 +164,8 @@
 						},
 						{
 							extend: 'collection',
-							text: 'Ekspor',
+							text: '<i class="bi bi-download me-0 me-sm-1"></i>Ekspor',
+          		className: 'btn btn-primary dropdown-toggle',
 							buttons: [{
 									extend: 'print',
 									title: 'Kriteria',
@@ -310,6 +311,8 @@
 				type: 'POST',
 				beforeSend: function() {
 					$('#CritForm :input').prop('disabled', true);
+					$('#CritForm :input').removeClass(
+					'is-invalid');
 					$('.data-submit').prop('disabled', true);
 				},
 				complete: function() {
@@ -331,6 +334,18 @@
 					});
 				},
 				error: function(xhr, code) {
+					if(xhr.responseJSON.name){
+						$('#nama-krit').addClass('is-invalid');
+						$('#nama-error').text(xhr.responseJSON.name);
+					}
+					if(xhr.responseJSON.type){
+						$('#tipe-kriteria').addClass('is-invalid');
+						$('#type-error').text(xhr.responseJSON.type);
+					}
+					if(xhr.responseJSON.desc){
+						$('#deskripsi').addClass('is-invalid');
+						$('#desc-error').text(xhr.responseJSON.desc);
+					}
 					Swal.fire({
 						title: 'Gagal',
 						text: xhr.responseJSON.message ??
@@ -374,6 +389,7 @@
 		// clearing form data when modal hidden
 		$('#CritModal').on('hidden.bs.modal', function() {
 			$('#CritForm')[0].reset();
+			$('#CritForm :input').removeClass('is-invalid');
 			$('#CritLabel').html('Tambah Kriteria');
 			if ($('#kriteria-alert').length)
 				$('#kriteria-alert').removeClass('d-none');

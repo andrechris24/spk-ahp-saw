@@ -16,11 +16,7 @@ class User extends Authenticatable
 	 *
 	 * @var array<int, string>
 	 */
-	protected $fillable = [
-		'name',
-		'email',
-		'password',
-	];
+	protected $fillable = ['name','email','password'];
 
 	/**
 	 * The attributes that should be hidden for serialization.
@@ -37,9 +33,7 @@ class User extends Authenticatable
 	 *
 	 * @var array<string, string>
 	 */
-	protected $casts = [
-		'email_verified_at' => 'datetime',
-	];
+	protected $casts = ['email_verified_at' => 'datetime'];
 	public static array $regrules = [
 		'name' => 'bail|required|min:5|regex:/^[\pL\s\-]+$/u',
 		'email' => 'bail|required|email|unique:users,email',
@@ -63,7 +57,5 @@ class User extends Authenticatable
 		'password.between' => 'Panjang password harus 8-20 karakter',
 		'password.confirmed' => 'Password konfirmasi salah',
 	];
-	public static array $delakunrule = [
-		'del_password' => 'required',
-	];
+	public static array $delakunrule = ['del_password' => 'required'];
 }

@@ -82,11 +82,11 @@ class ForgotPasswordController extends Controller
 				event(new PasswordReset($user));
 			}
 		);
-		if ($status === Password::PASSWORD_RESET){
+		if ($status === Password::PASSWORD_RESET) {
 			return redirect('/login')->withSuccess(
 				'Reset password berhasil. Silahkan login menggunakan password yang Anda buat.'
 			);
-		}else if ($status === Password::INVALID_TOKEN)
+		} else if ($status === Password::INVALID_TOKEN)
 			return back()->withError('Reset password gagal: Token tidak valid');
 		else if ($status === Password::INVALID_USER)
 			return back()->withError('Reset password gagal: Akun tidak ditemukan');

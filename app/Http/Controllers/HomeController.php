@@ -54,10 +54,11 @@ class HomeController extends Controller
 					'password.confirmed' => 'Password konfirmasi salah',
 				]
 			);
-			if (!Hash::check($request->current_password, Auth::user()->password)){
+			if (!Hash::check($request->current_password, Auth::user()->password)) {
 				return response()->json([
-					'message'=>'Password salah','current_password' => 'Password salah'
-				],422);
+					'message' => 'Password salah',
+					'current_password' => 'Password salah'
+				], 422);
 			}
 			$req = $request->all();
 			if (empty($req['password'])) {
@@ -66,13 +67,14 @@ class HomeController extends Controller
 			} else
 				$req['password'] = Hash::make($req['password']);
 			User::findOrFail($id)->update($req);
-			return response()->json(['message'=>'Akun sudah diupdate']);
+			return response()->json(['message' => 'Akun sudah diupdate']);
 		} catch (ModelNotFoundException $e) {
 			return response()->json([
-				'message'=>'Akun tidak ditemukan','exception'=>$e->getMessage()
-			],404);
+				'message' => 'Akun tidak ditemukan',
+				'exception' => $e->getMessage()
+			], 404);
 		} catch (QueryException $db) {
-			return response()->json(['message'=>$db->getMessage()],500);
+			return response()->json(['message' => $db->getMessage()], 500);
 		}
 	}
 	public function delAkun(Request $request)

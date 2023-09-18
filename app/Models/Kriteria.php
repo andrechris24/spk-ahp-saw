@@ -19,6 +19,7 @@ class Kriteria extends Model
 	public static array $message = [
 		'name.required' => 'Nama kriteria harus diisi',
 		'type.required' => 'Tipe Kriteria harus dipilih',
+		'type.in' => 'Tipe Kriteria harus berupa Cost atau Benefit',
 		'desc.required' => 'Keterangan kriteria harus diisi',
 	];
 	public function subkriteria(): HasMany

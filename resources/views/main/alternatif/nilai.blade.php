@@ -9,10 +9,7 @@
 			<h3>Nilai Alternatif</h3>
 		</div>
 		<section class="section">
-			@include('components.error-multi')
-			@include('components.warning')
-			@include('components.success')
-			@include('components.noscript')
+			@include('components.message')
 			<div class="modal fade text-left" id="NilaiAlterModal" tabindex="-1"
 				role="dialog" aria-labelledby="NilaiAlterLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
@@ -44,6 +41,7 @@
 											<option value="{{ $alt->id }}">{{ $alt->name }}</option>
 										@endforeach
 									</select>
+									<div class="invalid-feedback" id="alternatif-error"></div>
 								</div>
 								@foreach ($kriteria as $kr)
 									<input type="hidden" name="kriteria_id[]" value="{{ $kr->id }}">
@@ -63,6 +61,7 @@
 												@endif
 											@endforeach
 										</select>
+										<div class="invalid-feedback" id="subkriteria-error-{{ $kr->id }}"></div>
 									</div>
 								@endforeach
 							</form>
@@ -122,12 +121,12 @@
 											<div class="btn-group" role="button">
 												<button type="button" class="btn btn-primary edit-record"
 													data-bs-toggle="modal" data-bs-target="#NilaiAlterModal"
-													data-bs-name="{{ $alt->id }}" title="Edit" 
+													data-bs-name="{{ $alt->id }}" title="Edit"
 													data-bs-score="{{ json_encode($subkr) }}">
 													<i class="bi bi-pencil-square"></i>
 												</button>
 												<button type="button" class="btn btn-danger delete-record"
-													data-bs-id="{{ $alt->id }}" title="Hapus" 
+													data-bs-id="{{ $alt->id }}" title="Hapus"
 													data-bs-name="{{ $alt->name }}">
 													<i class="bi bi-trash3-fill"></i>
 												</button>
@@ -182,7 +181,8 @@
 						},
 						{
 							extend: 'collection',
-							text: 'Ekspor',
+							text: '<i class="bi bi-download me-0 me-sm-1"></i>Ekspor',
+          		className: 'btn btn-primary dropdown-toggle',
 							buttons: [{
 									extend: 'print',
 									title: 'Nilai Alternatif',
@@ -319,11 +319,15 @@
 				url: '/alternatif/nilai/store',
 				type: formmethod,
 				beforeSend: function() {
-					$('#NilaiAlterForm :input').prop('disabled', true);
+					$('#NilaiAlterForm :input').prop('disabled',
+						true);
+					$('#NilaiAlterForm :input').removeClass(
+						'is-invalid');
 					$('.data-submit').prop('disabled', true);
 				},
 				complete: function() {
-					$('#NilaiAlterForm :input').prop('disabled', false);
+					$('#NilaiAlterForm :input').prop('disabled',
+						false);
 					$('.data-submit').prop('disabled', false);
 				},
 				success: function(status) {

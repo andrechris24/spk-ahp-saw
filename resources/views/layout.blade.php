@@ -7,6 +7,11 @@
 	<title>
 		@yield('title') | Sistem Pendukung Keputusan metode AHP & SAW
 	</title>
+	<link rel="shortcut icon" href="{{ asset('assets/compiled/svg/favicon.svg') }}"
+		type="image/x-icon" />
+	<link rel="shortcut icon"
+		href="{{ asset('assets/static/images/logo/favicon.png') }}"
+		type="image/png" />
 	<link rel="stylesheet" href="{{ asset('assets/compiled/css/app.css') }}" />
 	<link rel="stylesheet" href="{{ asset('assets/compiled/css/app-dark.css') }}" />
 	<link rel="stylesheet" href="{{ asset('assets/compiled/css/iconly.css') }}" />
@@ -16,17 +21,12 @@
 		href="{{ asset('assets/compiled/css/table-datatable-jquery.css') }}">
 	<link rel="stylesheet"
 		href="{{ asset('assets/extensions/apexcharts/apexcharts.css') }}">
-	<link rel="shortcut icon" href="{{ asset('assets/compiled/svg/favicon.svg') }}"
-		type="image/x-icon" />
-	<link rel="shortcut icon"
-		href="{{ asset('assets/static/images/logo/favicon.png') }}"
-		type="image/png" />
 	<link rel="stylesheet"
 		href="{{ asset('assets/extensions/toastify-js/src/toastify.css') }}" />
-	<link rel="stylesheet"
-		href="{{ asset('assets/extensions/@fortawesome/fontawesome-free/css/all.min.css') }}" />
 	<link rel="stylesheet" type="text/css"
 		href="{{ asset('assets/extensions/sweetalert2/sweetalert2.min.css') }}">
+	<link rel="stylesheet"
+		href="{{ asset('assets/extensions/@fortawesome/fontawesome-free/css/all.min.css') }}" />
 	<script src="{{ asset('assets/static/js/initTheme.js') }}"></script>
 </head>
 
@@ -292,7 +292,7 @@
 				<footer>
 					<div class="footer clearfix mb-0 text-muted">
 						<div class="float-start">
-							<p>{{date('Y')}} &copy; Mazer</p>
+							<p>{{ date('Y') }} &copy; Mazer</p>
 						</div>
 						<div class="float-end">
 							<p>

@@ -6,10 +6,7 @@
 			<h3>Alternatif</h3>
 		</div>
 		<section class="section">
-			@include('components.error-multi')
-			@include('components.warning')
-			@include('components.success')
-			@include('components.noscript')
+			@include('components.message')
 			<div class="modal fade text-left" id="AlterModal" tabindex="-1" role="dialog"
 				aria-labelledby="AlterLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
@@ -30,6 +27,7 @@
 								<div class="form-group">
 									<input type="text" class="form-control" name="name"
 										id="alter-name" required />
+										<div class="invalid-feedback" id="alter-error"></div>
 								</div>
 							</form>
 						</div>
@@ -129,7 +127,8 @@
 						},
 						{
 							extend: 'collection',
-							text: 'Ekspor',
+							text: '<i class="bi bi-download me-0 me-sm-1"></i>Ekspor',
+          		className: 'btn btn-primary dropdown-toggle',
 							buttons: [{
 									extend: 'print',
 									title: 'Alternatif',
@@ -278,6 +277,8 @@
 				type: 'POST',
 				beforeSend: function() {
 					$('#AlterForm :input').prop('disabled', true);
+					$('#AlterForm :input').removeClass(
+						'is-invalid');
 					$('.data-submit').prop('disabled', true);
 				},
 				complete: function() {
@@ -299,6 +300,10 @@
 					});
 				},
 				error: function(xhr, code) {
+					if(xhr.responseJSON.name){
+						$('#alter-name').addClass('is-invalid');
+						$('#alter-error').text(xhr.responseJSON.name);
+					}
 					Swal.fire({
 						title: 'Gagal',
 						text: xhr.responseJSON.message ??
@@ -339,6 +344,7 @@
 		// clearing form data when modal hidden
 		$('#AlterModal').on('hidden.bs.modal', function() {
 			$('#AlterForm')[0].reset();
+			$('#AlterForm :input').removeClass('is-invalid');
 			$('#AlterLabel').html('Tambah Alternatif');
 		});
 	</script>

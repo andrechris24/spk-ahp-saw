@@ -65,22 +65,27 @@ class SubKriteriaCompController extends Controller
 	}
 	public function create(Request $request): Factory|View|Application
 	{
-		$request->validate(['kriteria_id' => 'required|numeric']);
-		$idkriteria = $request->kriteria_id;
-		$subkriteria = SubKriteria::where('kriteria_id', '=', $idkriteria)->get();
-		$jmlsubkriteria = count($subkriteria);
-		$array = [];
-		$counter = 0;
-		for ($a = 0; $a < $jmlsubkriteria; $a++) {
-			for ($b = $a; $b < $jmlsubkriteria; $b++) {
-				$array[$counter]["baris"] = $subkriteria[$a]->name;
-				$array[$counter]["kolom"] = $subkriteria[$b]->name;
-				$counter++;
+		try {
+			$request->validate(['kriteria_id' => 'required|numeric']);
+			$idkriteria = $request->kriteria_id;
+			Kriteria::findOrFail($idkriteria);
+			$subkriteria = SubKriteria::where('kriteria_id', '=', $idkriteria)->get();
+			$jmlsubkriteria = count($subkriteria);
+			$array = [];
+			$counter = 0;
+			for ($a = 0; $a < $jmlsubkriteria; $a++) {
+				for ($b = $a; $b < $jmlsubkriteria; $b++) {
+					$array[$counter]["baris"] = $subkriteria[$a]->name;
+					$array[$counter]["kolom"] = $subkriteria[$b]->name;
+					$counter++;
+				}
 			}
+			$cek = SubKriteriaComp::where('idkriteria', '=', $idkriteria)->count();
+			return view('main.subkriteria.comp', compact('array', 'cek', 'jmlsubkriteria'))
+				->with(['kriteria_id' => $idkriteria]);
+		} catch (ModelNotFoundException) {
+			return back()->withErrors(['kriteria_id'=>'Kriteria tidak ditemukan']);
 		}
-		$cek = SubKriteriaComp::where('idkriteria', '=', $idkriteria)->count();
-		return view('main.subkriteria.comp', compact('array', 'cek', 'jmlsubkriteria'))
-			->with(['kriteria_id' => $idkriteria]);
 	}
 
 	public function store(Request $request, $kriteria_id): Redirector|Application|RedirectResponse

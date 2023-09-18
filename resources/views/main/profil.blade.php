@@ -9,10 +9,7 @@
 				Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 			</p>
 		</div>
-		@include('components.error-single')
-		@include('components.warning')
-		@include('components.success')
-		@include('components.noscript')
+		@include('components.message')
 		<div class="modal fade text-left" id="DelAccountModal" tabindex="-1"
 			role="dialog" aria-labelledby="DelAccountLabel" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
@@ -80,7 +77,7 @@
 												<i class="bi bi-person"></i>
 											</div>
 											<div class="invalid-feedback" id="name-error">
-											Masukkan Nama
+												Masukkan Nama
 											</div>
 										</div>
 									</div>
@@ -106,14 +103,14 @@
 								<div class="col-md-8">
 									<div class="form-group has-icon-left">
 										<div class="position-relative">
-											<input type="password" name="current_password" id="password-current" 
+											<input type="password" name="current_password" id="password-current"
 												class="form-control @error('current_password') is-invalid @enderror "
 												placeholder="Password Anda" maxlength="20" required />
 											<div class="form-control-icon">
 												<i class="bi bi-lock"></i>
 											</div>
 											<div class="invalid-feedback" id="current-password-error">
-											Masukkan Password Anda
+												Masukkan Password Anda
 											</div>
 										</div>
 									</div>
@@ -209,19 +206,22 @@
 			);
 			else passcekform.setCustomValidity("");
 		}
-		$('#form-edit-account').on('submit',function(e){
+		$('#form-edit-account').on('submit', function(e) {
 			e.preventDefault();
 			$.ajax({
 				data: $('#form-edit-account').serialize(),
-				url: '{{route("akun.perform")}}',
+				url: '{{ route('akun.perform') }}',
 				type: 'POST',
 				beforeSend: function() {
-					$('#form-edit-account :input').removeClass('is-invalid');
-					$('#form-edit-account :input').prop('disabled', true);
+					$('#form-edit-account :input').removeClass(
+						'is-invalid');
+					$('#form-edit-account :input').prop('disabled',
+						true);
 					$('.data-submit').prop('disabled', true);
 				},
 				complete: function() {
-					$('#form-edit-account :input').prop('disabled', false);
+					$('#form-edit-account :input').prop('disabled',
+						false);
 					$('.data-submit').prop('disabled', false);
 				},
 				success: function(status) {
@@ -238,25 +238,32 @@
 					});
 				},
 				error: function(xhr, code) {
-					if(xhr.responseJSON.name){
+					if (xhr.responseJSON.name) {
 						$('#nama-user').addClass('is-invalid');
-						$('#name-error').text(xhr.responseJSON.name);
+						$('#name-error').text(xhr.responseJSON
+							.name);
 					}
-					if(xhr.responseJSON.email){
+					if (xhr.responseJSON.email) {
 						$('#email-user').addClass('is-invalid');
-						$('#email-error').text(xhr.responseJSON.email);
+						$('#email-error').text(xhr.responseJSON
+							.email);
 					}
-					if(xhr.responseJSON.current_password){
-						$('#password-current').addClass('is-invalid');
-						$('#current-password-error').text(xhr.responseJSON.current_password);
+					if (xhr.responseJSON.current_password) {
+						$('#password-current').addClass(
+							'is-invalid');
+						$('#current-password-error').text(xhr
+							.responseJSON.current_password);
 					}
-					if(xhr.responseJSON.password){
+					if (xhr.responseJSON.password) {
 						$('#newpassword').addClass('is-invalid');
-						$('#newpassword-error').text(xhr.responseJSON.password);
+						$('#newpassword-error').text(xhr
+							.responseJSON.password);
 					}
-					if(xhr.responseJSON.password_confirmation){
+					if (xhr.responseJSON.password_confirmation) {
 						$('#conf-password').addClass('is-invalid');
-						$('#confirm-password-error').text(xhr.responseJSON.password_confirmation);
+						$('#confirm-password-error').text(xhr
+							.responseJSON.password_confirmation
+						);
 					}
 					Swal.fire({
 						title: 'Gagal update akun',

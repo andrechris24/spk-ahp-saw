@@ -6,10 +6,7 @@
 			<h3>Sub Kriteria</h3>
 		</div>
 		<section class="section">
-			@include('components.error-multi')
-			@include('components.warning')
-			@include('components.success')
-			@include('components.noscript')
+			@include('components.message')
 			<div class="modal fade text-left" id="SubCritModal" tabindex="-1" role="dialog"
 				aria-labelledby="SubCritLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
@@ -34,13 +31,14 @@
 										terkait.
 									</div>
 								@endif
-								<label for="nama">Nama Sub Kriteria</label>
+								<label for="nama-sub">Nama Sub Kriteria</label>
 								<div class="form-group">
 									<input type="text" class="form-control" name="name" id="nama-sub"
 										required />
+										<div class="invalid-feedback" id="nama-error"></div>
 								</div>
 								<div class="input-group mb-3">
-									<label class="input-group-text" for="kriteria">
+									<label class="input-group-text" for="kriteria-select">
 										Kriteria
 									</label>
 									<select class="form-select" id="kriteria-select" name="kriteria_id"
@@ -50,6 +48,7 @@
 											<option value="{{ $kr->id }}">{{ $kr->name }}</option>
 										@endforeach
 									</select>
+									<div class="invalid-feedback" id="kriteria-error"></div>
 								</div>
 							</form>
 						</div>
@@ -160,7 +159,8 @@
 						},
 						{
 							extend: 'collection',
-							text: 'Ekspor',
+							text: '<i class="bi bi-download me-0 me-sm-1"></i>Ekspor',
+          		className: 'btn btn-primary dropdown-toggle',
 							buttons: [{
 									extend: 'print',
 									title: 'Sub Kriteria',
@@ -306,11 +306,15 @@
 				url: '/kriteria/sub/store',
 				type: 'POST',
 				beforeSend: function() {
-					$('#SubCritForm :input').prop('disabled', true);
+					$('#SubCritForm :input').prop('disabled',
+						true);
+					$('#SubCritForm :input').removeClass(
+						'is-invalid');
 					$('.data-submit').prop('disabled', true);
 				},
 				complete: function() {
-					$('#SubCritForm :input').prop('disabled', false);
+					$('#SubCritForm :input').prop('disabled',
+						false);
 					$('.data-submit').prop('disabled', false);
 				},
 				success: function(status) {
@@ -328,6 +332,14 @@
 					});
 				},
 				error: function(xhr, code) {
+					if(xhr.responseJSON.name){
+						$('#nama-sub').addClass('is-invalid');
+						$('#nama-error').text(xhr.responseJSON.name);
+					}
+					if(xhr.responseJSON.kriteria_id){
+						$('#kriteria-select').addClass('is-invalid');
+						$('#kriteria-error').text(xhr.responseJSON.kriteria_id);
+					}
 					Swal.fire({
 						title: 'Gagal',
 						text: xhr.responseJSON.message ??
@@ -371,6 +383,7 @@
 		// clearing form data when modal hidden
 		$('#SubCritModal').on('hidden.bs.modal', function() {
 			$('#SubCritForm')[0].reset();
+			$('#SubCritForm :input').removeClass('is-invalid');
 			$('#SubCritLabel').html('Tambah Sub Kriteria');
 			if ($('#subkriteria-alert').length)
 				$('#subkriteria-alert').removeClass('d-none');

@@ -9,22 +9,17 @@ class SubKriteriaComp extends Model
 {
 	use HasFactory;
 	protected $table = "subkriteria_banding";
-	protected $fillable = [
-		'idkriteria',
-		"subkriteria1",
-		"subkriteria2",
-		"nilai",
-	];
+	protected $fillable = ["idkriteria", "subkriteria1", "subkriteria2", "nilai"];
 	public static array $rules = [
 		'kriteria' => 'required',
 		'kriteria.*' => 'required',
 		'skala' => 'required',
-		'skala.*' => 'numeric|between:1,9',
+		'skala.*' => 'integer|between:1,9',
 	];
 	public static array $message = [
 		'kriteria.required' => 'Perbandingan tidak lengkap',
 		'skala.required' => 'Semua nilai perbandingan harus diisi',
-		'skala.numeric' => 'Nilai perbandingan harus berupa angka',
+		'skala.integer' => 'Nilai perbandingan harus berupa angka',
 		'skala.between' => 'Nilai perbandingan harus diantara :min sampai :max sesuai teori AHP',
 	];
 	public static array $ratio_index = [

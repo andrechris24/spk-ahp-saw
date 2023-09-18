@@ -6,10 +6,7 @@
 			<h3>Perbandingan Kriteria</h3>
 		</div>
 		<section class="section">
-			@include('components.error-multi')
-			@include('components.warning')
-			@include('components.success')
-			@include('components.noscript')
+			@include('components.message')
 			<div class="card">
 				<div class="card-header">
 					<h4 class="card-title">Masukkan Perbandingan</h4>

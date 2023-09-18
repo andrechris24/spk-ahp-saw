@@ -9,11 +9,7 @@ class KriteriaComp extends Model
 {
 	use HasFactory;
 	protected $table = "kriteria_banding";
-	protected $fillable = [
-		"kriteria1",
-		"kriteria2",
-		"nilai",
-	];
+	protected $fillable = ["kriteria1","kriteria2","nilai"];
 	public static array $rules = [
 		'kriteria' => 'required',
 		'kriteria.*' => 'required',

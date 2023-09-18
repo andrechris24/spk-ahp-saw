@@ -27,10 +27,7 @@
 						<img src="{{ asset('assets/compiled/svg/logo.svg') }}" alt="Logo" />
 					</div>
 					@yield('auth-desc')
-					@include('components.error-single')
-					@include('components.warning')
-					@include('components.success')
-					@include('components.noscript')
+					@include('components.message')
 					<div class="alert alert-warning d-none" id="capslock">
 						<i class="bi bi-capslock-fill"></i> CAPS LOCK nyala
 					</div>
