@@ -15,7 +15,7 @@
 			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
 				role="document">
 				<div class="modal-content">
-					<div class="modal-header">
+					<div class="modal-header bg-danger">
 						<h4 class="modal-title" id="DelAccountLabel">Hapus Akun</h4>
 						<button type="button" class="close" data-bs-dismiss="modal"
 							aria-label="Close">
@@ -33,10 +33,15 @@
 							<p>Apakah Anda yakin ingin menghapus akun?</p>
 							<p>Jika yakin, masukkan password Anda.
 								Anda akan keluar secara otomatis setelah menghapus akun.</p>
-							<div class="form-group">
-								<input type="password" name="del_password" id="pass-del"
-									class="form-control @error('del_password') is-invalid @enderror "
-									pattern=".{8,20}" maxlength="20" placeholder="Password" required />
+							<div class="form-group has-icon-left">
+								<div class="position-relative">
+									<input type="password" name="del_password" id="pass-del"
+										class="form-control" pattern=".{8,20}" maxlength="20"
+										placeholder="Password" required />
+									<div class="form-control-icon">
+										<i class="bi bi-lock"></i>
+									</div>
+								</div>
 							</div>
 						</form>
 					</div>
@@ -70,9 +75,8 @@
 									<div class="form-group has-icon-left">
 										<div class="position-relative">
 											<input type="text" name="name" placeholder="Name" id="nama-user"
-												class="form-control @error('name') is-invalid @enderror "
-												value="{{ auth()->user()->name }}" pattern="[A-z.,' ]{5,99}"
-												maxlength="99" required />
+												class="form-control" value="{{ auth()->user()->name }}"
+												pattern="[A-z.,' ]{5,99}" maxlength="99" required />
 											<div class="form-control-icon">
 												<i class="bi bi-person"></i>
 											</div>
@@ -88,8 +92,7 @@
 										<div class="position-relative">
 											<input type="email" name="email" placeholder="Email"
 												id="email-user" value="{{ auth()->user()->email }}"
-												class="form-control @error('email') is-invalid @enderror "
-												required />
+												class="form-control" required />
 											<div class="form-control-icon">
 												<i class="bi bi-envelope"></i>
 											</div>
@@ -104,8 +107,8 @@
 									<div class="form-group has-icon-left">
 										<div class="position-relative">
 											<input type="password" name="current_password" id="password-current"
-												class="form-control @error('current_password') is-invalid @enderror "
-												placeholder="Password Anda" maxlength="20" required />
+												class="form-control" placeholder="Password Anda"
+												maxlength="20" required />
 											<div class="form-control-icon">
 												<i class="bi bi-lock"></i>
 											</div>
@@ -121,8 +124,7 @@
 								<div class="col-md-8">
 									<div class="form-group has-icon-left">
 										<div class="position-relative">
-											<input type="password" name="password"
-												class="form-control @error('password') is-invalid @enderror "
+											<input type="password" name="password" class="form-control"
 												placeholder="Kosongkan jika tidak ganti password"
 												oninput="checkpassword()" pattern=".{8,20}" id="newpassword"
 												data-bs-toggle="tooltip" maxlength="20" data-bs-placement="top"
@@ -147,9 +149,7 @@
 										<div class="position-relative">
 											<input type="password" name="password_confirmation" maxlength="20"
 												id="conf-password" oninput="checkpassword()"
-												class="form-control
-												@error('password_confirmation') is-invalid @enderror "
-												placeholder="Ketik ulang Password baru" />
+												class="form-control" placeholder="Ketik ulang Password baru" />
 											<div class="form-control-icon">
 												<i class="bi bi-lock"></i>
 											</div>

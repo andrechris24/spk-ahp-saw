@@ -16,14 +16,14 @@ class Nilai extends Model
 		'kriteria_id' => 'required',
 		'kriteria_id.*' => 'integer',
 		'subkriteria_id' => 'required',
-		'subkriteria_id.*' => 'integer',
+		'subkriteria_id.*' => 'integer'
 	];
 	public static array $message = [
 		'alternatif_id.required' => 'Nama alternatif harus dipilih',
 		'kriteria_id.required' => 'Kriteria tidak ditemukan',
 		'subkriteria_id.required' => 'Semua sub kriteria harus dipilih',
 		'kriteria_id.integer' => 'Kriteria tidak valid',
-		'subkriteria_id.integer' => 'Sub kriteria tidak valid',
+		'subkriteria_id.integer' => 'Sub kriteria tidak valid'
 	];
 	public function alternatif(): BelongsTo
 	{

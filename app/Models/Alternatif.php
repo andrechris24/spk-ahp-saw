@@ -14,7 +14,7 @@ class Alternatif extends Model
 	public static array $rules = ['name' => 'bail|required|regex:/^[\s\w-]*$/'];
 	public static array $message = [
 		'name.required' => 'Nama alternatif diperlukan',
-		'name.regex' => 'Nama alternatif tidak boleh mengandung simbol',
+		'name.regex' => 'Nama alternatif tidak boleh mengandung simbol'
 	];
 	public function nilai(): HasMany
 	{

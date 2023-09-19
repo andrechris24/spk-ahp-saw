@@ -165,7 +165,7 @@
 						{
 							extend: 'collection',
 							text: '<i class="bi bi-download me-0 me-sm-1"></i>Ekspor',
-          		className: 'btn btn-primary dropdown-toggle',
+							className: 'btn btn-primary dropdown-toggle',
 							buttons: [{
 									extend: 'print',
 									title: 'Kriteria',
@@ -220,9 +220,8 @@
 					text: "DataTables Error: " + dterr.message,
 					backgroundColor: "#dc3545"
 				}).showToast();
-				if (!$.fn.DataTable.isDataTable('#table-crit')) {
+				if (!$.fn.DataTable.isDataTable('#table-crit'))
 					$('#spare-button').removeClass('d-none');
-				}
 			}
 			$.fn.dataTable.ext.errMode = 'none';
 
@@ -312,7 +311,7 @@
 				beforeSend: function() {
 					$('#CritForm :input').prop('disabled', true);
 					$('#CritForm :input').removeClass(
-					'is-invalid');
+						'is-invalid');
 					$('.data-submit').prop('disabled', true);
 				},
 				complete: function() {
@@ -322,8 +321,6 @@
 				success: function(status) {
 					dt_kriteria.draw();
 					$('#CritModal').modal('hide');
-
-					// sweetalert
 					Swal.fire({
 						icon: 'success',
 						title: 'Sukses',
@@ -334,17 +331,20 @@
 					});
 				},
 				error: function(xhr, code) {
-					if(xhr.responseJSON.name){
+					if (xhr.responseJSON.name) {
 						$('#nama-krit').addClass('is-invalid');
-						$('#nama-error').text(xhr.responseJSON.name);
+						$('#nama-error').text(xhr.responseJSON
+							.name);
 					}
-					if(xhr.responseJSON.type){
+					if (xhr.responseJSON.type) {
 						$('#tipe-kriteria').addClass('is-invalid');
-						$('#type-error').text(xhr.responseJSON.type);
+						$('#type-error').text(xhr.responseJSON
+							.type);
 					}
-					if(xhr.responseJSON.desc){
+					if (xhr.responseJSON.desc) {
 						$('#deskripsi').addClass('is-invalid');
-						$('#desc-error').text(xhr.responseJSON.desc);
+						$('#desc-error').text(xhr.responseJSON
+							.desc);
 					}
 					Swal.fire({
 						title: 'Gagal',
@@ -361,30 +361,30 @@
 		// edit record
 		$(document).on('click', '.edit-record', function() {
 			var kr_id = $(this).data('id');
-			$('#CritForm :input').prop('disabled', true);
+
 			// changing the title of offcanvas
+			$('#CritForm :input').prop('disabled', true);
 			$('#CritLabel').html('Edit Kriteria');
 			if ($('#kriteria-alert').length)
 				$('#kriteria-alert').addClass('d-none');
 			// get data
 			$.get('/kriteria/edit/' + kr_id, function(data) {
-					$('#kriteria-id').val(data.id);
-					$('#nama-krit').val(data.name);
-					$('#tipe-kriteria').val(data.type);
-					$('#deskripsi').val(data.desc);
-				}).fail(function(xhr, status) {
-					Swal.fire({
-						icon: 'error',
-						title: 'Kesalahan',
-						text: xhr.responseJSON.message ?? status,
-						customClass: {
-							confirmButton: 'btn btn-success'
-						}
-					});
-				})
-				.always(function() {
-					$('#CritForm :input').prop('disabled', false);
+				$('#kriteria-id').val(data.id);
+				$('#nama-krit').val(data.name);
+				$('#tipe-kriteria').val(data.type);
+				$('#deskripsi').val(data.desc);
+			}).fail(function(xhr, status) {
+				Swal.fire({
+					icon: 'error',
+					title: 'Kesalahan',
+					text: xhr.responseJSON.message ?? status,
+					customClass: {
+						confirmButton: 'btn btn-success'
+					}
 				});
+			}).always(function() {
+				$('#CritForm :input').prop('disabled', false);
+			});
 		});
 		// clearing form data when modal hidden
 		$('#CritModal').on('hidden.bs.modal', function() {

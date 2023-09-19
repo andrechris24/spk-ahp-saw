@@ -35,7 +35,7 @@
 								<div class="form-group">
 									<input type="text" class="form-control" name="name" id="nama-sub"
 										required />
-										<div class="invalid-feedback" id="nama-error"></div>
+									<div class="invalid-feedback" id="nama-error"></div>
 								</div>
 								<div class="input-group mb-3">
 									<label class="input-group-text" for="kriteria-select">
@@ -160,7 +160,7 @@
 						{
 							extend: 'collection',
 							text: '<i class="bi bi-download me-0 me-sm-1"></i>Ekspor',
-          		className: 'btn btn-primary dropdown-toggle',
+							className: 'btn btn-primary dropdown-toggle',
 							buttons: [{
 									extend: 'print',
 									title: 'Sub Kriteria',
@@ -216,9 +216,8 @@
 					duration: 7000,
 					backgroundColor: "#dc3545"
 				}).showToast();
-				if (!$.fn.DataTable.isDataTable('#table-subcrit')) {
+				if (!$.fn.DataTable.isDataTable('#table-subcrit'))
 					$('#spare-button').removeClass('d-none');
-				}
 			}
 			$.fn.dataTable.ext.errMode = 'none';
 
@@ -262,7 +261,6 @@
 						},
 						success: function(data) {
 							dt_subkriteria.draw();
-							// success sweetalert
 							Swal.fire({
 								icon: 'success',
 								title: 'Dihapus',
@@ -320,8 +318,6 @@
 				success: function(status) {
 					dt_subkriteria.draw();
 					$('#SubCritModal').modal('hide');
-
-					// sweetalert
 					Swal.fire({
 						icon: 'success',
 						title: 'Sukses',
@@ -332,13 +328,16 @@
 					});
 				},
 				error: function(xhr, code) {
-					if(xhr.responseJSON.name){
+					if (xhr.responseJSON.name) {
 						$('#nama-sub').addClass('is-invalid');
-						$('#nama-error').text(xhr.responseJSON.name);
+						$('#nama-error').text(xhr.responseJSON
+							.name);
 					}
-					if(xhr.responseJSON.kriteria_id){
-						$('#kriteria-select').addClass('is-invalid');
-						$('#kriteria-error').text(xhr.responseJSON.kriteria_id);
+					if (xhr.responseJSON.kriteria_id) {
+						$('#kriteria-select').addClass(
+							'is-invalid');
+						$('#kriteria-error').text(xhr.responseJSON
+							.kriteria_id);
 					}
 					Swal.fire({
 						title: 'Gagal',
@@ -355,30 +354,30 @@
 		// edit record
 		$(document).on('click', '.edit-record', function() {
 			var sub_id = $(this).data('id');
-			$('#SubCritForm :input').prop('disabled', true);
+
 			// changing the title of offcanvas
+			$('#SubCritForm :input').prop('disabled', true);
 			$('#SubCritLabel').html('Edit Sub Kriteria');
 			if ($('#subkriteria-alert').length)
 				$('#subkriteria-alert').addClass('d-none');
 
 			// get data
 			$.get('/kriteria/sub/edit/' + sub_id, function(data) {
-					$('#subkriteria-id').val(data.id);
-					$('#nama-sub').val(data.name);
-					$('#kriteria-select').val(data.kriteria_id);
-				}).fail(function(xhr, status) {
-					Swal.fire({
-						icon: 'error',
-						title: 'Kesalahan',
-						text: xhr.responseJSON.message ?? status,
-						customClass: {
-							confirmButton: 'btn btn-success'
-						}
-					});
-				})
-				.always(function() {
-					$('#SubCritForm :input').prop('disabled', false);
+				$('#subkriteria-id').val(data.id);
+				$('#nama-sub').val(data.name);
+				$('#kriteria-select').val(data.kriteria_id);
+			}).fail(function(xhr, status) {
+				Swal.fire({
+					icon: 'error',
+					title: 'Kesalahan',
+					text: xhr.responseJSON.message ?? status,
+					customClass: {
+						confirmButton: 'btn btn-success'
+					}
 				});
+			}).always(function() {
+				$('#SubCritForm :input').prop('disabled', false);
+			});
 		});
 		// clearing form data when modal hidden
 		$('#SubCritModal').on('hidden.bs.modal', function() {

@@ -10,6 +10,7 @@ use App\Models\SubKriteria;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class NilaiController extends Controller
 {
@@ -28,8 +29,7 @@ class NilaiController extends Controller
 		$data = array();
 		$kueri = Nilai::select('subkriteria.bobot as bobot')
 			->join("subkriteria", "nilai.subkriteria_id", '=', "subkriteria.id")
-			->where('nilai.kriteria_id', '=', $kriteria_id)
-			->get();
+			->where('nilai.kriteria_id', '=', $kriteria_id)->get();
 		foreach ($kueri as $row) {
 			$data[] = $row->bobot;
 		}
@@ -40,7 +40,8 @@ class NilaiController extends Controller
 		try {
 			$kueri = Kriteria::findOrFail($idkriteria)->first();
 			return $kueri->bobot;
-		} catch (ModelNotFoundException | QueryException) {
+		} catch (ModelNotFoundException | QueryException $err) {
+			Log::error($err);
 			return 0;
 		}
 	}
@@ -48,7 +49,8 @@ class NilaiController extends Controller
 	{
 		try {
 			Hasil::updateOrInsert(['alternatif_id' => $alt_id], ['skor' => $jumlah]);
-		} catch (QueryException) {
+		} catch (QueryException $e) {
+			Log::error($e);
 			return;
 		}
 	}
@@ -126,43 +128,50 @@ class NilaiController extends Controller
 			$hasil['message'] = 'Penilaian alternatif sudah ditambahkan';
 			return response()->json($hasil);
 		} catch (QueryException $e) {
+			Log::error($e);
 			return response()->json(['message' => $e->getMessage()], 500);
 		}
 	}
 
 	public function show()
 	{
-		$alt = Alternatif::get();
-		$kr = Kriteria::get();
-		$skr = SubKriteria::get();
-		$hasil = Nilai::leftJoin(
-			'alternatif',
-			'alternatif.id',
-			'=',
-			'nilai.alternatif_id'
-		)->leftJoin('kriteria', 'kriteria.id', '=', 'nilai.kriteria_id')
-			->leftJoin('subkriteria', 'subkriteria.id', '=', 'nilai.subkriteria_id')
-			->get();
-		$cekbobotkr = Kriteria::where('bobot', 0.0000)->count();
-		$cekbobotskr = SubKriteria::where('bobot', 0.0000)->count();
-		if ($cekbobotkr > 0) {
-			return redirect('bobot')->withWarning(
-				'Lakukan perbandingan kriteria secara konsisten ' .
-				'sebelum melihat hasil penilaian alternatif.'
-			);
+		try {
+			$alt = Alternatif::get();
+			$kr = Kriteria::get();
+			$skr = SubKriteria::get();
+			$hasil = Nilai::leftJoin(
+				'alternatif',
+				'alternatif.id',
+				'=',
+				'nilai.alternatif_id'
+			)->leftJoin('kriteria', 'kriteria.id', '=', 'nilai.kriteria_id')
+				->leftJoin('subkriteria', 'subkriteria.id', '=', 'nilai.subkriteria_id')
+				->get();
+			$cekbobotkr = Kriteria::where('bobot', 0.0000)->count();
+			$cekbobotskr = SubKriteria::where('bobot', 0.0000)->count();
+			if ($cekbobotkr > 0) {
+				return redirect('bobot')->withWarning(
+					'Lakukan perbandingan kriteria secara konsisten ' .
+					'sebelum melihat hasil penilaian alternatif.'
+				);
+			}
+			if ($cekbobotskr > 0) {
+				return redirect('bobot/sub')->withWarning(
+					'Satu atau lebih perbandingan sub kriteria ' .
+					'belum dilakukan secara konsisten'
+				);
+			}
+			if ($hasil->isEmpty()) {
+				return redirect('alternatif/nilai')
+					->withWarning('Masukkan data penilaian alternatif dulu');
+			}
+			$data = ['alternatif' => $alt, 'kriteria' => $kr, 'subkriteria' => $skr];
+			return view('main.alternatif.hasil', compact('hasil', 'data'));
+		} catch (QueryException $e) {
+			Log::error($e);
+			return back()->withError('Gagal memuat hasil penilaian:')
+			->withErrors($e->getMessage());
 		}
-		if ($cekbobotskr > 0) {
-			return redirect('bobot/sub')->withWarning(
-				'Satu atau lebih perbandingan sub kriteria ' .
-				'belum dilakukan secara konsisten'
-			);
-		}
-		if ($hasil->isEmpty()) {
-			return redirect('alternatif/nilai')
-				->withWarning('Masukkan data penilaian alternatif dulu');
-		}
-		$data = ['alternatif' => $alt, 'kriteria' => $kr, 'subkriteria' => $skr];
-		return view('main.alternatif.hasil', compact('hasil', 'data'));
 	}
 
 	public function update(Request $request)
@@ -197,6 +206,7 @@ class NilaiController extends Controller
 			$hasil['message'] = "Nilai Alternatif sudah diupdate.";
 			return response()->json($hasil);
 		} catch (QueryException $e) {
+			Log::error($e);
 			return response()->json(['message' => $e->getMessage()], 500);
 		}
 	}
@@ -215,6 +225,7 @@ class NilaiController extends Controller
 				Nilai::truncate();
 			return response()->json(['message' => 'Penilaian alternatif sudah dihapus']);
 		} catch (QueryException $err) {
+			Log::error($err);
 			return response()->json(['message' => $err->getMessage()], 500);
 		}
 	}

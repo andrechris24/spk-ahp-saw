@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
 class KriteriaController extends Controller
@@ -21,11 +22,7 @@ class KriteriaController extends Controller
 	}
 	public function show(Request $request)
 	{
-		try {
-			return DataTables::of(Kriteria::query())->make();
-		} catch (QueryException $e) {
-			return response()->json(['message' => $e->getMessage()], 500);
-		}
+		return DataTables::of(Kriteria::query())->make();
 	}
 	public function store(Request $request)
 	{
@@ -48,6 +45,7 @@ class KriteriaController extends Controller
 				}
 			}
 		} catch (QueryException $e) {
+			Log::error($e);
 			return response()->json(['message' => $e->getMessage()], 500);
 		}
 		if ($krit)
@@ -60,15 +58,19 @@ class KriteriaController extends Controller
 			$kriteria = Kriteria::where('id', $id)->firstOrFail();
 			return response()->json($kriteria);
 		} catch (QueryException $e) {
+			Log::error($e);
 			return response()->json(["message" => $e->getMessage()], 500);
 		} catch (ModelNotFoundException $err) {
-			return response()->json(['message' => $err->getMessage()], 404);
+			return response()->json([
+				'message' => 'Data Kriteria tidak ditemukan',
+				'exception'=>$err->getMessage()
+			], 404);
 		}
 	}
 	public function hapus($id)
 	{
 		try {
-			$del = Kriteria::findOrFail($id)->delete();
+			Kriteria::findOrFail($id)->delete();
 			if (KriteriaComp::exists()) {
 				KriteriaComp::truncate();
 				Kriteria::where('bobot', '<>', 0.0000)->update(['bobot' => 0.0000]);
@@ -78,8 +80,12 @@ class KriteriaController extends Controller
 			}
 			return response()->json(['message' => 'Kriteria sudah dihapus']);
 		} catch (ModelNotFoundException $e) {
-			return response()->json(['message' => 'Kriteria tidak ditemukan'], 404);
+			return response()->json([
+				'message' => 'Kriteria tidak ditemukan',
+				'exception'=>$err->getMessage()
+			], 404);
 		} catch (QueryException $e) {
+			Log::error($e);
 			return response()->json(['message' => $e->getMessage()], 500);
 		}
 	}

@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
 use Symfony\Component\Mailer\Exception\TransportException;
 
@@ -37,12 +38,14 @@ class ForgotPasswordController extends Controller
 					->withError('Tunggu sebentar sebelum meminta reset password lagi.');
 			}
 		} catch (TransportException $err) {
+			Log::error($err);
 			DB::table('password_resets')->where('email', $request->email)->delete();
 			return back()->withInput()
 				->withError("Gagal mengirim link reset password: " . $err->getMessage());
 		} catch (QueryException $sql) {
+			Log::error($sql);
 			return back()->withInput()
-				->withError("Gagal mengirim link reset password: " . $sql->getMessage());
+				->withError("Gagal mengirim link reset password: " . $sql->getPrevious()->errorInfo[2]);
 		}
 		return back()
 			->withError('Gagal mengirim link reset password: Kesalahan tidak diketahui');

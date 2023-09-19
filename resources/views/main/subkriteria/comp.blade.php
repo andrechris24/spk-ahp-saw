@@ -45,7 +45,7 @@
 						<div class="tab-content" id="InputCompTabContent">
 							<div class="tab-pane fade show active" id="info" role="tabpanel"
 								aria-labelledby="info-tab">
-								@include('components.ahp')
+								<x-ahp-table/>
 								<a href="{{ url('/bobot/sub') }}" class="btn btn-secondary">
 									<i class="bi bi-arrow-left"></i> Kembali
 								</a>

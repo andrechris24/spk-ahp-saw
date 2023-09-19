@@ -8,6 +8,7 @@ use App\Models\SubKriteriaComp;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
 class SubKriteriaController extends Controller
@@ -20,22 +21,15 @@ class SubKriteriaController extends Controller
 			return redirect('kriteria')
 				->withWarning('Tambahkan kriteria dulu sebelum menambah sub kriteria');
 		}
-		return view(
-			'main.subkriteria.index',
-			compact('kriteria', 'compskr')
-		);
+		return view('main.subkriteria.index',compact('kriteria', 'compskr'));
 	}
 	public function show(Request $request)
 	{
-		try {
-			$subkriteria = SubKriteria::query();
-			return DataTables::eloquent($subkriteria)
-				->editColumn('kriteria_id', function (SubKriteria $skr) {
-					return $skr->kriteria->name;
-				})->toJson();
-		} catch (QueryException $e) {
-			return response()->json(['message' => $e->getMessage()], 500);
-		}
+		$subkriteria = SubKriteria::query();
+		return DataTables::eloquent($subkriteria)
+			->editColumn('kriteria_id', function (SubKriteria $skr) {
+				return $skr->kriteria->name;
+			})->toJson();
 	}
 	public function store(Request $request)
 	{
@@ -64,6 +58,7 @@ class SubKriteriaController extends Controller
 			}
 			return response()->json(['message' => 'Sub Kriteria sudah ' . $querytype]);
 		} catch (QueryException $e) {
+			Log::error($e);
 			return response()->json(['message' => $e->getMessage()], 500);
 		}
 	}
@@ -73,9 +68,13 @@ class SubKriteriaController extends Controller
 			$sub = SubKriteria::where('id', $id)->firstOrFail();
 			return response()->json($sub);
 		} catch (QueryException $e) {
-			return response()->json(["message" => $e->getMessage()], 500);
+			Log::error($e);
+			return response()->json(['message' => $err->getMessage()], 500);
 		} catch (ModelNotFoundException $err) {
-			return response()->json(['message' => $err->getMessage()], 404);
+			return response()->json([
+				"message" => 'Data Sub Kriteria tidak ditemukan',
+				'exception'=>$e->getMessage()
+			], 404);
 		}
 	}
 
@@ -93,16 +92,18 @@ class SubKriteriaController extends Controller
 					->update(['bobot' => 0.0000]);
 				return response()->json([
 					'message' =>
-						'Data Sub Kriteria sudah dihapus. ' .
+						'Sub Kriteria sudah dihapus. ' .
 						"Silahkan input ulang perbandingan sub kriteria $namakriteria."
 				]);
 			}
-			return response()->json(['message' => 'Data Sub Kriteria sudah dihapus']);
+			return response()->json(['message' => 'Sub Kriteria sudah dihapus']);
 		} catch (ModelNotFoundException $e) {
 			return response()->json([
-				'message' => 'Data Sub Kriteria tidak ditemukan'
+				'message' => 'Sub Kriteria tidak ditemukan',
+				'exception'=>$e->getMessage()
 			], 404);
 		} catch (QueryException $sql) {
+			Log::error($sql);
 			return response()->json(['message' => $sql->getMessage()], 500);
 		}
 	}

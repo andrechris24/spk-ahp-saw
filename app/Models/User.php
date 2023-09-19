@@ -16,17 +16,14 @@ class User extends Authenticatable
 	 *
 	 * @var array<int, string>
 	 */
-	protected $fillable = ['name','email','password'];
+	protected $fillable = ['name', 'email', 'password'];
 
 	/**
 	 * The attributes that should be hidden for serialization.
 	 *
 	 * @var array<int, string>
 	 */
-	protected $hidden = [
-		'password',
-		'remember_token',
-	];
+	protected $hidden = ['password', 'remember_token'];
 
 	/**
 	 * The attributes that should be cast.
@@ -37,16 +34,16 @@ class User extends Authenticatable
 	public static array $regrules = [
 		'name' => 'bail|required|min:5|regex:/^[\pL\s\-]+$/u',
 		'email' => 'bail|required|email|unique:users,email',
-		'password' => 'bail|required|between:8,20|confirmed',
+		'password' => 'bail|required|between:8,20|confirmed'
 	];
 	public static array $resetpass = [
 		'token' => 'required',
 		'email' => 'bail|required|email|exists:users',
-		'password' => 'bail|required|between:8,20|confirmed',
+		'password' => 'bail|required|between:8,20|confirmed'
 	];
 	public static array $loginrules = [
 		'email' => 'bail|required|email|exists:users',
-		'password' => 'required|min:8',
+		'password' => 'required|min:8'
 	];
 	public static array $resetmsg = [
 		'token.required' => 'Token tidak valid',
@@ -55,7 +52,7 @@ class User extends Authenticatable
 		'email.exists' => 'Akun tidak ditemukan',
 		'password.required' => 'Password harus diisi',
 		'password.between' => 'Panjang password harus 8-20 karakter',
-		'password.confirmed' => 'Password konfirmasi salah',
+		'password.confirmed' => 'Password konfirmasi salah'
 	];
 	public static array $delakunrule = ['del_password' => 'required'];
 }

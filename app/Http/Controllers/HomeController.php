@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
@@ -42,7 +43,7 @@ class HomeController extends Controller
 					'email' => 'bail|required|email|unique:users,email,' . $id,
 					'current_password' => 'bail|required|min:8',
 					'password' => 'nullable|confirmed|between:8,20',
-					'password_confirmation' => 'required_with:password',
+					'password_confirmation' => 'required_with:password'
 				],
 				[
 					'name.required' => 'Nama harus diisi',
@@ -51,7 +52,7 @@ class HomeController extends Controller
 					'email.required' => 'Email harus diisi',
 					'email.unique' => 'Email ' . $request->email . ' sudah digunakan',
 					'current_password.required' => 'Password lama harus diisi',
-					'password.confirmed' => 'Password konfirmasi salah',
+					'password.confirmed' => 'Password konfirmasi salah'
 				]
 			);
 			if (!Hash::check($request->current_password, Auth::user()->password)) {
@@ -74,6 +75,7 @@ class HomeController extends Controller
 				'exception' => $e->getMessage()
 			], 404);
 		} catch (QueryException $db) {
+			Log::error($db);
 			return response()->json(['message' => $db->getMessage()], 500);
 		}
 	}
@@ -94,6 +96,7 @@ class HomeController extends Controller
 			return back()->withError('Gagal hapus: Akun tidak ditemukan')
 				->withErrors($e->getMessage());
 		} catch (QueryException $db) {
+			Log::error($db);
 			return back()->withError('Gagal hapus:' . $db->getMessage());
 		}
 	}

@@ -3,8 +3,7 @@
 @section('auth-desc')
 	<h1 class="auth-title">Login</h1>
 	<p class="auth-subtitle mb-5">
-		Login untuk menggunakan fasilitas Sistem Pendukung Keputusan
-	</p>
+		Login untuk menggunakan fasilitas Sistem Pendukung Keputusan</p>
 @endsection
 
 @section('content')
@@ -15,9 +14,7 @@
 			<input type="email" placeholder="Email" name="email"
 				value="{{ old('email') }}" required
 				class="form-control form-control-xl @error('email') is-invalid @enderror " />
-			<div class="form-control-icon">
-				<i class="bi bi-envelope"></i>
-			</div>
+			<div class="form-control-icon"><i class="bi bi-envelope"></i></div>
 			@error('email')
 				<div class="invalid-feedback">{{ $message }}</div>
 			@enderror
@@ -28,9 +25,7 @@
 				maxlength="20"
 				class="form-control
 				form-control-xl @error('password') is-invalid @enderror " />
-			<div class="form-control-icon">
-				<i class="bi bi-shield-lock"></i>
-			</div>
+			<div class="form-control-icon"><i class="bi bi-shield-lock"></i></div>
 			@error('password')
 				<div class="invalid-feedback">{{ $message }}</div>
 			@enderror

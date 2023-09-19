@@ -16,16 +16,16 @@
 								Kriteria
 							</label>
 							<select class="form-select @error('kriteria_id') is-invalid @enderror "
-							id="kriteria" name="kriteria_id" required>
+								id="kriteria" name="kriteria_id" required>
 								<option value="">Pilih</option>
 								@foreach ($allkrit as $kr)
 									<option value="{{ $kr->id }}">{{ $kr->name }}</option>
 								@endforeach
 							</select>
 							@error('kriteria_id')
-							<div class="invalid-feedback">
-								{{$message}}
-							</div>
+								<div class="invalid-feedback">
+									{{ $message }}
+								</div>
 							@enderror
 						</div>
 						<button type="submit" class="btn btn-primary ml-1">

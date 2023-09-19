@@ -9,18 +9,18 @@ class KriteriaComp extends Model
 {
 	use HasFactory;
 	protected $table = "kriteria_banding";
-	protected $fillable = ["kriteria1","kriteria2","nilai"];
+	protected $fillable = ["kriteria1", "kriteria2", "nilai"];
 	public static array $rules = [
 		'kriteria' => 'required',
 		'kriteria.*' => 'required',
 		'skala' => 'required',
-		'skala.*' => 'numeric|between:1,9',
+		'skala.*' => 'numeric|between:1,9'
 	];
 	public static array $message = [
 		'kriteria.required' => 'Perbandingan tidak lengkap',
 		'skala.required' => 'Semua nilai perbandingan harus diisi',
 		'skala.numeric' => 'Nilai perbandingan harus berupa angka',
-		'skala.between' => 'Nilai perbandingan harus diantara :min sampai :max sesuai teori AHP',
+		'skala.between' => 'Nilai perbandingan harus diantara :min sampai :max sesuai teori AHP'
 	];
 	public static array $ratio_index = [
 		1 => 0,
@@ -42,6 +42,6 @@ class KriteriaComp extends Model
 		17 => 1.61,
 		18 => 1.615,
 		19 => 1.62,
-		20 => 1.625,
+		20 => 1.625
 	];
 }

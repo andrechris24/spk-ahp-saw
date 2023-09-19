@@ -27,7 +27,7 @@
 								<div class="form-group">
 									<input type="text" class="form-control" name="name"
 										id="alter-name" required />
-										<div class="invalid-feedback" id="alter-error"></div>
+									<div class="invalid-feedback" id="alter-error"></div>
 								</div>
 							</form>
 						</div>
@@ -128,7 +128,7 @@
 						{
 							extend: 'collection',
 							text: '<i class="bi bi-download me-0 me-sm-1"></i>Ekspor',
-          		className: 'btn btn-primary dropdown-toggle',
+							className: 'btn btn-primary dropdown-toggle',
 							buttons: [{
 									extend: 'print',
 									title: 'Alternatif',
@@ -184,9 +184,8 @@
 					duration: 7000,
 					backgroundColor: "#dc3545"
 				}).showToast();
-				if (!$.fn.DataTable.isDataTable('#table-alter')) {
+				if (!$.fn.DataTable.isDataTable('#table-alter'))
 					$('#spare-button').removeClass('d-none');
-				}
 			}
 			$.fn.dataTable.ext.errMode = 'none';
 
@@ -230,7 +229,6 @@
 						},
 						success: function() {
 							dt_alternatif.draw();
-							// success sweetalert
 							Swal.fire({
 								icon: 'success',
 								title: 'Dihapus',
@@ -288,8 +286,6 @@
 				success: function(status) {
 					dt_alternatif.draw();
 					$('#AlterModal').modal('hide');
-
-					// sweetalert
 					Swal.fire({
 						icon: 'success',
 						title: 'Sukses',
@@ -300,9 +296,10 @@
 					});
 				},
 				error: function(xhr, code) {
-					if(xhr.responseJSON.name){
+					if (xhr.responseJSON.name) {
 						$('#alter-name').addClass('is-invalid');
-						$('#alter-error').text(xhr.responseJSON.name);
+						$('#alter-error').text(xhr.responseJSON
+							.name);
 					}
 					Swal.fire({
 						title: 'Gagal',
@@ -319,27 +316,27 @@
 		// edit record
 		$(document).on('click', '.edit-record', function() {
 			var alt_id = $(this).data('id');
-			$('#AlterForm :input').prop('disabled', true);
+			
 			// changing the title of offcanvas
 			$('#AlterLabel').html('Edit Alternatif');
+			$('#AlterForm :input').prop('disabled', true);
 
 			// get data
 			$.get('/alternatif/edit/' + alt_id, function(data) {
-					$('#alter-id').val(data.id);
-					$('#alter-name').val(data.name);
-				}).fail(function(xhr, status) {
-					Swal.fire({
-						icon: 'error',
-						title: 'Kesalahan',
-						text: xhr.responseJSON.message ?? status,
-						customClass: {
-							confirmButton: 'btn btn-success'
-						}
-					});
-				})
-				.always(function() {
-					$('#AlterForm :input').prop('disabled', false);
+				$('#alter-id').val(data.id);
+				$('#alter-name').val(data.name);
+			}).fail(function(xhr, status) {
+				Swal.fire({
+					icon: 'error',
+					title: 'Kesalahan',
+					text: xhr.responseJSON.message ?? status,
+					customClass: {
+						confirmButton: 'btn btn-success'
+					}
 				});
+			}).always(function() {
+				$('#AlterForm :input').prop('disabled', false);
+			});
 		});
 		// clearing form data when modal hidden
 		$('#AlterModal').on('hidden.bs.modal', function() {

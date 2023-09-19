@@ -14,12 +14,12 @@ class SubKriteria extends Model
 	protected $fillable = ['name', 'kriteria_id'];
 	public static array $rules = [
 		'name' => 'required',
-		'kriteria_id' => 'bail|required|integer',
+		'kriteria_id' => 'bail|required|integer'
 	];
 	public static array $message = [
-		'name.required' => 'Nama subkriteria harus diisi',
+		'name.required' => 'Nama sub kriteria harus diisi',
 		'kriteria_id.required' => 'Kriteria harus dipilih',
-		'kriteria_id.integer' => 'Kriteria tidak valid',
+		'kriteria_id.integer' => 'Kriteria tidak valid'
 	];
 	public function kriteria(): BelongsTo
 	{

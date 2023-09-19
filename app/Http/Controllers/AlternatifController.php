@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
 class AlternatifController extends Controller
@@ -19,11 +20,7 @@ class AlternatifController extends Controller
 	}
 	public function show(Request $request)
 	{
-		try {
-			return DataTables::of(Alternatif::query())->make();
-		} catch (QueryException $e) {
-			return response()->json(['message' => $e->getMessage()], 500);
-		}
+		return DataTables::of(Alternatif::query())->make();
 	}
 	public function store(Request $request)
 	{
@@ -41,6 +38,7 @@ class AlternatifController extends Controller
 				$querytype = "ditambah.";
 			}
 		} catch (QueryException $e) {
+			Log::error($e);
 			return response()->json(['message' => $e->getMessage()], 500);
 		}
 		if ($alter)
@@ -54,8 +52,11 @@ class AlternatifController extends Controller
 			return response()->json($alter);
 		} catch (QueryException $e) {
 			return response()->json(["message" => $e->getMessage()], 500);
-		} catch (ModelNotFoundException $err) {
-			return response()->json(['message' => $err->getMessage()], 404);
+		} catch (ModelNotFoundException $e) {
+			return response()->json([
+				'message' => 'Data Alternatif tidak ditemukan',
+				'exception'=>$e->getMessage()
+			], 404);
 		}
 	}
 	public function hapus($id)
@@ -65,9 +66,11 @@ class AlternatifController extends Controller
 			return response()->json(['message' => 'Alternatif sudah dihapus']);
 		} catch (ModelNotFoundException $e) {
 			return response()->json([
-				'message' => 'Data Alternatif tidak ditemukan'
+				'message' => 'Alternatif tidak ditemukan',
+				'exception'=>$e->getMessage()
 			], 404);
 		} catch (QueryException $sql) {
+			Log::error($sql);
 			return response()->json(['message' => $sql->getMessage()], 500);
 		}
 	}

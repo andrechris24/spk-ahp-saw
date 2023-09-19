@@ -14,9 +14,7 @@
 			<input type="email" placeholder="Email" name="email"
 				value="{{ $email }}" readonly required
 				class="form-control form-control-xl @error('email') is-invalid @enderror " />
-			<div class="form-control-icon">
-				<i class="bi bi-envelope"></i>
-			</div>
+			<div class="form-control-icon"><i class="bi bi-envelope"></i></div>
 			@error('email')
 				<div class="invalid-feedback">{{ $message }}</div>
 			@enderror
@@ -27,9 +25,7 @@
 				pattern=".{8,20}" maxlength="20" id="password" oninput="checkpassword()"
 				data-bs-toggle="tooltip" data-bs-placement="top" required
 				title="8-20 karakter (Saran: terdiri dari huruf besar, huruf kecil, angka, dan simbol)" />
-			<div class="form-control-icon">
-				<i class="bi bi-shield-lock"></i>
-			</div>
+			<div class="form-control-icon"><i class="bi bi-shield-lock"></i></div>
 			@error('password')
 				<div class="invalid-feedback">{{ $message }}</div>
 			@enderror
@@ -40,9 +36,7 @@
 				oninput="checkpassword()"
 				class="form-control
 				form-control-xl @error('password_confirmation') is-invalid @enderror " />
-			<div class="form-control-icon">
-				<i class="bi bi-shield-lock"></i>
-			</div>
+			<div class="form-control-icon"><i class="bi bi-shield-lock"></i></div>
 			@error('password_confirmation')
 				<div class="invalid-feedback">{{ $message }}</div>
 			@enderror

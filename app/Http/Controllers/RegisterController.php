@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class RegisterController extends Controller
 {
@@ -32,7 +33,7 @@ class RegisterController extends Controller
 				'email.unique' => 'Email ' . $request->email . ' sudah digunakan',
 				'password.required' => 'Password harus diisi',
 				'password.between' => 'Panjang password harus 8-20 karakter',
-				'password.confirmed' => 'Password konfirmasi salah',
+				'password.confirmed' => 'Password konfirmasi salah'
 			]);
 			$credentials['password'] = Hash::make($credentials['password']);
 			$user = User::create($credentials);
@@ -41,6 +42,7 @@ class RegisterController extends Controller
 			return redirect('/')
 				->withSuccess("Registrasi akun berhasil, selamat datang");
 		} catch (QueryException $e) {
+			Log::error($e);
 			return back()->withInput()
 				->withError("Registrasi akun gagal: " . $e->getMessage());
 		}

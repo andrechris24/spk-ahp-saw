@@ -3,8 +3,7 @@
 @section('auth-desc')
 	<h1 class="auth-title">Lupa Password</h1>
 	<p class="auth-subtitle mb-5">
-		Masukkan email Anda untuk mendapatkan link reset password
-	</p>
+		Masukkan email Anda untuk mendapatkan link reset password</p>
 @endsection
 
 @section('content')
@@ -13,9 +12,7 @@
 			<input type="email" placeholder="Email" name="email"
 				value="{{ old('email') }}" required
 				class="form-control form-control-xl @error('email') is-invalid @enderror " />
-			<div class="form-control-icon">
-				<i class="bi bi-envelope"></i>
-			</div>
+			<div class="form-control-icon"><i class="bi bi-envelope"></i></div>
 			@error('email')
 				<div class="invalid-feedback">{{ $message }}</div>
 			@enderror

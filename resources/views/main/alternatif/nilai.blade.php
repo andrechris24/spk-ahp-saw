@@ -1,6 +1,3 @@
-@php
-	use Illuminate\Support\Str;
-@endphp
 @extends('layout')
 @section('title', 'Nilai Alternatif');
 @section('content')
@@ -61,7 +58,8 @@
 												@endif
 											@endforeach
 										</select>
-										<div class="invalid-feedback" id="subkriteria-error-{{ $kr->id }}"></div>
+										<div class="invalid-feedback"
+											id="subkriteria-error-{{ $kr->id }}"></div>
 									</div>
 								@endforeach
 							</form>
@@ -182,7 +180,7 @@
 						{
 							extend: 'collection',
 							text: '<i class="bi bi-download me-0 me-sm-1"></i>Ekspor',
-          		className: 'btn btn-primary dropdown-toggle',
+							className: 'btn btn-primary dropdown-toggle',
 							buttons: [{
 									extend: 'print',
 									title: 'Nilai Alternatif',
@@ -238,9 +236,8 @@
 					duration: 7000,
 					backgroundColor: "#dc3545"
 				}).showToast();
-				if (!$.fn.DataTable.isDataTable('#table-nilaialt')) {
+				if (!$.fn.DataTable.isDataTable('#table-nilaialt'))
 					$('#spare-button').removeClass('d-none');
-				}
 			}
 			nilaialtdt.on('draw', setTableColor);
 		});
@@ -274,7 +271,6 @@
 						success: function(data) {
 							nilaialtdt.row(rowParent)
 								.remove().draw();
-							// success sweetalert
 							Swal.fire({
 								icon: 'success',
 								title: 'Dihapus',
@@ -337,8 +333,6 @@
 					else
 						nilaialtdt.row($('#edit-index').val())
 						.data(status).draw();
-
-					// sweetalert
 					Swal.fire({
 						icon: 'success',
 						title: 'Sukses',
@@ -363,8 +357,9 @@
 		});
 		// edit record
 		$(document).on('click', '.edit-record', function() {
-			var dtparent = $(this).parents('tr');
-			var rownum = nilaialtdt.row(dtparent).index();
+			var dtparent = $(this).parents('tr'),
+				rownum = nilaialtdt.row(dtparent).index();
+
 			// changing the title of offcanvas
 			$('#NilaiAlterLabel').html('Edit Nilai Alternatif');
 			$('#form-method').val('PUT');

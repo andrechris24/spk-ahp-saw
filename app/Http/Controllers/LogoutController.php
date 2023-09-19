@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Log;
 
 class LogoutController extends Controller
 {
@@ -18,8 +19,9 @@ class LogoutController extends Controller
 			Auth::logout();
 			return redirect('/login')->withSuccess('Anda sudah logout.');
 		} catch (ModelNotFoundException $e) {
-			return back()->withError($e->getMessage());
+			return back()->withErrors($e->getMessage());
 		} catch (QueryException $e) {
+			Log::error($e);
 			return back()->withError('Gagal logout: ' . $e->getMessage());
 		}
 	}

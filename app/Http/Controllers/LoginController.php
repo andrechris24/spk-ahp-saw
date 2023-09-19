@@ -7,10 +7,11 @@ use App\Services\Login\RememberMeExpiration;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
@@ -37,6 +38,7 @@ class LoginController extends Controller
 			}
 			return back()->withInput()->withErrors(['password' => 'Password salah']);
 		} catch (QueryException $e) {
+			Log::error($e);
 			return back()->withInput()->withError('Gagal login: ' . $e->getMessage());
 		}
 	}

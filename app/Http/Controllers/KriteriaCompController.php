@@ -11,6 +11,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Log;
 
 class KriteriaCompController extends Controller
 {
@@ -73,7 +74,9 @@ class KriteriaCompController extends Controller
 				}
 			}
 		} catch (QueryException $sql) {
-			return back()->withInput()->withErrors($sql->getMessage());
+			Log::error($sql);
+			return back()->withInput()->withError('Gagal:')
+			->withErrors($sql->getMessage());
 		}
 		return redirect('/bobot/hasil');
 	}
@@ -235,27 +238,34 @@ class KriteriaCompController extends Controller
 			$result = '-';
 		else
 			$result = number_format(abs($total_ci / $ratio), 4);
-		if ($result <= 0.1 || !is_numeric($result)) {
-			for ($i = 0; $i < count($kriteria); $i++) {
-				Kriteria::where("id", $kriteria[$i]->idkriteria)
-					->update(["bobot" => $array_BobotPrioritas[$i]["bobot"]]);
-			}
-		} else
-			Kriteria::where('bobot', '<>', 0.0000)->update(['bobot' => 0.0000]);
-		$data = [
-			"kriteria" => $kriteria,
-			"matriks_perbandingan" => $matriks_perbandingan,
-			"matriks_awal" => $matriks_awal,
-			"average_cm" => $average_cm,
-			"bobot_prioritas" => $array_BobotPrioritas,
-			"matriks_normalisasi" => $array_normalisasi,
-			"jumlah" => $array_jumlah,
-			"cm" => $array_CM,
-			"ci" => $total_ci,
-			"result" => $result,
-			"total_jumlah_baris" => $total_jumlah_baris,
-		];
-		return view('main.kriteria.hasil', compact('data'));
+		try {
+			if ($result <= 0.1 || !is_numeric($result)) {
+				for ($i = 0; $i < count($kriteria); $i++) {
+					Kriteria::where("id", $kriteria[$i]->idkriteria)
+						->update(["bobot" => $array_BobotPrioritas[$i]["bobot"]]);
+				}
+			} else
+				Kriteria::where('bobot', '<>', 0.0000)->update(['bobot' => 0.0000]);
+			$data = [
+				"kriteria" => $kriteria,
+				"matriks_perbandingan" => $matriks_perbandingan,
+				"matriks_awal" => $matriks_awal,
+				"average_cm" => $average_cm,
+				"bobot_prioritas" => $array_BobotPrioritas,
+				"matriks_normalisasi" => $array_normalisasi,
+				"jumlah" => $array_jumlah,
+				"cm" => $array_CM,
+				"ci" => $total_ci,
+				"result" => $result,
+				"total_jumlah_baris" => $total_jumlah_baris
+			];
+			return view('main.kriteria.hasil', compact('data'));
+		} catch (QueryException $e) {
+			Log::error($sql);
+			return redirect('/bobot')
+				->withError('Gagal memuat hasil perbandingan kriteria:')
+				->withErrors($sql->getMessage());
+		}
 	}
 	public function destroy()
 	{
@@ -265,6 +275,7 @@ class KriteriaCompController extends Controller
 			return redirect('/bobot')
 				->withSuccess('Perbandingan Kriteria sudah direset');
 		} catch (QueryException $sql) {
+			Log::error($sql);
 			return redirect('/bobot')->withError('Perbandingan Kriteria gagal direset:')
 				->withErrors($sql->getMessage());
 		}

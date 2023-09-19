@@ -2,9 +2,7 @@
 @section('title', 'Registrasi')
 @section('auth-desc')
 	<h1 class="auth-title">Registrasi</h1>
-	<p class="auth-subtitle mb-5">
-		Masukkan data Anda
-	</p>
+	<p class="auth-subtitle mb-5">Masukkan data Anda</p>
 @endsection
 
 @section('content')
@@ -15,9 +13,7 @@
 			<input type="text" name="email" placeholder="Email"
 				value="{{ old('email') }}" required
 				class="form-control form-control-xl @error('email') is-invalid @enderror " />
-			<div class="form-control-icon">
-				<i class="bi bi-envelope"></i>
-			</div>
+			<div class="form-control-icon"><i class="bi bi-envelope"></i></div>
 			@error('email')
 				<div class="invalid-feedback">{{ $message }}</div>
 			@enderror
@@ -26,9 +22,7 @@
 			<input type="text" name="name" maxlength="99" placeholder="Nama lengkap"
 				class="form-control form-control-xl @error('name') is-invalid @enderror "
 				pattern="[A-z.,' ]{5,99}" value="{{ old('name') }}" required />
-			<div class="form-control-icon">
-				<i class="bi bi-person"></i>
-			</div>
+			<div class="form-control-icon"><i class="bi bi-person"></i></div>
 			@error('name')
 				<div class="invalid-feedback">{{ $message }}</div>
 			@enderror
@@ -39,9 +33,7 @@
 				pattern=".{8,20}" maxlength="20" id="password" oninput="checkpassword()"
 				data-bs-toggle="tooltip" data-bs-placement="top" required
 				title="8-20 karakter (Saran: terdiri dari huruf besar, huruf kecil, angka, dan simbol)" />
-			<div class="form-control-icon">
-				<i class="bi bi-shield-lock"></i>
-			</div>
+			<div class="form-control-icon"><i class="bi bi-shield-lock"></i></div>
 			@error('password')
 				<div class="invalid-feedback">{{ $message }}</div>
 			@enderror
@@ -51,9 +43,7 @@
 				name="password_confirmation" id="confirm-password"
 				class="form-control form-control-xl @error('password_confirmation') is-invalid @enderror "
 				oninput="checkpassword()" required />
-			<div class="form-control-icon">
-				<i class="bi bi-shield-lock"></i>
-			</div>
+			<div class="form-control-icon"><i class="bi bi-shield-lock"></i></div>
 			@error('password_confirmation')
 				<div class="invalid-feedback">{{ $message }}</div>
 			@enderror
