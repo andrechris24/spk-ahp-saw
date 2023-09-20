@@ -170,7 +170,7 @@ class NilaiController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil penilaian:')
-			->withErrors($e->getMessage());
+				->withErrors($e->getMessage());
 		}
 	}
 

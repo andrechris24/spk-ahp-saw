@@ -21,7 +21,7 @@ class SubKriteriaController extends Controller
 			return redirect('kriteria')
 				->withWarning('Tambahkan kriteria dulu sebelum menambah sub kriteria');
 		}
-		return view('main.subkriteria.index',compact('kriteria', 'compskr'));
+		return view('main.subkriteria.index', compact('kriteria', 'compskr'));
 	}
 	public function show(Request $request)
 	{
@@ -73,7 +73,7 @@ class SubKriteriaController extends Controller
 		} catch (ModelNotFoundException $err) {
 			return response()->json([
 				"message" => 'Data Sub Kriteria tidak ditemukan',
-				'exception'=>$e->getMessage()
+				'exception' => $e->getMessage()
 			], 404);
 		}
 	}
@@ -100,7 +100,7 @@ class SubKriteriaController extends Controller
 		} catch (ModelNotFoundException $e) {
 			return response()->json([
 				'message' => 'Sub Kriteria tidak ditemukan',
-				'exception'=>$e->getMessage()
+				'exception' => $e->getMessage()
 			], 404);
 		} catch (QueryException $sql) {
 			Log::error($sql);

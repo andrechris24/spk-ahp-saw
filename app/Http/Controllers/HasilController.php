@@ -23,7 +23,7 @@ class HasilController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat grafik hasil penilaian')
-			->withErrors($e->getMessage());
+				->withErrors($e->getMessage());
 		}
 	}
 }

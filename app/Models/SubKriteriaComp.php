@@ -10,8 +10,8 @@ class SubKriteriaComp extends Model
 	use HasFactory;
 	protected $table = "subkriteria_banding";
 	protected $fillable = ["idkriteria", "subkriteria1", "subkriteria2", "nilai"];
-	public static array $selectrules=['kriteria_id' => 'bail|required|integer'];
-	public static array $selectmessage=[
+	public static array $selectrules = ['kriteria_id' => 'bail|required|integer'];
+	public static array $selectmessage = [
 		'kriteria_id.required' => 'Kriteria harus dipilih',
 		'kriteria_id.integer' => 'Kriteria tidak valid'
 	];

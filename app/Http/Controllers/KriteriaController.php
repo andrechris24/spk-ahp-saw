@@ -63,7 +63,7 @@ class KriteriaController extends Controller
 		} catch (ModelNotFoundException $err) {
 			return response()->json([
 				'message' => 'Data Kriteria tidak ditemukan',
-				'exception'=>$err->getMessage()
+				'exception' => $err->getMessage()
 			], 404);
 		}
 	}
@@ -82,7 +82,7 @@ class KriteriaController extends Controller
 		} catch (ModelNotFoundException $e) {
 			return response()->json([
 				'message' => 'Kriteria tidak ditemukan',
-				'exception'=>$err->getMessage()
+				'exception' => $e->getMessage()
 			], 404);
 		} catch (QueryException $e) {
 			Log::error($e);

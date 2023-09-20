@@ -76,7 +76,7 @@ class KriteriaCompController extends Controller
 		} catch (QueryException $sql) {
 			Log::error($sql);
 			return back()->withInput()->withError('Gagal:')
-			->withErrors($sql->getMessage());
+				->withErrors($sql->getMessage());
 		}
 		return redirect('/bobot/hasil');
 	}
@@ -261,10 +261,10 @@ class KriteriaCompController extends Controller
 			];
 			return view('main.kriteria.hasil', compact('data'));
 		} catch (QueryException $e) {
-			Log::error($sql);
+			Log::error($e);
 			return redirect('/bobot')
 				->withError('Gagal memuat hasil perbandingan kriteria:')
-				->withErrors($sql->getMessage());
+				->withErrors($e->getMessage());
 		}
 	}
 	public function destroy()

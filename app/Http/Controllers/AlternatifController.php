@@ -55,7 +55,7 @@ class AlternatifController extends Controller
 		} catch (ModelNotFoundException $e) {
 			return response()->json([
 				'message' => 'Data Alternatif tidak ditemukan',
-				'exception'=>$e->getMessage()
+				'exception' => $e->getMessage()
 			], 404);
 		}
 	}
@@ -67,7 +67,7 @@ class AlternatifController extends Controller
 		} catch (ModelNotFoundException $e) {
 			return response()->json([
 				'message' => 'Alternatif tidak ditemukan',
-				'exception'=>$e->getMessage()
+				'exception' => $e->getMessage()
 			], 404);
 		} catch (QueryException $sql) {
 			Log::error($sql);

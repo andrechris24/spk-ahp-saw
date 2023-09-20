@@ -107,8 +107,8 @@
 									<div class="form-group has-icon-left">
 										<div class="position-relative">
 											<input type="password" name="current_password" id="password-current"
-												class="form-control" placeholder="Password Anda"
-												maxlength="20" required />
+												class="form-control" placeholder="Password Anda" maxlength="20"
+												required />
 											<div class="form-control-icon">
 												<i class="bi bi-lock"></i>
 											</div>
@@ -148,8 +148,8 @@
 									<div class="form-group has-icon-left">
 										<div class="position-relative">
 											<input type="password" name="password_confirmation" maxlength="20"
-												id="conf-password" oninput="checkpassword()"
-												class="form-control" placeholder="Ketik ulang Password baru" />
+												id="conf-password" oninput="checkpassword()" class="form-control"
+												placeholder="Ketik ulang Password baru" />
 											<div class="form-control-icon">
 												<i class="bi bi-lock"></i>
 											</div>

@@ -316,7 +316,7 @@
 		// edit record
 		$(document).on('click', '.edit-record', function() {
 			var alt_id = $(this).data('id');
-			
+
 			// changing the title of offcanvas
 			$('#AlterLabel').html('Edit Alternatif');
 			$('#AlterForm :input').prop('disabled', true);

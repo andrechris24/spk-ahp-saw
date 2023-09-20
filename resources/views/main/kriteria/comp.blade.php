@@ -38,7 +38,7 @@
 						<div class="tab-content" id="InputCompTabContent">
 							<div class="tab-pane fade show active" id="info" role="tabpanel"
 								aria-labelledby="info-tab">
-								<x-ahp-table/>
+								<x-ahp-table />
 							</div>
 							<div class="tab-pane fade" id="input" role="tabpanel"
 								aria-labelledby="input-tab">
