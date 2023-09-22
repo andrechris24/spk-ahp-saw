@@ -24,8 +24,8 @@
 					</div>
 					<div class="modal-body">
 						<form action="{{ url('/akun/del') }}" method="post"
-							enctype="multipart/form-data" id="form-delete-account">
-							@csrf
+							enctype="multipart/form-data" id="form-delete-account"
+							onsubmit="$('#DelAccountAnim').removeClass('d-none');">@csrf
 							@method('DELETE')
 							<div class="alert alert-warning d-none" id="capslock2">
 								<i class="bi bi-capslock-fill"></i> CAPS LOCK nyala
@@ -46,14 +46,17 @@
 						</form>
 					</div>
 					<div class="modal-footer">
+						<div class="spinner-grow text-danger d-none" role="status" id="DelAccountAnim">
+							<span class="visually-hidden">Menghapus...</span>
+						</div>
 						<button type="button" class="btn btn-light-secondary"
 							data-bs-dismiss="modal">
-							<i class="bx bx-x d-block d-sm-none"></i>
+							<i class="bi bi-x d-block d-sm-none"></i>
 							<span class="d-none d-sm-block">Batal</span>
 						</button>
 						<button type="submit" class="btn btn-danger ml-1"
 							form="form-delete-account">
-							<i class="bx bx-check d-block d-sm-none"></i>
+							<i class="bi bi-check d-block d-sm-none"></i>
 							<span class="d-none d-sm-block">Hapus</span>
 						</button>
 					</div>
@@ -160,6 +163,9 @@
 									</div>
 								</div>
 								<div class="col-12 d-flex justify-content-end">
+									<div class="spinner-grow text-primary me-3 d-none" role="status">
+										<span class="visually-hidden">Menyimpan...</span>
+									</div>
 									<div class="btn-group">
 										<button type="submit" class="btn btn-primary data-submit">
 											<i class="bi bi-save-fill"></i> Simpan
@@ -218,11 +224,13 @@
 					$('#form-edit-account :input').prop('disabled',
 						true);
 					$('.data-submit').prop('disabled', true);
+					$('.spinner-grow').removeClass('d-none');
 				},
 				complete: function() {
 					$('#form-edit-account :input').prop('disabled',
 						false);
 					$('.data-submit').prop('disabled', false);
+					$('.spinner-grow').addClass('d-none');
 				},
 				success: function(status) {
 					$('input[type=password]').val("");

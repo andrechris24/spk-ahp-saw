@@ -53,14 +53,17 @@
 								</div>
 							</form>
 							<div class="modal-footer">
+								<div class="spinner-grow text-primary d-none" role="status">
+									<span class="visually-hidden">Menyimpan...</span>
+								</div>
 								<button type="button" class="btn btn-light-secondary"
 									data-bs-dismiss="modal">
-									<i class="bx bx-x d-block d-sm-none"></i>
+									<i class="bi bi-x d-block d-sm-none"></i>
 									<span class="d-none d-sm-block">Batal</span>
 								</button>
 								<button type="submit" class="btn btn-primary ml-1 data-submit"
 									form="CritForm">
-									<i class="bx bx-check d-block d-sm-none"></i>
+									<i class="bi bi-check d-block d-sm-none"></i>
 									<span class="d-none d-sm-block">Simpan</span>
 								</button>
 							</div>
@@ -313,10 +316,12 @@
 					$('#CritForm :input').removeClass(
 						'is-invalid');
 					$('.data-submit').prop('disabled', true);
+					$('.spinner-grow').removeClass('d-none');
 				},
 				complete: function() {
 					$('#CritForm :input').prop('disabled', false);
 					$('.data-submit').prop('disabled', false);
+					$('.spinner-grow').addClass('d-none');
 				},
 				success: function(status) {
 					dt_kriteria.draw();
@@ -365,6 +370,8 @@
 			// changing the title of offcanvas
 			$('#CritForm :input').prop('disabled', true);
 			$('#CritLabel').html('Edit Kriteria');
+			$('.data-submit').prop('disabled', true);
+			$('.spinner-grow').removeClass('d-none');
 			if ($('#kriteria-alert').length)
 				$('#kriteria-alert').addClass('d-none');
 			// get data
@@ -384,6 +391,8 @@
 				});
 			}).always(function() {
 				$('#CritForm :input').prop('disabled', false);
+				$('.data-submit').prop('disabled', false);
+				$('.spinner-grow').addClass('d-none');
 			});
 		});
 		// clearing form data when modal hidden

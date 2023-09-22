@@ -65,14 +65,17 @@
 							</form>
 						</div>
 						<div class="modal-footer">
+							<div class="spinner-grow text-primary d-none" role="status">
+								<span class="visually-hidden">Menyimpan...</span>
+							</div>
 							<button type="button" class="btn btn-light-secondary"
 								data-bs-dismiss="modal">
-								<i class="bx bx-x d-block d-sm-none"></i>
+								<i class="bi bi-x d-block d-sm-none"></i>
 								<span class="d-none d-sm-block">Batal</span>
 							</button>
 							<button type="submit" class="btn btn-primary ml-1 data-submit"
 								form="NilaiAlterForm">
-								<i class="bx bx-check d-block d-sm-none"></i>
+								<i class="bi bi-check d-block d-sm-none"></i>
 								<span class="d-none d-sm-block">Simpan</span>
 							</button>
 						</div>
@@ -320,11 +323,13 @@
 					$('#NilaiAlterForm :input').removeClass(
 						'is-invalid');
 					$('.data-submit').prop('disabled', true);
+					$('.spinner-grow').removeClass('d-none');
 				},
 				complete: function() {
 					$('#NilaiAlterForm :input').prop('disabled',
 						false);
 					$('.data-submit').prop('disabled', false);
+					$('.spinner-grow').addClass('d-none');
 				},
 				success: function(status) {
 					$('#NilaiAlterModal').modal('hide');

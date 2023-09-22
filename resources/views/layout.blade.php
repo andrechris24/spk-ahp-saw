@@ -209,8 +209,8 @@
 								<ul class="navbar-nav ms-auto mb-lg-0">
 									<li class="nav-item me-5">
 										<a class="nav-link active text-gray-600"
-											href="{{ route('php.info') }}" title="PHP Info">
-											<i class="fab fa-php fs-4"></i>
+											href="{{ route('php.info') }}">
+											PHP Info
 										</a>
 									</li>
 								</ul>
