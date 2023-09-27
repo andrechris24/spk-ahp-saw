@@ -135,6 +135,14 @@
 									._iDisplayStart + 1;
 							}
 						},
+						{
+							targets: 2,
+							render: function(data, type, full) {
+								return '<span title="' + full[
+										'desc_kr'] + '">' +
+									data + '</span>';
+							}
+						},
 						{ //Aksi
 							orderable: false,
 							targets: -1,

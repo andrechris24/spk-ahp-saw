@@ -7,8 +7,8 @@ use App\Models\KriteriaComp;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
@@ -32,7 +32,11 @@ class KriteriaController extends Controller
 			if ($kritID) {
 				$krit = Kriteria::updateOrCreate(
 					['id' => $kritID],
-					['name' => $request->name, 'type' => $request->type, 'desc' => $request->desc]
+					[
+						'name' => $request->name,
+						'type' => $request->type,
+						'desc' => $request->desc
+					]
 				);
 				$querytype = "diupdate.";
 			} else {

@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Kriteria;
 use App\Models\SubKriteria;
 use App\Models\SubKriteriaComp;
-use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
@@ -29,7 +29,9 @@ class SubKriteriaController extends Controller
 		return DataTables::eloquent($subkriteria)
 			->editColumn('kriteria_id', function (SubKriteria $skr) {
 				return $skr->kriteria->name;
-			})->toJson();
+			})->addColumn('desc_kr', function (SubKriteria $kr) {
+			return $kr->kriteria->desc;
+		})->toJson();
 	}
 	public function store(Request $request)
 	{

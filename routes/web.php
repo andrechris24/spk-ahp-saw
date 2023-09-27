@@ -118,7 +118,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 				Route::delete('del/{id}', 'NilaiController@destroy')->name('nilai.delete');
 			});
 		});
-		Route::get('/ranking', 'HasilController@index')->name('ranking.show');
+		Route::get('/ranking', 'NilaiController@hasil')->name('hasil.ranking');
 		Route::post('/logout', 'LogoutController@perform')->name('logout');
 	});
 });

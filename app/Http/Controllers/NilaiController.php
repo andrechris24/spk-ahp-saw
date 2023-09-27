@@ -7,14 +7,14 @@ use App\Models\Hasil;
 use App\Models\Kriteria;
 use App\Models\Nilai;
 use App\Models\SubKriteria;
-use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class NilaiController extends Controller
 {
-	public function normalisasi($arr, $type, $skor): float|string
+	public function normalisasi($arr, $type, $skor)
 	{
 		if ($type === 'cost')
 			$hasil = min($arr) / $skor;
@@ -181,7 +181,10 @@ class NilaiController extends Controller
 			$scores = $request->all();
 			for ($a = 0; $a < count($scores['kriteria_id']); $a++) {
 				$Nilai[] = Nilai::updateOrCreate(
-					['alternatif_id' => $scores['alternatif_id'], 'kriteria_id' => $scores['kriteria_id'][$a]],
+					[
+						'alternatif_id' => $scores['alternatif_id'],
+						'kriteria_id' => $scores['kriteria_id'][$a]
+					],
 					['subkriteria_id' => $scores['subkriteria_id'][$a]]
 				);
 				$hasil[$a + 1] = $Nilai[$a]->subkriteria->name;
@@ -227,6 +230,23 @@ class NilaiController extends Controller
 		} catch (QueryException $err) {
 			Log::error($err);
 			return response()->json(['message' => $err->getMessage()], 500);
+		}
+	}
+	public function hasil()
+	{
+		try {
+			$result = Hasil::get();
+			foreach ($result as $index=>$hasil) {
+				$data['alternatif'][$index]=$hasil->alternatif_id;
+				$data['skor'][$index]=$hasil->skor;
+			}
+			$highest = Hasil::orderBy('skor', 'desc')->first();
+			return response()->json([
+				'result'=>$data,'score' => $highest->skor,'nama'=>$highest->alternatif->name
+			]);
+		} catch (QueryException $e) {
+			Log::error($e);
+			return response()->json(["message" => $e->getMessage()], 500);
 		}
 	}
 }

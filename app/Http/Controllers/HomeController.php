@@ -9,8 +9,8 @@ use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -90,7 +90,7 @@ class HomeController extends Controller
 			Session::flush();
 			User::findOrFail($id)->delete();
 			return redirect('/login')->withSuccess(
-				'Akun sudah dihapus. Terima kasih sudah menggunakan Sistem Pendukung Keputusan.'
+				'Akun sudah dihapus. Terima kasih Anda telah menggunakan Sistem Pendukung Keputusan.'
 			);
 		} catch (ModelNotFoundException $e) {
 			return back()->withError('Gagal hapus: Akun tidak ditemukan')

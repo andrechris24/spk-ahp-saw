@@ -45,7 +45,9 @@ class ForgotPasswordController extends Controller
 		} catch (QueryException $sql) {
 			Log::error($sql);
 			return back()->withInput()
-				->withError("Gagal mengirim link reset password: " . $sql->getPrevious()->errorInfo[2]);
+				->withError(
+					"Gagal mengirim link reset password: " . $sql->getMessage()
+				);
 		}
 		return back()
 			->withError('Gagal mengirim link reset password: Kesalahan tidak diketahui');

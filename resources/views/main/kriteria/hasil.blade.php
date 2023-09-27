@@ -167,7 +167,7 @@
 						</table>
 						<div class="col-12 d-flex justify-content-end">
 							<div class="btn-group">
-								<a href="{{ url('/bobot/reset') }}" class="btn btn-warning"
+								<a href="{{ route('bobotkriteria.reset') }}" class="btn btn-warning"
 									onclick="event.preventDefault(); document.getElementById('reset-kriteria').submit();">
 									<i class="bi bi-arrow-counterclockwise"></i> Reset
 								</a>
@@ -177,7 +177,7 @@
 									</a>
 								@endif
 							</div>
-							<form action="{{ route('bobotkriteria.reset') }}" id="reset-kriteria">
+							<form action="{{ route('bobotkriteria.reset') }}" method="POST" id="reset-kriteria">
 								@csrf
 								@method('DELETE')
 							</form>

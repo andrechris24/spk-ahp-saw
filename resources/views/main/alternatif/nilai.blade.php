@@ -95,7 +95,10 @@
 							<tr>
 								<th>Nama Alternatif</th>
 								@foreach ($kriteria as $kr)
-									<th title="{{ $kr->desc }}">{{ $kr->name }}</th>
+									<th data-bs-toggle="tooltip"
+										data-bs-placement="bottom" title="{{ $kr->desc }}">
+										{{ $kr->name }}
+									</th>
 								@endforeach
 								<th>Aksi</th>
 							</tr>
@@ -190,7 +193,7 @@
 									text: '<i class="bi bi-printer me-2"></i>Print',
 									className: 'dropdown-item',
 									exportOptions: {
-										columns: [1, 2, 3, 4]
+										columns: 'th:not(:last-child)'
 									}
 								},
 								{
@@ -199,7 +202,7 @@
 									text: '<i class="bi bi-file-text me-2"></i>CSV',
 									className: 'dropdown-item',
 									exportOptions: {
-										columns: [1, 2, 3, 4]
+										columns: 'th:not(:last-child)'
 									}
 								},
 								{
@@ -208,7 +211,7 @@
 									text: '<i class="bi bi-file-spreadsheet me-2"></i>Excel',
 									className: 'dropdown-item',
 									exportOptions: {
-										columns: [1, 2, 3, 4]
+										columns: 'th:not(:last-child)'
 									}
 								},
 								{
@@ -217,7 +220,7 @@
 									text: '<i class="bi bi-file-text me-2"></i>PDF',
 									className: 'dropdown-item',
 									exportOptions: {
-										columns: [1, 2, 3, 4]
+										columns: 'th:not(:last-child)'
 									}
 								},
 								{
@@ -226,7 +229,7 @@
 									text: '<i class="bi bi-clipboard me-2"></i>Copy',
 									className: 'dropdown-item',
 									exportOptions: {
-										columns: [1, 2, 3, 4]
+										columns: 'th:not(:last-child)'
 									}
 								}
 							]
@@ -333,7 +336,7 @@
 				},
 				success: function(status) {
 					$('#NilaiAlterModal').modal('hide');
-					if (formmethod == 'PUT')
+					if (formmethod == 'POST')
 						nilaialtdt.row.add(status).draw(false);
 					else
 						nilaialtdt.row($('#edit-index').val())
@@ -368,8 +371,8 @@
 			// changing the title of offcanvas
 			$('#NilaiAlterLabel').html('Edit Nilai Alternatif');
 			$('#form-method').val('PUT');
-			$('#alternatif-value').val($(this).data('bsName'));
 			$('#alternatif-hidden').val($(this).data('bsName'));
+			$('#alternatif-value').val($(this).data('bsName'));
 			$('#alternatif-value').prop('disabled', true);
 			$('#edit-index').val(rownum);
 			const data = $(this).data('bsScore');
@@ -377,9 +380,9 @@
 		});
 		// clearing form data when modal hidden
 		$('#NilaiAlterModal').on('hidden.bs.modal', function() {
+			$('#alternatif-value').prop('disabled', false);
 			$('#NilaiAlterForm')[0].reset();
 			$('#NilaiAlterLabel').html('Tambah Nilai Alternatif');
-			$('#alternatif-value').prop('disabled', false);
 		});
 	</script>
 @endsection

@@ -46,7 +46,8 @@
 						</form>
 					</div>
 					<div class="modal-footer">
-						<div class="spinner-grow text-danger d-none" role="status" id="DelAccountAnim">
+						<div class="spinner-grow text-danger d-none" role="status"
+							id="DelAccountAnim">
 							<span class="visually-hidden">Menghapus...</span>
 						</div>
 						<button type="button" class="btn btn-light-secondary"
@@ -109,9 +110,9 @@
 								<div class="col-md-8">
 									<div class="form-group has-icon-left">
 										<div class="position-relative">
-											<input type="password" name="current_password" id="password-current"
-												class="form-control" placeholder="Password Anda" maxlength="20"
-												required />
+											<input type="password" name="current_password"
+												id="password-current" class="form-control"
+												placeholder="Password Anda" maxlength="20" required />
 											<div class="form-control-icon">
 												<i class="bi bi-lock"></i>
 											</div>

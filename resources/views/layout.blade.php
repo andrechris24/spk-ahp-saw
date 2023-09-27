@@ -149,34 +149,16 @@
 									</li>
 								</ul>
 							</li>
-							<li
-								class="sidebar-item has-sub 
-							{{ request()->is('alternatif/*') ? 'active' : '' }}">
-								<a href="#" class="sidebar-link">
-									<i class="bi bi-calculator-fill"></i>
-									<span>Perhitungan SAW</span>
+							<li class="sidebar-item {{ request()->is('alternatif/nilai') ? 'active' : '' }}">
+								<a href="{{ url('alternatif/nilai') }}" class="sidebar-link">
+									<i class="bi bi-pen-fill"></i>
+									<span>Penilaian Alternatif</span>
 								</a>
-								<ul class="submenu">
-									<li
-										class="submenu-item
-									 {{ request()->is('alternatif/nilai') ? 'active' : '' }}">
-										<a href="{{ url('alternatif/nilai') }}" class="submenu-link">
-											Penilaian Alternatif
-										</a>
-									</li>
-									<li
-										class="submenu-item
-									 {{ request()->is('alternatif/hasil') ? 'active' : '' }}">
-										<a href="{{ url('alternatif/hasil') }}" class="submenu-link">
-											Hasil
-										</a>
-									</li>
-								</ul>
 							</li>
-							<li class="sidebar-item {{ request()->is('ranking') ? 'active' : '' }}">
-								<a href="{{ url('/ranking') }}" class="sidebar-link">
+							<li class="sidebar-item {{ request()->is('alternatif/hasil') ? 'active' : '' }}">
+								<a href="{{ url('alternatif/hasil') }}" class="sidebar-link">
 									<i class="bi bi-bar-chart-line-fill"></i>
-									<span>Hasil Akhir</span>
+									<span>Hasil</span>
 								</a>
 							</li>
 						@else
@@ -199,9 +181,8 @@
 							<i class="bi bi-justify fs-3"></i>
 						</a>
 						<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-							data-bs-target="#navbarSupportedContent"
-							aria-controls="navbarSupportedContent" aria-expanded="false"
-							aria-label="Toggle navigation">
+							data-bs-target="#navbarSupportedContent" aria-label="Toggle navigation"
+							aria-controls="navbarSupportedContent" aria-expanded="false">
 							<span class="navbar-toggler-icon"></span>
 						</button>
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">

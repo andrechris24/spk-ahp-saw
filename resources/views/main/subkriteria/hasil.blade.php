@@ -189,7 +189,7 @@
 								@endif
 							</div>
 							<form action="{{ url('/bobot/sub/reset/' . $kriteria_id) }}"
-								id="reset-subkriteria">
+								id="reset-subkriteria" method="POST">
 								@csrf
 								@method('DELETE')
 							</form>

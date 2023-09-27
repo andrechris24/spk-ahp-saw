@@ -7,6 +7,8 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+**Read "How to use" section below**
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
@@ -75,9 +77,9 @@ This Laravel Webpage was made with version 10.23.1 and PHP version 8.2.9.
 4. Rename `.env.example` to `.env`, then set appropriate Database name.
 5. Enter `php artisan key:generate`
 6. Enter `php artisan migrate --seed`
-7. Enter `php artisan serve`, then open http://localhost:8000/
+7. Enter `php artisan serve`, then open <http://localhost:8000/>
 
 ### Credentials
 
-Email: test@example.com
+Email: <test@example.com>
 Password: password
