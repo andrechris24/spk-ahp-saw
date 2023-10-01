@@ -172,14 +172,16 @@
 							</tr>
 						</table>
 						<div class="col-12 d-flex justify-content-end">
+							<div class="spinner-grow text-primary me-3 d-none" role="status">
+								<span class="visually-hidden">Mereset...</span>
+							</div>
 							<div class="btn-group">
 								<a href="{{ route('bobotsubkriteria.pick') }}"
 									class="btn btn-secondary">
 									<i class="bi bi-arrow-left"></i> Kembali
 								</a>
 								<a href="{{ url('/bobot/sub/reset/' . $kriteria_id) }}"
-									class="btn btn-warning"
-									onclick="event.preventDefault(); document.getElementById('reset-subkriteria').submit();">
+									class="btn btn-warning" id="reset-button">
 									<i class="bi bi-arrow-counterclockwise"></i> Reset
 								</a>
 								@if ($data['bobot_sub_kosong'] == 0)
@@ -199,4 +201,41 @@
 			</div>
 		</section>
 	</div>
+@endsection
+
+@section('js')
+	<script type="text/javascript">
+		$(document).on('click', '#reset-button', function(e) {
+			e.preventDefault();
+			Swal.fire({
+				title: 'Reset perbandingan?',
+				text: "Anda akan mereset perbandingan Sub Kriteria {{ $title }}. Bobot Sub Kriteria {{ $title }} akan direset!",
+				icon: 'question',
+				showCancelButton: true,
+				confirmButtonText: 'Ya',
+				cancelButtonText: 'Tidak',
+				customClass: {
+					confirmButton: 'btn btn-primary me-3',
+					cancelButton: 'btn btn-label-secondary'
+				},
+				buttonsStyling: false
+			}).then(function(result) {
+				if (result.value) {
+					document.getElementById('reset-subkriteria')
+						.submit();
+					$('.spinner-grow').removeClass('d-none');
+				} else if (result.dismiss === Swal.DismissReason
+					.cancel) {
+					Swal.fire({
+						title: 'Dibatalkan',
+						text: 'Perbandingan Sub Kriteria {{ $title }} tidak direset.',
+						icon: 'warning',
+						customClass: {
+							confirmButton: 'btn btn-success'
+						}
+					});
+				}
+			});
+		});
+	</script>
 @endsection

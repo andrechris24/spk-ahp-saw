@@ -166,9 +166,12 @@
 							</tr>
 						</table>
 						<div class="col-12 d-flex justify-content-end">
+							<div class="spinner-grow text-primary me-3 d-none" role="status">
+								<span class="visually-hidden">Mereset...</span>
+							</div>
 							<div class="btn-group">
 								<a href="{{ route('bobotkriteria.reset') }}" class="btn btn-warning"
-									onclick="event.preventDefault(); document.getElementById('reset-kriteria').submit();">
+									id="reset-button">
 									<i class="bi bi-arrow-counterclockwise"></i> Reset
 								</a>
 								@if (!is_numeric($data['result']) || $data['result'] <= 0.1)
@@ -177,7 +180,8 @@
 									</a>
 								@endif
 							</div>
-							<form action="{{ route('bobotkriteria.reset') }}" method="POST" id="reset-kriteria">
+							<form action="{{ route('bobotkriteria.reset') }}" method="POST"
+								id="reset-kriteria">
 								@csrf
 								@method('DELETE')
 							</form>
@@ -187,4 +191,40 @@
 			</div>
 		</section>
 	</div>
+@endsection
+
+@section('js')
+	<script type="text/javascript">
+		$(document).on('click', '#reset-button', function(e) {
+			e.preventDefault();
+			Swal.fire({
+				title: 'Reset perbandingan?',
+				text: "Anda akan mereset perbandingan Kriteria. Bobot Kriteria akan direset!",
+				icon: 'question',
+				showCancelButton: true,
+				confirmButtonText: 'Ya',
+				cancelButtonText: 'Tidak',
+				customClass: {
+					confirmButton: 'btn btn-primary me-3',
+					cancelButton: 'btn btn-label-secondary'
+				},
+				buttonsStyling: false
+			}).then(function(result) {
+				if (result.value) {
+					document.getElementById('reset-kriteria').submit();
+					$('.spinner-grow').removeClass('d-none');
+				} else if (result.dismiss === Swal.DismissReason
+					.cancel) {
+					Swal.fire({
+						title: 'Dibatalkan',
+						text: 'Perbandingan Kriteria tidak direset.',
+						icon: 'warning',
+						customClass: {
+							confirmButton: 'btn btn-success'
+						}
+					});
+				}
+			});
+		});
+	</script>
 @endsection

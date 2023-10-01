@@ -328,12 +328,13 @@ class SubKriteriaCompController extends Controller
 			$kr = Kriteria::firstWhere('id', '=', $id);
 			SubKriteriaComp::where('idkriteria', '=', $id)->delete();
 			SubKriteria::where('kriteria_id', '=', $id)->update(['bobot' => 0.0000]);
-			return redirect('/bobot/sub')
-				->withSuccess('Perbandingan Sub kriteria ' . $kr->name . ' sudah direset');
+			return redirect('/bobot/sub/comp')
+				->withSuccess('Perbandingan Sub kriteria ' . $kr->name . ' sudah direset')
+				->with(['kriteria_id' => $id]);
 		} catch (QueryException $e) {
 			return redirect('/bobot/sub')
 				->withError('Perbandingan Sub kriteria ' . $kr->name . ' gagal direset')
-				->withErrors($e->getMessage());
+				->withErrors($e->getMessage())->with(['kriteria_id' => $id]);
 		}
 	}
 }

@@ -101,7 +101,9 @@
 			</div>
 			<div class="modal fade text-left" id="RankModal" tabindex="-1" role="dialog"
 				aria-labelledby="RankLabel" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-lg-down modal-lg" role="document">
+				<div
+					class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-lg-down modal-lg"
+					role="document">
 					<div class="modal-content">
 						<div class="modal-header">
 							<h4 class="modal-title" id="RankLabel">Grafik hasil penilaian</h4>
@@ -128,8 +130,8 @@
 					<h4 class="card-title">Ranking</h4>
 				</div>
 				<div class="card-body">
-					<button type="button" class="btn btn-primary mb-3 d-none" data-bs-toggle="modal"
-						data-bs-target="#RankModal" id="spare-button">
+					<button type="button" class="btn btn-primary mb-3 d-none"
+						data-bs-toggle="modal" data-bs-target="#RankModal" id="spare-button">
 						<i class="bi bi-bar-chart-line-fill"></i> Lihat Grafik
 					</button>
 					<table class="table table-hover text-center" id="table-hasil"
@@ -278,7 +280,7 @@
 			options
 		);
 		chart.render();
-		$('#RankModal').on('show.bs.modal',function(){
+		$('#RankModal').on('show.bs.modal', function() {
 			$.getJSON('{{ route('hasil.ranking') }}', function(response) {
 				$('#SkorHasil').text(response.score);
 				$('#SkorTertinggi').text(response.nama);
@@ -287,10 +289,10 @@
 					name: 'Nilai',
 					data: response.result.skor
 				}]);
-			}).fail(function(e,status){
+			}).fail(function(e, status) {
 				Swal.fire({
 					title: 'Gagal memuat grafik',
-					text: e.responseJSON.message ??status,
+					text: e.responseJSON.message ?? status,
 					icon: 'error',
 					customClass: {
 						confirmButton: 'btn btn-success'

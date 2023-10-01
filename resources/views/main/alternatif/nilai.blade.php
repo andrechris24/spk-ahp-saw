@@ -1,5 +1,5 @@
 @extends('layout')
-@section('title', 'Nilai Alternatif');
+@section('title', 'Perhitungan SAW');
 @section('content')
 	<div class="page-heading">
 		<div class="page-title">
@@ -95,8 +95,8 @@
 							<tr>
 								<th>Nama Alternatif</th>
 								@foreach ($kriteria as $kr)
-									<th data-bs-toggle="tooltip"
-										data-bs-placement="bottom" title="{{ $kr->desc }}">
+									<th data-bs-toggle="tooltip" data-bs-placement="bottom"
+										title="{{ $kr->desc }}">
 										{{ $kr->name }}
 									</th>
 								@endforeach

@@ -149,13 +149,15 @@
 									</li>
 								</ul>
 							</li>
-							<li class="sidebar-item {{ request()->is('alternatif/nilai') ? 'active' : '' }}">
+							<li
+								class="sidebar-item {{ request()->is('alternatif/nilai') ? 'active' : '' }}">
 								<a href="{{ url('alternatif/nilai') }}" class="sidebar-link">
 									<i class="bi bi-pen-fill"></i>
-									<span>Penilaian Alternatif</span>
+									<span>Perhitungan SAW</span>
 								</a>
 							</li>
-							<li class="sidebar-item {{ request()->is('alternatif/hasil') ? 'active' : '' }}">
+							<li
+								class="sidebar-item {{ request()->is('alternatif/hasil') ? 'active' : '' }}">
 								<a href="{{ url('alternatif/hasil') }}" class="sidebar-link">
 									<i class="bi bi-bar-chart-line-fill"></i>
 									<span>Hasil</span>

@@ -236,13 +236,15 @@ class NilaiController extends Controller
 	{
 		try {
 			$result = Hasil::get();
-			foreach ($result as $index=>$hasil) {
-				$data['alternatif'][$index]=$hasil->alternatif_id;
-				$data['skor'][$index]=$hasil->skor;
+			foreach ($result as $index => $hasil) {
+				$data['alternatif'][$index] = $hasil->alternatif_id;
+				$data['skor'][$index] = $hasil->skor;
 			}
 			$highest = Hasil::orderBy('skor', 'desc')->first();
 			return response()->json([
-				'result'=>$data,'score' => $highest->skor,'nama'=>$highest->alternatif->name
+				'result' => $data,
+				'score' => $highest->skor,
+				'nama' => $highest->alternatif->name
 			]);
 		} catch (QueryException $e) {
 			Log::error($e);
