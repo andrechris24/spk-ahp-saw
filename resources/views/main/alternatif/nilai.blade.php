@@ -25,7 +25,6 @@
 							<form method="POST" enctype="multipart/form-data" id="NilaiAlterForm">
 								@csrf
 								<input type="hidden" name="alternatif_id" id="alternatif-hidden">
-								<input type="hidden" name="_method" value="POST" id="form-method">
 								<input type="hidden" name="datatables_idx" id="edit-index">
 								<div class="input-group mb-3">
 									<label class="input-group-text" for="alternatif-value">
@@ -314,12 +313,11 @@
 			});
 		});
 		$('#NilaiAlterForm').on('submit', function(event) {
-			formmethod = $('#form-method').val() ?? 'POST';
 			event.preventDefault();
 			$.ajax({
 				data: $('#NilaiAlterForm').serialize(),
-				url: '/alternatif/nilai/store',
-				type: formmethod,
+				url: ($('#alternatif-hidden').val()==''||$('#edit-index').val()=='')?'/alternatif/nilai/update':'/alternatif/nilai/store',
+				type: 'POST',
 				beforeSend: function() {
 					$('#NilaiAlterForm :input').prop('disabled',
 						true);
@@ -370,7 +368,6 @@
 
 			// changing the title of offcanvas
 			$('#NilaiAlterLabel').html('Edit Nilai Alternatif');
-			$('#form-method').val('PUT');
 			$('#alternatif-hidden').val($(this).data('bsName'));
 			$('#alternatif-value').val($(this).data('bsName'));
 			$('#alternatif-value').prop('disabled', true);

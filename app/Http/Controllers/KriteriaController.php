@@ -15,7 +15,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class KriteriaController extends Controller
 {
-	public function index(): Factory|View|Application
+	public function index()
 	{
 		$compkr = KriteriaComp::count();
 		return view('main.kriteria.index', compact('compkr'));
@@ -27,34 +27,37 @@ class KriteriaController extends Controller
 	public function store(Request $request)
 	{
 		$request->validate(Kriteria::$rules, Kriteria::$message);
-		$kritID = $request->id;
 		try {
-			if ($kritID) {
-				$krit = Kriteria::updateOrCreate(
-					['id' => $kritID],
-					[
-						'name' => $request->name,
-						'type' => $request->type,
-						'desc' => $request->desc
-					]
-				);
-				$querytype = "diupdate.";
-			} else {
-				$krit = Kriteria::create($request->all());
+			$krit = Kriteria::create($request->all());
 				$querytype = "diinput. ";
 				if (KriteriaComp::exists()) {
 					KriteriaComp::truncate();
 					Kriteria::where('bobot', '<>', 0.0000)->update(['bobot' => 0.0000]);
 					$querytype .= "Silahkan input ulang perbandingan kriteria.";
 				}
-			}
+			return response()->json(['message' => 'Kriteria sudah ' . $querytype]);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->getMessage()], 500);
 		}
-		if ($krit)
-			return response()->json(['message' => 'Kriteria sudah ' . $querytype]);
-		return response()->json(['message' => 'Kesalahan tidak diketahui'], 500);
+	}
+	public function update(Request $request){
+		$request->validate(Kriteria::$rules, Kriteria::$message);
+		$kritID = $request->id;
+		try {
+			$krit = Kriteria::updateOrCreate(
+				['id' => $kritID],
+				[
+					'name' => $request->name,
+					'type' => $request->type,
+					'desc' => $request->desc
+				]
+			);
+			return response()->json(['message' => 'Kriteria sudah diupdate.']);
+		} catch (QueryException $e) {
+			Log::error($e);
+			return response()->json(['message' => $e->getMessage()], 500);
+		}
 	}
 	public function edit($id)
 	{

@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
-	public function index(): Factory|View|Application
+	public function index()
 	{
 		if (Auth::check()) {
 			$jml['kriteria'] = Kriteria::count();
@@ -29,7 +29,7 @@ class HomeController extends Controller
 		}
 		return view('main.index');
 	}
-	public function profile(): Factory|View|Application
+	public function profile()
 	{
 		return view('main.profil');
 	}

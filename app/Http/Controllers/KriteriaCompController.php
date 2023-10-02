@@ -34,7 +34,7 @@ class KriteriaCompController extends Controller
 		return KriteriaComp::select("nilai", "kriteria1")
 			->where("kriteria1", "=", $kode_kriteria)->get();
 	}
-	public function index(): Factory|View|Application
+	public function index()
 	{
 		$crit = Kriteria::get();
 		$jmlcrit = count($crit);
@@ -50,7 +50,7 @@ class KriteriaCompController extends Controller
 		$cek = KriteriaComp::count();
 		return view('main.kriteria.comp', compact('array', 'cek', 'jmlcrit'));
 	}
-	public function simpan(Request $request): Redirector|RedirectResponse|Application
+	public function simpan(Request $request)
 	{
 		$request->validate(KriteriaComp::$rules, KriteriaComp::$message);
 		try {
@@ -80,7 +80,7 @@ class KriteriaCompController extends Controller
 		}
 		return redirect('/bobot/hasil');
 	}
-	public function hasil(): Factory|View|Application
+	public function hasil()
 	{
 		$kriteria = $this->getKriteriaPerbandingan();
 		$a = 0;

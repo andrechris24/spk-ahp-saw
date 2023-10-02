@@ -14,7 +14,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class AlternatifController extends Controller
 {
-	public function index(): Factory|View|Application
+	public function index()
 	{
 		return view('main.alternatif.index');
 	}
@@ -25,25 +25,27 @@ class AlternatifController extends Controller
 	public function store(Request $request)
 	{
 		$request->validate(Alternatif::$rules, Alternatif::$message);
-		$alterID = $request->id;
 		try {
-			if ($alterID) {
-				$alter = Alternatif::updateOrCreate(
-					['id' => $alterID],
-					['name' => $request->name]
-				);
-				$querytype = "diupdate.";
-			} else {
-				$alter = Alternatif::create($request->all());
-				$querytype = "ditambah.";
-			}
+			$alter = Alternatif::create($request->all());
+			return response()->json(['message' => 'Alternatif sudah ditambah.']);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->getMessage()], 500);
 		}
-		if ($alter)
-			return response()->json(['message' => 'Alternatif sudah ' . $querytype]);
-		return response()->json(['message' => 'Kesalahan tidak diketahui'], 500);
+	}
+	public function update(Request $request){
+		$request->validate(Alternatif::$rules, Alternatif::$message);
+		$alterID = $request->id;
+		try {
+			$alter = Alternatif::updateOrCreate(
+				['id' => $alterID],
+				['name' => $request->name]
+			);
+			return response()->json(['message' => 'Alternatif sudah diupdate.']);
+		} catch (QueryException $e) {
+			Log::error($e);
+			return response()->json(['message' => $e->getMessage()], 500);
+		}
 	}
 	public function edit($id)
 	{

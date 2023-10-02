@@ -52,6 +52,7 @@
 									<div class="invalid-feedback" id="desc-error"></div>
 								</div>
 							</form>
+						</div>
 							<div class="modal-footer">
 								<div class="spinner-grow text-primary d-none" role="status">
 									<span class="visually-hidden">Menyimpan...</span>
@@ -67,7 +68,6 @@
 									<span class="d-none d-sm-block">Simpan</span>
 								</button>
 							</div>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -309,7 +309,7 @@
 			event.preventDefault();
 			$.ajax({
 				data: $('#CritForm').serialize(),
-				url: '/kriteria/store',
+				url: $('#kriteria-id').val()==''?'/kriteria/update':'/kriteria/store',
 				type: 'POST',
 				beforeSend: function() {
 					$('#CritForm :input').prop('disabled', true);

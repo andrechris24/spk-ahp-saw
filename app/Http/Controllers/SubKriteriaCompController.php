@@ -91,7 +91,7 @@ class SubKriteriaCompController extends Controller
 		}
 	}
 
-	public function store(Request $request, $kriteria_id): Redirector|Application|RedirectResponse
+	public function store(Request $request, $kriteria_id)
 	{
 		$request->validate(SubKriteriaComp::$rules, SubKriteriaComp::$message);
 		try {
@@ -127,7 +127,7 @@ class SubKriteriaCompController extends Controller
 		}
 	}
 
-	public function show($id): Factory|View|Application
+	public function show($id)
 	{
 		$subkriteria = $this->getSubKriteriaPerbandingan($id);
 		$a = 0;

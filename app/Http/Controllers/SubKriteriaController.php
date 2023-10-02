@@ -36,29 +36,34 @@ class SubKriteriaController extends Controller
 	public function store(Request $request)
 	{
 		$request->validate(SubKriteria::$rules, SubKriteria::$message);
-		$subID = $request->id;
 		try {
-			if ($subID) {
-				$sub = SubKriteria::updateOrCreate(
-					['id' => $subID],
-					['name' => $request->name, 'kriteria_id' => $request->kriteria_id]
-				);
-				$querytype = "diupdate.";
-			} else {
-				$sub = SubKriteria::create($request->all());
-				$namakriteria = $sub->kriteria->name;
-				$querytype = "ditambah. ";
-				$cek = SubKriteriaComp::where('idkriteria', '=', $request->kriteria_id)
-					->count();
-				if ($cek > 0) {
-					SubKriteriaComp::where('idkriteria', '=', $request->kriteria_id)
-						->delete();
-					SubKriteria::where('kriteria_id', '=', $request->kriteria_id)
-						->update(['bobot', 0.0000]);
-					$querytype .= "Silahkan input ulang perbandingan sub kriteria $namakriteria.";
-				}
+			$sub = SubKriteria::create($request->all());
+			$namakriteria = $sub->kriteria->name;
+			$querytype = "ditambah. ";
+			$cek = SubKriteriaComp::where('idkriteria', '=', $request->kriteria_id)
+				->count();
+			if ($cek > 0) {
+				SubKriteriaComp::where('idkriteria', '=', $request->kriteria_id)
+					->delete();
+				SubKriteria::where('kriteria_id', '=', $request->kriteria_id)
+					->update(['bobot', 0.0000]);
+				$querytype .= "Silahkan input ulang perbandingan sub kriteria $namakriteria.";
 			}
 			return response()->json(['message' => 'Sub Kriteria sudah ' . $querytype]);
+		} catch (QueryException $e) {
+			Log::error($e);
+			return response()->json(['message' => $e->getMessage()], 500);
+		}
+	}
+	public function update(Request $request){
+		$request->validate(SubKriteria::$rules, SubKriteria::$message);
+		$subID = $request->id;
+		try {
+			$sub = SubKriteria::updateOrCreate(
+				['id' => $subID],
+				['name' => $request->name, 'kriteria_id' => $request->kriteria_id]
+			);
+			return response()->json(['message' => 'Sub Kriteria sudah diupdate.']);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->getMessage()], 500);

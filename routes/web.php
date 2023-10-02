@@ -27,35 +27,26 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		/**
 		 * Register Routes
 		 */
-		Route::get('/register', 'RegisterController@show')->name('register.show');
-		Route::post('/register', 'RegisterController@register')
-			->name('register.perform');
+		Route::get('/register', 'AuthController@showregister')->name('register.show');
+		Route::post('/register', 'AuthController@register')->name('register.perform');
 
 		/**
 		 * Login Routes
 		 */
-		Route::get('/login', 'LoginController@show')->name('login');
-		Route::post('/login', 'LoginController@login')->name('login.perform');
+		Route::get('/login', 'AuthController@showlogin')->name('login');
+		Route::post('/login', 'AuthController@login')->name('login.perform');
 
 		/**
 		 * Reset Password Routes
 		 */
-		Route::get(
-			'/forget-password',
-			'ForgotPasswordController@showForgetPasswordForm'
-		)->name('password.request');
-		Route::post(
-			'/forget-password',
-			'ForgotPasswordController@submitForgetPasswordForm'
-		)->name('password.email');
-		Route::get(
-			'/reset-password/{token}',
-			'ForgotPasswordController@showResetPasswordForm'
-		)->name('password.reset');
-		Route::post(
-			'/reset-password',
-			'ForgotPasswordController@submitResetPasswordForm'
-		)->name('password.update');
+		Route::get('/forget-password', 'AuthController@showForgetPasswordForm')
+			->name('password.request');
+		Route::post('/forget-password', 'AuthController@submitForgetPasswordForm')
+			->name('password.email');
+		Route::get('/reset-password/{token}', 'AuthController@showResetPasswordForm')
+			->name('password.reset');
+		Route::post('/reset-password', 'AuthController@submitResetPasswordForm')
+			->name('password.update');
 	});
 	Route::middleware(['auth'])->group(function () { //Authenticated users
 		Route::prefix('akun')->group(function () {
@@ -67,6 +58,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			Route::get('/', 'KriteriaController@index')->name('kriteria.index');
 			Route::get('data', 'KriteriaController@show')->name('kriteria.data');
 			Route::post('store', 'KriteriaController@store')->name('kriteria.store');
+			Route::post('update', 'KriteriaController@update')->name('kriteria.update');
 			Route::get('edit/{id}', 'KriteriaController@edit')->name('kriteria.edit');
 			Route::delete('del/{id}', 'KriteriaController@hapus')
 				->name('kriteria.delete');
@@ -77,6 +69,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 					->name('subkriteria.edit');
 				Route::post('store', 'SubKriteriaController@store')
 					->name('subkriteria.store');
+				Route::post('update', 'SubKriteriaController@update')
+					->name('subkriteria.update');
 				Route::delete('del/{id}', 'SubKriteriaController@destroy')
 					->name('subkriteria.delete');
 			});
@@ -108,17 +102,18 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			Route::get('edit/{id}', 'AlternatifController@edit')
 				->name('alternatif.edit');
 			Route::post('store', 'AlternatifController@store')->name('alternatif.store');
+			Route::post('update', 'AlternatifController@update')->name('alternatif.update');
 			Route::delete('del/{id}', 'AlternatifController@hapus')
 				->name('alternatif.delete');
 			Route::get('hasil', 'NilaiController@show')->name('nilai.show');
 			Route::prefix('nilai')->group(function () {
 				Route::get('/', 'NilaiController@index')->name('nilai.index');
-				Route::post('store', 'NilaiController@store')->name('nilai.put');
-				Route::put('store', 'NilaiController@update')->name('nilai.patch');
+				Route::post('store', 'NilaiController@store')->name('nilai.store');
+				Route::post('update', 'NilaiController@update')->name('nilai.update');
 				Route::delete('del/{id}', 'NilaiController@destroy')->name('nilai.delete');
 			});
 		});
 		Route::get('/ranking', 'NilaiController@hasil')->name('hasil.ranking');
-		Route::post('/logout', 'LogoutController@perform')->name('logout');
+		Route::post('/logout', 'AuthController@logout')->name('logout');
 	});
 });

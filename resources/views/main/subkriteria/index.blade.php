@@ -312,7 +312,7 @@
 			event.preventDefault();
 			$.ajax({
 				data: $('#SubCritForm').serialize(),
-				url: '/kriteria/sub/store',
+				url: $('#subkriteria-id').val()==''?'/kriteria/sub/update':'/kriteria/sub/store',
 				type: 'POST',
 				beforeSend: function() {
 					$('#SubCritForm :input').prop('disabled',

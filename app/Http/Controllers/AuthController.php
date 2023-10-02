@@ -3,23 +3,95 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\Login\RememberMeExpiration;
 use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Session;
 use Symfony\Component\Mailer\Exception\TransportException;
 
-class ForgotPasswordController extends Controller
+class AuthController extends Controller
 {
-	public function showForgetPasswordForm(): View|Factory|Application|RedirectResponse
+	use RememberMeExpiration;
+	public function showlogin()
+	{
+		if (Auth::viaRemember() || Auth::check())
+			return redirect('/');
+		return view('admin.login');
+	}
+	public function login(Request $request)
+	{
+		try {
+			$credentials = $request->validate(User::$loginrules, [
+				'email.required' => 'Email harus diisi',
+				'email.email' => 'Format Email salah',
+				'email.exists' => 'Akun dengan Email ' . $request->email . ' tidak ditemukan',
+			]);
+			if (Auth::attempt($credentials, $request->get('remember'))) {
+				$user = User::firstWhere('email', '=', $request->email);
+				Auth::login($user, $request->get('remember'));
+				$request->session()->regenerate();
+				return redirect('/');
+			}
+			return back()->withInput()->withErrors(['password' => 'Password salah']);
+		} catch (QueryException $e) {
+			Log::error($e);
+			return back()->withInput()->withError('Gagal login: ' . $e->getMessage());
+		}
+	}
+	public function logout()
+	{
+		try {
+			User::findOrFail(Auth::user()->id)->update(['remember_token' => null]);
+			Session::flush();
+			Auth::logout();
+			return redirect('/login')->withSuccess('Anda sudah logout.');
+		} catch (ModelNotFoundException $e) {
+			return back()->withErrors($e->getMessage());
+		} catch (QueryException $e) {
+			Log::error($e);
+			return back()->withError('Gagal logout: ' . $e->getMessage());
+		}
+	}
+	public function showregister()
+	{
+		if (Auth::viaRemember() || Auth::check())
+			return redirect('/');
+		return view('admin.register');
+	}
+
+	public function register(Request $request)
+	{
+		try {
+			$credentials = $request->validate(User::$regrules, [
+				'name.required' => 'Nama harus diisi',
+				'name.regex' => 'Nama tidak boleh mengandung simbol dan angka',
+				'name.min' => 'Nama minimal 5 huruf',
+				'email.required' => 'Email harus diisi',
+				'email.unique' => 'Email ' . $request->email . ' sudah digunakan',
+				'password.required' => 'Password harus diisi',
+				'password.between' => 'Panjang password harus 8-20 karakter',
+				'password.confirmed' => 'Password konfirmasi salah'
+			]);
+			$credentials['password'] = Hash::make($credentials['password']);
+			$user = User::create($credentials);
+			Auth::login($user);
+			$request->session()->regenerate();
+			return redirect('/')
+				->withSuccess("Registrasi akun berhasil, selamat datang");
+		} catch (QueryException $e) {
+			Log::error($e);
+			return back()->withInput()
+				->withError("Registrasi akun gagal: " . $e->getMessage());
+		}
+	}
+	public function showForgetPasswordForm()
 	{
 		if (Auth::viaRemember() || Auth::check())
 			return redirect('/');
@@ -52,7 +124,7 @@ class ForgotPasswordController extends Controller
 		return back()
 			->withError('Gagal mengirim link reset password: Kesalahan tidak diketahui');
 	}
-	public function showResetPasswordForm($token): View|Factory|Application|RedirectResponse
+	public function showResetPasswordForm($token)
 	{
 		if (Auth::viaRemember() || Auth::check())
 			return redirect()->intended();

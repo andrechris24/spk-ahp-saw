@@ -274,7 +274,7 @@
 			event.preventDefault();
 			$.ajax({
 				data: $('#AlterForm').serialize(),
-				url: '/alternatif/store',
+				url: $('#alter-id').val()==''?'/alternatif/update':'/alternatif/store',
 				type: 'POST',
 				beforeSend: function() {
 					$('#AlterForm :input').prop('disabled', true);
