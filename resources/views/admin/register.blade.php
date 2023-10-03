@@ -1,10 +1,7 @@
 @extends('admin.auth')
 @section('title', 'Registrasi')
-@section('auth-desc')
-	<h1 class="auth-title">Registrasi</h1>
-	<p class="auth-subtitle mb-5">Masukkan data Anda</p>
-@endsection
-
+@section('auth-title','Registrasi')
+@section('auth-subtitle','Masukkan data Anda')
 @section('content')
 	<form action="{{ route('register.perform') }}" method="post"
 		enctype="multipart/form-data">
@@ -59,7 +56,6 @@
 		</p>
 	</div>
 @endsection
-
 @section('js')
 	<script type="text/javascript">
 		const accpassword = document.querySelectorAll('input[type="password"]');

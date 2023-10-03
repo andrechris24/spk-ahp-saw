@@ -1,12 +1,7 @@
 @extends('layout')
 @section('title', 'Sub Kriteria')
+@section('subtitle','Sub Kriteria')
 @section('content')
-	<div class="page-heading">
-		<div class="page-title">
-			<h3>Sub Kriteria</h3>
-		</div>
-		<section class="section">
-			@include('components.message')
 			<div class="modal fade text-left" id="SubCritModal" tabindex="-1" role="dialog"
 				aria-labelledby="SubCritLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
@@ -94,10 +89,7 @@
 					</table>
 				</div>
 			</div>
-		</section>
-	</div>
 @endsection
-
 @section('js')
 	<script type="text/javascript">
 		var dt_subkriteria;
@@ -312,7 +304,8 @@
 			event.preventDefault();
 			$.ajax({
 				data: $('#SubCritForm').serialize(),
-				url: $('#subkriteria-id').val()==''?'/kriteria/sub/update':'/kriteria/sub/store',
+				url: $('#subkriteria-id').val() == '' ?
+					'/kriteria/sub/update' : '/kriteria/sub/store',
 				type: 'POST',
 				beforeSend: function() {
 					$('#SubCritForm :input').prop('disabled',

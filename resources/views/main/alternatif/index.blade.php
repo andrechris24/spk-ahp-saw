@@ -1,12 +1,7 @@
 @extends('layout')
 @section('title', 'Alternatif')
+@section('subtitle','Alternatif')
 @section('content')
-	<div class="page-heading">
-		<div class="page-title">
-			<h3>Alternatif</h3>
-		</div>
-		<section class="section">
-			@include('components.message')
 			<div class="modal fade text-left" id="AlterModal" tabindex="-1" role="dialog"
 				aria-labelledby="AlterLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
@@ -68,10 +63,7 @@
 					</table>
 				</div>
 			</div>
-		</section>
-	</div>
 @endsection
-
 @section('js')
 	<script type="text/javascript">
 		var dt_alternatif;
@@ -274,7 +266,8 @@
 			event.preventDefault();
 			$.ajax({
 				data: $('#AlterForm').serialize(),
-				url: $('#alter-id').val()==''?'/alternatif/update':'/alternatif/store',
+				url: $('#alter-id').val() == '' ?
+					'/alternatif/update' : '/alternatif/store',
 				type: 'POST',
 				beforeSend: function() {
 					$('#AlterForm :input').prop('disabled', true);

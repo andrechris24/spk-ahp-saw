@@ -5,13 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Kriteria;
 use App\Models\SubKriteria;
 use App\Models\SubKriteriaComp;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Log;
 
 class SubKriteriaCompController extends Controller

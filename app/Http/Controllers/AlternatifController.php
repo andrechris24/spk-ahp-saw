@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Alternatif;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -26,18 +23,19 @@ class AlternatifController extends Controller
 	{
 		$request->validate(Alternatif::$rules, Alternatif::$message);
 		try {
-			$alter = Alternatif::create($request->all());
+			Alternatif::create($request->all());
 			return response()->json(['message' => 'Alternatif sudah ditambah.']);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->getMessage()], 500);
 		}
 	}
-	public function update(Request $request){
+	public function update(Request $request)
+	{
 		$request->validate(Alternatif::$rules, Alternatif::$message);
 		$alterID = $request->id;
 		try {
-			$alter = Alternatif::updateOrCreate(
+			Alternatif::updateOrCreate(
 				['id' => $alterID],
 				['name' => $request->name]
 			);

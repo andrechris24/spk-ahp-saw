@@ -1,11 +1,7 @@
 @extends('admin.auth')
 @section('title', 'Login')
-@section('auth-desc')
-	<h1 class="auth-title">Login</h1>
-	<p class="auth-subtitle mb-5">
-		Login untuk menggunakan fasilitas Sistem Pendukung Keputusan</p>
-@endsection
-
+@section('auth-title','Login')
+@section('auth-subtitle','Login untuk menggunakan fasilitas Sistem Pendukung Keputusan')
 @section('content')
 	<form action="{{ route('login.perform') }}" method="post"
 		enctype="multipart/form-data">
@@ -55,7 +51,6 @@
 		</p>
 	</div>
 @endsection
-
 @section('js')
 	<script type="text/javascript">
 		const password = document.querySelector('#password');

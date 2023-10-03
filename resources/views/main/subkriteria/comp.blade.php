@@ -5,13 +5,8 @@
 	$title = $subkriteriacomp->nama_kriteria($kriteria_id);
 @endphp
 @section('title', 'Perbandingan Sub Kriteria ' . $title)
+@section('subtitle','Perbandingan Sub Kriteria ' . $title)
 @section('content')
-	<div class="page-heading">
-		<div class="page-title">
-			<h3>Perbandingan Sub Kriteria {{ $title }}</h3>
-		</div>
-		<section class="section">
-			@include('components.message')
 			<div class="card">
 				<div class="card-header">
 					<h4 class="card-title">
@@ -129,10 +124,7 @@
 					</div>
 				</div>
 			</div>
-		</section>
-	</div>
 @endsection
-
 @section('js')
 	<script type="text/javascript">
 		const tabList = document.querySelectorAll(

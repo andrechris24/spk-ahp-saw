@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Kriteria;
 use App\Models\KriteriaComp;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -28,24 +25,25 @@ class KriteriaController extends Controller
 	{
 		$request->validate(Kriteria::$rules, Kriteria::$message);
 		try {
-			$krit = Kriteria::create($request->all());
-				$querytype = "diinput. ";
-				if (KriteriaComp::exists()) {
-					KriteriaComp::truncate();
-					Kriteria::where('bobot', '<>', 0.0000)->update(['bobot' => 0.0000]);
-					$querytype .= "Silahkan input ulang perbandingan kriteria.";
-				}
+			Kriteria::create($request->all());
+			$querytype = "diinput. ";
+			if (KriteriaComp::exists()) {
+				KriteriaComp::truncate();
+				Kriteria::where('bobot', '<>', 0.0000)->update(['bobot' => 0.0000]);
+				$querytype .= "Silahkan input ulang perbandingan kriteria.";
+			}
 			return response()->json(['message' => 'Kriteria sudah ' . $querytype]);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->getMessage()], 500);
 		}
 	}
-	public function update(Request $request){
+	public function update(Request $request)
+	{
 		$request->validate(Kriteria::$rules, Kriteria::$message);
 		$kritID = $request->id;
 		try {
-			$krit = Kriteria::updateOrCreate(
+			Kriteria::updateOrCreate(
 				['id' => $kritID],
 				[
 					'name' => $request->name,

@@ -26,7 +26,8 @@
 					<div class="auth-logo">
 						<img src="{{ asset('assets/compiled/svg/logo.svg') }}" alt="Logo" />
 					</div>
-					@yield('auth-desc')
+					<h1 class="auth-title">@yield('auth-title')</h1>
+					<p class="auth-subtitle mb-5">@yield('auth-subtitle')</p>
 					@include('components.message')
 					<div class="alert alert-warning d-none" id="capslock">
 						<i class="bi bi-capslock-fill"></i> CAPS LOCK nyala

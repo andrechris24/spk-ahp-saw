@@ -1,17 +1,12 @@
 @extends('layout')
-@section('title', 'Hasil Penilaian Alternatif')
 @php
 	use App\Http\Controllers\NilaiController;
 	$saw = new NilaiController();
 	$countkriteria = count($data['kriteria']);
 @endphp
+@section('title', 'Hasil Penilaian Alternatif')
+@section('subtitle','Hasil Penilaian Alternatif')
 @section('content')
-	<div class="page-heading">
-		<div class="page-title">
-			<h3>Hasil Penilaian Alternatif</h3>
-		</div>
-		<section class="section">
-			@include('components.message')
 			<div class="card">
 				<div class="card-header">
 					<h4 class="card-title">Matriks Keputusan</h4>
@@ -176,8 +171,6 @@
 					</table>
 				</div>
 			</div>
-		</section>
-	</div>
 @endsection
 @section('js')
 	<script type="text/javascript">

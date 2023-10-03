@@ -1,12 +1,7 @@
 @extends('layout')
 @section('title', 'Perbandingan Sub Kriteria')
+@section('subtitle','Perbandingan Sub Kriteria')
 @section('content')
-	<div class="page-heading">
-		<div class="page-title">
-			<h3>Perbandingan Sub Kriteria</h3>
-		</div>
-		<section class="section">
-			@include('components.message')
 			<div class="card">
 				<div class="card-header">Pilih Kriteria</div>
 				<div class="card-body">
@@ -35,6 +30,4 @@
 					</form>
 				</div>
 			</div>
-		</section>
-	</div>
 @endsection

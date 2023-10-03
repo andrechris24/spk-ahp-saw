@@ -1,12 +1,7 @@
 @extends('layout')
 @section('title', 'Kriteria')
+@section('subtitle','Kriteria')
 @section('content')
-	<div class="page-heading">
-		<div class="page-title">
-			<h3>Kriteria</h3>
-		</div>
-		<section class="section">
-			@include('components.message')
 			<div class="modal fade text-left" id="CritModal" tabindex="-1" role="dialog"
 				aria-labelledby="CritLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
@@ -53,21 +48,21 @@
 								</div>
 							</form>
 						</div>
-							<div class="modal-footer">
-								<div class="spinner-grow text-primary d-none" role="status">
-									<span class="visually-hidden">Menyimpan...</span>
-								</div>
-								<button type="button" class="btn btn-light-secondary"
-									data-bs-dismiss="modal">
-									<i class="bi bi-x d-block d-sm-none"></i>
-									<span class="d-none d-sm-block">Batal</span>
-								</button>
-								<button type="submit" class="btn btn-primary ml-1 data-submit"
-									form="CritForm">
-									<i class="bi bi-check d-block d-sm-none"></i>
-									<span class="d-none d-sm-block">Simpan</span>
-								</button>
+						<div class="modal-footer">
+							<div class="spinner-grow text-primary d-none" role="status">
+								<span class="visually-hidden">Menyimpan...</span>
 							</div>
+							<button type="button" class="btn btn-light-secondary"
+								data-bs-dismiss="modal">
+								<i class="bi bi-x d-block d-sm-none"></i>
+								<span class="d-none d-sm-block">Batal</span>
+							</button>
+							<button type="submit" class="btn btn-primary ml-1 data-submit"
+								form="CritForm">
+								<i class="bi bi-check d-block d-sm-none"></i>
+								<span class="d-none d-sm-block">Simpan</span>
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -96,10 +91,7 @@
 					</table>
 				</div>
 			</div>
-		</section>
-	</div>
 @endsection
-
 @section('js')
 	<script type="text/javascript">
 		var dt_kriteria;
@@ -309,7 +301,8 @@
 			event.preventDefault();
 			$.ajax({
 				data: $('#CritForm').serialize(),
-				url: $('#kriteria-id').val()==''?'/kriteria/update':'/kriteria/store',
+				url: $('#kriteria-id').val() == '' ?
+					'/kriteria/update' : '/kriteria/store',
 				type: 'POST',
 				beforeSend: function() {
 					$('#CritForm :input').prop('disabled', true);

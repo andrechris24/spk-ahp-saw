@@ -244,7 +244,18 @@
 				</nav>
 			</header>
 			<div id="main-content">
-				@yield('content')
+				<div class="page-heading">
+					<div class="page-title">
+						<h3>@yield('subtitle')</h3>
+						@hasSection('page-desc')
+						<p class="text-subtitle text-muted">@yield('page-desc')</p>
+						@endif
+					</div>
+					<section class="content">
+						@include('components.message')
+						@yield('content')
+					</section>
+				</div>
 				<footer>
 					<div class="footer clearfix mb-0 text-muted">
 						<div class="float-start">

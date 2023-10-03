@@ -1,12 +1,7 @@
 @extends('layout')
 @section('title', 'Perbandingan Kriteria')
+@section('subtitle','Perbandingan Kriteria')
 @section('content')
-	<div class="page-heading">
-		<div class="page-title">
-			<h3>Perbandingan Kriteria</h3>
-		</div>
-		<section class="section">
-			@include('components.message')
 			<div class="card">
 				<div class="card-header">
 					<h4 class="card-title">Masukkan Perbandingan</h4>
@@ -112,10 +107,7 @@
 					</div>
 				</div>
 			</div>
-		</section>
-	</div>
 @endsection
-
 @section('js')
 	<script type="text/javascript">
 		const tabList = document.querySelectorAll(

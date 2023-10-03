@@ -1,12 +1,7 @@
 @extends('admin.auth')
 @section('title', 'Reset Password')
-@section('auth-desc')
-	<h1 class="auth-title">Reset Password</h1>
-	<p class="auth-subtitle mb-5">
-		Selamat datang kembali! Silahkan masukkan password baru untuk melanjutkan.
-	</p>
-@endsection
-
+@section('auth-title','Reset Password')
+@section('auth-subtitle','Selamat datang kembali! Silahkan masukkan password baru untuk melanjutkan.')
 @section('content')
 	<form action="{{ route('password.update') }}" method="post">@csrf
 		<input type="hidden" name="token" value="{{ $token }}">
@@ -52,7 +47,6 @@
 		</p>
 	</div>
 @endsection
-
 @section('js')
 	<script type="text/javascript">
 		const accpassword = document.querySelectorAll('input[type="password"]');

@@ -1,12 +1,7 @@
 @extends('layout')
 @section('title', 'Hasil Perbandingan Kriteria')
+@section('subtitle','Hasil Perbandingan Kriteria')
 @section('content')
-	<div class="page-heading">
-		<div class="page-title">
-			<h3>Hasil Perbandingan Kriteria</h3>
-		</div>
-		<section class="section">
-			@include('components.message')
 			<div class="card">
 				<div class="card-header">
 					<h4 class="card-title">Matriks Perbandingan Awal</h4>
@@ -189,10 +184,7 @@
 					</div>
 				</div>
 			</div>
-		</section>
-	</div>
 @endsection
-
 @section('js')
 	<script type="text/javascript">
 		$(document).on('click', '#reset-button', function(e) {

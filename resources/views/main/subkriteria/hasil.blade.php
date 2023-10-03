@@ -4,14 +4,9 @@
 	$subkriteriacomp = new SubKriteriaCompController();
 	$title = $subkriteriacomp->nama_kriteria($kriteria_id);
 @endphp
-@section('title', 'Hasil Perbandingan Subkriteria')
+@section('title', 'Hasil Perbandingan Sub Kriteria'.$title)
+@section('subtitle','Hasil Perbandingan Sub Kriteria '.$title)
 @section('content')
-	<div class="page-heading">
-		<div class="page-title">
-			<h3>Hasil Perbandingan Sub Kriteria {{ $title }}</h3>
-		</div>
-		<section class="section">
-			@include('components.message')
 			<div class="card">
 				<div class="card-header">
 					<h4 class="card-title">Matriks Perbandingan Awal</h4>
@@ -199,10 +194,7 @@
 					</div>
 				</div>
 			</div>
-		</section>
-	</div>
 @endsection
-
 @section('js')
 	<script type="text/javascript">
 		$(document).on('click', '#reset-button', function(e) {

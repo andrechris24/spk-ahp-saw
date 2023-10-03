@@ -1,12 +1,7 @@
 @extends('layout')
 @section('title', 'Perhitungan SAW');
+@section('subtitle','Nilai Alternatif')
 @section('content')
-	<div class="page-heading">
-		<div class="page-title">
-			<h3>Nilai Alternatif</h3>
-		</div>
-		<section class="section">
-			@include('components.message')
 			<div class="modal fade text-left" id="NilaiAlterModal" tabindex="-1"
 				role="dialog" aria-labelledby="NilaiAlterLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
@@ -147,8 +142,6 @@
 					@endif
 				</div>
 			</div>
-		</section>
-	</div>
 @endsection
 @section('js')
 	<script type="text/javascript">
@@ -316,7 +309,10 @@
 			event.preventDefault();
 			$.ajax({
 				data: $('#NilaiAlterForm').serialize(),
-				url: ($('#alternatif-hidden').val()==''||$('#edit-index').val()=='')?'/alternatif/nilai/update':'/alternatif/nilai/store',
+				url: ($('#alternatif-hidden').val() == '' || $(
+						'#edit-index').val() == '') ?
+					'/alternatif/nilai/update' :
+					'/alternatif/nilai/store',
 				type: 'POST',
 				beforeSend: function() {
 					$('#NilaiAlterForm :input').prop('disabled',

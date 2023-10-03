@@ -1,15 +1,11 @@
 @extends('layout')
 @section('title', 'Edit Akun')
+@section('subtitle','Edit Akun')
+@section('page-desc')
+	Untuk melakukan perubahan, masukkan password Anda.
+	Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
+@endsection
 @section('content')
-	<div class="page-heading">
-		<div class="page-title">
-			<h3>Edit Akun</h3>
-			<p class="text-subtitle text-muted">
-				Untuk melakukan perubahan, masukkan password Anda.
-				Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
-			</p>
-		</div>
-		@include('components.message')
 		<div class="modal fade text-left" id="DelAccountModal" tabindex="-1"
 			role="dialog" aria-labelledby="DelAccountLabel" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
@@ -183,9 +179,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
 @endsection
-
 @section('js')
 	<script type="text/javascript">
 		const accpassword = document.querySelectorAll('input[type="password"]');

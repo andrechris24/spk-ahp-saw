@@ -55,11 +55,12 @@ class SubKriteriaController extends Controller
 			return response()->json(['message' => $e->getMessage()], 500);
 		}
 	}
-	public function update(Request $request){
+	public function update(Request $request)
+	{
 		$request->validate(SubKriteria::$rules, SubKriteria::$message);
 		$subID = $request->id;
 		try {
-			$sub = SubKriteria::updateOrCreate(
+			SubKriteria::updateOrCreate(
 				['id' => $subID],
 				['name' => $request->name, 'kriteria_id' => $request->kriteria_id]
 			);
