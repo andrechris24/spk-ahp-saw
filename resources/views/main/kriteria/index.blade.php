@@ -1,96 +1,95 @@
 @extends('layout')
 @section('title', 'Kriteria')
-@section('subtitle','Kriteria')
+@section('subtitle', 'Kriteria')
 @section('content')
-			<div class="modal fade text-left" id="CritModal" tabindex="-1" role="dialog"
-				aria-labelledby="CritLabel" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-					role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title" id="CritLabel">Tambah Kriteria</h4>
-							<button type="button" class="close" data-bs-dismiss="modal"
-								aria-label="Close">
-								<i data-feather="x"></i>
-							</button>
-						</div>
-						<div class="modal-body">
-							<form method="POST" enctype="multipart/form-data" id="CritForm">
-								@csrf
-								<input type="hidden" name="id" id="kriteria-id">
-								@if ($compkr > 0)
-									<div class="alert alert-warning" id="kriteria-alert">
-										Menambahkan kriteria akan mereset perbandingan kriteria.
-									</div>
-								@endif
-								<label for="nama-krit">Nama Kriteria</label>
-								<div class="form-group">
-									<input type="text" class="form-control" name="name" id="nama-krit"
-										required />
-									<div class="invalid-feedback" id="nama-error"></div>
-								</div>
-								<div class="input-group mb-3">
-									<label class="input-group-text" for="tipe-kriteria">
-										Atribut
-									</label>
-									<select class="form-select" id="tipe-kriteria" name="type" required>
-										<option value="">Pilih</option>
-										<option value="cost">Cost</option>
-										<option value="benefit">Benefit</option>
-									</select>
-									<div class="invalid-feedback" id="type-error"></div>
-								</div>
-								<label for="deskripsi">Keterangan</label>
-								<div class="form-group">
-									<input type="text" class="form-control" name="desc" id="deskripsi"
-										required />
-									<div class="invalid-feedback" id="desc-error"></div>
-								</div>
-							</form>
-						</div>
-						<div class="modal-footer">
-							<div class="spinner-grow text-primary d-none" role="status">
-								<span class="visually-hidden">Menyimpan...</span>
-							</div>
-							<button type="button" class="btn btn-light-secondary"
-								data-bs-dismiss="modal">
-								<i class="bi bi-x d-block d-sm-none"></i>
-								<span class="d-none d-sm-block">Batal</span>
-							</button>
-							<button type="submit" class="btn btn-primary ml-1 data-submit"
-								form="CritForm">
-								<i class="bi bi-check d-block d-sm-none"></i>
-								<span class="d-none d-sm-block">Simpan</span>
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="card">
-				<div class="card-header">Daftar Kriteria</div>
-				<div class="card-body">
-					<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal"
-						data-bs-target="#CritModal" id="spare-button">
-						<i class="bi bi-plus-lg me-0 me-sm-1"></i>
-						Tambah Kriteria
+	<div class="modal fade text-left" id="CritModal" tabindex="-1" role="dialog"
+		aria-labelledby="CritLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+			role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="CritLabel">Tambah Kriteria</h4>
+					<button type="button" class="close" data-bs-dismiss="modal"
+						aria-label="Close">
+						<i data-feather="x"></i>
 					</button>
-					<table class="table table-hover" id="table-crit" style="width: 100%">
-						<thead>
-							<tr>
-								<th>No</th>
-								<th>Nama Kriteria</th>
-								<th>Atribut</th>
-								<th>Keterangan</th>
-								<th data-bs-toggle="tooltip"
-									title="Bobot didapat setelah melakukan perbandingan">
-									Bobot
-								</th>
-								<th>Aksi</th>
-							</tr>
-						</thead>
-					</table>
+				</div>
+				<div class="modal-body">
+					<form method="POST" enctype="multipart/form-data" id="CritForm">
+						@csrf
+						<input type="hidden" name="id" id="kriteria-id">
+						@if ($compkr > 0)
+							<div class="alert alert-warning" id="kriteria-alert">
+								Menambahkan kriteria akan mereset perbandingan kriteria.
+							</div>
+						@endif
+						<label for="nama-krit">Nama Kriteria</label>
+						<div class="form-group">
+							<input type="text" class="form-control" name="name" id="nama-krit"
+								required />
+							<div class="invalid-feedback" id="nama-error"></div>
+						</div>
+						<div class="input-group mb-3">
+							<label class="input-group-text" for="tipe-kriteria">
+								Atribut
+							</label>
+							<select class="form-select" id="tipe-kriteria" name="type" required>
+								<option value="">Pilih</option>
+								<option value="cost">Cost</option>
+								<option value="benefit">Benefit</option>
+							</select>
+							<div class="invalid-feedback" id="type-error"></div>
+						</div>
+						<label for="deskripsi">Keterangan</label>
+						<div class="form-group">
+							<input type="text" class="form-control" name="desc" id="deskripsi"
+								required />
+							<div class="invalid-feedback" id="desc-error"></div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<div class="spinner-grow text-primary d-none" role="status">
+						<span class="visually-hidden">Menyimpan...</span>
+					</div>
+					<button type="button" class="btn btn-light-secondary"
+						data-bs-dismiss="modal">
+						<i class="bi bi-x d-block d-sm-none"></i>
+						<span class="d-none d-sm-block">Batal</span>
+					</button>
+					<button type="submit" class="btn btn-primary ml-1 data-submit"
+						form="CritForm">
+						<i class="bi bi-check d-block d-sm-none"></i>
+						<span class="d-none d-sm-block">Simpan</span>
+					</button>
 				</div>
 			</div>
+		</div>
+	</div>
+	<div class="card">
+		<div class="card-header">Daftar Kriteria</div>
+		<div class="card-body">
+			<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal"
+				data-bs-target="#CritModal" id="spare-button">
+				<i class="bi bi-plus-lg me-0 me-sm-1"></i> Tambah Kriteria
+			</button>
+			<table class="table table-hover" id="table-crit" style="width: 100%">
+				<thead>
+					<tr>
+						<th>No</th>
+						<th>Nama Kriteria</th>
+						<th>Atribut</th>
+						<th>Keterangan</th>
+						<th data-bs-toggle="tooltip"
+							title="Bobot didapat setelah melakukan perbandingan">
+							Bobot
+						</th>
+						<th>Aksi</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
 @endsection
 @section('js')
 	<script type="text/javascript">

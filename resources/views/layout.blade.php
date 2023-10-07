@@ -248,7 +248,7 @@
 					<div class="page-title">
 						<h3>@yield('subtitle')</h3>
 						@hasSection('page-desc')
-						<p class="text-subtitle text-muted">@yield('page-desc')</p>
+							<p class="text-subtitle text-muted">@yield('page-desc')</p>
 						@endif
 					</div>
 					<section class="content">

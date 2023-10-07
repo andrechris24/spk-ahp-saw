@@ -1,7 +1,9 @@
 @extends('admin.auth')
 @section('title', 'Login')
-@section('auth-title','Login')
-@section('auth-subtitle','Login untuk menggunakan fasilitas Sistem Pendukung Keputusan')
+@section('auth-title', 'Login')
+@section('auth-subtitle',
+	'Login untuk menggunakan fasilitas Sistem Pendukung
+	Keputusan')
 @section('content')
 	<form action="{{ route('login.perform') }}" method="post"
 		enctype="multipart/form-data">

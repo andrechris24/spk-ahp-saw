@@ -12,7 +12,7 @@ class Nilai extends Model
 	protected $table = "nilai";
 	protected $fillable = ['alternatif_id', 'kriteria_id', 'subkriteria_id'];
 	public static array $rules = [
-		'alternatif_id' => 'required',
+		'alternatif_id' => 'bail|required|integer',
 		'kriteria_id' => 'required',
 		'kriteria_id.*' => 'integer',
 		'subkriteria_id' => 'required',
@@ -20,6 +20,7 @@ class Nilai extends Model
 	];
 	public static array $message = [
 		'alternatif_id.required' => 'Nama alternatif harus dipilih',
+		'alternatif_id.integer'=>'Alternatif tidak valid',
 		'kriteria_id.required' => 'Kriteria tidak ditemukan',
 		'subkriteria_id.required' => 'Semua sub kriteria harus dipilih',
 		'kriteria_id.integer' => 'Kriteria tidak valid',

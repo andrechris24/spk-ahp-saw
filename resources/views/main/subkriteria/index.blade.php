@@ -1,94 +1,93 @@
 @extends('layout')
 @section('title', 'Sub Kriteria')
-@section('subtitle','Sub Kriteria')
+@section('subtitle', 'Sub Kriteria')
 @section('content')
-			<div class="modal fade text-left" id="SubCritModal" tabindex="-1" role="dialog"
-				aria-labelledby="SubCritLabel" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-					role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title" id="SubCritLabel">
-								Tambah Sub Kriteria
-							</h4>
-							<button type="button" class="close" data-bs-dismiss="modal"
-								aria-label="Close">
-								<i data-feather="x"></i>
-							</button>
-						</div>
-						<div class="modal-body">
-							<form action="{{ url('/kriteria/sub/store') }}" method="post"
-								enctype="multipart/form-data" id="SubCritForm">@csrf
-								<input type="hidden" name="id" id="subkriteria-id">
-								@if ($compskr > 0)
-									<div class="alert alert-warning" id="subkriteria-alert">
-										Menambahkan sub kriteria akan mereset perbandingan sub kriteria
-										terkait.
-									</div>
-								@endif
-								<label for="nama-sub">Nama Sub Kriteria</label>
-								<div class="form-group">
-									<input type="text" class="form-control" name="name" id="nama-sub"
-										required />
-									<div class="invalid-feedback" id="nama-error"></div>
-								</div>
-								<div class="input-group mb-3">
-									<label class="input-group-text" for="kriteria-select">
-										Kriteria
-									</label>
-									<select class="form-select" id="kriteria-select" name="kriteria_id"
-										required>
-										<option value="">Pilih</option>
-										@foreach ($kriteria as $kr)
-											<option value="{{ $kr->id }}">{{ $kr->name }}</option>
-										@endforeach
-									</select>
-									<div class="invalid-feedback" id="kriteria-error"></div>
-								</div>
-							</form>
-						</div>
-						<div class="modal-footer">
-							<div class="spinner-grow text-primary d-none" role="status">
-								<span class="visually-hidden">Menyimpan...</span>
-							</div>
-							<button type="button" class="btn btn-light-secondary"
-								data-bs-dismiss="modal">
-								<i class="bi bi-x d-block d-sm-none"></i>
-								<span class="d-none d-sm-block">Batal</span>
-							</button>
-							<button type="submit" class="btn btn-primary ml-1 data-submit"
-								form="SubCritForm">
-								<i class="bi bi-check d-block d-sm-none"></i>
-								<span class="d-none d-sm-block">Simpan</span>
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="card">
-				<div class="card-header">Daftar Sub Kriteria</div>
-				<div class="card-body">
-					<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal"
-						data-bs-target="#SubCritModal" id="spare-button">
-						<i class="bi bi-plus-lg me-0 me-sm-1"></i>
+	<div class="modal fade text-left" id="SubCritModal" tabindex="-1" role="dialog"
+		aria-labelledby="SubCritLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+			role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="SubCritLabel">
 						Tambah Sub Kriteria
+					</h4>
+					<button type="button" class="close" data-bs-dismiss="modal"
+						aria-label="Close">
+						<i data-feather="x"></i>
 					</button>
-					<table class="table table-hover" id="table-subcrit" style="width: 100%">
-						<thead>
-							<tr>
-								<th>No</th>
-								<th>Nama Sub Kriteria</th>
-								<th>Kriteria</th>
-								<th data-bs-toggle="tooltip"
-									title="Bobot didapat setelah melakukan perbandingan">
-									Bobot
-								</th>
-								<th>Aksi</th>
-							</tr>
-						</thead>
-					</table>
+				</div>
+				<div class="modal-body">
+					<form action="{{ url('/kriteria/sub/store') }}" method="post"
+						enctype="multipart/form-data" id="SubCritForm">@csrf
+						<input type="hidden" name="id" id="subkriteria-id">
+						@if ($compskr > 0)
+							<div class="alert alert-warning" id="subkriteria-alert">
+								Menambahkan sub kriteria akan mereset perbandingan sub kriteria
+								terkait.
+							</div>
+						@endif
+						<label for="nama-sub">Nama Sub Kriteria</label>
+						<div class="form-group">
+							<input type="text" class="form-control" name="name" id="nama-sub"
+								required />
+							<div class="invalid-feedback" id="nama-error"></div>
+						</div>
+						<div class="input-group mb-3">
+							<label class="input-group-text" for="kriteria-select">
+								Kriteria
+							</label>
+							<select class="form-select" id="kriteria-select" name="kriteria_id"
+								required>
+								<option value="">Pilih</option>
+								@foreach ($kriteria as $kr)
+									<option value="{{ $kr->id }}">{{ $kr->name }}</option>
+								@endforeach
+							</select>
+							<div class="invalid-feedback" id="kriteria-error"></div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<div class="spinner-grow text-primary d-none" role="status">
+						<span class="visually-hidden">Menyimpan...</span>
+					</div>
+					<button type="button" class="btn btn-light-secondary"
+						data-bs-dismiss="modal">
+						<i class="bi bi-x d-block d-sm-none"></i>
+						<span class="d-none d-sm-block">Batal</span>
+					</button>
+					<button type="submit" class="btn btn-primary ml-1 data-submit"
+						form="SubCritForm">
+						<i class="bi bi-check d-block d-sm-none"></i>
+						<span class="d-none d-sm-block">Simpan</span>
+					</button>
 				</div>
 			</div>
+		</div>
+	</div>
+	<div class="card">
+		<div class="card-header">Daftar Sub Kriteria</div>
+		<div class="card-body">
+			<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal"
+				data-bs-target="#SubCritModal" id="spare-button">
+				<i class="bi bi-plus-lg me-0 me-sm-1"></i> Tambah Sub Kriteria
+			</button>
+			<table class="table table-hover" id="table-subcrit" style="width: 100%">
+				<thead>
+					<tr>
+						<th>No</th>
+						<th>Nama Sub Kriteria</th>
+						<th>Kriteria</th>
+						<th data-bs-toggle="tooltip"
+							title="Bobot didapat setelah melakukan perbandingan">
+							Bobot
+						</th>
+						<th>Aksi</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
 @endsection
 @section('js')
 	<script type="text/javascript">

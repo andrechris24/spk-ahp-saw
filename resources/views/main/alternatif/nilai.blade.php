@@ -1,147 +1,146 @@
 @extends('layout')
 @section('title', 'Perhitungan SAW');
-@section('subtitle','Nilai Alternatif')
+@section('subtitle', 'Nilai Alternatif')
 @section('content')
-			<div class="modal fade text-left" id="NilaiAlterModal" tabindex="-1"
-				role="dialog" aria-labelledby="NilaiAlterLabel" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-					role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title" id="NilaiAlterLabel">
-								Tambah Nilai Alternatif
-							</h4>
-							<button type="button" class="close" data-bs-dismiss="modal"
-								aria-label="Close">
-								<i data-feather="x"></i>
-							</button>
-						</div>
-						<div class="modal-body">
-							<form method="POST" enctype="multipart/form-data" id="NilaiAlterForm">
-								@csrf
-								<input type="hidden" name="alternatif_id" id="alternatif-hidden">
-								<input type="hidden" name="datatables_idx" id="edit-index">
-								<div class="input-group mb-3">
-									<label class="input-group-text" for="alternatif-value">
-										Nama Alternatif
-									</label>
-									<select class="form-select" id="alternatif-value" name="alternatif_id"
-										required>
-										<option value="">Pilih</option>
-										@foreach ($alternatif as $alt)
-											<option value="{{ $alt->id }}">{{ $alt->name }}</option>
-										@endforeach
-									</select>
-									<div class="invalid-feedback" id="alternatif-error"></div>
-								</div>
-								@foreach ($kriteria as $kr)
-									<input type="hidden" name="kriteria_id[]" value="{{ $kr->id }}">
-									<div class="input-group mb-3">
-										<label class="input-group-text" for="subkriteria-{{ $kr->id }}"
-											title="{{ $kr->desc }}">
-											{{ $kr->name }}
-										</label>
-										<select class="form-select" id="subkriteria-{{ $kr->id }}"
-											name="subkriteria_id[]" required>
-											<option value="">Pilih</option>
-											@foreach ($subkriteria as $subkr)
-												@if ($subkr->kriteria_id == $kr->id)
-													<option value="{{ $subkr->id }}">
-														{{ $subkr->name }}
-													</option>
-												@endif
-											@endforeach
-										</select>
-										<div class="invalid-feedback"
-											id="subkriteria-error-{{ $kr->id }}"></div>
-									</div>
-								@endforeach
-							</form>
-						</div>
-						<div class="modal-footer">
-							<div class="spinner-grow text-primary d-none" role="status">
-								<span class="visually-hidden">Menyimpan...</span>
-							</div>
-							<button type="button" class="btn btn-light-secondary"
-								data-bs-dismiss="modal">
-								<i class="bi bi-x d-block d-sm-none"></i>
-								<span class="d-none d-sm-block">Batal</span>
-							</button>
-							<button type="submit" class="btn btn-primary ml-1 data-submit"
-								form="NilaiAlterForm">
-								<i class="bi bi-check d-block d-sm-none"></i>
-								<span class="d-none d-sm-block">Simpan</span>
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="card">
-				<div class="card-header">Daftar Nilai Alternatif</div>
-				<div class="card-body">
-					<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal"
-						data-bs-target="#NilaiAlterModal" id="spare-button">
-						<i class="bi bi-plus-lg me-0 me-sm-1"></i>
+	<div class="modal fade text-left" id="NilaiAlterModal" tabindex="-1" role="dialog"
+		aria-labelledby="NilaiAlterLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+			role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="NilaiAlterLabel">
 						Tambah Nilai Alternatif
+					</h4>
+					<button type="button" class="close" data-bs-dismiss="modal"
+						aria-label="Close">
+						<i data-feather="x"></i>
 					</button>
-					<table class="table table-hover" id="table-nilaialt" style="width: 100%">
-						<thead>
-							<tr>
-								<th>Nama Alternatif</th>
-								@foreach ($kriteria as $kr)
-									<th data-bs-toggle="tooltip" data-bs-placement="bottom"
-										title="{{ $kr->desc }}">
-										{{ $kr->name }}
-									</th>
+				</div>
+				<div class="modal-body">
+					<form method="POST" enctype="multipart/form-data" id="NilaiAlterForm">
+						@csrf
+						<input type="hidden" name="alternatif_id" id="alternatif-hidden">
+						<input type="hidden" name="datatables_idx" id="edit-index">
+						<div class="input-group mb-3">
+							<label class="input-group-text" for="alternatif-value">
+								Nama Alternatif
+							</label>
+							<select class="form-select" id="alternatif-value" name="alternatif_id"
+								required>
+								<option value="">Pilih</option>
+								@foreach ($alternatif as $alt)
+									<option value="{{ $alt->id }}">{{ $alt->name }}</option>
 								@endforeach
-								<th>Aksi</th>
-							</tr>
-						</thead>
-						<tbody>
-							@foreach ($alternatif as $alt)
-								@php
-									$subcount = 0;
-									$subkr = [];
-									$skor = $nilaialt->where('alternatif_id', '=', $alt->id)->all();
-								@endphp
-								@if (count($skor) > 0)
-									<tr>
-										<td>{{ $alt->name }}</td>
-										@foreach ($skor as $skoralt)
-											@php
-												$subkr[$subcount]['subkriteria'] = $skoralt->subkriteria->id;
-												$subkr[$subcount]['kriteria'] = $skoralt->kriteria->id;
-											@endphp
-											<td>{{ $skoralt->subkriteria->name }}</td>
-											@php($subcount++)
-										@endforeach
-										<td>
-											<div class="btn-group" role="button">
-												<button type="button" class="btn btn-primary edit-record"
-													data-bs-toggle="modal" data-bs-target="#NilaiAlterModal"
-													data-bs-name="{{ $alt->id }}" title="Edit"
-													data-bs-score="{{ json_encode($subkr) }}">
-													<i class="bi bi-pencil-square"></i>
-												</button>
-												<button type="button" class="btn btn-danger delete-record"
-													data-bs-id="{{ $alt->id }}" title="Hapus"
-													data-bs-name="{{ $alt->name }}">
-													<i class="bi bi-trash3-fill"></i>
-												</button>
-											</div>
-										</td>
-									</tr>
-								@endif
-							@endforeach
-						</tbody>
-					</table>
-					@if (count($nilaialt) > 0)
-						<a href="{{ route('nilai.show') }}" class="btn btn-success">
-							Lihat hasil
-						</a>
-					@endif
+							</select>
+							<div class="invalid-feedback" id="alternatif-error"></div>
+						</div>
+						@foreach ($kriteria as $kr)
+							<input type="hidden" name="kriteria_id[]" value="{{ $kr->id }}">
+							<div class="input-group mb-3">
+								<label class="input-group-text" for="subkriteria-{{ $kr->id }}"
+									title="{{ $kr->desc }}">
+									{{ $kr->name }}
+								</label>
+								<select class="form-select" id="subkriteria-{{ $kr->id }}"
+									name="subkriteria_id[]" required>
+									<option value="">Pilih</option>
+									@foreach ($subkriteria as $subkr)
+										@if ($subkr->kriteria_id == $kr->id)
+											<option value="{{ $subkr->id }}">
+												{{ $subkr->name }}
+											</option>
+										@endif
+									@endforeach
+								</select>
+								<div class="invalid-feedback" id="subkriteria-error-{{ $kr->id }}">
+								</div>
+							</div>
+						@endforeach
+					</form>
+				</div>
+				<div class="modal-footer">
+					<div class="spinner-grow text-primary d-none" role="status">
+						<span class="visually-hidden">Menyimpan...</span>
+					</div>
+					<button type="button" class="btn btn-light-secondary"
+						data-bs-dismiss="modal">
+						<i class="bi bi-x d-block d-sm-none"></i>
+						<span class="d-none d-sm-block">Batal</span>
+					</button>
+					<button type="submit" class="btn btn-primary ml-1 data-submit"
+						form="NilaiAlterForm">
+						<i class="bi bi-check d-block d-sm-none"></i>
+						<span class="d-none d-sm-block">Simpan</span>
+					</button>
 				</div>
 			</div>
+		</div>
+	</div>
+	<div class="card">
+		<div class="card-header">Daftar Nilai Alternatif</div>
+		<div class="card-body">
+			<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal"
+				data-bs-target="#NilaiAlterModal" id="spare-button">
+				<i class="bi bi-plus-lg me-0 me-sm-1"></i> Tambah Nilai Alternatif
+			</button>
+			<table class="table table-hover" id="table-nilaialt" style="width: 100%">
+				<thead>
+					<tr>
+						<th>Nama Alternatif</th>
+						@foreach ($kriteria as $kr)
+							<th data-bs-toggle="tooltip" data-bs-placement="bottom"
+								title="{{ $kr->desc }}">
+								{{ $kr->name }}
+							</th>
+						@endforeach
+						<th>Aksi</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach ($alternatif as $alt)
+						@php
+							$subcount = 0;
+							$subkr = [];
+							$skor = $nilaialt->where('alternatif_id', '=', $alt->id)->all();
+						@endphp
+						@if (count($skor) > 0)
+							<tr>
+								<td>{{ $alt->name }}</td>
+								@foreach ($skor as $skoralt)
+									@php
+										$subkr[$subcount]['subkriteria'] = $skoralt->subkriteria->id;
+										$subkr[$subcount]['kriteria'] = $skoralt->kriteria->id;
+									@endphp
+									<td>{{ $skoralt->subkriteria->name }}</td>
+									@php($subcount++)
+								@endforeach
+								<td>
+									<div class="btn-group" role="button">
+										<button type="button" class="btn btn-primary edit-record"
+											data-bs-toggle="modal" data-bs-target="#NilaiAlterModal"
+											data-bs-name="{{ $alt->id }}" title="Edit"
+											data-bs-score="{{ json_encode($subkr) }}">
+											<i class="bi bi-pencil-square"></i>
+										</button>
+										<button type="button" class="btn btn-danger delete-record"
+											data-bs-id="{{ $alt->id }}" title="Hapus"
+											data-bs-name="{{ $alt->name }}">
+											<i class="bi bi-trash3-fill"></i>
+										</button>
+									</div>
+								</td>
+							</tr>
+						@endif
+					@endforeach
+				</tbody>
+			</table>
+			@if (count($nilaialt) > 0)
+				<a href="{{ route('nilai.show') }}" class="btn btn-success">
+					Lihat hasil
+				</a>
+			@endif
+		</div>
+	</div>
 @endsection
 @section('js')
 	<script type="text/javascript">

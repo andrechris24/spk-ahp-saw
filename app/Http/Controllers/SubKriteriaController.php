@@ -85,7 +85,6 @@ class SubKriteriaController extends Controller
 			], 404);
 		}
 	}
-
 	public function destroy($id)
 	{
 		try {

@@ -1,7 +1,9 @@
 @extends('admin.auth')
 @section('title', 'Lupa Password')
-@section('auth-title','Lupa Password')
-@section('auth-subtitle','Masukkan email Anda untuk mendapatkan link reset password')
+@section('auth-title', 'Lupa Password')
+@section('auth-subtitle',
+	'Masukkan email Anda untuk mendapatkan link reset
+	password')
 @section('content')
 	<form action="{{ route('password.email') }}" method="post">@csrf
 		<div class="form-group position-relative has-icon-left mb-4">

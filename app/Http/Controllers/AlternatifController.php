@@ -35,10 +35,7 @@ class AlternatifController extends Controller
 		$request->validate(Alternatif::$rules, Alternatif::$message);
 		$alterID = $request->id;
 		try {
-			Alternatif::updateOrCreate(
-				['id' => $alterID],
-				['name' => $request->name]
-			);
+			Alternatif::updateOrCreate(['id' => $alterID],['name' => $request->name]);
 			return response()->json(['message' => 'Alternatif sudah diupdate.']);
 		} catch (QueryException $e) {
 			Log::error($e);

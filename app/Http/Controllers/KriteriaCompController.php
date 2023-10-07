@@ -49,22 +49,15 @@ class KriteriaCompController extends Controller
 	{
 		$request->validate(KriteriaComp::$rules, KriteriaComp::$message);
 		try {
-			$kriteria = Kriteria::get();
 			KriteriaComp::truncate();
+			$kriteria = Kriteria::get();
 			$a = 0;
 			for ($i = 0; $i < count($kriteria); $i++) {
 				for ($j = $i; $j < count($kriteria); $j++) {
-					$perbandingan = new KriteriaComp();
-					$perbandingan->kriteria1 = $kriteria[$i]->id;
-					$perbandingan->kriteria2 = $kriteria[$j]->id;
-					if ($request->kriteria[$a] === 'right')
-						$nilai = 0 - $request->skala[$a];
-					else if ($request->kriteria[$a] === 'left')
-						$nilai = $request->skala[$a];
-					else
-						$nilai = 1;
-					$perbandingan->nilai = $nilai;
-					$perbandingan->save();
+					KriteriaComp::updateOrCreate(
+						['kriteria1'=>$kriteria[$i]->id,'kriteria2'=>$kriteria[$j]->id],
+						['nilai'=>$kriteria[$i]->id===$kriteria[$j]->id?1:$request->skala[$a]]
+					);
 					$a++;
 				}
 			}
@@ -127,17 +120,16 @@ class KriteriaCompController extends Controller
 				}
 			}
 		}
-		$array_jumlah = null;
+		$array_jumlah = [];
 		for ($j = 0; $j < count($kriteria); $j++) {
 			$jumlah = 0;
 			for ($i = $j; $i < count($matriks_perbandingan); $i += count($kriteria)) {
 				$jumlah = $jumlah + $matriks_perbandingan[$i]["nilai"];
 			}
-			$array_jumlah[$j] = ["jumlah" => number_format(abs($jumlah), 4)];
+			$array_jumlah[$j] = number_format(abs($jumlah), 4);
 		}
-		$array_normalisasi = null;
 		$a = 0;
-		$array_filter = [];
+		$array_normalisasi= $array_filter = [];
 		for ($i = 0; $i < count($kriteria); $i++) {
 			for ($j = 0; $j < count($matriks_perbandingan); $j++) {
 				if (
@@ -148,14 +140,8 @@ class KriteriaCompController extends Controller
 			}
 			for ($k = 0; $k < count($matriks_perbandingan); $k++) {
 				for ($m = 0; $m < count($array_filter); $m++) {
-					$kolom = $m;
-					$hasil = 0;
-					for ($l = 0; $l < count($array_filter); $l++) {
-						$hasil += $array_filter[$l] * $matriks_perbandingan[$kolom]["nilai"];
-						$kolom += count($array_filter);
-					}
 					$array_normalisasi[$a] = [
-						"nilai" => number_format(abs($hasil), 4),
+						"nilai" => number_format(abs($matriks_perbandingan[$a]['nilai']/$array_jumlah[$m]), 4),
 						"kode_kriteria" => $kriteria[$i]->idkriteria,
 					];
 					$a++;
@@ -170,10 +156,8 @@ class KriteriaCompController extends Controller
 				4
 			);
 		}
-		$array_BobotPrioritas = null;
-		$jumlah_baris = 0;
-		$index_kriteria = 0;
-		$j = 0;
+		$array_BobotPrioritas = [];
+		$jumlah_baris = $index_kriteria = $j = 0;
 		for ($i = 0; $i < count($array_normalisasi); $i++) {
 			$jumlah_baris = $jumlah_baris + $array_normalisasi[$i]["nilai"];
 			if ($index_kriteria == count($kriteria) - 1) {
@@ -186,15 +170,12 @@ class KriteriaCompController extends Controller
 					"kode_kriteria" => $kriteria[$j]->idkriteria,
 				];
 				$j++;
-				$jumlah_baris = 0;
-				$index_kriteria = 0;
+				$jumlah_baris = $index_kriteria = 0;
 			} else
 				$index_kriteria++;
 		}
-		$array_CM = null;
-		$cm = 0;
-		$indexbobot = 0;
-		$j = 0;
+		$array_CM = [];
+		$cm = $indexbobot = $j = 0;
 		for ($i = 0; $i < count($matriks_perbandingan); $i++) {
 			$cm = number_format(
 				abs(
@@ -214,22 +195,21 @@ class KriteriaCompController extends Controller
 					"kali_matriks" => $cm,
 				];
 				$j++;
-				$cm = 0;
-				$indexbobot = 0;
+				$cm = $indexbobot = 0;
 			} else
 				$indexbobot++;
 		}
 		$total_cm = 0;
 		foreach ($array_CM as $cm) {
-			$total_cm = $total_cm + $cm["cm"];
+			$total_cm += $cm["cm"];
 		}
 		$average_cm = number_format(abs($total_cm / count($array_CM)), 4);
 		$total_ci = number_format(
 			abs(($average_cm - count($kriteria)) / (count($kriteria) - 1)),
 			4
 		);
-		$ratio = KriteriaComp::$ratio_index[count($kriteria)];
-		if ($ratio == 0)
+		$ratio = Kriteria::$ratio_index[count($kriteria)];
+		if ($ratio === 0)
 			$result = '-';
 		else
 			$result = number_format(abs($total_ci / $ratio), 4);
@@ -251,8 +231,7 @@ class KriteriaCompController extends Controller
 				"jumlah" => $array_jumlah,
 				"cm" => $array_CM,
 				"ci" => $total_ci,
-				"result" => $result,
-				"total_jumlah_baris" => $total_jumlah_baris
+				"result" => $result
 			];
 			return view('main.kriteria.hasil', compact('data'));
 		} catch (QueryException $e) {

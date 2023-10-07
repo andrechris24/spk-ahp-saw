@@ -132,7 +132,6 @@ class NilaiController extends Controller
 			return response()->json(['message' => $e->getMessage()], 500);
 		}
 	}
-
 	public function show()
 	{
 		try {
@@ -173,7 +172,6 @@ class NilaiController extends Controller
 				->withErrors($e->getMessage());
 		}
 	}
-
 	public function update(Request $request)
 	{
 		try {
@@ -213,7 +211,6 @@ class NilaiController extends Controller
 			return response()->json(['message' => $e->getMessage()], 500);
 		}
 	}
-
 	public function destroy($id)
 	{
 		try {

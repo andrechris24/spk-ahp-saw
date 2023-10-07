@@ -1,7 +1,9 @@
 @extends('admin.auth')
 @section('title', 'Reset Password')
-@section('auth-title','Reset Password')
-@section('auth-subtitle','Selamat datang kembali! Silahkan masukkan password baru untuk melanjutkan.')
+@section('auth-title', 'Reset Password')
+@section('auth-subtitle',
+	'Selamat datang kembali! Silahkan masukkan password
+	baru untuk melanjutkan.')
 @section('content')
 	<form action="{{ route('password.update') }}" method="post">@csrf
 		<input type="hidden" name="token" value="{{ $token }}">

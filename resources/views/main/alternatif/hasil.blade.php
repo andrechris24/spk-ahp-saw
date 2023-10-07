@@ -5,172 +5,172 @@
 	$countkriteria = count($data['kriteria']);
 @endphp
 @section('title', 'Hasil Penilaian Alternatif')
-@section('subtitle','Hasil Penilaian Alternatif')
+@section('subtitle', 'Hasil Penilaian Alternatif')
 @section('content')
-			<div class="card">
-				<div class="card-header">
-					<h4 class="card-title">Matriks Keputusan</h4>
-				</div>
-				<div class="card-body">
-					<div class="table-responsive">
-						<table class="table table-hover text-center">
-							<thead>
-								<tr>
-									<th rowspan="2">Alternatif</th>
-									<th colspan="{{ $countkriteria }}">Kriteria</th>
-								</tr>
-								<tr>
-									@foreach ($data['kriteria'] as $krit)
-										<th data-bs-toggle="tooltip" title="{{ $krit->desc }}">
-											{{ $krit->name }}
-										</th>
-									@endforeach
-								</tr>
-							</thead>
-							<tbody>
-								@foreach ($data['alternatif'] as $alter)
-									@php
-										$anal = $hasil->where('alternatif_id', '=', $alter->id)->all();
-									@endphp
-									@if (count($anal) > 0)
-										<tr>
-											<th>{{ $alter->name }}</th>
-											@foreach ($anal as $skoralt)
-												<td>{{ $skoralt->subkriteria->bobot }}</td>
-											@endforeach
-										</tr>
-									@endif
-								@endforeach
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-			<div class="card">
-				<div class="card-header">
-					<h4 class="card-title">Matriks Normalisasi</h4>
-				</div>
-				<div class="card-body">
-					<div class="table-responsive">
-						<table class="table table-hover text-center">
-							<thead>
-								<tr>
-									<th rowspan="2">Alternatif</th>
-									<th colspan="{{ $countkriteria }}">Kriteria</th>
-								</tr>
-								<tr>
-									@foreach ($data['kriteria'] as $krit)
-										<th data-bs-toggle="tooltip" title="{{ $krit->desc }}">
-											{{ $krit->name }}
-										</th>
-									@endforeach
-								</tr>
-							</thead>
-							<tbody>
-								@foreach ($data['alternatif'] as $alts)
-									@php
-										$counter = 0;
-										$norm = $hasil->where('alternatif_id', '=', $alts->id)->all();
-									@endphp
-									@if (count($norm) > 0)
-										<tr>
-											<th>{{ $alts->name }}</th>
-											@foreach ($norm as $nilai)
-												<td>
-													@php
-														$arrays = $saw->getNilaiArr($nilai->kriteria_id);
-														$result = $saw->normalisasi($arrays, $nilai->kriteria->type, $nilai->subkriteria->bobot);
-														echo $result;
-														$lresult[$alts->id][$counter] = $result * $saw->getBobot($nilai->kriteria_id);
-														$counter++;
-													@endphp
-												</td>
-											@endforeach
-										</tr>
-									@endif
-								@endforeach
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-			<div class="modal fade text-left" id="RankModal" tabindex="-1" role="dialog"
-				aria-labelledby="RankLabel" aria-hidden="true">
-				<div
-					class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-lg-down modal-lg"
-					role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title" id="RankLabel">Grafik hasil penilaian</h4>
-							<button type="button" class="close" data-bs-dismiss="modal"
-								aria-label="Close">
-								<i data-feather="x"></i>
-							</button>
-						</div>
-						<div class="modal-body">
-							<div id="chart-ranking"></div>
-							Jadi, nilai tertingginya diraih oleh <span id="SkorTertinggi">...</span>
-							dengan nilai <span id="SkorHasil">...</span>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-								Tutup
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="card">
-				<div class="card-header">
-					<h4 class="card-title">Ranking</h4>
-				</div>
-				<div class="card-body">
-					<button type="button" class="btn btn-primary mb-3 d-none"
-						data-bs-toggle="modal" data-bs-target="#RankModal" id="spare-button">
-						<i class="bi bi-bar-chart-line-fill"></i> Lihat Grafik
-					</button>
-					<table class="table table-hover text-center" id="table-hasil"
-						style="width: 100%">
-						<thead class="text-center">
-							<tr>
-								<th rowspan="2">Alternatif</th>
-								<th colspan="{{ count($data['kriteria']) }}">Kriteria</th>
-								<th rowspan="2">Jumlah</th>
-							</tr>
-							<tr>
-								@foreach ($data['kriteria'] as $krit)
-									<th data-bs-toggle="tooltip" title="{{ $krit->desc }}">
-										{{ $krit->name }}
-									</th>
-								@endforeach
-							</tr>
-						</thead>
-						<tbody>
-							@foreach ($data['alternatif'] as $alts)
-								@php
-									$rank = $hasil->where('alternatif_id', '=', $alts->id)->all();
-									$jml = 0;
-								@endphp
-								@if (count($rank) > 0)
-									<tr>
-										<th>{{ $alts->name }}</th>
-										@foreach ($lresult[$alts->id] as $datas)
-											<td>
-												@php
-													echo round($datas, 5);
-													$jml += round($datas, 5);
-												@endphp
-											</td>
-										@endforeach
-										@php($saw->simpanHasil($alts->id, $jml))
-										<td>{{ $jml }}</td>
-									</tr>
-								@endif
+	<div class="card">
+		<div class="card-header">
+			<h4 class="card-title">Matriks Keputusan</h4>
+		</div>
+		<div class="card-body">
+			<div class="table-responsive">
+				<table class="table table-hover text-center">
+					<thead>
+						<tr>
+							<th rowspan="2">Alternatif</th>
+							<th colspan="{{ $countkriteria }}">Kriteria</th>
+						</tr>
+						<tr>
+							@foreach ($data['kriteria'] as $krit)
+								<th data-bs-toggle="tooltip" title="{{ $krit->desc }}">
+									{{ $krit->name }}
+								</th>
 							@endforeach
-						</tbody>
-					</table>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach ($data['alternatif'] as $alter)
+							@php
+								$anal = $hasil->where('alternatif_id', '=', $alter->id)->all();
+							@endphp
+							@if (count($anal) > 0)
+								<tr>
+									<th>{{ $alter->name }}</th>
+									@foreach ($anal as $skoralt)
+										<td>{{ $skoralt->subkriteria->bobot }}</td>
+									@endforeach
+								</tr>
+							@endif
+						@endforeach
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="card">
+		<div class="card-header">
+			<h4 class="card-title">Matriks Normalisasi</h4>
+		</div>
+		<div class="card-body">
+			<div class="table-responsive">
+				<table class="table table-hover text-center">
+					<thead>
+						<tr>
+							<th rowspan="2">Alternatif</th>
+							<th colspan="{{ $countkriteria }}">Kriteria</th>
+						</tr>
+						<tr>
+							@foreach ($data['kriteria'] as $krit)
+								<th data-bs-toggle="tooltip" title="{{ $krit->desc }}">
+									{{ $krit->name }}
+								</th>
+							@endforeach
+						</tr>
+					</thead>
+					<tbody>
+						@foreach ($data['alternatif'] as $alts)
+							@php
+								$counter = 0;
+								$norm = $hasil->where('alternatif_id', '=', $alts->id)->all();
+							@endphp
+							@if (count($norm) > 0)
+								<tr>
+									<th>{{ $alts->name }}</th>
+									@foreach ($norm as $nilai)
+										<td>
+											@php
+												$arrays = $saw->getNilaiArr($nilai->kriteria_id);
+												$result = $saw->normalisasi($arrays, $nilai->kriteria->type, $nilai->subkriteria->bobot);
+												echo $result;
+												$lresult[$alts->id][$counter] = $result * $saw->getBobot($nilai->kriteria_id);
+												$counter++;
+											@endphp
+										</td>
+									@endforeach
+								</tr>
+							@endif
+						@endforeach
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade text-left" id="RankModal" tabindex="-1" role="dialog"
+		aria-labelledby="RankLabel" aria-hidden="true">
+		<div
+			class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-lg-down modal-lg"
+			role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="RankLabel">Grafik hasil penilaian</h4>
+					<button type="button" class="close" data-bs-dismiss="modal"
+						aria-label="Close">
+						<i data-feather="x"></i>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div id="chart-ranking"></div>
+					Jadi, nilai tertingginya diraih oleh <span id="SkorTertinggi">...</span>
+					dengan nilai <span id="SkorHasil">...</span>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+						Tutup
+					</button>
 				</div>
 			</div>
+		</div>
+	</div>
+	<div class="card">
+		<div class="card-header">
+			<h4 class="card-title">Ranking</h4>
+		</div>
+		<div class="card-body">
+			<button type="button" class="btn btn-primary mb-3 d-none"
+				data-bs-toggle="modal" data-bs-target="#RankModal" id="spare-button">
+				<i class="bi bi-bar-chart-line-fill"></i> Lihat Grafik
+			</button>
+			<table class="table table-hover text-center" id="table-hasil"
+				style="width: 100%">
+				<thead class="text-center">
+					<tr>
+						<th rowspan="2">Alternatif</th>
+						<th colspan="{{ count($data['kriteria']) }}">Kriteria</th>
+						<th rowspan="2">Jumlah</th>
+					</tr>
+					<tr>
+						@foreach ($data['kriteria'] as $krit)
+							<th data-bs-toggle="tooltip" title="{{ $krit->desc }}">
+								{{ $krit->name }}
+							</th>
+						@endforeach
+					</tr>
+				</thead>
+				<tbody>
+					@foreach ($data['alternatif'] as $alts)
+						@php
+							$rank = $hasil->where('alternatif_id', '=', $alts->id)->all();
+							$jml = 0;
+						@endphp
+						@if (count($rank) > 0)
+							<tr>
+								<th>{{ $alts->name }}</th>
+								@foreach ($lresult[$alts->id] as $datas)
+									<td>
+										@php
+											echo round($datas, 5);
+											$jml += round($datas, 5);
+										@endphp
+									</td>
+								@endforeach
+								@php($saw->simpanHasil($alts->id, $jml))
+								<td>{{ $jml }}</td>
+							</tr>
+						@endif
+					@endforeach
+				</tbody>
+			</table>
+		</div>
+	</div>
 @endsection
 @section('js')
 	<script type="text/javascript">
