@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -15,9 +14,12 @@ return new class extends Migration
     {
         Schema::create('nilai', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('alternatif_id')->constrained('alternatif')->cascadeOnDelete();
-            $table->foreignId('kriteria_id')->constrained('kriteria')->cascadeOnDelete();
-            $table->foreignId('subkriteria_id')->constrained('subkriteria')->cascadeOnDelete();
+            $table->foreignId('alternatif_id')->constrained('alternatif')
+                ->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('kriteria_id')->constrained('kriteria')
+                ->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('subkriteria_id')->constrained('subkriteria')
+                ->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

@@ -9,22 +9,26 @@
 		</div>
 		<div class="card-body">
 			<div class="table-responsive">
-				<table class="table table-hover text-center">
+				<table class="table table-hover table-striped text-center">
 					<thead>
 						<tr>
 							<th>Kriteria</th>
 							@foreach ($data['kriteria'] as $kr)
-								<th>{{ $kr->name }}</th>
+								<th data-bs-toggle="tooltip" title="{{ $kr->desc }}">
+									{{ $kr->name }}
+								</th>
 							@endforeach
 						</tr>
 					</thead>
 					<tbody>
 						@foreach ($data['kriteria'] as $kr)
 							<tr>
-								<th>{{ $kr->name }}</th>
+								<th data-bs-toggle="tooltip" title="{{ $kr->desc }}">
+									{{ $kr->name }}
+								</th>
 								@foreach ($data['matriks_awal'] as $ma)
 									@if ($ma['kode_kriteria'] === $kr->idkriteria)
-										<td>{{ $ma['nilai'] }}</td>
+										<td>{!! $ma['nilai'] !!}</td>
 									@endif
 								@endforeach
 							</tr>
@@ -40,19 +44,23 @@
 		</div>
 		<div class="card-body">
 			<div class="table-responsive">
-				<table class="table table-hover text-center">
+				<table class="table table-hover table-striped text-center">
 					<thead>
 						<tr>
 							<th>Kriteria</th>
 							@foreach ($data['kriteria'] as $kr)
-								<th>{{ $kr->name }}</th>
+								<th data-bs-toggle="tooltip" title="{{ $kr->desc }}">
+									{{ $kr->name }}
+								</th>
 							@endforeach
 						</tr>
 					</thead>
 					<tbody>
 						@foreach ($data['kriteria'] as $kr)
 							<tr>
-								<th>{{ $kr->name }}</th>
+								<th data-bs-toggle="tooltip" title="{{ $kr->desc }}">
+									{{ $kr->name }}
+								</th>
 								@foreach ($data['matriks_perbandingan'] as $mp)
 									@if ($mp['kode_kriteria'] === $kr->idkriteria)
 										<td>{{ $mp['nilai'] }}</td>
@@ -77,12 +85,14 @@
 		</div>
 		<div class="card-body">
 			<div class="table-responsive">
-				<table class="table table-hover text-center">
+				<table class="table table-hover table-striped text-center">
 					<thead>
 						<tr>
 							<th>Kriteria</th>
 							@foreach ($data['kriteria'] as $kr)
-								<th>{{ $kr->name }}</th>
+								<th data-bs-toggle="tooltip" title="{{ $kr->desc }}">
+									{{ $kr->name }}
+								</th>
 							@endforeach
 							<th>Jumlah Baris</th>
 							<th>Eigen</th>
@@ -91,7 +101,9 @@
 					<tbody>
 						@foreach ($data['kriteria'] as $kr)
 							<tr>
-								<th>{{ $kr->name }}</th>
+								<th data-bs-toggle="tooltip" title="{{ $kr->desc }}">
+									{{ $kr->name }}
+								</th>
 								@foreach ($data['matriks_normalisasi'] as $mn)
 									@if ($mn['kode_kriteria'] === $kr->idkriteria)
 										<td>{{ $mn['nilai'] }}</td>
@@ -138,27 +150,31 @@
 						<td>
 							{{ $data['result'] }}
 							@if (is_numeric($data['result']))
-								({{ $data['result'] * 100 }}%)
+								@php
+									echo '(' . round($data['result'] * 100, 2) . '%)';
+									$consistent = $data['result'] <= 0.1;
+								@endphp
+							@else
+								@php($consistent = true)
 							@endif
 						</td>
 					</tr>
 					<tr>
 						<td>Hasil Konsistensi</td>
-						<td>@php($consistent=true)
-							@if (!is_numeric($data['result']))
-								<span class="text-warning" data-bs-toggle="tooltip"
-									title="Minimal 3 kriteria untuk melakukan pengecekan hasil Konsistensi">
+						<td>
+							<span @class([
+								'text-warning' => !is_numeric($data['result']),
+								'text-danger' => !$consistent,
+								'text-success' => is_numeric($data['result']) && $data['result'] <= 0.1,
+							])>
+								@if (!is_numeric($data['result']))
 									<b>Tidak bisa dievaluasi</b>
-								</span>
-							@elseif ($data['result'] <= 0.1)
-								<span class="text-success"><b>Konsisten</b></span>
-							@else
-							@php($consistent=false)
-								<span class="text-danger" data-bs-toggle="tooltip"
-									title="Nilai CR maksimal 10%">
+								@elseif ($data['result'] <= 0.1)
+									<b>Konsisten</b>
+								@else
 									<b>Tidak Konsisten</b>, mohon untuk menginput ulang perbandingan!
-								</span>
-							@endif
+								@endif
+							</span>
 						</td>
 					</tr>
 				</table>
@@ -176,7 +192,8 @@
 								<i class="bi bi-arrow-right"></i> Lanjut
 							</a>
 						@else
-							<button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#inconsistentModal">?</button>
+							<button type="button" class="btn btn-info" data-bs-toggle="modal"
+								data-bs-target="#inconsistentModal">?</button>
 						@endif
 					</div>
 					<form action="{{ route('bobotkriteria.reset') }}" method="POST"

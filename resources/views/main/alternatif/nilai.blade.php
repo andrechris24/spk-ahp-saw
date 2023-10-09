@@ -83,7 +83,7 @@
 				data-bs-target="#NilaiAlterModal" id="spare-button">
 				<i class="bi bi-plus-lg me-0 me-sm-1"></i> Tambah Nilai Alternatif
 			</button>
-			<table class="table table-hover" id="table-nilaialt" style="width: 100%">
+			<table class="table table-hover table-striped" id="table-nilaialt" style="width: 100%">
 				<thead>
 					<tr>
 						<th>Nama Alternatif</th>
@@ -101,7 +101,7 @@
 						@php
 							$subcount = 0;
 							$subkr = [];
-							$skor = $nilaialt->where('alternatif_id', '=', $alt->id)->all();
+							$skor = $nilaialt->where('alternatif_id', $alt->id)->all();
 						@endphp
 						@if (count($skor) > 0)
 							<tr>
@@ -266,8 +266,6 @@
 							"_token": "{{ csrf_token() }}"
 						},
 						success: function(data) {
-							nilaialtdt.row(rowParent)
-								.remove().draw();
 							Swal.fire({
 								icon: 'success',
 								title: 'Dihapus',
@@ -276,6 +274,8 @@
 									confirmButton: 'btn btn-success'
 								}
 							});
+							nilaialtdt.row(rowParent)
+								.remove().draw();
 						},
 						error: function(xhr, stat) {
 							Swal.fire({
@@ -310,8 +310,8 @@
 				data: $('#NilaiAlterForm').serialize(),
 				url: ($('#alternatif-hidden').val() == '' || $(
 						'#edit-index').val() == '') ?
-					'/alternatif/nilai/update' :
-					'/alternatif/nilai/store',
+					'/alternatif/nilai/store' :
+					'/alternatif/nilai/update',
 				type: 'POST',
 				beforeSend: function() {
 					$('#NilaiAlterForm :input').prop('disabled',
@@ -329,11 +329,6 @@
 				},
 				success: function(status) {
 					$('#NilaiAlterModal').modal('hide');
-					if (formmethod == 'POST')
-						nilaialtdt.row.add(status).draw(false);
-					else
-						nilaialtdt.row($('#edit-index').val())
-						.data(status).draw();
 					Swal.fire({
 						icon: 'success',
 						title: 'Sukses',
@@ -342,6 +337,12 @@
 							confirmButton: 'btn btn-success'
 						}
 					});
+					if ($('#alternatif-hidden').val() == '' || $(
+							'#edit-index').val() == '')
+						nilaialtdt.row.add(status).draw(false);
+					else
+						nilaialtdt.row($('#edit-index').val())
+						.data(status).draw();
 				},
 				error: function(xhr, code) {
 					Swal.fire({

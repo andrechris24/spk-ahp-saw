@@ -73,7 +73,7 @@ class HomeController extends Controller
 			], 404);
 		} catch (QueryException $db) {
 			Log::error($db);
-			return response()->json(['message' => $db->getMessage()], 500);
+			return response()->json(['message' => $db->errorInfo[2]], 500);
 		}
 	}
 	public function delAkun(Request $request)
@@ -94,7 +94,7 @@ class HomeController extends Controller
 				->withErrors($e->getMessage());
 		} catch (QueryException $db) {
 			Log::error($db);
-			return back()->withError('Gagal hapus:' . $db->getMessage());
+			return back()->withError('Gagal hapus:' . $db->errorInfo[2]);
 		}
 	}
 }

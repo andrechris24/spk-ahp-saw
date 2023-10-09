@@ -27,7 +27,7 @@ class AlternatifController extends Controller
 			return response()->json(['message' => 'Alternatif sudah ditambah.']);
 		} catch (QueryException $e) {
 			Log::error($e);
-			return response()->json(['message' => $e->getMessage()], 500);
+			return response()->json(['message' => $e->errorInfo[2]], 500);
 		}
 	}
 	public function update(Request $request)
@@ -35,11 +35,11 @@ class AlternatifController extends Controller
 		$request->validate(Alternatif::$rules, Alternatif::$message);
 		$alterID = $request->id;
 		try {
-			Alternatif::updateOrCreate(['id' => $alterID],['name' => $request->name]);
+			Alternatif::updateOrCreate(['id' => $alterID], ['name' => $request->name]);
 			return response()->json(['message' => 'Alternatif sudah diupdate.']);
 		} catch (QueryException $e) {
 			Log::error($e);
-			return response()->json(['message' => $e->getMessage()], 500);
+			return response()->json(['message' => $e->errorInfo[2]], 500);
 		}
 	}
 	public function edit($id)
@@ -48,7 +48,7 @@ class AlternatifController extends Controller
 			$alter = Alternatif::where('id', $id)->firstOrFail();
 			return response()->json($alter);
 		} catch (QueryException $e) {
-			return response()->json(["message" => $e->getMessage()], 500);
+			return response()->json(["message" => $e->errorInfo[2]], 500);
 		} catch (ModelNotFoundException $e) {
 			return response()->json([
 				'message' => 'Data Alternatif tidak ditemukan',
@@ -68,7 +68,7 @@ class AlternatifController extends Controller
 			], 404);
 		} catch (QueryException $sql) {
 			Log::error($sql);
-			return response()->json(['message' => $sql->getMessage()], 500);
+			return response()->json(['message' => $sql->errorInfo[2]], 500);
 		}
 	}
 }

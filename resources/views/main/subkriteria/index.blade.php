@@ -72,7 +72,7 @@
 				data-bs-target="#SubCritModal" id="spare-button">
 				<i class="bi bi-plus-lg me-0 me-sm-1"></i> Tambah Sub Kriteria
 			</button>
-			<table class="table table-hover" id="table-subcrit" style="width: 100%">
+			<table class="table table-hover table-striped" id="table-subcrit" style="width: 100%">
 				<thead>
 					<tr>
 						<th>No</th>
@@ -304,7 +304,7 @@
 			$.ajax({
 				data: $('#SubCritForm').serialize(),
 				url: $('#subkriteria-id').val() == '' ?
-					'/kriteria/sub/update' : '/kriteria/sub/store',
+					'/kriteria/sub/store' : '/kriteria/sub/update',
 				type: 'POST',
 				beforeSend: function() {
 					$('#SubCritForm :input').prop('disabled',

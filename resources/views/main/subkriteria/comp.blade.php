@@ -15,12 +15,12 @@
 		</div>
 		<div class="card-content">
 			<div class="card-body">
-				@if ($cek > 0)
+				@if ($cek > $jmlsubkriteria)
 					<div class="alert alert-primary">
 						<i class="bi bi-info-circle-fill"></i>
 						Perbandingan sub kriteria {{ $title }} sudah dilakukan,
 						<a href="{{ url('/bobot/sub/hasil/' . $kriteria_id) }}">klik disini</a>
-						untuk melihat hasil perbandingan
+						untuk melihat hasil perbandingan.
 					</div>
 				@endif
 				<ul class="nav nav-tabs" id="InputCompTab" role="tablist">
@@ -51,7 +51,7 @@
 							<div class="table-responsive">
 								<form method="POST" enctype="multipart/form-data"
 									action="{{ url('/bobot/sub/comp/' . $kriteria_id) }}">@csrf
-									<table class="table table-lg table-hover text-center">
+									<table class="table table-lg table-hover table-striped text-center">
 										<thead>
 											<tr>
 												<th>Sub Kriteria</th>
@@ -68,7 +68,8 @@
 															<div class="input-group mb-3">
 																<input type="number" name="skala[{{ $loop->index }}]"
 																	min="1" max="9" class="form-control text-center"
-																	value="{{ old('skala.' . $loop->index) }}" required>
+																	value="{{ old('skala.' . $loop->index)??$value[$loop->index]['nilai']??1 }}"
+																	required>
 															</div>
 														</td>
 														<th>{{ $krit['kolom'] }}</th>
@@ -92,7 +93,8 @@
 							<div class="alert alert-warning mt-3">
 								<i class="bi bi-sign-stop-fill"></i>
 								Masukkan data <a href="{{ route('subkriteria.index') }}">Sub
-									Kriteria</a> {{ $title }} dulu (Minimal 2) untuk melakukan perbandingan.
+									Kriteria</a> {{ $title }} dulu (Minimal 2) untuk melakukan
+								perbandingan.
 							</div>
 						@endif
 					</div>

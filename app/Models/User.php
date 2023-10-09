@@ -43,7 +43,14 @@ class User extends Authenticatable
 	];
 	public static array $loginrules = [
 		'email' => 'bail|required|email|exists:users',
-		'password' => 'required|min:8'
+		'password' => 'baill|required|between:8,20'
+	];
+	public static array $loginmsg=[
+		'email.required' => 'Email harus diisi',
+		'email.email' => 'Format Email salah',
+		'email.exists' => 'Akun tidak ditemukan',
+		'password.required' => 'Password harus diisi',
+		'password.between' => 'Panjang password harus 8-20 karakter',
 	];
 	public static array $resetmsg = [
 		'token.required' => 'Token tidak valid',

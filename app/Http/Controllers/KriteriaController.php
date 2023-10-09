@@ -29,13 +29,13 @@ class KriteriaController extends Controller
 			$querytype = "diinput. ";
 			if (KriteriaComp::exists()) {
 				KriteriaComp::truncate();
-				Kriteria::where('bobot', '<>', 0.0000)->update(['bobot' => 0.0000]);
+				Kriteria::where('bobot', '<>', 0.00000)->update(['bobot' => 0.00000]);
 				$querytype .= "Silahkan input ulang perbandingan kriteria.";
 			}
 			return response()->json(['message' => 'Kriteria sudah ' . $querytype]);
 		} catch (QueryException $e) {
 			Log::error($e);
-			return response()->json(['message' => $e->getMessage()], 500);
+			return response()->json(['message' => $e->errorInfo[2]], 500);
 		}
 	}
 	public function update(Request $request)
@@ -54,7 +54,7 @@ class KriteriaController extends Controller
 			return response()->json(['message' => 'Kriteria sudah diupdate.']);
 		} catch (QueryException $e) {
 			Log::error($e);
-			return response()->json(['message' => $e->getMessage()], 500);
+			return response()->json(['message' => $e->errorInfo[2]], 500);
 		}
 	}
 	public function edit($id)
@@ -64,7 +64,7 @@ class KriteriaController extends Controller
 			return response()->json($kriteria);
 		} catch (QueryException $e) {
 			Log::error($e);
-			return response()->json(["message" => $e->getMessage()], 500);
+			return response()->json(["message" => $e->errorInfo[2]], 500);
 		} catch (ModelNotFoundException $err) {
 			return response()->json([
 				'message' => 'Data Kriteria tidak ditemukan',
@@ -78,7 +78,7 @@ class KriteriaController extends Controller
 			Kriteria::findOrFail($id)->delete();
 			if (KriteriaComp::exists()) {
 				KriteriaComp::truncate();
-				Kriteria::where('bobot', '<>', 0.0000)->update(['bobot' => 0.0000]);
+				Kriteria::where('bobot', '<>', 0.00000)->update(['bobot' => 0.00000]);
 				return response()->json([
 					'message' => 'Kriteria sudah dihapus. Silahkan input ulang perbandingan.'
 				]);
@@ -91,7 +91,7 @@ class KriteriaController extends Controller
 			], 404);
 		} catch (QueryException $e) {
 			Log::error($e);
-			return response()->json(['message' => $e->getMessage()], 500);
+			return response()->json(['message' => $e->errorInfo[2]], 500);
 		}
 	}
 }

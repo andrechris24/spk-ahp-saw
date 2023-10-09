@@ -14,7 +14,10 @@
 						id="kriteria" name="kriteria_id" required>
 						<option value="">Pilih</option>
 						@foreach ($allkrit as $kr)
-							<option value="{{ $kr->id }}">{{ $kr->name }}</option>
+							<option value="{{ $kr->id }}"
+								@isset($kriteria_id) {{ $kriteria_id == $kr->id ? 'selected' : '' }} @endisset>
+								{{ $kr->name }}
+							</option>
 						@endforeach
 					</select>
 					@error('kriteria_id')

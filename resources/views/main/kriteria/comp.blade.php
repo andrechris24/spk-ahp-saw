@@ -8,12 +8,12 @@
 		</div>
 		<div class="card-content">
 			<div class="card-body">
-				@if ($cek > 0)
+				@if ($cek > $jmlcrit)
 					<div class="alert alert-primary">
 						<i class="bi bi-info-circle-fill"></i>
 						Perbandingan kriteria sudah dilakukan,
 						<a href="{{ url('bobot/hasil') }}">klik disini</a>
-						untuk melihat hasil perbandingan
+						untuk melihat hasil perbandingan.
 					</div>
 				@endif
 				<ul class="nav nav-tabs" id="InputCompTab" role="tablist">
@@ -41,7 +41,7 @@
 							<div class="table-responsive">
 								<form method="POST" enctype="multipart/form-data"
 									action="{{ route('bobotkriteria.store') }}">@csrf
-									<table class="table table-lg table-hover text-center">
+									<table class="table table-lg table-hover table-striped text-center">
 										<thead>
 											<tr>
 												<th>Kriteria</th>
@@ -58,7 +58,8 @@
 															<div class="input-group mb-3">
 																<input type="number" name="skala[{{ $loop->index }}]"
 																	min="1" max="9" class="form-control text-center"
-																	value="{{ old('skala.' . $loop->index) }}" required>
+																	value="{{ old('skala.' . $loop->index)??$value[$loop->index]['nilai']??1 }}"
+																	required>
 															</div>
 														</td>
 														<th>{{ $krit['kolom'] }}</th>

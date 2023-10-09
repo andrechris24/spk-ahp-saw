@@ -22,14 +22,14 @@ class NilaiController extends Controller
 			$hasil = $skor / max($arr);
 		else
 			return $skor;
-		return round($hasil, 4);
+		return round($hasil, 5);
 	}
 	public function getNilaiArr($kriteria_id): array
 	{
 		$data = array();
 		$kueri = Nilai::select('subkriteria.bobot as bobot')
-			->join("subkriteria", "nilai.subkriteria_id", '=', "subkriteria.id")
-			->where('nilai.kriteria_id', '=', $kriteria_id)->get();
+			->join("subkriteria", "nilai.subkriteria_id", "subkriteria.id")
+			->where('nilai.kriteria_id', $kriteria_id)->get();
 		foreach ($kueri as $row) {
 			$data[] = $row->bobot;
 		}
@@ -38,7 +38,7 @@ class NilaiController extends Controller
 	public function getBobot($idkriteria)
 	{
 		try {
-			$kueri = Kriteria::findOrFail($idkriteria)->first();
+			$kueri = Kriteria::where('id', $idkriteria)->firstOrFail();
 			return $kueri->bobot;
 		} catch (ModelNotFoundException | QueryException $err) {
 			Log::error($err);
@@ -59,21 +59,21 @@ class NilaiController extends Controller
 		$kriteria = Kriteria::get();
 		if (count($kriteria) === 0) {
 			return redirect('kriteria')->withWarning(
-				'Tambahkan kriteria dan subkriteria dulu ' .
-				'sebelum melakukan penilaian alternatif'
+				'Tambahkan kriteria dan sub kriteria dulu ' .
+				'sebelum melakukan penilaian alternatif.'
 			);
 		}
 		$subkriteria = SubKriteria::get();
 		if (count($subkriteria) === 0) {
 			return redirect('kriteria/sub')
 				->withWarning(
-					'Tambahkan sub kriteria dulu sebelum melakukan penilaian alternatif'
+					'Tambahkan sub kriteria dulu sebelum melakukan penilaian alternatif.'
 				);
 		}
 		$alternatif = Alternatif::get();
 		if (count($alternatif) === 0) {
 			return redirect('alternatif')
-				->withWarning('Tambahkan alternatif dulu sebelum melakukan penilaian');
+				->withWarning('Tambahkan alternatif dulu sebelum melakukan penilaian.');
 		}
 		$nilaialt = Nilai::leftJoin(
 			'alternatif',
@@ -93,8 +93,7 @@ class NilaiController extends Controller
 		$request->validate(Nilai::$rules, Nilai::$message);
 		$scores = $request->all();
 		try {
-			$cek = Nilai::where('alternatif_id', '=', $scores['alternatif_id'])
-				->exists();
+			$cek = Nilai::where('alternatif_id', $scores['alternatif_id'])->exists();
 			if ($cek) {
 				return response()->json([
 					'message' => 'Alternatif sudah digunakan dalam penilaian'
@@ -129,7 +128,7 @@ class NilaiController extends Controller
 			return response()->json($hasil);
 		} catch (QueryException $e) {
 			Log::error($e);
-			return response()->json(['message' => $e->getMessage()], 500);
+			return response()->json(['message' => $e->errorInfo[2]], 500);
 		}
 	}
 	public function show()
@@ -141,13 +140,12 @@ class NilaiController extends Controller
 			$hasil = Nilai::leftJoin(
 				'alternatif',
 				'alternatif.id',
-				'=',
 				'nilai.alternatif_id'
-			)->leftJoin('kriteria', 'kriteria.id', '=', 'nilai.kriteria_id')
-				->leftJoin('subkriteria', 'subkriteria.id', '=', 'nilai.subkriteria_id')
+			)->leftJoin('kriteria', 'kriteria.id', 'nilai.kriteria_id')
+				->leftJoin('subkriteria', 'subkriteria.id', 'nilai.subkriteria_id')
 				->get();
-			$cekbobotkr = Kriteria::where('bobot', 0.0000)->count();
-			$cekbobotskr = SubKriteria::where('bobot', 0.0000)->count();
+			$cekbobotkr = Kriteria::where('bobot', 0.00000)->count();
+			$cekbobotskr = SubKriteria::where('bobot', 0.00000)->count();
 			if ($cekbobotkr > 0) {
 				return redirect('bobot')->withWarning(
 					'Lakukan perbandingan kriteria secara konsisten ' .
@@ -157,7 +155,7 @@ class NilaiController extends Controller
 			if ($cekbobotskr > 0) {
 				return redirect('bobot/sub')->withWarning(
 					'Satu atau lebih perbandingan sub kriteria ' .
-					'belum dilakukan secara konsisten'
+					'belum dilakukan secara konsisten.'
 				);
 			}
 			if ($hasil->isEmpty()) {
@@ -169,7 +167,7 @@ class NilaiController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil penilaian:')
-				->withErrors($e->getMessage());
+				->withErrors($e->errorInfo[2]);
 		}
 	}
 	public function update(Request $request)
@@ -208,13 +206,13 @@ class NilaiController extends Controller
 			return response()->json($hasil);
 		} catch (QueryException $e) {
 			Log::error($e);
-			return response()->json(['message' => $e->getMessage()], 500);
+			return response()->json(['message' => $e->errorInfo[2]], 500);
 		}
 	}
 	public function destroy($id)
 	{
 		try {
-			$cek = Nilai::where('alternatif_id', '=', $id);
+			$cek = Nilai::where('alternatif_id', $id);
 			if (!$cek) {
 				return response()->json([
 					'message' => 'Penilaian alternatif tidak ditemukan'
@@ -226,7 +224,7 @@ class NilaiController extends Controller
 			return response()->json(['message' => 'Penilaian alternatif sudah dihapus']);
 		} catch (QueryException $err) {
 			Log::error($err);
-			return response()->json(['message' => $err->getMessage()], 500);
+			return response()->json(['message' => $err->errorInfo[2]], 500);
 		}
 	}
 	public function hasil()
@@ -245,7 +243,7 @@ class NilaiController extends Controller
 			]);
 		} catch (QueryException $e) {
 			Log::error($e);
-			return response()->json(["message" => $e->getMessage()], 500);
+			return response()->json(["message" => $e->errorInfo[2]], 500);
 		}
 	}
 }

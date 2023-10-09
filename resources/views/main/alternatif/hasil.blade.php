@@ -13,7 +13,7 @@
 		</div>
 		<div class="card-body">
 			<div class="table-responsive">
-				<table class="table table-hover text-center">
+				<table class="table table-hover table-striped text-center">
 					<thead>
 						<tr>
 							<th rowspan="2">Alternatif</th>
@@ -29,8 +29,7 @@
 					</thead>
 					<tbody>
 						@foreach ($data['alternatif'] as $alter)
-							@php
-								$anal = $hasil->where('alternatif_id', '=', $alter->id)->all();
+							@php $anal = $hasil->where('alternatif_id', $alter->id)->all();
 							@endphp
 							@if (count($anal) > 0)
 								<tr>
@@ -52,7 +51,7 @@
 		</div>
 		<div class="card-body">
 			<div class="table-responsive">
-				<table class="table table-hover text-center">
+				<table class="table table-hover table-striped text-center">
 					<thead>
 						<tr>
 							<th rowspan="2">Alternatif</th>
@@ -70,7 +69,7 @@
 						@foreach ($data['alternatif'] as $alts)
 							@php
 								$counter = 0;
-								$norm = $hasil->where('alternatif_id', '=', $alts->id)->all();
+								$norm = $hasil->where('alternatif_id', $alts->id)->all();
 							@endphp
 							@if (count($norm) > 0)
 								<tr>
@@ -129,7 +128,7 @@
 				data-bs-toggle="modal" data-bs-target="#RankModal" id="spare-button">
 				<i class="bi bi-bar-chart-line-fill"></i> Lihat Grafik
 			</button>
-			<table class="table table-hover text-center" id="table-hasil"
+			<table class="table table-hover table-striped text-center" id="table-hasil"
 				style="width: 100%">
 				<thead class="text-center">
 					<tr>
@@ -148,7 +147,7 @@
 				<tbody>
 					@foreach ($data['alternatif'] as $alts)
 						@php
-							$rank = $hasil->where('alternatif_id', '=', $alts->id)->all();
+							$rank = $hasil->where('alternatif_id', $alts->id)->all();
 							$jml = 0;
 						@endphp
 						@if (count($rank) > 0)
@@ -162,8 +161,10 @@
 										@endphp
 									</td>
 								@endforeach
-								@php($saw->simpanHasil($alts->id, $jml))
-								<td>{{ $jml }}</td>
+								@php
+									$saw->simpanHasil($alts->id, $jml);
+									echo "<td>$jml</td>";
+								@endphp
 							</tr>
 						@endif
 					@endforeach

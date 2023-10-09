@@ -3,7 +3,8 @@
 @section('subtitle', 'Beranda')
 @section('page-desc')
 	@auth Hai, {{ auth()->user()->name }}
-	@else Silahkan login untuk menggunakan Sistem Pendukung Keputusan @endauth
+	@else
+	Silahkan login untuk menggunakan Sistem Pendukung Keputusan @endauth
 @endsection
 @section('content')
 	<div class="card">
@@ -18,7 +19,7 @@
 			<p>Pembobotan Kriteria dan Sub Kriteria menggunakan metode AHP,
 				sedangkan pembobotan Alternatif menggunakan metode SAW.</p>
 			<p>Bobot Kriteria dan Sub Kriteria didapat dengan cara
-				melakukan perbandingan secara konsisten (Nilai CR <=10%).</p>
+				melakukan perbandingan secara konsisten (Nilai CR <=10%).< /p>
 		</div>
 	</div>
 	@auth

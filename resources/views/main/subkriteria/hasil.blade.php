@@ -14,22 +14,26 @@
 		</div>
 		<div class="card-body">
 			<div class="table-responsive">
-				<table class="table table-hover text-center">
+				<table class="table table-hover table-striped text-center">
 					<thead>
 						<tr>
 							<th>Sub Kriteria</th>
 							@foreach ($data['subkriteria'] as $kr)
-								<th>{{ $kr->name }}</th>
+								<th data-bs-toggle="tooltip" title="{{ $kr->desc }}">
+									{{ $kr->name }}
+								</th>
 							@endforeach
 						</tr>
 					</thead>
 					<tbody>
 						@foreach ($data['subkriteria'] as $kr)
 							<tr>
-								<th>{{ $kr->name }}</th>
+								<th data-bs-toggle="tooltip" title="{{ $kr->desc }}">
+									{{ $kr->name }}
+								</th>
 								@foreach ($data['matriks_awal'] as $ma)
 									@if ($ma['kode_kriteria'] === $kr->idsubkriteria)
-										<td>{{ $ma['nilai'] }}</td>
+										<td>{!! $ma['nilai'] !!}</td>
 									@endif
 								@endforeach
 							</tr>
@@ -45,19 +49,23 @@
 		</div>
 		<div class="card-body">
 			<div class="table-responsive">
-				<table class="table table-hover text-center">
+				<table class="table table-hover table-striped text-center">
 					<thead>
 						<tr>
 							<th>Sub Kriteria</th>
 							@foreach ($data['subkriteria'] as $kr)
-								<th>{{ $kr->name }}</th>
+								<th data-bs-toggle="tooltip" title="{{ $kr->desc }}">
+									{{ $kr->name }}
+								</th>
 							@endforeach
 						</tr>
 					</thead>
 					<tbody>
 						@foreach ($data['subkriteria'] as $kr)
 							<tr>
-								<th>{{ $kr->name }}</th>
+								<th data-bs-toggle="tooltip" title="{{ $kr->desc }}">
+									{{ $kr->name }}
+								</th>
 								@foreach ($data['matriks_perbandingan'] as $mp)
 									@if ($mp['kode_kriteria'] === $kr->idsubkriteria)
 										<td>{{ $mp['nilai'] }}</td>
@@ -82,12 +90,14 @@
 		</div>
 		<div class="card-body">
 			<div class="table-responsive">
-				<table class="table table-hover text-center">
+				<table class="table table-hover table-striped text-center">
 					<thead>
 						<tr>
 							<th>Sub Kriteria</th>
 							@foreach ($data['subkriteria'] as $kr)
-								<th>{{ $kr->name }}</th>
+								<th data-bs-toggle="tooltip" title="{{ $kr->desc }}">
+									{{ $kr->name }}
+								</th>
 							@endforeach
 							<th>Jumlah Baris</th>
 							<th>Eigen</th>
@@ -96,7 +106,9 @@
 					<tbody>
 						@foreach ($data['subkriteria'] as $kr)
 							<tr>
-								<th>{{ $kr->name }}</th>
+								<th data-bs-toggle="tooltip" title="{{ $kr->desc }}">
+									{{ $kr->name }}
+								</th>
 								@foreach ($data['matriks_normalisasi'] as $mn)
 									@if ($mn['kode_kriteria'] === $kr->idsubkriteria)
 										<td>{{ $mn['nilai'] }}</td>
@@ -143,26 +155,31 @@
 						<td>
 							{{ $data['result'] }}
 							@if (is_numeric($data['result']))
-								({{ $data['result'] * 100 }}%)
+								@php
+									echo '(' . round($data['result'] * 100, 2) . '%)';
+									$consistent = $data['result'] <= 0.1;
+								@endphp
+							@else
+								@php($consistent = true)
 							@endif
 						</td>
 					</tr>
 					<tr>
 						<td>Hasil Konsistensi</td>
-						<td>@php($consistent=true)
-							@if (!is_numeric($data['result']))
-								<span class="text-warning" data-bs-toggle="tooltip"
-									data-bs-title="Minimal 3 sub kriteria untuk melakukan pengecekan hasil Konsistensi">
+						<td>
+							<span @class([
+								'text-warning' => !is_numeric($data['result']),
+								'text-danger' => !$consistent,
+								'text-success' => is_numeric($data['result']) && $data['result'] <= 0.1,
+							])>
+								@if (!is_numeric($data['result']))
 									<b>Tidak bisa dievaluasi</b>
-								</span>
-							@elseif ($data['result'] <= 0.1)
-								<span class="text-success"><b>Konsisten</b></span>
-							@else
-							@php($consistent=false)
-								<span class="text-danger" data-bs-toggle="tooltip"
-									data-bs-title="Nilai CR maksimal 10%"><b>Tidak Konsisten</b>,
-									mohon untuk menginput ulang perbandingan!</span>
-							@endif
+								@elseif ($data['result'] <= 0.1)
+									<b>Konsisten</b>
+								@else
+									<b>Tidak Konsisten</b>, mohon untuk menginput ulang perbandingan!
+								@endif
+							</span>
 						</td>
 					</tr>
 				</table>
@@ -174,7 +191,7 @@
 						<a href="{{ route('bobotsubkriteria.pick') }}" class="btn btn-secondary">
 							<i class="bi bi-arrow-left"></i> Kembali
 						</a>
-						<a href="{{ url('/bobot/sub/reset/' . $kriteria_id) }}"
+						<a href="{{ route('bobotsubkriteria.reset', $kriteria_id) }}"
 							class="btn btn-warning" id="reset-button">
 							<i class="bi bi-arrow-counterclockwise"></i> Reset
 						</a>
@@ -183,10 +200,11 @@
 								<i class="bi bi-arrow-right"></i> Lanjut
 							</a>
 						@elseif(!$consistent)
-							<button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#inconsistentModal">?</button>
+							<button type="button" class="btn btn-info" data-bs-toggle="modal"
+								data-bs-target="#inconsistentModal">?</button>
 						@endif
 					</div>
-					<form action="{{ url('/bobot/sub/reset/' . $kriteria_id) }}"
+					<form action="{{ route('bobotsubkriteria.reset', $kriteria_id) }}"
 						id="reset-subkriteria" method="POST">
 						@csrf
 						@method('DELETE')
