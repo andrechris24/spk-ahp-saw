@@ -67,16 +67,16 @@ class SubKriteriaCompController extends Controller
 				for ($b = $a; $b < $jmlsubkriteria; $b++) {
 					$array[$counter]["baris"] = $subkriteria[$a]->name;
 					$array[$counter]["kolom"] = $subkriteria[$b]->name;
-					$value[$counter]=SubKriteriaComp::select('nilai')
-					->where('subkriteria1',$subkriteria[$a]->id)
-					->where('subkriteria2',$subkriteria[$b]->id)->first();
+					$value[$counter] = SubKriteriaComp::select('nilai')
+						->where('subkriteria1', $subkriteria[$a]->id)
+						->where('subkriteria2', $subkriteria[$b]->id)->first();
 					$counter++;
 				}
 			}
 			$cek = SubKriteriaComp::where('idkriteria', $idkriteria)->count();
 			return view(
 				'main.subkriteria.comp',
-				compact('array', 'cek', 'jmlsubkriteria','value')
+				compact('array', 'cek', 'jmlsubkriteria', 'value')
 			)->with(['kriteria_id' => $idkriteria]);
 		} catch (ModelNotFoundException) {
 			return redirect('/bobot/sub')
@@ -128,10 +128,10 @@ class SubKriteriaCompController extends Controller
 					if ($hk->subkriteria2 !== $hk->subkriteria1) {
 						if ($hk->nilai < 0) {
 							$nilai = round(abs($hk->nilai / 1), 5);
-							$nilai2 = "<sup>".abs($hk->nilai) . "</sup>/<sub>1</sub>";
+							$nilai2 = "<sup>" . abs($hk->nilai) . "</sup>/<sub>1</sub>";
 						} else {
 							$nilai = round(abs(1 / $hk->nilai), 5);
-							$nilai2 = "<sup>1</sup>/<sub>" . abs($hk->nilai)."</sub>";
+							$nilai2 = "<sup>1</sup>/<sub>" . abs($hk->nilai) . "</sub>";
 						}
 						$matriks_perbandingan[$a] = [
 							"nilai" => $nilai,
@@ -148,13 +148,13 @@ class SubKriteriaCompController extends Controller
 				foreach ($nilaiPerbandingan as $hb) {
 					if ($hb->nilai < 0) {
 						$nilai = round(abs(1 / $hb->nilai), 5);
-						$nilai2 = "<sup>1</sup>/<sub>" . abs($hb->nilai)."</sub>";
+						$nilai2 = "<sup>1</sup>/<sub>" . abs($hb->nilai) . "</sub>";
 					} else {
 						if ($hb->nilai > 1)
 							$nilai = round(abs($hb->nilai / 1), 5);
 						else
 							$nilai = round(abs($hb->nilai), 5);
-						$nilai2 = "<sup>".abs($hb->nilai) . "</sup>/<sub>1</sub>";
+						$nilai2 = "<sup>" . abs($hb->nilai) . "</sup>/<sub>1</sub>";
 					}
 					$matriks_perbandingan[$a] = [
 						"nilai" => $nilai,
@@ -285,10 +285,10 @@ class SubKriteriaCompController extends Controller
 				->with(['kriteria_id' => $id]);
 		} catch (QueryException $e) {
 			Log::error($e);
-			return redirect('/bobot/sub/comp')->withError(
+			return back()->withError(
 				'Gagal memuat hasil perbandingan sub kriteria ' .
 				$this->nama_kriteria($id) . ':'
-			)->withErrors($e->errorInfo[2])->with(['kriteria_id' => $id]);
+			)->withErrors($e->errorInfo[2])->withInput()->with(['kriteria_id' => $id]);
 		}
 	}
 	public function destroy($id)

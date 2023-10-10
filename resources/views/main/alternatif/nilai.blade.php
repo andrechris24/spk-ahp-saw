@@ -83,7 +83,8 @@
 				data-bs-target="#NilaiAlterModal" id="spare-button">
 				<i class="bi bi-plus-lg me-0 me-sm-1"></i> Tambah Nilai Alternatif
 			</button>
-			<table class="table table-hover table-striped" id="table-nilaialt" style="width: 100%">
+			<table class="table table-hover table-striped" id="table-nilaialt"
+				style="width: 100%">
 				<thead>
 					<tr>
 						<th>Nama Alternatif</th>

@@ -58,7 +58,7 @@
 															<div class="input-group mb-3">
 																<input type="number" name="skala[{{ $loop->index }}]"
 																	min="1" max="9" class="form-control text-center"
-																	value="{{ old('skala.' . $loop->index)??$value[$loop->index]['nilai']??1 }}"
+																	value="{{ old('skala.' . $loop->index) ?? ($value[$loop->index]['nilai'] ?? 1) }}"
 																	required>
 															</div>
 														</td>

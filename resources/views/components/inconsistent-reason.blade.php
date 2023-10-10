@@ -1,5 +1,5 @@
-<div class="modal fade text-left" id="inconsistentModal" tabindex="-1" role="dialog"
-	aria-labelledby="inconsistentReason" aria-hidden="true">
+<div class="modal fade text-left" id="inconsistentModal" tabindex="-1"
+	role="dialog" aria-labelledby="inconsistentReason" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
 		role="document">
 		<div class="modal-content">
@@ -19,9 +19,14 @@
 					<li>Kriteria C1 : 5 kali lebih penting C3</li>
 					<li>Kriteria C3 : 9 kali lebih penting C2</li>
 				</ul>
-				<p>Maka pembobotan tidak konsisten karena C3 lebih penting dibanding C2, sedangkan dalam perbandingan C1 dengan C2 dan C3, C2 lebih penting dibanding C3.
-					<b>Ketidak konsistenan tersebut akan menaikkan nilai Consistency Ratio (CR).</b>
-					Hasil bobot perbandingan berpasangan antar kriteria dianggap tidak konsisten apabila nilai CR >= 0,1.</p>
+				<p>Maka pembobotan tidak konsisten karena C3 lebih penting dibanding C2,
+					sedangkan dalam perbandingan C1 dengan C2 dan C3, C2 lebih penting
+					dibanding C3.
+					<b>Ketidak konsistenan tersebut akan menaikkan nilai Consistency Ratio
+						(CR).</b>
+					Hasil bobot perbandingan berpasangan antar kriteria dianggap tidak
+					konsisten apabila nilai CR >= 0,1.
+				</p>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-light-secondary"

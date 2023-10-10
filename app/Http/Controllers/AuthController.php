@@ -36,6 +36,7 @@ class AuthController extends Controller
 			if (Auth::attempt($credentials, $request->get('remember'))) {
 				$user = User::firstWhere('email', $request->email);
 				Auth::login($user, $request->get('remember'));
+				$request->session()->put('avatar-bg', User::$avatarbg[random_int(0, 9)]);
 				$request->session()->regenerate();
 				return redirect('/');
 			}
@@ -81,9 +82,7 @@ class AuthController extends Controller
 			]);
 			$credentials['password'] = Hash::make($credentials['password']);
 			$user = User::create($credentials);
-			Auth::login($user);
-			$request->session()->regenerate();
-			return redirect('/')
+			return redirect('/login')
 				->withSuccess("Registrasi akun berhasil, selamat datang");
 		} catch (QueryException $e) {
 			Log::error($e);

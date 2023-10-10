@@ -75,11 +75,11 @@ class SubKriteriaController extends Controller
 			return response()->json($sub);
 		} catch (QueryException $e) {
 			Log::error($e);
-			return response()->json(['message' => $err->errorInfo[2]], 500);
+			return response()->json(['message' => $e->errorInfo[2]], 500);
 		} catch (ModelNotFoundException $err) {
 			return response()->json([
 				"message" => 'Data Sub Kriteria tidak ditemukan',
-				'exception' => $e->getMessage()
+				'exception' => $err->getMessage()
 			], 404);
 		}
 	}

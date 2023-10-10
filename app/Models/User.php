@@ -43,9 +43,9 @@ class User extends Authenticatable
 	];
 	public static array $loginrules = [
 		'email' => 'bail|required|email|exists:users',
-		'password' => 'baill|required|between:8,20'
+		'password' => 'bail|required|between:8,20'
 	];
-	public static array $loginmsg=[
+	public static array $loginmsg = [
 		'email.required' => 'Email harus diisi',
 		'email.email' => 'Format Email salah',
 		'email.exists' => 'Akun tidak ditemukan',
@@ -62,4 +62,16 @@ class User extends Authenticatable
 		'password.confirmed' => 'Password konfirmasi salah'
 	];
 	public static array $delakunrule = ['del_password' => 'required'];
+	public static array $avatarbg=[
+		0=>'bg-primary',
+		1=>'bg-secondary',
+		2=>'bg-success',
+		3=>'bg-danger',
+		4=>'bg-warning text-black',
+		5=>'bg-info text-black',
+		6=>'bg-light text-black',
+		7=>'bg-dark',
+		8=>'bg-black',
+		9=>'bg-white text-black'
+	];
 }

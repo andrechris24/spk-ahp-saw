@@ -33,19 +33,19 @@ class KriteriaCompController extends Controller
 	{
 		$crit = Kriteria::get();
 		$jmlcrit = count($crit);
-		$array =$value= [];
+		$array = $value = [];
 		$counter = 0;
 		for ($a = 0; $a < $jmlcrit; $a++) {
 			for ($b = $a; $b < $jmlcrit; $b++) {
 				$array[$counter]["baris"] = $crit[$a]->name;
 				$array[$counter]["kolom"] = $crit[$b]->name;
-				$value[$counter]=KriteriaComp::select('nilai')->where('kriteria1',$crit[$a]->id)
-				->where('kriteria2',$crit[$b]->id)->first();
+				$value[$counter] = KriteriaComp::select('nilai')->where('kriteria1', $crit[$a]->id)
+					->where('kriteria2', $crit[$b]->id)->first();
 				$counter++;
 			}
 		}
 		$cek = KriteriaComp::count();
-		return view('main.kriteria.comp', compact('array', 'cek', 'jmlcrit','value'));
+		return view('main.kriteria.comp', compact('array', 'cek', 'jmlcrit', 'value'));
 	}
 	public function simpan(Request $request)
 	{
@@ -83,10 +83,10 @@ class KriteriaCompController extends Controller
 					if ($hk->kriteria2 !== $hk->kriteria1) {
 						if ($hk->nilai < 0) {
 							$nilai = round(abs($hk->nilai / 1), 5);
-							$nilai2 = "<sup>".abs($hk->nilai) . "</sup>/<sub>1</sub>";
+							$nilai2 = "<sup>" . abs($hk->nilai) . "</sup>/<sub>1</sub>";
 						} else {
 							$nilai = round(abs(1 / $hk->nilai), 5);
-							$nilai2 = "<sup>1</sup>/<sub>" . abs($hk->nilai)."</sub>";
+							$nilai2 = "<sup>1</sup>/<sub>" . abs($hk->nilai) . "</sub>";
 						}
 						$matriks_perbandingan[$a] = [
 							"nilai" => $nilai,
@@ -103,11 +103,13 @@ class KriteriaCompController extends Controller
 				foreach ($nilaiPerbandingan as $hb) {
 					if ($hb->nilai < 0) {
 						$nilai = round(abs(1 / $hb->nilai), 5);
-						$nilai2 = "<sup>1</sup>/<sub>" . abs($hb->nilai)."</sub>";
+						$nilai2 = "<sup>1</sup>/<sub>" . abs($hb->nilai) . "</sub>";
 					} else {
-						if ($hb->nilai > 1) $nilai = round(abs($hb->nilai / 1), 5);
-						else $nilai = round(abs($hb->nilai), 5);
-						$nilai2 = "<sup>".abs($hb->nilai) . "</sup>/<sub>1</sub>";
+						if ($hb->nilai > 1)
+							$nilai = round(abs($hb->nilai / 1), 5);
+						else
+							$nilai = round(abs($hb->nilai), 5);
+						$nilai2 = "<sup>" . abs($hb->nilai) . "</sup>/<sub>1</sub>";
 					}
 					$matriks_perbandingan[$a] = [
 						"nilai" => $nilai,

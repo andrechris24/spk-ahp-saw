@@ -29,7 +29,8 @@
 					</thead>
 					<tbody>
 						@foreach ($data['alternatif'] as $alter)
-							@php $anal = $hasil->where('alternatif_id', $alter->id)->all();
+							@php 
+							$anal = $hasil->where('alternatif_id', $alter->id)->all();
 							@endphp
 							@if (count($anal) > 0)
 								<tr>

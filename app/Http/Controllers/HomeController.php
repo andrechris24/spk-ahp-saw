@@ -83,9 +83,9 @@ class HomeController extends Controller
 			$request->validate(User::$delakunrule);
 			if (!Hash::check($request->del_password, Auth::user()->password))
 				return back()->withError('Gagal hapus akun: Password salah');
+			User::findOrFail($id)->delete();
 			Auth::logout();
 			Session::flush();
-			User::findOrFail($id)->delete();
 			return redirect('/login')->withSuccess(
 				'Akun sudah dihapus. Terima kasih Anda telah menggunakan Sistem Pendukung Keputusan.'
 			);
