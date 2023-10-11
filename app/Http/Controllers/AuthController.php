@@ -36,8 +36,8 @@ class AuthController extends Controller
 			if (Auth::attempt($credentials, $request->get('remember'))) {
 				$user = User::firstWhere('email', $request->email);
 				Auth::login($user, $request->get('remember'));
-				$request->session()->put('avatar-bg', User::$avatarbg[random_int(0, 9)]);
-				$request->session()->regenerate();
+				Session::put('avatar-bg', User::$avatarbg[random_int(0, 8)]);
+				Session::regenerate();
 				return redirect('/');
 			}
 			return back()->withInput()->withErrors(['password' => 'Password salah']);
@@ -49,9 +49,10 @@ class AuthController extends Controller
 	public function logout()
 	{
 		try {
-			User::findOrFail(Auth::user()->id)->update(['remember_token' => null]);
-			Session::flush();
+			User::findOrFail(Auth::id())->update(['remember_token' => null]);
 			Auth::logout();
+			Session::invalidate();
+			Session::regenerateToken();
 			return redirect('/login')->withSuccess('Anda sudah logout.');
 		} catch (ModelNotFoundException $e) {
 			return back()->withErrors($e->getMessage());
@@ -124,7 +125,7 @@ class AuthController extends Controller
 	public function showResetPasswordForm($token)
 	{
 		if (Auth::viaRemember() || Auth::check())
-			return redirect()->intended();
+			return redirect('/');
 		try {
 			$enctoken = DB::table('password_resets')->where('email', $_GET['email'])
 				->first();

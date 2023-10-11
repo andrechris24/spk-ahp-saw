@@ -4,13 +4,13 @@
 @section('page-desc')
 	@auth Hai, {{ auth()->user()->name }}
 	@else
-	Silahkan login untuk menggunakan Sistem Pendukung Keputusan @endauth
+	Silahkan login untuk menggunakan Aplikasi Sistem Pendukung Keputusan @endauth
 @endsection
 @section('content')
 	<div class="card">
 		<div class="card-header">
 			<h4 class="card-title">
-				Selamat datang di Sistem Pendukung Keputusan
+				Selamat datang di Aplikasi Sistem Pendukung Keputusan
 			</h4>
 		</div>
 		<div class="card-body">

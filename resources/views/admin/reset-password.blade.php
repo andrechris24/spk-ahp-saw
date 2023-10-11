@@ -4,6 +4,7 @@
 @section('auth-subtitle',
 	'Selamat datang kembali! Silahkan masukkan password
 	baru untuk melanjutkan.')
+@section('auth-css', asset('assets/compiled/css/auth-forgot-password.css'))
 @section('content')
 	<form action="{{ route('password.update') }}" method="post">@csrf
 		<input type="hidden" name="token" value="{{ $token }}">
@@ -29,7 +30,7 @@
 		</div>
 		<div class="form-group position-relative has-icon-left mb-4">
 			<input type="password" name="password_confirmation" id="confirm-password"
-				placeholder="Confirm Password" maxlength="20" required
+				placeholder="Konfirmasi Password" maxlength="20" required
 				oninput="checkpassword()"
 				class="form-control
 				form-control-xl @error('password_confirmation') is-invalid @enderror " />

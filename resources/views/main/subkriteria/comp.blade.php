@@ -84,7 +84,9 @@
 												class="btn btn-secondary">
 												<i class="bi bi-arrow-left"></i> Kembali
 											</a>
-											<input type="submit" name="submit" class="btn btn-primary">
+											<button type="submit" class="btn btn-primary">
+												<i class="bi bi-save-fill"></i> Simpan
+											</button>
 										</div>
 									</div>
 								</form>

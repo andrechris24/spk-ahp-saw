@@ -1,3 +1,32 @@
+# Deskripsi
+
+<p>Aplikasi ini adalah aplikasi Sistem Pendukung Keputusan metode AHP dan SAW berbasis web dengan sub kriteria. AHP digunakan sebagai penilaian Kriteria & Sub Kriteria dan SAW digunakan sebagai penilaian Alternatif. Komponen yang digunakan:</p>
+
+- Laravel 10
+- PHP 8.2
+- Mazer Dashboard Template (Versi HTML)
+- Font Awesome 5
+- ApexCharts
+- Bootstrap Icons
+- DataTables
+- sweetalert2
+- toastify-js
+
+## Cara Menggunakan
+
+1. Download atau clone aplikasi ini
+2. Masuk ke aplikasi yang sudah didownload atau di-clone.
+3. Buka Command Prompt atau PowerShell, lalu masukkan perintah `composer install`.
+4. Ganti nama `.env.example` menjadi `.env`, lalu atur nama Database pada file .env.
+5. Masukkan perintah `php artisan key:generate`
+6. Masukkan perintah `php artisan migrate --seed`
+7. Masukkan perintah `php artisan serve`, lalu buka <http://localhost:8000/>
+
+### Kredensial
+
+Email: <test@example.com>
+Password: password
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -6,8 +35,6 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
-
-**Read "How to use" section below**
 
 ## About Laravel
 
@@ -67,19 +94,3 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
-## How to use
-
-This Laravel Webpage was made with Laravel 10 and PHP 8.2.
-
-1. Download or clone this repository
-2. Navigate to downloaded repository, then open Terminal window.
-3. Enter `composer install`.
-4. Rename `.env.example` to `.env`, then set appropriate Database name.
-5. Enter `php artisan key:generate`
-6. Enter `php artisan migrate --seed`
-7. Enter `php artisan serve`, then open <http://localhost:8000/>
-
-### Credentials
-
-Email: <test@example.com>
-Password: password

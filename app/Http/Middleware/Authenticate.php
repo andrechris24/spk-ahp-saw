@@ -19,7 +19,7 @@ class Authenticate extends Middleware
 			Session::flash(
 				'warning',
 				'Anda harus login dulu. Jika Anda sebelumnya sudah login, ' .
-				'silahkan login ulang untuk melanjutkan karena sesi Anda sudah habis.'
+				'silahkan login ulang untuk melanjutkan karena sesi aplikasi sudah habis.'
 			);
 			return route('login');
 		}

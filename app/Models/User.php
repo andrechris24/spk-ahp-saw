@@ -62,16 +62,15 @@ class User extends Authenticatable
 		'password.confirmed' => 'Password konfirmasi salah'
 	];
 	public static array $delakunrule = ['del_password' => 'required'];
-	public static array $avatarbg=[
-		0=>'bg-primary',
-		1=>'bg-secondary',
-		2=>'bg-success',
-		3=>'bg-danger',
-		4=>'bg-warning text-black',
-		5=>'bg-info text-black',
-		6=>'bg-light text-black',
-		7=>'bg-dark',
-		8=>'bg-black',
-		9=>'bg-white text-black'
+	public static array $avatarbg = [
+		0 => 'text-bg-primary',
+		1 => 'text-bg-secondary',
+		2 => 'text-bg-success',
+		3 => 'text-bg-danger',
+		4 => 'text-bg-warning',
+		5 => 'text-bg-info',
+		6 => 'text-bg-light',
+		7 => 'text-bg-dark',
+		8 => 'bg-black',
 	];
 }

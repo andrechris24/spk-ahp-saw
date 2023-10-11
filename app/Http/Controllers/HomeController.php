@@ -32,7 +32,7 @@ class HomeController extends Controller
 	}
 	public function updateProfil(Request $request)
 	{
-		$id = Auth::user()->id;
+		$id = Auth::id();
 		try {
 			$request->validate(
 				[
@@ -78,16 +78,17 @@ class HomeController extends Controller
 	}
 	public function delAkun(Request $request)
 	{
-		$id = Auth::user()->id;
+		$id = Auth::id();
 		try {
 			$request->validate(User::$delakunrule);
 			if (!Hash::check($request->del_password, Auth::user()->password))
 				return back()->withError('Gagal hapus akun: Password salah');
 			User::findOrFail($id)->delete();
 			Auth::logout();
-			Session::flush();
-			return redirect('/login')->withSuccess(
-				'Akun sudah dihapus. Terima kasih Anda telah menggunakan Sistem Pendukung Keputusan.'
+			Session::invalidate();
+			Session::regenerateToken();
+			return redirect('/')->withSuccess(
+				'Akun sudah dihapus. Terima kasih Anda telah menggunakan Aplikasi Sistem Pendukung Keputusan.'
 			);
 		} catch (ModelNotFoundException $e) {
 			return back()->withError('Gagal hapus: Akun tidak ditemukan')

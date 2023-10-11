@@ -1,7 +1,8 @@
 @extends('admin.auth')
-@section('title', 'Registrasi')
-@section('auth-title', 'Registrasi')
-@section('auth-subtitle', 'Masukkan data Anda')
+@section('title', 'Daftar')
+@section('auth-title', 'Daftar')
+@section('auth-subtitle', 'Selamat datang! Silahkan masukkan data Anda.')
+@section('auth-css', asset('assets/compiled/css/auth.css'))
 @section('content')
 	<form action="{{ route('register.perform') }}" method="post"
 		enctype="multipart/form-data">
@@ -36,7 +37,7 @@
 			@enderror
 		</div>
 		<div class="form-group position-relative has-icon-left mb-4">
-			<input type="password" placeholder="Confirm Password" maxlength="20"
+			<input type="password" placeholder="Konfirmasi Password" maxlength="20"
 				name="password_confirmation" id="confirm-password"
 				class="form-control form-control-xl @error('password_confirmation') is-invalid @enderror "
 				oninput="checkpassword()" required />
@@ -52,7 +53,7 @@
 	<div class="text-center mt-5 text-lg fs-4">
 		<p class="text-gray-600">
 			Sudah punya akun?
-			<a href="{{ route('login') }}" class="font-bold">Masuk</a>
+			<a href="{{ route('login') }}" class="font-bold">Login</a>
 		</p>
 	</div>
 @endsection

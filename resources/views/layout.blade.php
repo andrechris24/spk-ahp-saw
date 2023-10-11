@@ -206,7 +206,7 @@
 												</p>
 											</div>
 											<div class="user-img d-flex align-items-center">
-												<div class="avatar me-3 {{session('avatar-bg')}}">
+												<div class="avatar me-3 {{ session('avatar-bg') }}">
 													<span
 														class="avatar-content">{{ substr(auth()->user()->name, 0, 1) }}</span>
 												</div>
@@ -263,7 +263,7 @@
 						</div>
 						<div class="float-end">
 							<p>
-								Admin template by
+								Template dibuat oleh
 								<a href="https://ahmadsaugi.com">Saugi Zuramai</a>
 							</p>
 						</div>

@@ -69,7 +69,9 @@
 										</tbody>
 									</table>
 									<div class="col-12 d-flex justify-content-end">
-										<input type="submit" name="submit" class="btn btn-primary">
+										<button type="submit" class="btn btn-primary">
+											<i class="bi bi-save-fill"></i> Simpan
+										</button>
 									</div>
 								</form>
 							</div>

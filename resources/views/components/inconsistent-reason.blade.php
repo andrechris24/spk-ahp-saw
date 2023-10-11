@@ -25,7 +25,7 @@
 					<b>Ketidak konsistenan tersebut akan menaikkan nilai Consistency Ratio
 						(CR).</b>
 					Hasil bobot perbandingan berpasangan antar kriteria dianggap tidak
-					konsisten apabila nilai CR >= 0,1.
+					konsisten apabila nilai CR > 0,1.
 				</p>
 			</div>
 			<div class="modal-footer">

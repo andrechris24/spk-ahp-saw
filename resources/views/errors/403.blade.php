@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>403 Forbidden | Sistem Pendukung Keputusan metode AHP & SAW</title>
 	<link rel="stylesheet" href="{{ asset('assets/compiled/css/app.css') }}" />
-	<link rel="stylesheet" href="{{ asset('assets/compiled/css/error.css') }}" />
+	<link rel="stylesheet" href="{{ asset('assets/compiled/css/error-403.css') }}" />
 	<link rel="shortcut icon" href="{{ asset('assets/compiled/svg/favicon.svg') }}"
 		type="image/x-icon" />
 	<link rel="shortcut icon"
