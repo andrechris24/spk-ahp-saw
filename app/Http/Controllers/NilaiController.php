@@ -78,10 +78,9 @@ class NilaiController extends Controller
 		$nilaialt = Nilai::leftJoin(
 			'alternatif',
 			'alternatif.id',
-			'=',
 			'nilai.alternatif_id'
-		)->leftJoin('kriteria', 'kriteria.id', '=', 'nilai.kriteria_id')
-			->leftJoin('subkriteria', 'subkriteria.id', '=', 'nilai.subkriteria_id')
+		)->leftJoin('kriteria', 'kriteria.id', 'nilai.kriteria_id')
+			->leftJoin('subkriteria', 'subkriteria.id', 'nilai.subkriteria_id')
 			->get();
 		return view(
 			'main.alternatif.nilai',

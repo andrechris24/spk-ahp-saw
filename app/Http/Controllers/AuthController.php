@@ -28,11 +28,7 @@ class AuthController extends Controller
 	public function login(Request $request)
 	{
 		try {
-			$credentials = $request->validate(User::$loginrules, [
-				'email.required' => 'Email harus diisi',
-				'email.email' => 'Format Email salah',
-				'email.exists' => 'Akun dengan Email ' . $request->email . ' tidak ditemukan',
-			]);
+			$credentials = $request->validate(User::$loginrules, User::$loginmsg);
 			if (Auth::attempt($credentials, $request->get('remember'))) {
 				$user = User::firstWhere('email', $request->email);
 				Auth::login($user, $request->get('remember'));
@@ -100,11 +96,12 @@ class AuthController extends Controller
 	public function submitForgetPasswordForm(Request $request)
 	{
 		try {
-			$request->validate(['email' => 'bail|required|email|exists:users']);
+			$request->validate(User::$forgetrule, User::$forgetmsg);
 			$status = Password::sendResetLink($request->only('email'));
-			if ($status === Password::RESET_LINK_SENT)
-				return back()->withSuccess('Link reset password sudah dikirim.');
-			else if ($status === Password::RESET_THROTTLED) {
+			if ($status === Password::RESET_LINK_SENT) {
+				return back()->withSuccess('Link reset password sudah dikirim. ' .
+					'Cek folder Spam jika belum masuk.');
+			} else if ($status === Password::RESET_THROTTLED) {
 				return back()->withInput()
 					->withError('Tunggu sebentar sebelum meminta reset password lagi.');
 			}
@@ -116,8 +113,7 @@ class AuthController extends Controller
 		} catch (QueryException $sql) {
 			Log::error($sql);
 			return back()->withInput()
-				->withError("Gagal mengirim link reset password: " .
-					$sql->errorInfo[2]);
+				->withError("Gagal mengirim link reset password: " . $sql->errorInfo[2]);
 		}
 		return back()
 			->withError('Gagal mengirim link reset password: Kesalahan tidak diketahui');
@@ -131,7 +127,7 @@ class AuthController extends Controller
 				->first();
 			if ($enctoken === null) {
 				return redirect('/forget-password')->withError(
-					'Link reset password sudah kedaluarsa. ' .
+					'Token tidak valid atau Link sudah kedaluarsa. ' .
 					'Silahkan minta reset password lagi.'
 				);
 			}

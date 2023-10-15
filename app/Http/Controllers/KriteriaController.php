@@ -26,13 +26,13 @@ class KriteriaController extends Controller
 		$request->validate(Kriteria::$rules, Kriteria::$message);
 		try {
 			Kriteria::create($request->all());
-			$querytype = "diinput. ";
+			$querytype = "Kriteria sudah diinput. ";
 			if (KriteriaComp::exists()) {
 				KriteriaComp::truncate();
 				Kriteria::where('bobot', '<>', 0.00000)->update(['bobot' => 0.00000]);
 				$querytype .= "Silahkan input ulang perbandingan kriteria.";
 			}
-			return response()->json(['message' => 'Kriteria sudah ' . $querytype]);
+			return response()->json(['message' => $querytype]);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->errorInfo[2]], 500);
@@ -76,14 +76,13 @@ class KriteriaController extends Controller
 	{
 		try {
 			Kriteria::findOrFail($id)->delete();
+			$message = 'Kriteria sudah dihapus. ';
 			if (KriteriaComp::exists()) {
 				KriteriaComp::truncate();
 				Kriteria::where('bobot', '<>', 0.00000)->update(['bobot' => 0.00000]);
-				return response()->json([
-					'message' => 'Kriteria sudah dihapus. Silahkan input ulang perbandingan.'
-				]);
+				$message .= 'Silahkan input ulang perbandingan Kriteria.';
 			}
-			return response()->json(['message' => 'Kriteria sudah dihapus']);
+			return response()->json(['message' => $message]);
 		} catch (ModelNotFoundException $e) {
 			return response()->json([
 				'message' => 'Kriteria tidak ditemukan',

@@ -16,8 +16,10 @@ class KriteriaCompController extends Controller
 			"kriteria",
 			"kriteria_banding.kriteria1",
 			"kriteria.id"
-		)->select("kriteria_banding.kriteria1 as idkriteria", "kriteria.name")
-			->groupBy("kriteria1", 'name')->get();
+		)->select(
+				"kriteria_banding.kriteria1 as idkriteria",
+				"kriteria.name"
+			)->groupBy("kriteria1", 'name')->get();
 	}
 	private function getPerbandinganByKriteria1($kriteria1)
 	{
@@ -39,7 +41,8 @@ class KriteriaCompController extends Controller
 			for ($b = $a; $b < $jmlcrit; $b++) {
 				$array[$counter]["baris"] = $crit[$a]->name;
 				$array[$counter]["kolom"] = $crit[$b]->name;
-				$value[$counter] = KriteriaComp::select('nilai')->where('kriteria1', $crit[$a]->id)
+				$value[$counter] = KriteriaComp::select('nilai')
+					->where('kriteria1', $crit[$a]->id)
 					->where('kriteria2', $crit[$b]->id)->first();
 				$counter++;
 			}
@@ -90,11 +93,11 @@ class KriteriaCompController extends Controller
 						}
 						$matriks_perbandingan[$a] = [
 							"nilai" => $nilai,
-							"kode_kriteria" => $kode_kriteria,
+							"kode_kriteria" => $kode_kriteria
 						];
 						$matriks_awal[$a] = [
 							"nilai" => $nilai2,
-							"kode_kriteria" => $kode_kriteria,
+							"kode_kriteria" => $kode_kriteria
 						];
 						$a++;
 					}
@@ -113,11 +116,11 @@ class KriteriaCompController extends Controller
 					}
 					$matriks_perbandingan[$a] = [
 						"nilai" => $nilai,
-						"kode_kriteria" => $kode_kriteria,
+						"kode_kriteria" => $kode_kriteria
 					];
 					$matriks_awal[$a] = [
 						"nilai" => $nilai2,
-						"kode_kriteria" => $kode_kriteria,
+						"kode_kriteria" => $kode_kriteria
 					];
 					$a++;
 				}
@@ -148,7 +151,7 @@ class KriteriaCompController extends Controller
 							abs($matriks_perbandingan[$a]['nilai'] / $array_jumlah[$m]),
 							5
 						),
-						"kode_kriteria" => $kriteria[$i]->idkriteria,
+						"kode_kriteria" => $kriteria[$i]->idkriteria
 					];
 					$a++;
 				}

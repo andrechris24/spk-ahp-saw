@@ -18,13 +18,15 @@ class HomeController extends Controller
 {
 	public function index()
 	{
+		$jml = [];
 		if (Auth::check()) {
-			$jml['kriteria'] = Kriteria::count();
-			$jml['subkriteria'] = SubKriteria::count();
-			$jml['alternatif'] = Alternatif::count();
-			return view('main.index', compact('jml'));
+			$jml = [
+				'kriteria' => Kriteria::count(),
+				'subkriteria' => SubKriteria::count(),
+				'alternatif' => Alternatif::count()
+			];
 		}
-		return view('main.index');
+		return view('main.index', compact('jml'));
 	}
 	public function profile()
 	{
@@ -88,7 +90,8 @@ class HomeController extends Controller
 			Session::invalidate();
 			Session::regenerateToken();
 			return redirect('/')->withSuccess(
-				'Akun sudah dihapus. Terima kasih Anda telah menggunakan Aplikasi Sistem Pendukung Keputusan.'
+				'Akun sudah dihapus. ' .
+				'Terima kasih Anda telah menggunakan Aplikasi Sistem Pendukung Keputusan.'
 			);
 		} catch (ModelNotFoundException $e) {
 			return back()->withError('Gagal hapus: Akun tidak ditemukan')

@@ -56,7 +56,10 @@ class SubKriteriaCompController extends Controller
 	public function create(Request $request)
 	{
 		try {
-			$request->validate(SubKriteriaComp::$selectrules);
+			$request->validate(
+				SubKriteriaComp::$selectrules,
+				SubKriteriaComp::$selectmessage
+			);
 			$idkriteria = $request->kriteria_id;
 			Kriteria::findOrFail($idkriteria);
 			$subkriteria = SubKriteria::where('kriteria_id', $idkriteria)->get();
@@ -77,7 +80,8 @@ class SubKriteriaCompController extends Controller
 			return view(
 				'main.subkriteria.comp',
 				compact('array', 'cek', 'jmlsubkriteria', 'value')
-			)->with(['kriteria_id' => $idkriteria]);
+			)
+				->with(['kriteria_id' => $idkriteria]);
 		} catch (ModelNotFoundException) {
 			return redirect('/bobot/sub')
 				->withErrors(['kriteria_id' => 'Kriteria tidak ditemukan']);
@@ -135,11 +139,11 @@ class SubKriteriaCompController extends Controller
 						}
 						$matriks_perbandingan[$a] = [
 							"nilai" => $nilai,
-							"kode_kriteria" => $kode_kriteria,
+							"kode_kriteria" => $kode_kriteria
 						];
 						$matriks_awal[$a] = [
 							"nilai" => $nilai2,
-							"kode_kriteria" => $kode_kriteria,
+							"kode_kriteria" => $kode_kriteria
 						];
 						$a++;
 					}
@@ -158,11 +162,11 @@ class SubKriteriaCompController extends Controller
 					}
 					$matriks_perbandingan[$a] = [
 						"nilai" => $nilai,
-						"kode_kriteria" => $kode_kriteria,
+						"kode_kriteria" => $kode_kriteria
 					];
 					$matriks_awal[$a] = [
 						"nilai" => $nilai2,
-						"kode_kriteria" => $kode_kriteria,
+						"kode_kriteria" => $kode_kriteria
 					];
 					$a++;
 				}
@@ -172,7 +176,7 @@ class SubKriteriaCompController extends Controller
 		for ($j = 0; $j < count($subkriteria); $j++) {
 			$jumlah = 0;
 			for ($i = $j; $i < count($matriks_perbandingan); $i += count($subkriteria)) {
-				$jumlah = $jumlah + $matriks_perbandingan[$i]["nilai"];
+				$jumlah += $matriks_perbandingan[$i]["nilai"];
 			}
 			$array_jumlah[$j] = round(abs($jumlah), 5);
 		}
@@ -193,7 +197,7 @@ class SubKriteriaCompController extends Controller
 							abs($matriks_perbandingan[$a]['nilai'] / $array_jumlah[$m]),
 							5
 						),
-						"kode_kriteria" => $subkriteria[$i]->idsubkriteria,
+						"kode_kriteria" => $subkriteria[$i]->idsubkriteria
 					];
 					$a++;
 				}
@@ -212,7 +216,7 @@ class SubKriteriaCompController extends Controller
 				$array_BobotPrioritas[$j] = [
 					"jumlah_baris" => round(abs($jumlah_baris), 5),
 					"bobot" => round(abs($jumlah_baris / $total_jumlah_baris), 5),
-					"kode_kriteria" => $subkriteria[$j]->idsubkriteria,
+					"kode_kriteria" => $subkriteria[$j]->idsubkriteria
 				];
 				$j++;
 				$jumlah_baris = $index_kriteria = 0;
@@ -234,7 +238,7 @@ class SubKriteriaCompController extends Controller
 				$array_CM[$j] = [
 					"cm" => round(abs($cm / $array_BobotPrioritas[$j]["bobot"]), 5),
 					"kode_kriteria" => $subkriteria[$j]->idsubkriteria,
-					"kali_matriks" => $cm,
+					"kali_matriks" => $cm
 				];
 				$j++;
 				$cm = $indexbobot = 0;
@@ -278,17 +282,15 @@ class SubKriteriaCompController extends Controller
 				"cm" => $array_CM,
 				"ci" => $total_ci,
 				"result" => $result,
-				"total_jumlah_baris" => $total_jumlah_baris,
 				"bobot_sub_kosong" => $subbobotkosong
 			];
 			return view('main.subkriteria.hasil', compact('data'))
 				->with(['kriteria_id' => $id]);
 		} catch (QueryException $e) {
 			Log::error($e);
-			return back()->withError(
-				'Gagal memuat hasil perbandingan sub kriteria ' .
-				$this->nama_kriteria($id) . ':'
-			)->withErrors($e->errorInfo[2])->withInput()->with(['kriteria_id' => $id]);
+			return back()->withError('Gagal memuat hasil perbandingan sub kriteria ' .
+				$this->nama_kriteria($id) . ':')->withErrors($e->errorInfo[2])
+				->withInput()->with(['kriteria_id' => $id]);
 		}
 	}
 	public function destroy($id)

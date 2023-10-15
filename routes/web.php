@@ -102,7 +102,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			Route::get('edit/{id}', 'AlternatifController@edit')
 				->name('alternatif.edit');
 			Route::post('store', 'AlternatifController@store')->name('alternatif.store');
-			Route::post('update', 'AlternatifController@update')->name('alternatif.update');
+			Route::post('update', 'AlternatifController@update')
+				->name('alternatif.update');
 			Route::delete('del/{id}', 'AlternatifController@hapus')
 				->name('alternatif.delete');
 			Route::get('hasil', 'NilaiController@show')->name('nilai.show');

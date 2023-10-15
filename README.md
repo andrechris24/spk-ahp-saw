@@ -2,15 +2,15 @@
 
 <p>Aplikasi ini adalah aplikasi Sistem Pendukung Keputusan metode AHP dan SAW berbasis web dengan sub kriteria. AHP digunakan sebagai penilaian Kriteria & Sub Kriteria dan SAW digunakan sebagai penilaian Alternatif. Komponen yang digunakan:</p>
 
-- Laravel 10
-- PHP 8.2
-- Mazer Dashboard Template (Versi HTML)
-- Font Awesome 5
-- ApexCharts
-- Bootstrap Icons
-- DataTables
-- sweetalert2
-- toastify-js
+-   [Laravel 10](https://laravel.com/)
+-   [PHP 8.2](https://www.php.net/)
+-   [Mazer Dashboard Template](https://github.com/zuramai/mazer)
+-   [Font Awesome 5](https://fontawesome.com/)
+-   [ApexCharts](https://apexcharts.com/)
+-   [Bootstrap Icons](https://icons.getbootstrap.com)
+-   [DataTables](https://datatables.net/)
+-   [sweetalert2](https://sweetalert2.github.io)
+-   [toastify-js](https://apvarun.github.io/toastify-js/)
 
 ## Cara Menggunakan
 
@@ -24,8 +24,10 @@
 
 ### Kredensial
 
-Email: <test@example.com>
+Email: <test@example.com><br>
 Password: password
+
+---
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
@@ -93,4 +95,3 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
