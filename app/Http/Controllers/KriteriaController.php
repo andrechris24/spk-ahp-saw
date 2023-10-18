@@ -41,15 +41,11 @@ class KriteriaController extends Controller
 	public function update(Request $request)
 	{
 		$request->validate(Kriteria::$rules, Kriteria::$message);
-		$kritID = $request->id;
+		$req=$request->all();
 		try {
 			Kriteria::updateOrCreate(
-				['id' => $kritID],
-				[
-					'name' => $request->name,
-					'type' => $request->type,
-					'desc' => $request->desc
-				]
+				['id' => $req['id']],
+				['name' => $req['name'], 'type' => $req['type'], 'desc' => $req['desc']]
 			);
 			return response()->json(['message' => 'Kriteria sudah diupdate.']);
 		} catch (QueryException $e) {

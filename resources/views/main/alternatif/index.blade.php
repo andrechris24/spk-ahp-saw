@@ -16,7 +16,7 @@
 				</div>
 				<div class="modal-body">
 					<form method="POST" enctype="multipart/form-data" id="AlterForm">
-						@csrf
+						{{-- @csrf --}}
 						<input type="hidden" name="id" id="alter-id">
 						<label for="alter-name">Nama Alternatif</label>
 						<div class="form-group">
@@ -122,12 +122,12 @@
 						},
 						{
 							extend: 'collection',
-							text: '<i class="bi bi-download me-0 me-sm-1"></i>Ekspor',
+							text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
 							className: 'btn btn-primary dropdown-toggle',
 							buttons: [{
 									extend: 'print',
 									title: 'Alternatif',
-									text: '<i class="bi bi-printer me-2"></i>Print',
+									text: '<i class="bi bi-printer me-2"></i> Print',
 									className: 'dropdown-item',
 									exportOptions: {
 										columns: [1]
@@ -136,7 +136,7 @@
 								{
 									extend: 'csv',
 									title: 'Alternatif',
-									text: '<i class="bi bi-file-text me-2"></i>CSV',
+									text: '<i class="bi bi-file-text me-2"></i> CSV',
 									className: 'dropdown-item',
 									exportOptions: {
 										columns: [1]
@@ -145,7 +145,7 @@
 								{
 									extend: 'excel',
 									title: 'Alternatif',
-									text: '<i class="bi bi-file-spreadsheet me-2"></i>Excel',
+									text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
 									className: 'dropdown-item',
 									exportOptions: {
 										columns: [1]
@@ -154,7 +154,7 @@
 								{
 									extend: 'pdf',
 									title: 'Alternatif',
-									text: '<i class="bi bi-file-text me-2"></i>PDF',
+									text: '<i class="bi bi-file-text me-2"></i> PDF',
 									className: 'dropdown-item',
 									exportOptions: {
 										columns: [1]
@@ -163,7 +163,7 @@
 								{
 									extend: 'copy',
 									title: 'Alternatif',
-									text: '<i class="bi bi-clipboard me-2"></i>Copy',
+									text: '<i class="bi bi-clipboard me-2"></i> Copy',
 									className: 'dropdown-item',
 									exportOptions: {
 										columns: [1]
@@ -176,7 +176,7 @@
 			} catch (dterr) {
 				Toastify({
 					text: "DataTables Error: " + dterr.message,
-					duration: 7000,
+					duration: 8000,
 					backgroundColor: "#dc3545"
 				}).showToast();
 				if (!$.fn.DataTable.isDataTable('#table-alter'))
@@ -219,9 +219,7 @@
 					$.ajax({
 						type: 'DELETE',
 						url: '/alternatif/del/' + alt_id,
-						data: {
-							"_token": '{{ csrf_token() }}'
-						},
+						// data: { "_token": '{{ csrf_token() }}' },
 						success: function() {
 							dt_alternatif.draw();
 							Swal.fire({
@@ -236,6 +234,8 @@
 							});
 						},
 						error: function(xhr, stat) {
+							if (xhr.status === 404)
+								dt_alternatif.draw();
 							Swal.fire({
 								icon: 'error',
 								title: 'Gagal hapus',
@@ -326,6 +326,7 @@
 				$('#alter-id').val(data.id);
 				$('#alter-name').val(data.name);
 			}).fail(function(xhr, status) {
+				if (xhr.status === 404) dt_alternatif.draw();
 				Swal.fire({
 					icon: 'error',
 					title: 'Kesalahan',

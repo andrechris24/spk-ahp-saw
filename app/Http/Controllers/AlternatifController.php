@@ -33,9 +33,9 @@ class AlternatifController extends Controller
 	public function update(Request $request)
 	{
 		$request->validate(Alternatif::$rules, Alternatif::$message);
-		$alterID = $request->id;
+		$req=$request->all();
 		try {
-			Alternatif::updateOrCreate(['id' => $alterID], ['name' => $request->name]);
+			Alternatif::updateOrCreate(['id' => $req['id']], ['name' => $req['name']]);
 			return response()->json(['message' => 'Alternatif sudah diupdate.']);
 		} catch (QueryException $e) {
 			Log::error($e);
@@ -48,6 +48,7 @@ class AlternatifController extends Controller
 			$alter = Alternatif::where('id', $id)->firstOrFail();
 			return response()->json($alter);
 		} catch (QueryException $e) {
+			Log::error($e);
 			return response()->json(["message" => $e->errorInfo[2]], 500);
 		} catch (ModelNotFoundException $e) {
 			return response()->json([

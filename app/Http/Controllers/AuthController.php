@@ -50,8 +50,8 @@ class AuthController extends Controller
 			Session::invalidate();
 			Session::regenerateToken();
 			return redirect('/login')->withSuccess('Anda sudah logout.');
-		} catch (ModelNotFoundException $e) {
-			return back()->withErrors($e->getMessage());
+		} catch (ModelNotFoundException) {
+			return back()->withError("Gagal logout: Akun tidak ditemukan");
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal logout: ' . $e->errorInfo[2]);
@@ -63,7 +63,6 @@ class AuthController extends Controller
 			return redirect('/');
 		return view('admin.register');
 	}
-
 	public function register(Request $request)
 	{
 		try {

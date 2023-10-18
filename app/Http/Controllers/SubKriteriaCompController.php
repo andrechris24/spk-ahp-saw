@@ -91,10 +91,10 @@ class SubKriteriaCompController extends Controller
 	{
 		$request->validate(SubKriteriaComp::$rules, SubKriteriaComp::$message);
 		try {
-			$subkriteria = SubKriteria::where('kriteria_id', $kriteria_id)->get();
 			SubKriteriaComp::where('idkriteria', $kriteria_id)->delete();
 			if (SubKriteriaComp::count() === 0)
 				SubKriteriaComp::truncate();
+			$subkriteria = SubKriteria::where('kriteria_id', $kriteria_id)->get();
 			$a = 0;
 			for ($i = 0; $i < count($subkriteria); $i++) {
 				for ($j = $i; $j < count($subkriteria); $j++) {
@@ -154,10 +154,11 @@ class SubKriteriaCompController extends Controller
 						$nilai = round(abs(1 / $hb->nilai), 5);
 						$nilai2 = "<sup>1</sup>/<sub>" . abs($hb->nilai) . "</sub>";
 					} else {
-						if ($hb->nilai > 1)
-							$nilai = round(abs($hb->nilai / 1), 5);
-						else
-							$nilai = round(abs($hb->nilai), 5);
+						$nilai=$hb->nilai > 1?round(abs($hb->nilai / 1), 5):round(abs($hb->nilai), 5);
+						// if ($hb->nilai > 1)
+						// 	$nilai = round(abs($hb->nilai / 1), 5);
+						// else
+						// 	$nilai = round(abs($hb->nilai), 5);
 						$nilai2 = "<sup>" . abs($hb->nilai) . "</sup>/<sub>1</sub>";
 					}
 					$matriks_perbandingan[$a] = [
@@ -246,9 +247,7 @@ class SubKriteriaCompController extends Controller
 				$indexbobot++;
 		}
 		$total_cm = 0;
-		foreach ($array_CM as $cm) {
-			$total_cm += $cm["cm"];
-		}
+		foreach ($array_CM as $cm) { $total_cm += $cm["cm"]; }
 		$average_cm = round(abs($total_cm / count($array_CM)), 5);
 		$total_ci = round(
 			abs(($average_cm - count($subkriteria)) / (count($subkriteria) - 1)),

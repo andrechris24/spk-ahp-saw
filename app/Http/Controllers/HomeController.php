@@ -34,9 +34,8 @@ class HomeController extends Controller
 	}
 	public function updateProfil(Request $request)
 	{
-		$id = Auth::id();
 		try {
-			$request->validate(
+			$req = $request->validate(
 				[
 					'name' => 'bail|required|min:5|regex:/^[\pL\s\-]+$/u',
 					'email' => 'bail|required|email|unique:users,email,' . $id,
@@ -54,19 +53,19 @@ class HomeController extends Controller
 					'password.confirmed' => 'Password konfirmasi salah'
 				]
 			);
-			if (!Hash::check($request->current_password, Auth::user()->password)) {
+			if (!Hash::check($req['current_password'], Auth::user()->password)) {
 				return response()->json([
 					'message' => 'Password salah',
 					'current_password' => 'Password salah'
 				], 422);
 			}
-			$req = $request->all();
+			// $req = $request->all();
 			if (empty($req['password'])) {
 				unset($req['password']);
 				unset($req['password_confirmation']);
 			} else
 				$req['password'] = Hash::make($req['password']);
-			User::findOrFail($id)->update($req);
+			User::findOrFail(Auth::id())->update($req);
 			return response()->json(['message' => 'Akun sudah diupdate']);
 		} catch (ModelNotFoundException $e) {
 			return response()->json([
@@ -82,8 +81,8 @@ class HomeController extends Controller
 	{
 		$id = Auth::id();
 		try {
-			$request->validate(User::$delakunrule);
-			if (!Hash::check($request->del_password, Auth::user()->password))
+			$req = $request->validate(User::$delakunrule);
+			if (!Hash::check($req['del_password'], Auth::user()->password))
 				return back()->withError('Gagal hapus akun: Password salah');
 			User::findOrFail($id)->delete();
 			Auth::logout();

@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class ahpTable extends Component
+class NoScript extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class ahpTable extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.ahp-table');
+        return view('components.no-script');
     }
 }

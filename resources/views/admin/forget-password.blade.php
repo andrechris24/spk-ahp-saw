@@ -1,8 +1,7 @@
 @extends('admin.auth')
 @section('title', 'Lupa Password')
 @section('auth-title', 'Lupa Password')
-@section('auth-subtitle',
-	'Masukkan email Anda untuk mendapatkan link reset
+@section('auth-subtitle', 'Masukkan email Anda untuk mendapatkan link reset
 	password')
 @section('auth-css', asset('assets/compiled/css/auth-forgot-password.css'))
 @section('content')
@@ -23,8 +22,7 @@
 	</form>
 	<div class="text-center mt-5 text-lg fs-4">
 		<p class="text-gray-600">
-			Ingat akun Anda?
-			<a href="{{ route('login') }}" class="font-bold">Login</a>
+			Ingat akun Anda? <a href="{{ route('login') }}" class="font-bold">Login</a>
 		</p>
 	</div>
 @endsection

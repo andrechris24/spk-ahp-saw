@@ -23,9 +23,7 @@
 						enctype="multipart/form-data" id="form-delete-account"
 						onsubmit="$('#DelAccountAnim').removeClass('d-none');">@csrf
 						@method('DELETE')
-						<div class="alert alert-warning d-none" id="capslock2">
-							<i class="bi bi-capslock-fill"></i> CAPS LOCK nyala
-						</div>
+						<x-caps-lock id="capslock2" />
 						<p>Apakah Anda yakin ingin menghapus akun?</p>
 						<p>Jika yakin, masukkan password Anda.
 							Anda akan keluar secara otomatis setelah menghapus akun.</p>
@@ -63,11 +61,10 @@
 	<div class="card">
 		<div class="card-content">
 			<div class="card-body">
-				<div class="alert alert-warning d-none" id="capslock">
-					<i class="bi bi-capslock-fill"></i> CAPS LOCK nyala
-				</div>
+				<x-caps-lock id="capslock" />
 				<form class="form form-horizontal" method="post"
-					action="{{ url('/akun') }}" id="form-edit-account">@csrf
+					action="{{ url('/akun') }}" id="form-edit-account">
+					{{-- @csrf --}}
 					<div class="form-body">
 						<div class="row">
 							<div class="col-md-4"><label for="nama-user">Nama</label></div>
@@ -202,16 +199,15 @@
 		function checkpassword() {
 			var pass1 = newpassform.value;
 			var pass2 = passcekform.value;
-			if (pass1 !== pass2) passcekform.setCustomValidity(
-				"Password konfirmasi salah"
-			);
+			if (pass1 !== pass2)
+				passcekform.setCustomValidity("Password konfirmasi salah");
 			else passcekform.setCustomValidity("");
 		}
 		$('#form-edit-account').on('submit', function(e) {
 			e.preventDefault();
 			$.ajax({
 				data: $('#form-edit-account').serialize(),
-				url: '{{ route('akun.perform') }}',
+				url: "{{ route('akun.perform') }}",
 				type: 'POST',
 				beforeSend: function() {
 					$('#form-edit-account :input').removeClass(

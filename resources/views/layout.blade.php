@@ -192,7 +192,7 @@
 								<ul class="navbar-nav ms-auto mb-lg-0">
 									<li class="nav-item me-5">
 										<a class="nav-link active text-gray-600"
-											href="{{ route('php.info') }}">
+											href="{{ route('php.info') }}" target="_blank">
 											PHP Info
 										</a>
 									</li>
@@ -252,6 +252,7 @@
 						@endif
 					</div>
 					<section class="content">
+						<x-no-script />
 						@include('components.message')
 						@yield('content')
 					</section>
@@ -309,6 +310,12 @@
 					dt.classList.add('pagination-primary');
 				});
 		};
+		// ajax setup
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': "{{ csrf_token() }}"
+			}
+		});
 	</script>
 	@yield('js')
 </body>

@@ -18,7 +18,7 @@
 				</div>
 				<div class="modal-body">
 					<form method="POST" enctype="multipart/form-data" id="NilaiAlterForm">
-						@csrf
+						{{-- @csrf --}}
 						<input type="hidden" name="alternatif_id" id="alternatif-hidden">
 						<input type="hidden" name="datatables_idx" id="edit-index">
 						<div class="input-group mb-3">
@@ -177,12 +177,12 @@
 						},
 						{
 							extend: 'collection',
-							text: '<i class="bi bi-download me-0 me-sm-1"></i>Ekspor',
+							text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
 							className: 'btn btn-primary dropdown-toggle',
 							buttons: [{
 									extend: 'print',
 									title: 'Nilai Alternatif',
-									text: '<i class="bi bi-printer me-2"></i>Print',
+									text: '<i class="bi bi-printer me-2"></i> Print',
 									className: 'dropdown-item',
 									exportOptions: {
 										columns: 'th:not(:last-child)'
@@ -191,7 +191,7 @@
 								{
 									extend: 'csv',
 									title: 'Nilai Alternatif',
-									text: '<i class="bi bi-file-text me-2"></i>CSV',
+									text: '<i class="bi bi-file-text me-2"></i> CSV',
 									className: 'dropdown-item',
 									exportOptions: {
 										columns: 'th:not(:last-child)'
@@ -200,7 +200,7 @@
 								{
 									extend: 'excel',
 									title: 'Nilai Alternatif',
-									text: '<i class="bi bi-file-spreadsheet me-2"></i>Excel',
+									text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
 									className: 'dropdown-item',
 									exportOptions: {
 										columns: 'th:not(:last-child)'
@@ -209,7 +209,7 @@
 								{
 									extend: 'pdf',
 									title: 'Nilai Alternatif',
-									text: '<i class="bi bi-file-text me-2"></i>PDF',
+									text: '<i class="bi bi-file-text me-2"></i> PDF',
 									className: 'dropdown-item',
 									exportOptions: {
 										columns: 'th:not(:last-child)'
@@ -218,7 +218,7 @@
 								{
 									extend: 'copy',
 									title: 'Nilai Alternatif',
-									text: '<i class="bi bi-clipboard me-2"></i>Copy',
+									text: '<i class="bi bi-clipboard me-2"></i> Copy',
 									className: 'dropdown-item',
 									exportOptions: {
 										columns: 'th:not(:last-child)'
@@ -231,7 +231,7 @@
 			} catch (dterr) {
 				Toastify({
 					text: "DataTables Error: " + dterr.message,
-					duration: 7000,
+					duration: 8000,
 					backgroundColor: "#dc3545"
 				}).showToast();
 				if (!$.fn.DataTable.isDataTable('#table-nilaialt'))
@@ -263,9 +263,7 @@
 						type: 'DELETE',
 						url: '/alternatif/nilai/del/' +
 							score_id,
-						data: {
-							"_token": "{{ csrf_token() }}"
-						},
+						// data: { "_token": "{{ csrf_token() }}" },
 						success: function(data) {
 							Swal.fire({
 								icon: 'success',
@@ -341,9 +339,10 @@
 					if ($('#alternatif-hidden').val() == '' || $(
 							'#edit-index').val() == '')
 						nilaialtdt.row.add(status).draw(false);
-					else
+					else {
 						nilaialtdt.row($('#edit-index').val())
-						.data(status).draw();
+							.data(status).draw();
+					}
 				},
 				error: function(xhr, code) {
 					Swal.fire({

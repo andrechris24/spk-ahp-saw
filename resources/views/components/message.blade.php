@@ -1,10 +1,3 @@
-<noscript>
-	<div class="alert alert-danger" role="alert">
-		<i class="bi bi-exclamation-circle-fill"></i>
-		JavaScript tidak bekerja. Aplikasi Sistem Pendukung Keputusan
-		tidak akan bekerja dengan baik tanpa JavaScript.
-	</div>
-</noscript>
 @if (Session::has('success'))
 	<div class="alert alert-success alert-dismissible" role="alert">
 		<i class="bi bi-check-circle-fill"></i>
@@ -25,10 +18,8 @@
 	@if (Session::has('error') || $errors->any())
 		<div class="alert alert-danger alert-dismissible" role="alert">
 			<i class="bi bi-x-circle-fill"></i>
-			@if (Session::has('error'))
-				{{ ucfirst(Session::get('error')) }}
-			@else
-				Gagal:
+			@if (Session::has('error')) {{ ucfirst(Session::get('error')) }}
+			@else Gagal:
 			@endif
 			@if ($errors->any())
 				<ul>

@@ -8,9 +8,7 @@
 			role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title" id="SubCritLabel">
-						Tambah Sub Kriteria
-					</h4>
+					<h4 class="modal-title" id="SubCritLabel">Tambah Sub Kriteria</h4>
 					<button type="button" class="close" data-bs-dismiss="modal"
 						aria-label="Close">
 						<i data-feather="x"></i>
@@ -18,7 +16,8 @@
 				</div>
 				<div class="modal-body">
 					<form action="{{ url('/kriteria/sub/store') }}" method="post"
-						enctype="multipart/form-data" id="SubCritForm">@csrf
+						enctype="multipart/form-data" id="SubCritForm">
+						{{-- @csrf --}}
 						<input type="hidden" name="id" id="subkriteria-id">
 						@if ($compskr > 0)
 							<div class="alert alert-warning" id="subkriteria-alert">
@@ -130,9 +129,10 @@
 						{
 							targets: 2,
 							render: function(data, type, full) {
-								return '<span title="' + full[
-										'desc_kr'] + '">' +
-									data + '</span>';
+								return '<span title="' +
+									full['desc_kr'] + '">' +
+									data +
+									'</span>';
 							}
 						},
 						{ //Aksi
@@ -162,12 +162,12 @@
 						},
 						{
 							extend: 'collection',
-							text: '<i class="bi bi-download me-0 me-sm-1"></i>Ekspor',
+							text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
 							className: 'btn btn-primary dropdown-toggle',
 							buttons: [{
 									extend: 'print',
 									title: 'Sub Kriteria',
-									text: '<i class="bi bi-printer me-2"></i>Print',
+									text: '<i class="bi bi-printer me-2"></i> Print',
 									className: 'dropdown-item',
 									exportOptions: {
 										columns: [1, 2, 3]
@@ -176,7 +176,7 @@
 								{
 									extend: 'csv',
 									title: 'Sub Kriteria',
-									text: '<i class="bi bi-file-text me-2"></i>CSV',
+									text: '<i class="bi bi-file-text me-2"></i> CSV',
 									className: 'dropdown-item',
 									exportOptions: {
 										columns: [1, 2, 3]
@@ -185,7 +185,7 @@
 								{
 									extend: 'excel',
 									title: 'Sub Kriteria',
-									text: '<i class="bi bi-file-spreadsheet me-2"></i>Excel',
+									text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
 									className: 'dropdown-item',
 									exportOptions: {
 										columns: [1, 2, 3]
@@ -194,7 +194,7 @@
 								{
 									extend: 'pdf',
 									title: 'Sub Kriteria',
-									text: '<i class="bi bi-file-text me-2"></i>PDF',
+									text: '<i class="bi bi-file-text me-2"></i> PDF',
 									className: 'dropdown-item',
 									exportOptions: {
 										columns: [1, 2, 3]
@@ -203,7 +203,7 @@
 								{
 									extend: 'copy',
 									title: 'Sub Kriteria',
-									text: '<i class="bi bi-clipboard me-2"></i>Copy',
+									text: '<i class="bi bi-clipboard me-2"></i> Copy',
 									className: 'dropdown-item',
 									exportOptions: {
 										columns: [1, 2, 3]
@@ -259,9 +259,7 @@
 					$.ajax({
 						type: 'DELETE',
 						url: '/kriteria/sub/del/' + sub_id,
-						data: {
-							"_token": "{{ csrf_token() }}"
-						},
+						// data: {  "_token": "{{ csrf_token() }}" },
 						success: function(data) {
 							dt_subkriteria.draw();
 							Swal.fire({
@@ -274,6 +272,8 @@
 							});
 						},
 						error: function(xhr, stat) {
+							if (xhr.status === 404)
+								dt_subkriteria.draw();
 							Swal.fire({
 								icon: 'error',
 								title: 'Gagal hapus',
@@ -375,6 +375,7 @@
 				$('#nama-sub').val(data.name);
 				$('#kriteria-select').val(data.kriteria_id);
 			}).fail(function(xhr, status) {
+				if (xhr.status === 404) dt_subkriteria.draw();
 				Swal.fire({
 					icon: 'error',
 					title: 'Kesalahan',

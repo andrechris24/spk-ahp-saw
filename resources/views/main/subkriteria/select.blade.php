@@ -7,9 +7,7 @@
 		<div class="card-body">
 			<form action="{{ url('/bobot/sub/comp') }}">
 				<div class="input-group mb-3">
-					<label class="input-group-text" for="kriteria">
-						Kriteria
-					</label>
+					<label class="input-group-text" for="kriteria">Kriteria</label>
 					<select class="form-select @error('kriteria_id') is-invalid @enderror "
 						id="kriteria" name="kriteria_id" required>
 						<option value="">Pilih</option>

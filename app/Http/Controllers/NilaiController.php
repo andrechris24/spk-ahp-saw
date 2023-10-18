@@ -30,9 +30,7 @@ class NilaiController extends Controller
 		$kueri = Nilai::select('subkriteria.bobot as bobot')
 			->join("subkriteria", "nilai.subkriteria_id", "subkriteria.id")
 			->where('nilai.kriteria_id', $kriteria_id)->get();
-		foreach ($kueri as $row) {
-			$data[] = $row->bobot;
-		}
+		foreach ($kueri as $row) { $data[] = $row->bobot; }
 		return $data;
 	}
 	public function getBobot($idkriteria)

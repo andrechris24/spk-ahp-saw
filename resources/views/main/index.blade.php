@@ -14,7 +14,7 @@
 			</h4>
 		</div>
 		<div class="card-body">
-			<p>Sistem ini akan membantu seseorang membuat keputusan dengan metode Simple
+			<p>Sistem ini akan membantu seseorang membuat keputusan dengan menggunakan metode Simple
 				Additive Weighting (SAW) dan Analytical Hierarchy Process (AHP).</p>
 			<p>Pembobotan Kriteria dan Sub Kriteria menggunakan metode AHP,
 				sedangkan pembobotan Alternatif menggunakan metode SAW.</p>
@@ -54,9 +54,7 @@
 							</div>
 							<div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
 								<h6 class="text-muted font-semibold">Jumlah Sub Kriteria</h6>
-								<h6 class="font-extrabold mb-0">
-									{{ $jml['subkriteria'] }}
-								</h6>
+								<h6 class="font-extrabold mb-0">{{ $jml['subkriteria'] }}</h6>
 							</div>
 						</div>
 					</div>

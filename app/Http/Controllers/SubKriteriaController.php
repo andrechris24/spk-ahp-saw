@@ -36,14 +36,15 @@ class SubKriteriaController extends Controller
 	public function store(Request $request)
 	{
 		$request->validate(SubKriteria::$rules, SubKriteria::$message);
+		$req=$request->all();
 		try {
-			$sub = SubKriteria::create($request->all());
+			$sub = SubKriteria::create($req);
 			$namakriteria = $sub->kriteria->name;
 			$querytype = "Sub Kriteria sudah ditambah. ";
-			$cek = SubKriteriaComp::where('idkriteria', $request->kriteria_id)->count();
+			$cek = SubKriteriaComp::where('idkriteria', $req['kriteria_id'])->count();
 			if ($cek > 0) {
-				SubKriteriaComp::where('idkriteria', $request->kriteria_id)->delete();
-				SubKriteria::where('kriteria_id', $request->kriteria_id)
+				SubKriteriaComp::where('idkriteria', $req['kriteria_id'])->delete();
+				SubKriteria::where('kriteria_id', $req['kriteria_id'])
 					->update(['bobot', 0.00000]);
 				$querytype .= "Silahkan input ulang perbandingan sub kriteria $namakriteria.";
 			}
@@ -56,11 +57,11 @@ class SubKriteriaController extends Controller
 	public function update(Request $request)
 	{
 		$request->validate(SubKriteria::$rules, SubKriteria::$message);
-		$subID = $request->id;
+		$req=$request->all();
 		try {
 			SubKriteria::updateOrCreate(
-				['id' => $subID],
-				['name' => $request->name, 'kriteria_id' => $request->kriteria_id]
+				['id' => $req['id']],
+				['name' => $req['name'], 'kriteria_id' => $req['kriteria_id']]
 			);
 			return response()->json(['message' => 'Sub Kriteria sudah diupdate.']);
 		} catch (QueryException $e) {

@@ -201,7 +201,9 @@
 							</a>
 						@elseif(!$consistent)
 							<button type="button" class="btn btn-info" data-bs-toggle="modal"
-								data-bs-target="#inconsistentModal">?</button>
+								data-bs-target="#inconsistentModal">
+								?
+							</button>
 						@endif
 					</div>
 					<form action="{{ route('bobotsubkriteria.reset', $kriteria_id) }}"
@@ -239,7 +241,7 @@
 					.cancel) {
 					Swal.fire({
 						title: 'Dibatalkan',
-						text: 'Perbandingan Sub Kriteria {{ $title }} tidak direset.',
+						text: "Perbandingan Sub Kriteria {{ $title }} tidak direset.",
 						icon: 'warning',
 						customClass: {
 							confirmButton: 'btn btn-success'

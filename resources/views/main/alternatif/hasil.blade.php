@@ -200,36 +200,36 @@
 						},
 						{
 							extend: 'collection',
-							text: '<i class="bi bi-download me-0 me-sm-1"></i>Ekspor',
+							text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
 							className: 'btn btn-primary dropdown-toggle',
 							buttons: [{
 									extend: 'print',
 									title: 'Nilai Alternatif',
-									text: '<i class="bi bi-printer me-2"></i>Print',
+									text: '<i class="bi bi-printer me-2"></i> Print',
 									className: 'dropdown-item'
 								},
 								{
 									extend: 'csv',
 									title: 'Nilai Alternatif',
-									text: '<i class="bi bi-file-text me-2"></i>CSV',
+									text: '<i class="bi bi-file-text me-2"></i> CSV',
 									className: 'dropdown-item'
 								},
 								{
 									extend: 'excel',
 									title: 'Nilai Alternatif',
-									text: '<i class="bi bi-file-spreadsheet me-2"></i>Excel',
+									text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
 									className: 'dropdown-item'
 								},
 								{
 									extend: 'pdf',
 									title: 'Nilai Alternatif',
-									text: '<i class="bi bi-file-text me-2"></i>PDF',
+									text: '<i class="bi bi-file-text me-2"></i> PDF',
 									className: 'dropdown-item'
 								},
 								{
 									extend: 'copy',
 									title: 'Nilai Alternatif',
-									text: '<i class="bi bi-clipboard me-2"></i>Copy',
+									text: '<i class="bi bi-clipboard me-2"></i> Copy',
 									className: 'dropdown-item'
 								}
 							]
@@ -239,7 +239,7 @@
 			} catch (dterr) {
 				Toastify({
 					text: "DataTables Error: " + dterr.message,
-					duration: 7000,
+					duration: 8000,
 					backgroundColor: "#dc3545"
 				}).showToast();
 				if (!$.fn.DataTable.isDataTable('#table-hasil'))
@@ -250,14 +250,14 @@
 		var options = {
 			chart: {
 				height: 320,
-				type: 'bar',
+				type: 'bar'
 			},
 			dataLabels: {
 				enabled: true
 			},
 			series: [],
 			title: {
-				text: 'Hasil Penilaian',
+				text: 'Hasil Penilaian'
 			},
 			noData: {
 				text: 'Memuat grafik...'
@@ -265,14 +265,13 @@
 			xaxis: {
 				categories: [
 					@foreach ($data['alternatif'] as $alts)
-						'{{ $alts->name }}',
+						"{{ $alts->name }}",
 					@endforeach
-				],
-			},
+				]
+			}
 		}
 		var chart = new ApexCharts(
-			document.querySelector("#chart-ranking"),
-			options
+			document.querySelector("#chart-ranking"), options
 		);
 		chart.render();
 		$('#RankModal').on('show.bs.modal', function() {

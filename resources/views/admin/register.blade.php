@@ -52,8 +52,7 @@
 	</form>
 	<div class="text-center mt-5 text-lg fs-4">
 		<p class="text-gray-600">
-			Sudah punya akun?
-			<a href="{{ route('login') }}" class="font-bold">Login</a>
+			Sudah punya akun? <a href="{{ route('login') }}" class="font-bold">Login</a>
 		</p>
 	</div>
 @endsection
@@ -78,9 +77,8 @@
 		function checkpassword() {
 			var pass1 = newpassform.value;
 			var pass2 = passcekform.value;
-			if (pass1 !== pass2) passcekform.setCustomValidity(
-				"Password konfirmasi salah"
-			);
+			if (pass1 !== pass2)
+				passcekform.setCustomValidity("Password konfirmasi salah");
 			else passcekform.setCustomValidity("");
 		}
 	</script>

@@ -200,9 +200,7 @@ class KriteriaCompController extends Controller
 				$indexbobot++;
 		}
 		$total_cm = 0;
-		foreach ($array_CM as $cm) {
-			$total_cm += $cm["cm"];
-		}
+		foreach ($array_CM as $cm) { $total_cm += $cm["cm"]; }
 		$average_cm = round(abs($total_cm / count($array_CM)), 5);
 		$total_ci = round(
 			abs(($average_cm - count($kriteria)) / (count($kriteria) - 1)),

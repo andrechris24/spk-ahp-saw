@@ -193,7 +193,9 @@
 							</a>
 						@else
 							<button type="button" class="btn btn-info" data-bs-toggle="modal"
-								data-bs-target="#inconsistentModal">?</button>
+								data-bs-target="#inconsistentModal">
+								?
+							</button>
 						@endif
 					</div>
 					<form action="{{ route('bobotkriteria.reset') }}" method="POST"

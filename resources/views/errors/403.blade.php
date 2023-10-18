@@ -22,7 +22,7 @@
 				<div class="text-center">
 					<h1 class="error-title">403 Forbidden</h1>
 					<p class="fs-5 text-gray-600">
-						Anda tidak boleh mengakses link secara sembarangan!
+						Anda tidak diperbolehkan untuk mengakses halaman ini.
 					</p>
 					<a href="{{ route('home.index') }}"
 						class="btn btn-lg btn-outline-primary mt-3">

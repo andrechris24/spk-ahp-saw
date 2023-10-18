@@ -18,7 +18,7 @@ return new class extends Migration {
 				->cascadeOnUpdate();
 			$table->foreignId('kriteria2')->constrained('kriteria')->cascadeOnDelete()
 				->cascadeOnUpdate();
-			$table->integer('nilai');
+			$table->integer('nilai')->default(1);
 			$table->timestamps();
 		});
 	}
