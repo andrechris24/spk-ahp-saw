@@ -38,9 +38,9 @@ class HomeController extends Controller
 			$req = $request->validate(
 				[
 					'name' => 'bail|required|min:5|regex:/^[\pL\s\-]+$/u',
-					'email' => 'bail|required|email|unique:users,email,' . $id,
+					'email' => 'bail|required|email|unique:users,email,' . Auth::id(),
 					'current_password' => 'bail|required|min:8',
-					'password' => 'nullable|confirmed|between:8,20',
+					'password' => 'nullable|bail|confirmed|between:8,20',
 					'password_confirmation' => 'required_with:password'
 				],
 				[
@@ -59,7 +59,6 @@ class HomeController extends Controller
 					'current_password' => 'Password salah'
 				], 422);
 			}
-			// $req = $request->all();
 			if (empty($req['password'])) {
 				unset($req['password']);
 				unset($req['password_confirmation']);
@@ -79,12 +78,11 @@ class HomeController extends Controller
 	}
 	public function delAkun(Request $request)
 	{
-		$id = Auth::id();
 		try {
 			$req = $request->validate(User::$delakunrule);
 			if (!Hash::check($req['del_password'], Auth::user()->password))
 				return back()->withError('Gagal hapus akun: Password salah');
-			User::findOrFail($id)->delete();
+			User::findOrFail(Auth::id())->delete();
 			Auth::logout();
 			Session::invalidate();
 			Session::regenerateToken();

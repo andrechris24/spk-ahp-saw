@@ -77,13 +77,14 @@ class AuthController extends Controller
 				'password.confirmed' => 'Password konfirmasi salah'
 			]);
 			$credentials['password'] = Hash::make($credentials['password']);
-			$user = User::create($credentials);
+			User::create($credentials);
 			return redirect('/login')
-				->withSuccess("Registrasi akun berhasil, selamat datang");
+				->withSuccess("Akun sudah dibuat. 
+					Silahkan login menggunakan akun yang sudah didaftarkan.");
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withInput()
-				->withError("Registrasi akun gagal: " . $e->errorInfo[2]);
+				->withError("Gagal membuat akun: " . $e->errorInfo[2]);
 		}
 	}
 	public function showForgetPasswordForm()

@@ -1,7 +1,8 @@
 @extends('admin.auth')
 @section('title', 'Login')
 @section('auth-title', 'Login')
-@section('auth-subtitle', 'Login untuk menggunakan Aplikasi Sistem Pendukung
+@section('auth-subtitle',
+	'Login untuk menggunakan Aplikasi Sistem Pendukung
 	Keputusan')
 @section('auth-css', asset('assets/compiled/css/auth.css'))
 @section('content')

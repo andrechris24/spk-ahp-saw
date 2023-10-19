@@ -21,7 +21,7 @@ class NilaiController extends Controller
 		else if ($type === 'benefit')
 			$hasil = $skor / max($arr);
 		else
-			return $skor;
+			return round($skor, 5);
 		return round($hasil, 5);
 	}
 	public function getNilaiArr($kriteria_id): array
@@ -30,7 +30,9 @@ class NilaiController extends Controller
 		$kueri = Nilai::select('subkriteria.bobot as bobot')
 			->join("subkriteria", "nilai.subkriteria_id", "subkriteria.id")
 			->where('nilai.kriteria_id', $kriteria_id)->get();
-		foreach ($kueri as $row) { $data[] = $row->bobot; }
+		foreach ($kueri as $row) {
+			$data[] = $row->bobot;
+		}
 		return $data;
 	}
 	public function getBobot($idkriteria)
@@ -111,12 +113,12 @@ class NilaiController extends Controller
 				'<div class="btn-group" role="button">
 				<button type="button" class="btn btn-primary edit-record"
 					data-bs-toggle="modal" data-bs-target="#NilaiAlterModal"
-					data-bs-name="' . $request->alternatif_id . '" title="Edit"
+					data-bs-name="' . $scores['alternatif_id'] . '" title="Edit"
 					data-bs-score="' . json_encode($datas) . '">
 					<i class="bi bi-pencil-square"></i>
 				</button>
 				<button type="button" class="btn btn-danger delete-record"
-					data-bs-id="' . $request->alternatif_id . '" title="Hapus"
+					data-bs-id="' . $scores['alternatif_id'] . '" title="Hapus"
 					data-bs-name="' . $hasil[0] . '">
 					<i class="bi bi-trash3-fill"></i>
 				</button>
@@ -189,12 +191,12 @@ class NilaiController extends Controller
 				'<div class="btn-group" role="button">
 				<button type="button" class="btn btn-primary edit-record"
 					data-bs-toggle="modal" data-bs-target="#NilaiAlterModal"
-					data-bs-name="' . $request->alternatif_id . '" title="Edit"
+					data-bs-name="' . $scores["alternatif_id"] . '" title="Edit"
 					data-bs-score="' . json_encode($datas) . '">
 					<i class="bi bi-pencil-square"></i>
 				</button>
 				<button type="button" class="btn btn-danger delete-record"
-					data-bs-id="' . $request->alternatif_id . '" title="Hapus"
+					data-bs-id="' . $scores["alternatif_id"] . '" title="Hapus"
 					data-bs-name="' . $hasil[0] . '">
 					<i class="bi bi-trash3-fill"></i>
 				</button>

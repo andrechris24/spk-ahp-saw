@@ -14,12 +14,13 @@
 			</h4>
 		</div>
 		<div class="card-body">
-			<p>Sistem ini akan membantu seseorang membuat keputusan dengan menggunakan metode Simple
-				Additive Weighting (SAW) dan Analytical Hierarchy Process (AHP).</p>
-			<p>Pembobotan Kriteria dan Sub Kriteria menggunakan metode AHP,
-				sedangkan pembobotan Alternatif menggunakan metode SAW.</p>
-			<p>Bobot Kriteria dan Sub Kriteria didapat dengan cara
-				melakukan perbandingan secara konsisten (Nilai CR &#8804; 10%). </p>
+			<p>Sistem ini akan membantu seseorang membuat keputusan dengan menggunakan
+				metode Simple Additive Weighting (SAW) dan Analytical Hierarchy Process
+				(AHP).</p>
+			<p>Pembobotan Kriteria dan Sub Kriteria menggunakan metode AHP, sedangkan
+				pembobotan Alternatif menggunakan metode SAW.</p>
+			<p>Bobot Kriteria dan Sub Kriteria didapat dengan cara melakukan perbandingan
+				secara konsisten (Nilai CR &#8804; 10%). </p>
 		</div>
 	</div>
 	@auth

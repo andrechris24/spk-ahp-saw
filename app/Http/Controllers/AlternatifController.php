@@ -33,7 +33,7 @@ class AlternatifController extends Controller
 	public function update(Request $request)
 	{
 		$request->validate(Alternatif::$rules, Alternatif::$message);
-		$req=$request->all();
+		$req = $request->all();
 		try {
 			Alternatif::updateOrCreate(['id' => $req['id']], ['name' => $req['name']]);
 			return response()->json(['message' => 'Alternatif sudah diupdate.']);

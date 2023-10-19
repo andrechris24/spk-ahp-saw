@@ -41,7 +41,7 @@ class KriteriaController extends Controller
 	public function update(Request $request)
 	{
 		$request->validate(Kriteria::$rules, Kriteria::$message);
-		$req=$request->all();
+		$req = $request->all();
 		try {
 			Kriteria::updateOrCreate(
 				['id' => $req['id']],

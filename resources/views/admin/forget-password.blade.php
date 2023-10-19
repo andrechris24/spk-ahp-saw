@@ -1,7 +1,8 @@
 @extends('admin.auth')
 @section('title', 'Lupa Password')
 @section('auth-title', 'Lupa Password')
-@section('auth-subtitle', 'Masukkan email Anda untuk mendapatkan link reset
+@section('auth-subtitle',
+	'Masukkan email Anda untuk mendapatkan link reset
 	password')
 @section('auth-css', asset('assets/compiled/css/auth-forgot-password.css'))
 @section('content')

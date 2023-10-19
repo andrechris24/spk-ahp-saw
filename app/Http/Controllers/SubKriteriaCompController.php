@@ -40,7 +40,7 @@ class SubKriteriaCompController extends Controller
 	public function index()
 	{
 		$allkrit = Kriteria::get();
-		if (count($allkrit) === 0) {
+		if ($allkrit->isEmpty()) {
 			return redirect('/kriteria')->withWarning(
 				'Masukkan kriteria dulu untuk melakukan perbandingan sub kriteria.'
 			);
@@ -154,7 +154,7 @@ class SubKriteriaCompController extends Controller
 						$nilai = round(abs(1 / $hb->nilai), 5);
 						$nilai2 = "<sup>1</sup>/<sub>" . abs($hb->nilai) . "</sub>";
 					} else {
-						$nilai=$hb->nilai > 1?round(abs($hb->nilai / 1), 5):round(abs($hb->nilai), 5);
+						$nilai = round(abs(($hb->nilai > 1) ? $hb->nilai / 1 : $hb->nilai), 5);
 						// if ($hb->nilai > 1)
 						// 	$nilai = round(abs($hb->nilai / 1), 5);
 						// else
@@ -247,7 +247,9 @@ class SubKriteriaCompController extends Controller
 				$indexbobot++;
 		}
 		$total_cm = 0;
-		foreach ($array_CM as $cm) { $total_cm += $cm["cm"]; }
+		foreach ($array_CM as $cm) {
+			$total_cm += $cm["cm"];
+		}
 		$average_cm = round(abs($total_cm / count($array_CM)), 5);
 		$total_ci = round(
 			abs(($average_cm - count($subkriteria)) / (count($subkriteria) - 1)),

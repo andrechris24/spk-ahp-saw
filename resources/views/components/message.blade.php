@@ -18,8 +18,10 @@
 	@if (Session::has('error') || $errors->any())
 		<div class="alert alert-danger alert-dismissible" role="alert">
 			<i class="bi bi-x-circle-fill"></i>
-			@if (Session::has('error')) {{ ucfirst(Session::get('error')) }}
-			@else Gagal:
+			@if (Session::has('error'))
+				{{ ucfirst(Session::get('error')) }}
+			@else
+				Gagal:
 			@endif
 			@if ($errors->any())
 				<ul>

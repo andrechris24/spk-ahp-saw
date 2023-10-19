@@ -17,7 +17,7 @@ class SubKriteriaController extends Controller
 	{
 		$kriteria = Kriteria::get();
 		$compskr = SubKriteriaComp::count();
-		if (count($kriteria) === 0) {
+		if ($kriteria->isEmpty()) {
 			return redirect('kriteria')
 				->withWarning('Tambahkan kriteria dulu sebelum menambah sub kriteria.');
 		}
@@ -36,7 +36,7 @@ class SubKriteriaController extends Controller
 	public function store(Request $request)
 	{
 		$request->validate(SubKriteria::$rules, SubKriteria::$message);
-		$req=$request->all();
+		$req = $request->all();
 		try {
 			$sub = SubKriteria::create($req);
 			$namakriteria = $sub->kriteria->name;
@@ -57,7 +57,7 @@ class SubKriteriaController extends Controller
 	public function update(Request $request)
 	{
 		$request->validate(SubKriteria::$rules, SubKriteria::$message);
-		$req=$request->all();
+		$req = $request->all();
 		try {
 			SubKriteria::updateOrCreate(
 				['id' => $req['id']],
