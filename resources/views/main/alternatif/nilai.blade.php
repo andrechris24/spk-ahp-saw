@@ -28,13 +28,13 @@
 							<select class="form-select" id="alternatif-value" name="alternatif_id"
 								required>
 								<option value="">Pilih</option>
-								@foreach ($alternatif as $alt)
+								@foreach ($data['alternatif'] as $alt)
 									<option value="{{ $alt->id }}">{{ $alt->name }}</option>
 								@endforeach
 							</select>
 							<div class="invalid-feedback" id="alternatif-error"></div>
 						</div>
-						@foreach ($kriteria as $kr)
+						@foreach ($data['kriteria'] as $kr)
 							<input type="hidden" name="kriteria_id[]" value="{{ $kr->id }}">
 							<div class="input-group mb-3">
 								<label class="input-group-text" for="subkriteria-{{ $kr->id }}"
@@ -44,7 +44,7 @@
 								<select class="form-select" id="subkriteria-{{ $kr->id }}"
 									name="subkriteria_id[]" required>
 									<option value="">Pilih</option>
-									@foreach ($subkriteria as $subkr)
+									@foreach ($data['subkriteria'] as $subkr)
 										@if ($subkr->kriteria_id == $kr->id)
 											<option value="{{ $subkr->id }}">
 												{{ $subkr->name }}
@@ -88,7 +88,7 @@
 				<thead>
 					<tr>
 						<th>Nama Alternatif</th>
-						@foreach ($kriteria as $kr)
+						@foreach ($data['kriteria'] as $kr)
 							<th data-bs-toggle="tooltip" data-bs-placement="bottom"
 								title="{{ $kr->desc }}">
 								{{ $kr->name }}
@@ -98,11 +98,11 @@
 					</tr>
 				</thead>
 				<tbody>
-					@foreach ($alternatif as $alt)
+					@foreach ($data['alternatif'] as $alt)
 						@php
 							$subcount = 0;
 							$subkr = [];
-							$skor = $nilaialt->where('alternatif_id', $alt->id)->all();
+							$skor = $data['nilai']->where('alternatif_id', $alt->id)->all();
 						@endphp
 						@if (count($skor) > 0)
 							<tr>
@@ -135,7 +135,7 @@
 					@endforeach
 				</tbody>
 			</table>
-			@if (count($nilaialt) > 0)
+			@if (count($data['nilai']) > 0)
 				<a href="{{ route('nilai.show') }}" class="btn btn-success">
 					Lihat hasil
 				</a>

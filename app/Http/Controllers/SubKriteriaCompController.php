@@ -155,10 +155,6 @@ class SubKriteriaCompController extends Controller
 						$nilai2 = "<sup>1</sup>/<sub>" . abs($hb->nilai) . "</sub>";
 					} else {
 						$nilai = round(abs(($hb->nilai > 1) ? $hb->nilai / 1 : $hb->nilai), 5);
-						// if ($hb->nilai > 1)
-						// 	$nilai = round(abs($hb->nilai / 1), 5);
-						// else
-						// 	$nilai = round(abs($hb->nilai), 5);
 						$nilai2 = "<sup>" . abs($hb->nilai) . "</sup>/<sub>1</sub>";
 					}
 					$matriks_perbandingan[$a] = [
@@ -256,10 +252,7 @@ class SubKriteriaCompController extends Controller
 			5
 		);
 		$ratio = Kriteria::$ratio_index[count($subkriteria)];
-		if ($ratio === 0)
-			$result = '-';
-		else
-			$result = round(abs($total_ci / $ratio), 5);
+		$result=$ratio === 0?'-':round(abs($total_ci / $ratio), 5);
 		try {
 			if ($result <= 0.1 || !is_numeric($result)) {
 				for ($i = 0; $i < count($subkriteria); $i++) {

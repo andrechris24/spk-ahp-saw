@@ -38,9 +38,9 @@ class NilaiController extends Controller
 	public function getBobot($idkriteria)
 	{
 		try {
-			$kueri = Kriteria::where('id', $idkriteria)->firstOrFail();
-			return $kueri->bobot;
-		} catch (ModelNotFoundException | QueryException $err) {
+			$kueri = Kriteria::where('id', $idkriteria)->first();
+			return $kueri->bobot??0;
+		} catch (QueryException $err) {
 			Log::error($err);
 			return 0;
 		}
@@ -82,10 +82,13 @@ class NilaiController extends Controller
 		)->leftJoin('kriteria', 'kriteria.id', 'nilai.kriteria_id')
 			->leftJoin('subkriteria', 'subkriteria.id', 'nilai.subkriteria_id')
 			->get();
-		return view(
-			'main.alternatif.nilai',
-			compact('kriteria', 'subkriteria', 'alternatif', 'nilaialt')
-		);
+		$data=[
+			'kriteria'=>$kriteria,
+			'subkriteria'=>$subkriteria,
+			'alternatif'=>$alternatif,
+			'nilai'=>$nilaialt
+		];
+		return view('main.alternatif.nilai', compact('data'));
 	}
 	public function store(Request $request)
 	{
