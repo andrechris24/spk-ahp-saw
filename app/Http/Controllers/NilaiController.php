@@ -39,7 +39,7 @@ class NilaiController extends Controller
 	{
 		try {
 			$kueri = Kriteria::where('id', $idkriteria)->first();
-			return $kueri->bobot??0;
+			return $kueri->bobot ?? 0;
 		} catch (QueryException $err) {
 			Log::error($err);
 			return 0;
@@ -82,11 +82,11 @@ class NilaiController extends Controller
 		)->leftJoin('kriteria', 'kriteria.id', 'nilai.kriteria_id')
 			->leftJoin('subkriteria', 'subkriteria.id', 'nilai.subkriteria_id')
 			->get();
-		$data=[
-			'kriteria'=>$kriteria,
-			'subkriteria'=>$subkriteria,
-			'alternatif'=>$alternatif,
-			'nilai'=>$nilaialt
+		$data = [
+			'kriteria' => $kriteria,
+			'subkriteria' => $subkriteria,
+			'alternatif' => $alternatif,
+			'nilai' => $nilaialt
 		];
 		return view('main.alternatif.nilai', compact('data'));
 	}

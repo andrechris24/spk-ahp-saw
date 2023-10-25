@@ -80,22 +80,27 @@ class HomeController extends Controller
 	{
 		try {
 			$req = $request->validate(User::$delakunrule);
-			if (!Hash::check($req['del_password'], Auth::user()->password))
-				return back()->withError('Gagal hapus akun: Password salah');
+			if (!Hash::check($req['del_password'], Auth::user()->password)) {
+				return response()->json([
+					'message' => 'Password salah',
+					'del_password' => 'Password salah'
+				], 422);
+			}
 			User::findOrFail(Auth::id())->delete();
 			Auth::logout();
 			Session::invalidate();
 			Session::regenerateToken();
-			return redirect('/')->withSuccess(
-				'Akun sudah dihapus. ' .
-				'Terima kasih Anda telah menggunakan Aplikasi Sistem Pendukung Keputusan.'
-			);
+			return response()->json([
+				'message' => 'Terima kasih Anda telah menggunakan Aplikasi Sistem Pendukung Keputusan.'
+			]);
 		} catch (ModelNotFoundException $e) {
-			return back()->withError('Gagal hapus: Akun tidak ditemukan')
-				->withErrors($e->getMessage());
+			return response()->json([
+				'message' => 'Akun tidak ditemukan',
+				'exception' => $e->getMessage()
+			], 404);
 		} catch (QueryException $db) {
 			Log::error($db);
-			return back()->withError('Gagal hapus:' . $db->errorInfo[2]);
+			return response()->json(['message' => $db->errorInfo[2]], 500);
 		}
 	}
 }

@@ -252,7 +252,7 @@ class SubKriteriaCompController extends Controller
 			5
 		);
 		$ratio = Kriteria::$ratio_index[count($subkriteria)];
-		$result=$ratio === 0?'-':round(abs($total_ci / $ratio), 5);
+		$result = $ratio === 0 ? '-' : round(abs($total_ci / $ratio), 5);
 		try {
 			if ($result <= 0.1 || !is_numeric($result)) {
 				for ($i = 0; $i < count($subkriteria); $i++) {

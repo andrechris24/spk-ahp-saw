@@ -20,9 +20,7 @@
 				</div>
 				<div class="modal-body">
 					<form action="{{ url('/akun/del') }}" method="post"
-						enctype="multipart/form-data" id="form-delete-account"
-						onsubmit="$('#DelAccountAnim').removeClass('d-none');">@csrf
-						@method('DELETE')
+						enctype="multipart/form-data" id="form-delete-account">
 						<x-caps-lock id="capslock2" />
 						<p>Apakah Anda yakin ingin menghapus akun?</p>
 						<p>Jika yakin, masukkan password Anda.
@@ -40,8 +38,7 @@
 					</form>
 				</div>
 				<div class="modal-footer">
-					<div class="spinner-grow text-danger d-none" role="status"
-						id="DelAccountAnim">
+					<div class="spinner-grow text-danger d-none" role="status">
 						<span class="visually-hidden">Menghapus...</span>
 					</div>
 					<button type="button" class="btn btn-light-secondary"
@@ -49,7 +46,7 @@
 						<i class="bi bi-x d-block d-sm-none"></i>
 						<span class="d-none d-sm-block">Batal</span>
 					</button>
-					<button type="submit" class="btn btn-danger ml-1"
+					<button type="submit" class="btn btn-danger ml-1 data-submit"
 						form="form-delete-account">
 						<i class="bi bi-check d-block d-sm-none"></i>
 						<span class="d-none d-sm-block">Hapus</span>
@@ -266,6 +263,60 @@
 					}
 					Swal.fire({
 						title: 'Gagal update akun',
+						text: xhr.responseJSON.message ??
+							code,
+						icon: 'error',
+						customClass: {
+							confirmButton: 'btn btn-success'
+						}
+					});
+				}
+			});
+		});
+		$('#form-delete-account').on('submit', function(e) {
+			e.preventDefault();
+			$.ajax({
+				data: $('#form-delete-account').serialize(),
+				url: "{{ route('akun.delete') }}",
+				type: 'DELETE',
+				beforeSend: function() {
+					$('#form-delete-account :input').removeClass(
+						'is-invalid');
+					$('#form-delete-account :input').prop(
+						'disabled',
+						true);
+					$('.data-submit').prop('disabled', true);
+					$('.spinner-grow').removeClass('d-none');
+				},
+				complete: function() {
+					$('#form-delete-account :input').prop(
+						'disabled',
+						false);
+					$('.data-submit').prop('disabled', false);
+					$('.spinner-grow').addClass('d-none');
+				},
+				success: function(status) {
+					$('input[type=password]').val("");
+
+					// sweetalert
+					Swal.fire({
+						icon: 'success',
+						title: 'Akun sudah dihapus',
+						text: status.message,
+						customClass: {
+							confirmButton: 'btn btn-success'
+						}
+					});
+					location.href = "{{ url('/') }}";
+				},
+				error: function(xhr, code) {
+					if (xhr.responseJSON.del_password) {
+						$('#newpassword').addClass('is-invalid');
+						$('#newpassword-error').text(xhr
+							.responseJSON.del_password);
+					}
+					Swal.fire({
+						title: 'Gagal hapus akun',
 						text: xhr.responseJSON.message ??
 							code,
 						icon: 'error',
