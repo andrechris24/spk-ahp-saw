@@ -197,8 +197,7 @@
 								'data-bs-toggle': 'modal',
 								'data-bs-target': '#RankModal'
 							}
-						},
-						{
+						}, {
 							extend: 'collection',
 							text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
 							className: 'btn btn-primary dropdown-toggle',
@@ -207,26 +206,22 @@
 									title: 'Nilai Alternatif',
 									text: '<i class="bi bi-printer me-2"></i> Print',
 									className: 'dropdown-item'
-								},
-								{
+								}, {
 									extend: 'csv',
 									title: 'Nilai Alternatif',
 									text: '<i class="bi bi-file-text me-2"></i> CSV',
 									className: 'dropdown-item'
-								},
-								{
+								}, {
 									extend: 'excel',
 									title: 'Nilai Alternatif',
 									text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
 									className: 'dropdown-item'
-								},
-								{
+								}, {
 									extend: 'pdf',
 									title: 'Nilai Alternatif',
 									text: '<i class="bi bi-file-text me-2"></i> PDF',
 									className: 'dropdown-item'
-								},
-								{
+								}, {
 									extend: 'copy',
 									title: 'Nilai Alternatif',
 									text: '<i class="bi bi-clipboard me-2"></i> Copy',
@@ -235,17 +230,16 @@
 							]
 						}
 					]
-				});
+				}).on('draw', setTableColor);
 			} catch (dterr) {
 				Toastify({
 					text: "DataTables Error: " + dterr.message,
 					duration: 8000,
-					backgroundColor: "#dc3545"
+					style:{background: "#dc3545"}
 				}).showToast();
 				if (!$.fn.DataTable.isDataTable('#table-hasil'))
 					$('#spare-button').removeClass('d-none');
 			}
-			dt_hasil.on('draw', setTableColor);
 		});
 		var options = {
 			chart: {

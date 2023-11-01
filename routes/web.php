@@ -23,6 +23,9 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 	 * Home Routes
 	 */
 	Route::get('/', 'HomeController@index')->name('home.index');
+	Route::get('home',function(){
+		return redirect()->route('home.index');
+	})->name('home.failsafe');
 	Route::middleware(['guest'])->group(function () {
 		/**
 		 * Register Routes

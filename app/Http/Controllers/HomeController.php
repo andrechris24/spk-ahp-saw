@@ -55,8 +55,8 @@ class HomeController extends Controller
 			);
 			if (!Hash::check($req['current_password'], Auth::user()->password)) {
 				return response()->json([
-					'message' => 'Password salah',
-					'current_password' => 'Password salah'
+					'message' => __('auth.password'),
+					'errors'=>['current_password' => __('auth.password')]
 				], 422);
 			}
 			if (empty($req['password'])) {
@@ -82,8 +82,8 @@ class HomeController extends Controller
 			$req = $request->validate(User::$delakunrule);
 			if (!Hash::check($req['del_password'], Auth::user()->password)) {
 				return response()->json([
-					'message' => 'Password salah',
-					'del_password' => 'Password salah'
+					'message' => __('auth.password'),
+					'errors'=>['del_password' => __('auth.password')]
 				], 422);
 			}
 			User::findOrFail(Auth::id())->delete();

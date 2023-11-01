@@ -33,6 +33,7 @@
 								<div class="form-control-icon">
 									<i class="bi bi-lock"></i>
 								</div>
+								<div class="invalid-feedback" id="del-password-error"></div>
 							</div>
 						</div>
 					</form>
@@ -61,7 +62,6 @@
 				<x-caps-lock id="capslock" />
 				<form class="form form-horizontal" method="post"
 					action="{{ url('/akun') }}" id="form-edit-account">
-					{{-- @csrf --}}
 					<div class="form-body">
 						<div class="row">
 							<div class="col-md-4"><label for="nama-user">Nama</label></div>
@@ -74,9 +74,7 @@
 										<div class="form-control-icon">
 											<i class="bi bi-person"></i>
 										</div>
-										<div class="invalid-feedback" id="name-error">
-											Masukkan Nama
-										</div>
+										<div class="invalid-feedback" id="name-error"></div>
 									</div>
 								</div>
 							</div>
@@ -90,9 +88,7 @@
 										<div class="form-control-icon">
 											<i class="bi bi-envelope"></i>
 										</div>
-										<div class="invalid-feedback" id="email-error">
-											Masukkan Email
-										</div>
+										<div class="invalid-feedback" id="email-error"></div>
 									</div>
 								</div>
 							</div>
@@ -106,9 +102,7 @@
 										<div class="form-control-icon">
 											<i class="bi bi-lock"></i>
 										</div>
-										<div class="invalid-feedback" id="current-password-error">
-											Masukkan Password Anda
-										</div>
+										<div class="invalid-feedback" id="current-password-error"></div>
 									</div>
 								</div>
 							</div>
@@ -147,9 +141,7 @@
 										<div class="form-control-icon">
 											<i class="bi bi-lock"></i>
 										</div>
-										<div class="invalid-feedback" id="confirm-password-error">
-											Password konfirmasi salah
-										</div>
+										<div class="invalid-feedback" id="confirm-password-error"></div>
 									</div>
 								</div>
 							</div>
@@ -234,31 +226,31 @@
 					});
 				},
 				error: function(xhr, code) {
-					if (xhr.responseJSON.name) {
+					if (xhr.responseJSON.errors.name) {
 						$('#nama-user').addClass('is-invalid');
 						$('#name-error').text(xhr.responseJSON
-							.name);
+							.errors.name);
 					}
-					if (xhr.responseJSON.email) {
+					if (xhr.responseJSON.errors.email) {
 						$('#email-user').addClass('is-invalid');
 						$('#email-error').text(xhr.responseJSON
-							.email);
+							.errors.email);
 					}
-					if (xhr.responseJSON.current_password) {
+					if (xhr.responseJSON.errors.current_password) {
 						$('#password-current').addClass(
 							'is-invalid');
 						$('#current-password-error').text(xhr
-							.responseJSON.current_password);
+							.responseJSON.errors.current_password);
 					}
-					if (xhr.responseJSON.password) {
+					if (xhr.responseJSON.errors.password) {
 						$('#newpassword').addClass('is-invalid');
 						$('#newpassword-error').text(xhr
-							.responseJSON.password);
+							.responseJSON.errors.password);
 					}
-					if (xhr.responseJSON.password_confirmation) {
+					if (xhr.responseJSON.errors.password_confirmation) {
 						$('#conf-password').addClass('is-invalid');
 						$('#confirm-password-error').text(xhr
-							.responseJSON.password_confirmation
+							.responseJSON.errors.password_confirmation
 						);
 					}
 					Swal.fire({
@@ -310,10 +302,10 @@
 					location.href = "{{ url('/') }}";
 				},
 				error: function(xhr, code) {
-					if (xhr.responseJSON.del_password) {
-						$('#newpassword').addClass('is-invalid');
-						$('#newpassword-error').text(xhr
-							.responseJSON.del_password);
+					if (xhr.responseJSON.errors.del_password) {
+						$('#pass-del').addClass('is-invalid');
+						$('#del-password-error').text(xhr
+							.responseJSON.errors.del_password);
 					}
 					Swal.fire({
 						title: 'Gagal hapus akun',

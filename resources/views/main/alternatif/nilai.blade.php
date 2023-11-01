@@ -18,7 +18,6 @@
 				</div>
 				<div class="modal-body">
 					<form method="POST" enctype="multipart/form-data" id="NilaiAlterForm">
-						{{-- @csrf --}}
 						<input type="hidden" name="alternatif_id" id="alternatif-hidden">
 						<input type="hidden" name="datatables_idx" id="edit-index">
 						<div class="input-group mb-3">
@@ -174,8 +173,7 @@
 								'data-bs-toggle': 'modal',
 								'data-bs-target': '#NilaiAlterModal'
 							}
-						},
-						{
+						}, {
 							extend: 'collection',
 							text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
 							className: 'btn btn-primary dropdown-toggle',
@@ -187,8 +185,7 @@
 									exportOptions: {
 										columns: 'th:not(:last-child)'
 									}
-								},
-								{
+								}, {
 									extend: 'csv',
 									title: 'Nilai Alternatif',
 									text: '<i class="bi bi-file-text me-2"></i> CSV',
@@ -196,8 +193,7 @@
 									exportOptions: {
 										columns: 'th:not(:last-child)'
 									}
-								},
-								{
+								}, {
 									extend: 'excel',
 									title: 'Nilai Alternatif',
 									text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
@@ -205,8 +201,7 @@
 									exportOptions: {
 										columns: 'th:not(:last-child)'
 									}
-								},
-								{
+								}, {
 									extend: 'pdf',
 									title: 'Nilai Alternatif',
 									text: '<i class="bi bi-file-text me-2"></i> PDF',
@@ -214,8 +209,7 @@
 									exportOptions: {
 										columns: 'th:not(:last-child)'
 									}
-								},
-								{
+								}, {
 									extend: 'copy',
 									title: 'Nilai Alternatif',
 									text: '<i class="bi bi-clipboard me-2"></i> Copy',
@@ -227,17 +221,16 @@
 							]
 						}
 					]
-				});
+				}).on('draw', setTableColor);
 			} catch (dterr) {
 				Toastify({
 					text: "DataTables Error: " + dterr.message,
 					duration: 8000,
-					backgroundColor: "#dc3545"
+					style:{background: "#dc3545"}
 				}).showToast();
 				if (!$.fn.DataTable.isDataTable('#table-nilaialt'))
 					$('#spare-button').removeClass('d-none');
 			}
-			nilaialtdt.on('draw', setTableColor);
 		});
 		$(document).on('click', '.delete-record', function() {
 			var score_id = $(this).data('bs-id'),
@@ -302,6 +295,18 @@
 					});
 				}
 			});
+		}).on('click', '.edit-record', function() {
+			var dtparent = $(this).parents('tr'),
+				rownum = nilaialtdt.row(dtparent).index();
+
+			// changing the title of offcanvas
+			$('#NilaiAlterLabel').html('Edit Nilai Alternatif');
+			$('#alternatif-hidden').val($(this).data('bsName'));
+			$('#alternatif-value').val($(this).data('bsName'));
+			$('#alternatif-value').prop('disabled', true);
+			$('#edit-index').val(rownum);
+			const data = $(this).data('bsScore');
+			data.forEach(split);
 		});
 		$('#NilaiAlterForm').on('submit', function(event) {
 			event.preventDefault();
@@ -356,20 +361,6 @@
 					});
 				}
 			});
-		});
-		// edit record
-		$(document).on('click', '.edit-record', function() {
-			var dtparent = $(this).parents('tr'),
-				rownum = nilaialtdt.row(dtparent).index();
-
-			// changing the title of offcanvas
-			$('#NilaiAlterLabel').html('Edit Nilai Alternatif');
-			$('#alternatif-hidden').val($(this).data('bsName'));
-			$('#alternatif-value').val($(this).data('bsName'));
-			$('#alternatif-value').prop('disabled', true);
-			$('#edit-index').val(rownum);
-			const data = $(this).data('bsScore');
-			data.forEach(split);
 		});
 		// clearing form data when modal hidden
 		$('#NilaiAlterModal').on('hidden.bs.modal', function() {

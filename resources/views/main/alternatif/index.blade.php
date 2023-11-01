@@ -16,7 +16,6 @@
 				</div>
 				<div class="modal-body">
 					<form method="POST" enctype="multipart/form-data" id="AlterForm">
-						{{-- @csrf --}}
 						<input type="hidden" name="id" id="alter-id">
 						<label for="alter-name">Nama Alternatif</label>
 						<div class="form-group">
@@ -69,6 +68,7 @@
 		var dt_alternatif;
 		$(document).ready(function() {
 			try {
+				$.fn.dataTable.ext.errMode = 'none';
 				dt_alternatif = $('#table-alter').DataTable({
 					"stateSave": true,
 					"lengthChange": false,
@@ -79,11 +79,9 @@
 					ajax: "{{ route('alternatif.data') }}",
 					columns: [{
 							data: 'id'
-						},
-						{
+						}, {
 							data: 'name'
-						},
-						{
+						}, {
 							data: 'id'
 						}
 					],
@@ -132,8 +130,7 @@
 									exportOptions: {
 										columns: [1]
 									}
-								},
-								{
+								}, {
 									extend: 'csv',
 									title: 'Alternatif',
 									text: '<i class="bi bi-file-text me-2"></i> CSV',
@@ -141,8 +138,7 @@
 									exportOptions: {
 										columns: [1]
 									}
-								},
-								{
+								}, {
 									extend: 'excel',
 									title: 'Alternatif',
 									text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
@@ -150,8 +146,7 @@
 									exportOptions: {
 										columns: [1]
 									}
-								},
-								{
+								}, {
 									extend: 'pdf',
 									title: 'Alternatif',
 									text: '<i class="bi bi-file-text me-2"></i> PDF',
@@ -159,8 +154,7 @@
 									exportOptions: {
 										columns: [1]
 									}
-								},
-								{
+								}, {
 									extend: 'copy',
 									title: 'Alternatif',
 									text: '<i class="bi bi-clipboard me-2"></i> Copy',
@@ -172,28 +166,23 @@
 							]
 						}
 					],
-				});
+				}).on('error.dt', function(e, settings, techNote,
+					message) {
+					Toastify({
+						text: message,
+						style:{background: "#ffc107"},
+						duration: 10000
+					}).showToast();
+				}).on('draw', setTableColor);
 			} catch (dterr) {
 				Toastify({
 					text: "DataTables Error: " + dterr.message,
 					duration: 8000,
-					backgroundColor: "#dc3545"
+					style:{background: "#dc3545"}
 				}).showToast();
 				if (!$.fn.DataTable.isDataTable('#table-alter'))
 					$('#spare-button').removeClass('d-none');
 			}
-			$.fn.dataTable.ext.errMode = 'none';
-
-			dt_alternatif.on('error.dt', function(e, settings, techNote,
-				message) {
-				Toastify({
-					text: message,
-					backgroundColor: "#ffc107",
-					duration: 10000
-				}).showToast();
-				console.warn(techNote);
-			});
-			dt_alternatif.on('draw', setTableColor);
 		});
 		// Delete Record
 		$(document).on('click', '.delete-record', function() {
@@ -261,6 +250,34 @@
 					});
 				}
 			});
+		}).on('click', '.edit-record', function() {
+			var alt_id = $(this).data('id');
+
+			// changing the title of offcanvas
+			$('#AlterLabel').html('Edit Alternatif');
+			$('#AlterForm :input').prop('disabled', true);
+			$('.data-submit').prop('disabled', true);
+			$('.spinner-grow').removeClass('d-none');
+
+			// get data
+			$.get('/alternatif/edit/' + alt_id, function(data) {
+				$('#alter-id').val(data.id);
+				$('#alter-name').val(data.name);
+			}).fail(function(xhr, status) {
+				if (xhr.status === 404) dt_alternatif.draw();
+				Swal.fire({
+					icon: 'error',
+					title: 'Kesalahan',
+					text: xhr.responseJSON.message ?? status,
+					customClass: {
+						confirmButton: 'btn btn-success'
+					}
+				});
+			}).always(function() {
+				$('#AlterForm :input').prop('disabled', false);
+				$('.data-submit').prop('disabled', false);
+				$('.spinner-grow').addClass('d-none');
+			});
 		});
 		$('#AlterForm').on('submit', function(event) {
 			event.preventDefault();
@@ -294,10 +311,10 @@
 					});
 				},
 				error: function(xhr, code) {
-					if (xhr.responseJSON.name) {
+					if (xhr.responseJSON.errors.name) {
 						$('#alter-name').addClass('is-invalid');
 						$('#alter-error').text(xhr.responseJSON
-							.name);
+							.errors.name);
 					}
 					Swal.fire({
 						title: 'Gagal',
@@ -309,36 +326,6 @@
 						}
 					});
 				}
-			});
-		});
-		// edit record
-		$(document).on('click', '.edit-record', function() {
-			var alt_id = $(this).data('id');
-
-			// changing the title of offcanvas
-			$('#AlterLabel').html('Edit Alternatif');
-			$('#AlterForm :input').prop('disabled', true);
-			$('.data-submit').prop('disabled', true);
-			$('.spinner-grow').removeClass('d-none');
-
-			// get data
-			$.get('/alternatif/edit/' + alt_id, function(data) {
-				$('#alter-id').val(data.id);
-				$('#alter-name').val(data.name);
-			}).fail(function(xhr, status) {
-				if (xhr.status === 404) dt_alternatif.draw();
-				Swal.fire({
-					icon: 'error',
-					title: 'Kesalahan',
-					text: xhr.responseJSON.message ?? status,
-					customClass: {
-						confirmButton: 'btn btn-success'
-					}
-				});
-			}).always(function() {
-				$('#AlterForm :input').prop('disabled', false);
-				$('.data-submit').prop('disabled', false);
-				$('.spinner-grow').addClass('d-none');
 			});
 		});
 		// clearing form data when modal hidden

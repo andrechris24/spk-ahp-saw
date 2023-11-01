@@ -17,7 +17,6 @@
 				<div class="modal-body">
 					<form action="{{ url('/kriteria/sub/store') }}" method="post"
 						enctype="multipart/form-data" id="SubCritForm">
-						{{-- @csrf --}}
 						<input type="hidden" name="id" id="subkriteria-id">
 						@if ($compskr > 0)
 							<div class="alert alert-warning" id="subkriteria-alert">
@@ -94,6 +93,7 @@
 		var dt_subkriteria;
 		$(document).ready(function() {
 			try {
+				$.fn.dataTable.ext.errMode = 'none';
 				dt_subkriteria = $('#table-subcrit').DataTable({
 					"stateSave": true,
 					"lengthChange": false,
@@ -104,17 +104,13 @@
 					ajax: "{{ route('subkriteria.data') }}",
 					columns: [{
 							data: 'id'
-						},
-						{
+						}, {
 							data: 'name'
-						},
-						{
+						}, {
 							data: 'kriteria_id'
-						},
-						{
+						}, {
 							data: 'bobot'
-						},
-						{
+						}, {
 							data: 'id'
 						}
 					],
@@ -125,8 +121,7 @@
 								return meta.row + meta.settings
 									._iDisplayStart + 1;
 							}
-						},
-						{
+						}, {
 							targets: 2,
 							render: function(data, type, full) {
 								return '<span title="' +
@@ -134,8 +129,7 @@
 									data +
 									'</span>';
 							}
-						},
-						{ //Aksi
+						}, { //Aksi
 							orderable: false,
 							targets: -1,
 							render: function(data, type, full) {
@@ -159,8 +153,7 @@
 								'data-bs-toggle': 'modal',
 								'data-bs-target': '#SubCritModal'
 							}
-						},
-						{
+						}, {
 							extend: 'collection',
 							text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
 							className: 'btn btn-primary dropdown-toggle',
@@ -172,8 +165,7 @@
 									exportOptions: {
 										columns: [1, 2, 3]
 									}
-								},
-								{
+								}, {
 									extend: 'csv',
 									title: 'Sub Kriteria',
 									text: '<i class="bi bi-file-text me-2"></i> CSV',
@@ -181,8 +173,7 @@
 									exportOptions: {
 										columns: [1, 2, 3]
 									}
-								},
-								{
+								}, {
 									extend: 'excel',
 									title: 'Sub Kriteria',
 									text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
@@ -190,8 +181,7 @@
 									exportOptions: {
 										columns: [1, 2, 3]
 									}
-								},
-								{
+								}, {
 									extend: 'pdf',
 									title: 'Sub Kriteria',
 									text: '<i class="bi bi-file-text me-2"></i> PDF',
@@ -199,8 +189,7 @@
 									exportOptions: {
 										columns: [1, 2, 3]
 									}
-								},
-								{
+								}, {
 									extend: 'copy',
 									title: 'Sub Kriteria',
 									text: '<i class="bi bi-clipboard me-2"></i> Copy',
@@ -212,28 +201,23 @@
 							]
 						}
 					],
-				});
+				}).on('error.dt', function(e, settings, techNote,
+					message) {
+					Toastify({
+						text: message,
+						style:{background: "#ffc107"},
+						duration: 10000
+					}).showToast();
+				}).on('draw', setTableColor);
 			} catch (dterr) {
 				Toastify({
 					text: "DataTables Error: " + dterr.message,
-					duration: 7000,
-					backgroundColor: "#dc3545"
+					duration: 8000,
+					style:{background: "#dc3545"}
 				}).showToast();
 				if (!$.fn.DataTable.isDataTable('#table-subcrit'))
 					$('#spare-button').removeClass('d-none');
 			}
-			$.fn.dataTable.ext.errMode = 'none';
-
-			dt_subkriteria.on('error.dt', function(e, settings, techNote,
-				message) {
-				Toastify({
-					text: message,
-					backgroundColor: "#ffc107",
-					duration: 10000
-				}).showToast();
-				console.warn(techNote);
-			});
-			dt_subkriteria.on('draw', setTableColor);
 		});
 		// Delete Record
 		$(document).on('click', '.delete-record', function() {
@@ -259,7 +243,6 @@
 					$.ajax({
 						type: 'DELETE',
 						url: '/kriteria/sub/del/' + sub_id,
-						// data: {  "_token": "{{ csrf_token() }}" },
 						success: function(data) {
 							dt_subkriteria.draw();
 							Swal.fire({
@@ -299,6 +282,37 @@
 					});
 				}
 			});
+		}).on('click', '.edit-record', function() {
+			var sub_id = $(this).data('id');
+
+			// changing the title of offcanvas
+			$('#SubCritForm :input').prop('disabled', true);
+			$('#SubCritLabel').html('Edit Sub Kriteria');
+			$('.data-submit').prop('disabled', true);
+			$('.spinner-grow').removeClass('d-none');
+			if ($('#subkriteria-alert').length)
+				$('#subkriteria-alert').addClass('d-none');
+
+			// get data
+			$.get('/kriteria/sub/edit/' + sub_id, function(data) {
+				$('#subkriteria-id').val(data.id);
+				$('#nama-sub').val(data.name);
+				$('#kriteria-select').val(data.kriteria_id);
+			}).fail(function(xhr, status) {
+				if (xhr.status === 404) dt_subkriteria.draw();
+				Swal.fire({
+					icon: 'error',
+					title: 'Kesalahan',
+					text: xhr.responseJSON.message ?? status,
+					customClass: {
+						confirmButton: 'btn btn-success'
+					}
+				});
+			}).always(function() {
+				$('#SubCritForm :input').prop('disabled', false);
+				$('.data-submit').prop('disabled', false);
+				$('.spinner-grow').addClass('d-none');
+			});
 		});
 		$('#SubCritForm').on('submit', function(event) {
 			event.preventDefault();
@@ -334,16 +348,16 @@
 					});
 				},
 				error: function(xhr, code) {
-					if (xhr.responseJSON.name) {
+					if (xhr.responseJSON.errors.name) {
 						$('#nama-sub').addClass('is-invalid');
 						$('#nama-error').text(xhr.responseJSON
-							.name);
+							.errors.name);
 					}
-					if (xhr.responseJSON.kriteria_id) {
+					if (xhr.responseJSON.errors.kriteria_id) {
 						$('#kriteria-select').addClass(
 							'is-invalid');
 						$('#kriteria-error').text(xhr.responseJSON
-							.kriteria_id);
+							.errors.kriteria_id);
 					}
 					Swal.fire({
 						title: 'Gagal',
@@ -355,39 +369,6 @@
 						}
 					});
 				}
-			});
-		});
-		// edit record
-		$(document).on('click', '.edit-record', function() {
-			var sub_id = $(this).data('id');
-
-			// changing the title of offcanvas
-			$('#SubCritForm :input').prop('disabled', true);
-			$('#SubCritLabel').html('Edit Sub Kriteria');
-			$('.data-submit').prop('disabled', true);
-			$('.spinner-grow').removeClass('d-none');
-			if ($('#subkriteria-alert').length)
-				$('#subkriteria-alert').addClass('d-none');
-
-			// get data
-			$.get('/kriteria/sub/edit/' + sub_id, function(data) {
-				$('#subkriteria-id').val(data.id);
-				$('#nama-sub').val(data.name);
-				$('#kriteria-select').val(data.kriteria_id);
-			}).fail(function(xhr, status) {
-				if (xhr.status === 404) dt_subkriteria.draw();
-				Swal.fire({
-					icon: 'error',
-					title: 'Kesalahan',
-					text: xhr.responseJSON.message ?? status,
-					customClass: {
-						confirmButton: 'btn btn-success'
-					}
-				});
-			}).always(function() {
-				$('#SubCritForm :input').prop('disabled', false);
-				$('.data-submit').prop('disabled', false);
-				$('.spinner-grow').addClass('d-none');
 			});
 		});
 		// clearing form data when modal hidden

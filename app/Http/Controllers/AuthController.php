@@ -22,7 +22,7 @@ class AuthController extends Controller
 	public function showlogin()
 	{
 		if (Auth::viaRemember() || Auth::check())
-			return redirect('/');
+			return redirect()->route('home.index');
 		return view('admin.login');
 	}
 	public function login(Request $request)
@@ -34,9 +34,9 @@ class AuthController extends Controller
 				Auth::login($user, $request->get('remember'));
 				Session::put('avatar-bg', User::$avatarbg[random_int(0, 8)]);
 				Session::regenerate();
-				return redirect('/');
+				return redirect()->route('home.index');
 			}
-			return back()->withInput()->withErrors(['password' => 'Password salah']);
+			return back()->withInput()->withErrors(['password' => __('auth.password')]);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withInput()->withError('Gagal login: ' . $e->errorInfo[2]);
@@ -60,7 +60,7 @@ class AuthController extends Controller
 	public function showregister()
 	{
 		if (Auth::viaRemember() || Auth::check())
-			return redirect('/');
+			return redirect()->route('home.index');
 		return view('admin.register');
 	}
 	public function register(Request $request)
@@ -78,9 +78,8 @@ class AuthController extends Controller
 			]);
 			$credentials['password'] = Hash::make($credentials['password']);
 			User::create($credentials);
-			return redirect('/login')
-				->withSuccess("Akun sudah dibuat. 
-					Silahkan login menggunakan akun yang sudah didaftarkan.");
+			return redirect('/login')->withSuccess("Akun sudah dibuat. ".
+					"Silahkan login menggunakan akun yang sudah didaftarkan.");
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withInput()
@@ -90,7 +89,7 @@ class AuthController extends Controller
 	public function showForgetPasswordForm()
 	{
 		if (Auth::viaRemember() || Auth::check())
-			return redirect('/');
+			return redirect()->route('home.index');
 		return view('admin.forget-password');
 	}
 	public function submitForgetPasswordForm(Request $request)
@@ -99,11 +98,9 @@ class AuthController extends Controller
 			$request->validate(User::$forgetrule, User::$forgetmsg);
 			$status = Password::sendResetLink($request->only('email'));
 			if ($status === Password::RESET_LINK_SENT) {
-				return back()->withSuccess('Link reset password sudah dikirim. ' .
-					'Cek folder Spam jika belum masuk.');
+				return back()->withSuccess(__('passwords.sent'));
 			} else if ($status === Password::RESET_THROTTLED) {
-				return back()->withInput()
-					->withError('Tunggu sebentar sebelum meminta reset password lagi.');
+				return back()->withInput()->withError(__('passwords.throttled'));
 			}
 		} catch (TransportException $err) {
 			Log::error($err);
@@ -121,7 +118,7 @@ class AuthController extends Controller
 	public function showResetPasswordForm($token)
 	{
 		if (Auth::viaRemember() || Auth::check())
-			return redirect('/');
+			return redirect()->route('home.index');
 		try {
 			$enctoken = DB::table('password_resets')->where('email', $_GET['email'])
 				->first();
@@ -132,34 +129,42 @@ class AuthController extends Controller
 				);
 			}
 			if (!Hash::check($token, $enctoken->token))
-				return redirect('/login')->withError('Token reset password tidak valid');
+				return redirect('/login')->withError(__('passwords.token'));
 			return view(
 				'admin.reset-password',
 				['token' => $token, 'email' => $_GET['email']]
 			);
 		} catch (QueryException $e) {
+			Log::error($e);
 			return redirect('/forget-password')
 				->withError('Kesalahan: ' . $e->errorInfo[2]);
+		// }catch(ModelNotFoundException){
+		// 	return redirect('/forget-password')->withError(__(''));
 		}
 	}
 	public function submitResetPasswordForm(Request $request)
 	{
-		$request->validate(User::$resetpass, User::$resetmsg);
-		$status = Password::reset(
-			$request->only('email', 'password', 'password_confirmation', 'token'),
-			function (User $user, string $password) {
-				$user->forceFill(['password' => Hash::make($password)]);
-				$user->save();
-				event(new PasswordReset($user));
-			}
-		);
-		if ($status === Password::PASSWORD_RESET) {
-			return redirect('/login')->withSuccess('Reset password berhasil.
-				Silahkan login menggunakan password yang Anda buat.');
-		} else if ($status === Password::INVALID_TOKEN)
-			return back()->withError('Reset password gagal: Token tidak valid');
-		else if ($status === Password::INVALID_USER)
-			return back()->withError('Reset password gagal: Akun tidak ditemukan');
-		return back()->withError('Reset password gagal: Kesalahan tidak diketahui');
+		try {
+			$request->validate(User::$resetpass, User::$resetmsg);
+			$status = Password::reset(
+				$request->only('email', 'password', 'password_confirmation', 'token'),
+				function (User $user, string $password) {
+					$user->forceFill(['password' => Hash::make($password)]);
+					$user->save();
+					event(new PasswordReset($user));
+				}
+			);
+			if ($status === Password::PASSWORD_RESET) {
+				return redirect('/login')->withSuccess('Reset password berhasil.
+					Silahkan login menggunakan password yang Anda buat.');
+			} else if ($status === Password::INVALID_TOKEN)
+				return back()->withError('Reset password gagal: '.__('passwords.token'));
+			else if ($status === Password::INVALID_USER)
+				return back()->withError('Reset password gagal: '.__('passwords.user'));
+			return back()->withError('Reset password gagal: Kesalahan tidak diketahui');
+		} catch (QueryException $e) {
+			Log::error($e);
+			return back()->withError('Reset password gagal: ' . $e->errorInfo[2]);
+		}
 	}
 }

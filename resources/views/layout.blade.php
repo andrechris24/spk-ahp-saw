@@ -37,7 +37,7 @@
 				<div class="sidebar-header position-relative">
 					<div class="d-flex justify-content-between align-items-center">
 						<div class="logo">
-							<a href="{{ url('/home') }}">
+							<a href="{{ route('home.index') }}">
 								<img src="{{ asset('assets/compiled/svg/logo.svg') }}"
 									alt="Logo" />
 							</a>
@@ -86,48 +86,36 @@
 					<ul class="menu">
 						@auth
 							<li class="sidebar-title">Menu</li>
-							<li
-								class="sidebar-item 
-							{{ request()->is('/') ? 'active' : '' }}">
-								<a href="{{ url('/') }}" class="sidebar-link">
+							<li class="sidebar-item">
+								<a href="{{ route('home.index') }}" class="sidebar-link">
 									<i class="bi bi-house-fill"></i>
 									<span>Beranda</span>
 								</a>
 							</li>
-							<li
-								class="sidebar-item has-sub
-							{{ request()->is('kriteria*') || request()->is('alternatif') ? 'active' : '' }}">
+							<li class="sidebar-item has-sub">
 								<a href="#" class="sidebar-link">
 									<i class="bi bi-clipboard-data-fill"></i>
 									<span>Data Master</span>
 								</a>
 								<ul class="submenu">
-									<li
-										class="submenu-item 
-									{{ request()->is('kriteria') ? 'active' : '' }}">
-										<a href="{{ url('kriteria') }}" class="submenu-link">
+									<li class="submenu-item">
+										<a href="{{ route('kriteria.index') }}" class="submenu-link">
 											Kriteria
 										</a>
 									</li>
-									<li
-										class="submenu-item 
-									{{ request()->is('kriteria/sub') ? 'active' : '' }}">
-										<a href="{{ url('kriteria/sub') }}" class="submenu-link">
+									<li class="submenu-item">
+										<a href="{{ route('subkriteria.index') }}" class="submenu-link">
 											Sub Kriteria
 										</a>
 									</li>
-									<li
-										class="submenu-item 
-									{{ request()->is('alternatif') ? 'active' : '' }}">
-										<a href="{{ url('alternatif') }}" class="submenu-link">
+									<li class="submenu-item">
+										<a href="{{ route('alternatif.index') }}" class="submenu-link">
 											Alternatif
 										</a>
 									</li>
 								</ul>
 							</li>
-							<li
-								class="sidebar-item has-sub 
-							{{ request()->is('bobot*') ? 'active' : '' }}">
+							<li class="sidebar-item has-sub {{ (request()->is('bobot/hasil')||request()->is('bobot/sub/*')) ? 'active' : '' }}">
 								<a href="#" class="sidebar-link">
 									<i class="bi bi-calculator-fill"></i>
 									<span>Perhitungan AHP</span>
@@ -135,30 +123,30 @@
 								<ul class="submenu">
 									<li
 										class="submenu-item
-									 {{ request()->is('bobot') || request()->is('bobot/hasil') ? 'active' : '' }}">
-										<a href="{{ url('bobot') }}" class="submenu-link">
+									 {{ request()->is('bobot/hasil') ? 'active' : '' }}">
+										<a href="{{ route('bobotkriteria.index') }}" class="submenu-link">
 											Perbandingan Kriteria
 										</a>
 									</li>
 									<li
 										class="submenu-item
-									 {{ request()->is('bobot/sub*') ? 'active' : '' }}">
-										<a href="{{ url('bobot/sub') }}" class="submenu-link">
+									 {{ request()->is('bobot/sub/*') ? 'active' : '' }}">
+										<a href="{{ route('bobotsubkriteria.pick') }}" class="submenu-link">
 											Perbandingan Sub Kriteria
 										</a>
 									</li>
 								</ul>
 							</li>
 							<li
-								class="sidebar-item {{ request()->is('alternatif/nilai') ? 'active' : '' }}">
-								<a href="{{ url('alternatif/nilai') }}" class="sidebar-link">
+								class="sidebar-item">
+								<a href="{{ route('nilai.index') }}" class="sidebar-link">
 									<i class="bi bi-pen-fill"></i>
 									<span>Perhitungan SAW</span>
 								</a>
 							</li>
 							<li
-								class="sidebar-item {{ request()->is('alternatif/hasil') ? 'active' : '' }}">
-								<a href="{{ url('alternatif/hasil') }}" class="sidebar-link">
+								class="sidebar-item">
+								<a href="{{ route('nilai.show') }}" class="sidebar-link">
 									<i class="bi bi-bar-chart-line-fill"></i>
 									<span>Hasil</span>
 								</a>
@@ -273,6 +261,21 @@
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript">
+		const currentRoute = "{{ url()->current() }}",
+		links = document.querySelectorAll('.sidebar-link, .submenu-link');
+		var list,sublist;
+		links.forEach((link) => {
+			list = link.closest('li.sidebar-item');
+			if (link.href == currentRoute) {
+				list.classList.add('active');
+				if(link.classList.contains('submenu-link')){
+					sublist=link.closest('li.submenu-item');
+					sublist.classList.add('active');
+				}
+			}
+		});
+	</script>
 	<script src="{{ asset('assets/static/js/components/dark.js') }}"></script>
 	<script
 		src="{{ asset('assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}">

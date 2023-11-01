@@ -16,7 +16,6 @@
 				</div>
 				<div class="modal-body">
 					<form method="POST" enctype="multipart/form-data" id="CritForm">
-						{{-- @csrf --}}
 						<input type="hidden" name="id" id="kriteria-id">
 						@if ($compkr > 0)
 							<div class="alert alert-warning" id="kriteria-alert">
@@ -97,6 +96,7 @@
 		var dt_kriteria;
 		$(document).ready(function() {
 			try {
+				$.fn.dataTable.ext.errMode = 'none';
 				dt_kriteria = $('#table-crit').DataTable({
 					"stateSave": true,
 					"lengthChange": false,
@@ -107,20 +107,15 @@
 					ajax: "{{ route('kriteria.data') }}",
 					columns: [{
 							data: 'id'
-						},
-						{
+						},  {
 							data: 'name'
-						},
-						{
+						}, {
 							data: 'type'
-						},
-						{
+						}, {
 							data: 'desc'
-						},
-						{
+						}, {
 							data: 'bobot'
-						},
-						{
+						}, {
 							data: 'id'
 						}
 					],
@@ -131,8 +126,7 @@
 								return meta.row + meta.settings
 									._iDisplayStart + 1;
 							}
-						},
-						{ //Aksi
+						}, { //Aksi
 							orderable: false,
 							targets: -1,
 							render: function(data, type, full) {
@@ -156,8 +150,7 @@
 								'data-bs-toggle': 'modal',
 								'data-bs-target': '#CritModal'
 							}
-						},
-						{
+						}, {
 							extend: 'collection',
 							text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
 							className: 'btn btn-primary dropdown-toggle',
@@ -169,8 +162,7 @@
 									exportOptions: {
 										columns: [1, 2, 3, 4]
 									}
-								},
-								{
+								}, {
 									extend: 'csv',
 									title: 'Kriteria',
 									text: '<i class="bi bi-file-text me-2"></i> CSV',
@@ -178,8 +170,7 @@
 									exportOptions: {
 										columns: [1, 2, 3, 4]
 									}
-								},
-								{
+								}, {
 									extend: 'excel',
 									title: 'Kriteria',
 									text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
@@ -187,8 +178,7 @@
 									exportOptions: {
 										columns: [1, 2, 3, 4]
 									}
-								},
-								{
+								}, {
 									extend: 'pdf',
 									title: 'Kriteria',
 									text: '<i class="bi bi-file-text me-2"></i> PDF',
@@ -196,8 +186,7 @@
 									exportOptions: {
 										columns: [1, 2, 3, 4]
 									}
-								},
-								{
+								}, {
 									extend: 'copy',
 									title: 'Kriteria',
 									text: '<i class="bi bi-clipboard me-2"></i> Copy',
@@ -209,27 +198,22 @@
 							]
 						}
 					],
-				});
+				}).on('error.dt', function(e, settings, techNote,
+					message) {
+					Toastify({
+						text: message,
+						style:{background: "#ffc107"},
+						duration: 10000
+					}).showToast();
+				}).on('draw', setTableColor);
 			} catch (dterr) {
 				Toastify({
 					text: "DataTables Error: " + dterr.message,
-					backgroundColor: "#dc3545"
+					style:{background: "#dc3545"}
 				}).showToast();
 				if (!$.fn.DataTable.isDataTable('#table-crit'))
 					$('#spare-button').removeClass('d-none');
 			}
-			$.fn.dataTable.ext.errMode = 'none';
-
-			dt_kriteria.on('error.dt', function(e, settings, techNote,
-				message) {
-				Toastify({
-					text: message,
-					backgroundColor: "#ffc107",
-					duration: 10000
-				}).showToast();
-				console.warn(techNote);
-			});
-			dt_kriteria.on('draw', setTableColor);
 		});
 		// Delete Record
 		$(document).on('click', '.delete-record', function() {
@@ -296,6 +280,37 @@
 					});
 				}
 			});
+		}).on('click', '.edit-record', function() {
+			var kr_id = $(this).data('id');
+
+			// changing the title of offcanvas
+			$('#CritForm :input').prop('disabled', true);
+			$('#CritLabel').html('Edit Kriteria');
+			$('.data-submit').prop('disabled', true);
+			$('.spinner-grow').removeClass('d-none');
+			if ($('#kriteria-alert').length)
+				$('#kriteria-alert').addClass('d-none');
+			// get data
+			$.get('/kriteria/edit/' + kr_id, function(data) {
+				$('#kriteria-id').val(data.id);
+				$('#nama-krit').val(data.name);
+				$('#tipe-kriteria').val(data.type);
+				$('#deskripsi').val(data.desc);
+			}).fail(function(xhr, status) {
+				if (xhr.status === 404) dt_kriteria.draw();
+				Swal.fire({
+					icon: 'error',
+					title: 'Kesalahan',
+					text: xhr.responseJSON.message ?? status,
+					customClass: {
+						confirmButton: 'btn btn-success'
+					}
+				});
+			}).always(function() {
+				$('#CritForm :input').prop('disabled', false);
+				$('.data-submit').prop('disabled', false);
+				$('.spinner-grow').addClass('d-none');
+			});
 		});
 		$('#CritForm').on('submit', function(event) {
 			event.preventDefault();
@@ -329,24 +344,24 @@
 					});
 				},
 				error: function(xhr, code) {
-					if (xhr.responseJSON.name) {
+					if (xhr.responseJSON.errors.name) {
 						$('#nama-krit').addClass('is-invalid');
 						$('#nama-error').text(xhr.responseJSON
-							.name);
+							.errors.name);
 					}
-					if (xhr.responseJSON.type) {
+					if (xhr.responseJSON.errors.type) {
 						$('#tipe-kriteria').addClass('is-invalid');
 						$('#type-error').text(xhr.responseJSON
-							.type);
+							.errors.type);
 					}
-					if (xhr.responseJSON.desc) {
+					if (xhr.responseJSON.errors.desc) {
 						$('#deskripsi').addClass('is-invalid');
 						$('#desc-error').text(xhr.responseJSON
-							.desc);
+							.errors.desc);
 					}
 					Swal.fire({
 						title: 'Gagal',
-						text: xhr.responseJSON.message ??
+						text: xhr.responseJSON.errors.message ??
 							code,
 						icon: 'error',
 						customClass: {
@@ -354,39 +369,6 @@
 						}
 					});
 				}
-			});
-		});
-		// edit record
-		$(document).on('click', '.edit-record', function() {
-			var kr_id = $(this).data('id');
-
-			// changing the title of offcanvas
-			$('#CritForm :input').prop('disabled', true);
-			$('#CritLabel').html('Edit Kriteria');
-			$('.data-submit').prop('disabled', true);
-			$('.spinner-grow').removeClass('d-none');
-			if ($('#kriteria-alert').length)
-				$('#kriteria-alert').addClass('d-none');
-			// get data
-			$.get('/kriteria/edit/' + kr_id, function(data) {
-				$('#kriteria-id').val(data.id);
-				$('#nama-krit').val(data.name);
-				$('#tipe-kriteria').val(data.type);
-				$('#deskripsi').val(data.desc);
-			}).fail(function(xhr, status) {
-				if (xhr.status === 404) dt_kriteria.draw();
-				Swal.fire({
-					icon: 'error',
-					title: 'Kesalahan',
-					text: xhr.responseJSON.message ?? status,
-					customClass: {
-						confirmButton: 'btn btn-success'
-					}
-				});
-			}).always(function() {
-				$('#CritForm :input').prop('disabled', false);
-				$('.data-submit').prop('disabled', false);
-				$('.spinner-grow').addClass('d-none');
 			});
 		});
 		// clearing form data when modal hidden
