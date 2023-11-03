@@ -38,6 +38,11 @@ class SubKriteriaController extends Controller
 		$request->validate(SubKriteria::$rules, SubKriteria::$message);
 		$req = $request->all();
 		try {
+			if (SubKriteria::where('kriteria_id', $req['kriteria_id'])->count() >= 20) {
+				return response()->json([
+					'message' => 'Batas jumlah sub kriteria per kriteria sudah tercapai.'
+				], 422);
+			}
 			$sub = SubKriteria::create($req);
 			$namakriteria = $sub->kriteria->name;
 			$querytype = "Sub Kriteria sudah ditambah. ";
@@ -45,7 +50,7 @@ class SubKriteriaController extends Controller
 			if ($cek > 0) {
 				SubKriteriaComp::where('idkriteria', $req['kriteria_id'])->delete();
 				SubKriteria::where('kriteria_id', $req['kriteria_id'])
-					->update(['bobot', 0.00000]);
+					->update(['bobot'=>0.00000]);
 				$querytype .= "Silahkan input ulang perbandingan sub kriteria $namakriteria.";
 			}
 			return response()->json(['message' => $querytype]);
@@ -98,6 +103,7 @@ class SubKriteriaController extends Controller
 				SubKriteria::where('kriteria_id', $idkriteria)
 					->update(['bobot' => 0.00000]);
 				$message .= "Silahkan input ulang perbandingan sub kriteria $namakriteria.";
+				// if($subkrcomp->count()==0) SubKriteriaComp::truncate();
 			}
 			return response()->json(['message' => $message]);
 		} catch (ModelNotFoundException $e) {

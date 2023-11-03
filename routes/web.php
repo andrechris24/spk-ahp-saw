@@ -23,7 +23,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 	 * Home Routes
 	 */
 	Route::get('/', 'HomeController@index')->name('home.index');
-	Route::get('home',function(){
+	Route::get('home', function () {
 		return redirect()->route('home.index');
 	})->name('home.failsafe');
 	Route::middleware(['guest'])->group(function () {
@@ -112,6 +112,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			Route::get('hasil', 'NilaiController@show')->name('nilai.show');
 			Route::prefix('nilai')->group(function () {
 				Route::get('/', 'NilaiController@index')->name('nilai.index');
+				Route::get('data','NilaiController@datatables')->name('nilai.data');
 				Route::post('store', 'NilaiController@store')->name('nilai.store');
 				Route::post('update', 'NilaiController@update')->name('nilai.update');
 				Route::delete('del/{id}', 'NilaiController@destroy')->name('nilai.delete');

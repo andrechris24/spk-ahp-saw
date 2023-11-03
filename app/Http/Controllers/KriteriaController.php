@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kriteria;
 use App\Models\KriteriaComp;
+use App\Models\Nilai;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -25,14 +26,21 @@ class KriteriaController extends Controller
 	{
 		$request->validate(Kriteria::$rules, Kriteria::$message);
 		try {
+			if (Kriteria::count() >= 20) {
+				return response()->json([
+					'message' => 'Jumlah kriteria maksimal sudah tercapai.'
+				], 422);
+			}
 			Kriteria::create($request->all());
-			$querytype = "Kriteria sudah diinput. ";
+			if(Nilai::exists())
+				$message.="Kriteria sudah ditambah dan penilaian alternatif sudah direset. ";
+			else $message = "Kriteria sudah diinput. ";
 			if (KriteriaComp::exists()) {
 				KriteriaComp::truncate();
 				Kriteria::where('bobot', '<>', 0.00000)->update(['bobot' => 0.00000]);
-				$querytype .= "Silahkan input ulang perbandingan kriteria.";
+				$message .= "Silahkan input ulang perbandingan kriteria.";
 			}
-			return response()->json(['message' => $querytype]);
+			return response()->json(['message' => $message]);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->errorInfo[2]], 500);

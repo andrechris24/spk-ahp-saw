@@ -20,7 +20,7 @@ class SubKriteria extends Model
 		'name.required' => 'Nama sub kriteria harus diisi',
 		'kriteria_id.required' => 'Kriteria harus dipilih',
 		'kriteria_id.integer' => 'Kriteria tidak valid',
-		'kriteria_id.exists'=>'Kriteria tidak ditemukan'
+		'kriteria_id.exists' => 'Kriteria tidak ditemukan'
 	];
 	public function kriteria(): BelongsTo
 	{

@@ -46,7 +46,7 @@
 	<div class="card">
 		<div class="card-header">Daftar Alternatif</div>
 		<div class="card-body">
-			<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal"
+			<button type="button" class="btn btn-primary" data-bs-toggle="modal"
 				data-bs-target="#AlterModal" id="spare-button">
 				<i class="bi bi-plus-lg me-0 me-sm-1"></i> Tambah Alternatif
 			</button>
@@ -78,13 +78,12 @@
 					processing: true,
 					ajax: "{{ route('alternatif.data') }}",
 					columns: [{
-							data: 'id'
-						}, {
-							data: 'name'
-						}, {
-							data: 'id'
-						}
-					],
+						data: 'id'
+					}, {
+						data: 'name'
+					}, {
+						data: 'id'
+					}],
 					columnDefs: [{
 							targets: 0,
 							render: function(data, type, full,
@@ -123,65 +122,68 @@
 							text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
 							className: 'btn btn-primary dropdown-toggle',
 							buttons: [{
-									extend: 'print',
-									title: 'Alternatif',
-									text: '<i class="bi bi-printer me-2"></i> Print',
-									className: 'dropdown-item',
-									exportOptions: {
-										columns: [1]
-									}
-								}, {
-									extend: 'csv',
-									title: 'Alternatif',
-									text: '<i class="bi bi-file-text me-2"></i> CSV',
-									className: 'dropdown-item',
-									exportOptions: {
-										columns: [1]
-									}
-								}, {
-									extend: 'excel',
-									title: 'Alternatif',
-									text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
-									className: 'dropdown-item',
-									exportOptions: {
-										columns: [1]
-									}
-								}, {
-									extend: 'pdf',
-									title: 'Alternatif',
-									text: '<i class="bi bi-file-text me-2"></i> PDF',
-									className: 'dropdown-item',
-									exportOptions: {
-										columns: [1]
-									}
-								}, {
-									extend: 'copy',
-									title: 'Alternatif',
-									text: '<i class="bi bi-clipboard me-2"></i> Copy',
-									className: 'dropdown-item',
-									exportOptions: {
-										columns: [1]
-									}
+								extend: 'print',
+								title: 'Alternatif',
+								text: '<i class="bi bi-printer me-2"></i> Print',
+								className: 'dropdown-item',
+								exportOptions: {
+									columns: [1]
 								}
-							]
+							}, {
+								extend: 'csv',
+								title: 'Alternatif',
+								text: '<i class="bi bi-file-text me-2"></i> CSV',
+								className: 'dropdown-item',
+								exportOptions: {
+									columns: [1]
+								}
+							}, {
+								extend: 'excel',
+								title: 'Alternatif',
+								text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
+								className: 'dropdown-item',
+								exportOptions: {
+									columns: [1]
+								}
+							}, {
+								extend: 'pdf',
+								title: 'Alternatif',
+								text: '<i class="bi bi-file-text me-2"></i> PDF',
+								className: 'dropdown-item',
+								exportOptions: {
+									columns: [1]
+								}
+							}, {
+								extend: 'copy',
+								title: 'Alternatif',
+								text: '<i class="bi bi-clipboard me-2"></i> Copy',
+								className: 'dropdown-item',
+								exportOptions: {
+									columns: [1]
+								}
+							}]
 						}
 					],
 				}).on('error.dt', function(e, settings, techNote,
 					message) {
 					Toastify({
 						text: message,
-						style:{background: "#ffc107"},
+						style: {
+							background: "#ffc107"
+						},
 						duration: 10000
 					}).showToast();
-				}).on('draw', setTableColor);
+				}).on('draw', setTableColor).on('preInit.dt',function(){
+					$('#spare-button').addClass('d-none');
+				});
 			} catch (dterr) {
 				Toastify({
 					text: "DataTables Error: " + dterr.message,
 					duration: 8000,
-					style:{background: "#dc3545"}
+					style: {
+						background: "#dc3545"
+					}
 				}).showToast();
-				if (!$.fn.DataTable.isDataTable('#table-alter'))
-					$('#spare-button').removeClass('d-none');
 			}
 		});
 		// Delete Record
@@ -311,7 +313,7 @@
 					});
 				},
 				error: function(xhr, code) {
-					if (xhr.responseJSON.errors.name) {
+					if (typeof(xhr.responseJSON.errors.name)!=="undefined") {
 						$('#alter-name').addClass('is-invalid');
 						$('#alter-error').text(xhr.responseJSON
 							.errors.name);
@@ -331,6 +333,7 @@
 		// clearing form data when modal hidden
 		$('#AlterModal').on('hidden.bs.modal', function() {
 			$('#AlterForm')[0].reset();
+			$('#alter-id').val("");
 			$('#AlterForm :input').removeClass('is-invalid');
 			$('#AlterLabel').html('Tambah Alternatif');
 		});

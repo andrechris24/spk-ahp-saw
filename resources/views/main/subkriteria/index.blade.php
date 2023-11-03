@@ -66,7 +66,7 @@
 	<div class="card">
 		<div class="card-header">Daftar Sub Kriteria</div>
 		<div class="card-body">
-			<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal"
+			<button type="button" class="btn btn-primary" data-bs-toggle="modal"
 				data-bs-target="#SubCritModal" id="spare-button">
 				<i class="bi bi-plus-lg me-0 me-sm-1"></i> Tambah Sub Kriteria
 			</button>
@@ -103,120 +103,120 @@
 					responsive: true,
 					ajax: "{{ route('subkriteria.data') }}",
 					columns: [{
-							data: 'id'
-						}, {
-							data: 'name'
-						}, {
-							data: 'kriteria_id'
-						}, {
-							data: 'bobot'
-						}, {
-							data: 'id'
-						}
-					],
+						data: 'id'
+					}, {
+						data: 'name'
+					}, {
+						data: 'kriteria_id'
+					}, {
+						data: 'bobot'
+					}, {
+						data: 'id'
+					}],
 					columnDefs: [{
-							targets: 0,
-							render: function(data, type, full,
-								meta) {
-								return meta.row + meta.settings
-									._iDisplayStart + 1;
-							}
-						}, {
-							targets: 2,
-							render: function(data, type, full) {
-								return '<span title="' +
-									full['desc_kr'] + '">' +
-									data +
-									'</span>';
-							}
-						}, { //Aksi
-							orderable: false,
-							targets: -1,
-							render: function(data, type, full) {
-								return (
-									'<div class="btn-group" role="group">' +
-									`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#SubCritModal" title="Edit"><i class="bi bi-pencil-square"></i></button>` +
-									`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}" title="Hapus"><i class="bi bi-trash3-fill"></i></button>` +
-									'</div>'
-								);
-							}
+						targets: 0,
+						render: function(data, type, full,
+							meta) {
+							return meta.row + meta.settings
+								._iDisplayStart + 1;
 						}
-					],
+					}, {
+						targets: 2,
+						render: function(data, type, full) {
+							return '<span title="' +
+								full['desc_kr'] + '">' +
+								data +
+								'</span>';
+						}
+					}, { //Aksi
+						orderable: false,
+						targets: -1,
+						render: function(data, type, full) {
+							return (
+								'<div class="btn-group" role="group">' +
+								`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#SubCritModal" title="Edit"><i class="bi bi-pencil-square"></i></button>` +
+								`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}" title="Hapus"><i class="bi bi-trash3-fill"></i></button>` +
+								'</div>'
+							);
+						}
+					}],
 					language: {
 						url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
 					},
 					dom: 'Bfrtip',
 					buttons: [{
-							text: '<i class="bi bi-plus-lg me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Tambah Sub Kriteria</span>',
-							className: 'add-new btn btn-primary',
-							attr: {
-								'data-bs-toggle': 'modal',
-								'data-bs-target': '#SubCritModal'
+						text: '<i class="bi bi-plus-lg me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Tambah Sub Kriteria</span>',
+						className: 'add-new btn btn-primary',
+						attr: {
+							'data-bs-toggle': 'modal',
+							'data-bs-target': '#SubCritModal'
+						}
+					}, {
+						extend: 'collection',
+						text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
+						className: 'btn btn-primary dropdown-toggle',
+						buttons: [{
+							extend: 'print',
+							title: 'Sub Kriteria',
+							text: '<i class="bi bi-printer me-2"></i> Print',
+							className: 'dropdown-item',
+							exportOptions: {
+								columns: [1, 2, 3]
 							}
 						}, {
-							extend: 'collection',
-							text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
-							className: 'btn btn-primary dropdown-toggle',
-							buttons: [{
-									extend: 'print',
-									title: 'Sub Kriteria',
-									text: '<i class="bi bi-printer me-2"></i> Print',
-									className: 'dropdown-item',
-									exportOptions: {
-										columns: [1, 2, 3]
-									}
-								}, {
-									extend: 'csv',
-									title: 'Sub Kriteria',
-									text: '<i class="bi bi-file-text me-2"></i> CSV',
-									className: 'dropdown-item',
-									exportOptions: {
-										columns: [1, 2, 3]
-									}
-								}, {
-									extend: 'excel',
-									title: 'Sub Kriteria',
-									text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
-									className: 'dropdown-item',
-									exportOptions: {
-										columns: [1, 2, 3]
-									}
-								}, {
-									extend: 'pdf',
-									title: 'Sub Kriteria',
-									text: '<i class="bi bi-file-text me-2"></i> PDF',
-									className: 'dropdown-item',
-									exportOptions: {
-										columns: [1, 2, 3]
-									}
-								}, {
-									extend: 'copy',
-									title: 'Sub Kriteria',
-									text: '<i class="bi bi-clipboard me-2"></i> Copy',
-									className: 'dropdown-item',
-									exportOptions: {
-										columns: [1, 2, 3]
-									}
-								}
-							]
-						}
-					],
+							extend: 'csv',
+							title: 'Sub Kriteria',
+							text: '<i class="bi bi-file-text me-2"></i> CSV',
+							className: 'dropdown-item',
+							exportOptions: {
+								columns: [1, 2, 3]
+							}
+						}, {
+							extend: 'excel',
+							title: 'Sub Kriteria',
+							text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
+							className: 'dropdown-item',
+							exportOptions: {
+								columns: [1, 2, 3]
+							}
+						}, {
+							extend: 'pdf',
+							title: 'Sub Kriteria',
+							text: '<i class="bi bi-file-text me-2"></i> PDF',
+							className: 'dropdown-item',
+							exportOptions: {
+								columns: [1, 2, 3]
+							}
+						}, {
+							extend: 'copy',
+							title: 'Sub Kriteria',
+							text: '<i class="bi bi-clipboard me-2"></i> Copy',
+							className: 'dropdown-item',
+							exportOptions: {
+								columns: [1, 2, 3]
+							}
+						}]
+					}],
 				}).on('error.dt', function(e, settings, techNote,
 					message) {
 					Toastify({
 						text: message,
-						style:{background: "#ffc107"},
+						style: {
+							background: "#ffc107"
+						},
 						duration: 10000
 					}).showToast();
-				}).on('draw', setTableColor);
+				}).on('draw', setTableColor).on('preInit.dt',function(){
+					$('#spare-button').addClass('d-none');
+				});
 			} catch (dterr) {
 				Toastify({
 					text: "DataTables Error: " + dterr.message,
 					duration: 8000,
-					style:{background: "#dc3545"}
+					style: {
+						background: "#dc3545"
+					}
 				}).showToast();
-				if (!$.fn.DataTable.isDataTable('#table-subcrit'))
-					$('#spare-button').removeClass('d-none');
 			}
 		});
 		// Delete Record
@@ -348,17 +348,17 @@
 					});
 				},
 				error: function(xhr, code) {
-					if (xhr.responseJSON.errors.name) {
-						$('#nama-sub').addClass('is-invalid');
-						$('#nama-error').text(xhr.responseJSON
-							.errors.name);
-					}
-					if (xhr.responseJSON.errors.kriteria_id) {
-						$('#kriteria-select').addClass(
-							'is-invalid');
-						$('#kriteria-error').text(xhr.responseJSON
-							.errors.kriteria_id);
-					}
+						if (typeof(xhr.responseJSON.errors.name)!=="undefined") {
+							$('#nama-sub').addClass('is-invalid');
+							$('#nama-error').text(xhr.responseJSON
+								.errors.name);
+						}
+						if (typeof(xhr.responseJSON.errors.kriteria_id)!=="undefined") {
+							$('#kriteria-select').addClass(
+								'is-invalid');
+							$('#kriteria-error').text(xhr.responseJSON
+								.errors.kriteria_id);
+						}
 					Swal.fire({
 						title: 'Gagal',
 						text: xhr.responseJSON.message ??
@@ -374,6 +374,7 @@
 		// clearing form data when modal hidden
 		$('#SubCritModal').on('hidden.bs.modal', function() {
 			$('#SubCritForm')[0].reset();
+			$('#subkriteria-id').val("");
 			$('#SubCritForm :input').removeClass('is-invalid');
 			$('#SubCritLabel').html('Tambah Sub Kriteria');
 			if ($('#subkriteria-alert').length)

@@ -28,6 +28,11 @@
 								required />
 							<div class="invalid-feedback" id="nama-error"></div>
 						</div>
+						{{-- <label for="kriteria-type">Atribut</label>
+						<div class="form-check-inline">
+							<input type="radio" name="type" value="cost" id="kriteria-type" required>Cost
+							<input type="radio" name="type" value="benefit" id="kriteria-type" required>Benefit
+						</div> --}}
 						<div class="input-group mb-3">
 							<label class="input-group-text" for="tipe-kriteria">
 								Atribut
@@ -68,7 +73,7 @@
 	<div class="card">
 		<div class="card-header">Daftar Kriteria</div>
 		<div class="card-body">
-			<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal"
+			<button type="button" class="btn btn-primary" data-bs-toggle="modal"
 				data-bs-target="#CritModal" id="spare-button">
 				<i class="bi bi-plus-lg me-0 me-sm-1"></i> Tambah Kriteria
 			</button>
@@ -106,113 +111,113 @@
 					responsive: true,
 					ajax: "{{ route('kriteria.data') }}",
 					columns: [{
-							data: 'id'
-						},  {
-							data: 'name'
-						}, {
-							data: 'type'
-						}, {
-							data: 'desc'
-						}, {
-							data: 'bobot'
-						}, {
-							data: 'id'
-						}
-					],
+						data: 'id'
+					}, {
+						data: 'name'
+					}, {
+						data: 'type'
+					}, {
+						data: 'desc'
+					}, {
+						data: 'bobot'
+					}, {
+						data: 'id'
+					}],
 					columnDefs: [{
-							targets: 0,
-							render: function(data, type, full,
-								meta) {
-								return meta.row + meta.settings
-									._iDisplayStart + 1;
-							}
-						}, { //Aksi
-							orderable: false,
-							targets: -1,
-							render: function(data, type, full) {
-								return (
-									'<div class="btn-group" role="group">' +
-									`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#CritModal" title="Edit"><i class="bi bi-pencil-square"></i></button>` +
-									`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}" title="Hapus"><i class="bi bi-trash3-fill"></i></button>` +
-									'</div>'
-								);
-							}
+						targets: 0,
+						render: function(data, type, full,
+							meta) {
+							return meta.row + meta.settings
+								._iDisplayStart + 1;
 						}
-					],
+					}, { //Aksi
+						orderable: false,
+						targets: -1,
+						render: function(data, type, full) {
+							return (
+								'<div class="btn-group" role="group">' +
+								`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#CritModal" title="Edit"><i class="bi bi-pencil-square"></i></button>` +
+								`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}" title="Hapus"><i class="bi bi-trash3-fill"></i></button>` +
+								'</div>'
+							);
+						}
+					}],
 					language: {
 						url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
 					},
 					dom: 'Bfrtip',
 					buttons: [{
-							text: '<i class="bi bi-plus-lg me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Tambah Kriteria</span>',
-							className: 'add-new btn btn-primary',
-							attr: {
-								'data-bs-toggle': 'modal',
-								'data-bs-target': '#CritModal'
+						text: '<i class="bi bi-plus-lg me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Tambah Kriteria</span>',
+						className: 'add-new btn btn-primary',
+						attr: {
+							'data-bs-toggle': 'modal',
+							'data-bs-target': '#CritModal'
+						}
+					}, {
+						extend: 'collection',
+						text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
+						className: 'btn btn-primary dropdown-toggle',
+						buttons: [{
+							extend: 'print',
+							title: 'Kriteria',
+							text: '<i class="bi bi-printer me-2"></i> Print',
+							className: 'dropdown-item',
+							exportOptions: {
+								columns: [1, 2, 3, 4]
 							}
 						}, {
-							extend: 'collection',
-							text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
-							className: 'btn btn-primary dropdown-toggle',
-							buttons: [{
-									extend: 'print',
-									title: 'Kriteria',
-									text: '<i class="bi bi-printer me-2"></i> Print',
-									className: 'dropdown-item',
-									exportOptions: {
-										columns: [1, 2, 3, 4]
-									}
-								}, {
-									extend: 'csv',
-									title: 'Kriteria',
-									text: '<i class="bi bi-file-text me-2"></i> CSV',
-									className: 'dropdown-item',
-									exportOptions: {
-										columns: [1, 2, 3, 4]
-									}
-								}, {
-									extend: 'excel',
-									title: 'Kriteria',
-									text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
-									className: 'dropdown-item',
-									exportOptions: {
-										columns: [1, 2, 3, 4]
-									}
-								}, {
-									extend: 'pdf',
-									title: 'Kriteria',
-									text: '<i class="bi bi-file-text me-2"></i> PDF',
-									className: 'dropdown-item',
-									exportOptions: {
-										columns: [1, 2, 3, 4]
-									}
-								}, {
-									extend: 'copy',
-									title: 'Kriteria',
-									text: '<i class="bi bi-clipboard me-2"></i> Copy',
-									className: 'dropdown-item',
-									exportOptions: {
-										columns: [1, 2, 3, 4]
-									}
-								}
-							]
-						}
-					],
+							extend: 'csv',
+							title: 'Kriteria',
+							text: '<i class="bi bi-file-text me-2"></i> CSV',
+							className: 'dropdown-item',
+							exportOptions: {
+								columns: [1, 2, 3, 4]
+							}
+						}, {
+							extend: 'excel',
+							title: 'Kriteria',
+							text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
+							className: 'dropdown-item',
+							exportOptions: {
+								columns: [1, 2, 3, 4]
+							}
+						}, {
+							extend: 'pdf',
+							title: 'Kriteria',
+							text: '<i class="bi bi-file-text me-2"></i> PDF',
+							className: 'dropdown-item',
+							exportOptions: {
+								columns: [1, 2, 3, 4]
+							}
+						}, {
+							extend: 'copy',
+							title: 'Kriteria',
+							text: '<i class="bi bi-clipboard me-2"></i> Copy',
+							className: 'dropdown-item',
+							exportOptions: {
+								columns: [1, 2, 3, 4]
+							}
+						}]
+					}],
 				}).on('error.dt', function(e, settings, techNote,
 					message) {
 					Toastify({
 						text: message,
-						style:{background: "#ffc107"},
+						style: {
+							background: "#ffc107"
+						},
 						duration: 10000
 					}).showToast();
-				}).on('draw', setTableColor);
+				}).on('draw', setTableColor).on('preInit.dt',function(){
+					$('#spare-button').addClass('d-none');
+				});
 			} catch (dterr) {
 				Toastify({
 					text: "DataTables Error: " + dterr.message,
-					style:{background: "#dc3545"}
+					style: {
+						background: "#dc3545"
+					}
 				}).showToast();
-				if (!$.fn.DataTable.isDataTable('#table-crit'))
-					$('#spare-button').removeClass('d-none');
 			}
 		});
 		// Delete Record
@@ -239,7 +244,6 @@
 					$.ajax({
 						type: 'DELETE',
 						url: '/kriteria/del/' + kr_id,
-						// data: { "_token": "{{ csrf_token() }}" },
 						success: function(data) {
 							dt_kriteria.draw();
 							// success sweetalert
@@ -344,24 +348,24 @@
 					});
 				},
 				error: function(xhr, code) {
-					if (xhr.responseJSON.errors.name) {
-						$('#nama-krit').addClass('is-invalid');
-						$('#nama-error').text(xhr.responseJSON
-							.errors.name);
-					}
-					if (xhr.responseJSON.errors.type) {
-						$('#tipe-kriteria').addClass('is-invalid');
-						$('#type-error').text(xhr.responseJSON
-							.errors.type);
-					}
-					if (xhr.responseJSON.errors.desc) {
-						$('#deskripsi').addClass('is-invalid');
-						$('#desc-error').text(xhr.responseJSON
-							.errors.desc);
-					}
+						if (typeof(xhr.responseJSON.errors.name)!=="undefined") {
+							$('#nama-krit').addClass('is-invalid');
+							$('#nama-error').text(xhr.responseJSON
+								.errors.name);
+						}
+						if (typeof(xhr.responseJSON.errors.type)!=="undefined") {
+							$('#tipe-kriteria').addClass('is-invalid');
+							$('#type-error').text(xhr.responseJSON
+								.errors.type);
+						}
+						if (typeof(xhr.responseJSON.errors.desc)!=="undefined") {
+							$('#deskripsi').addClass('is-invalid');
+							$('#desc-error').text(xhr.responseJSON
+								.errors.desc);
+						}
 					Swal.fire({
 						title: 'Gagal',
-						text: xhr.responseJSON.errors.message ??
+						text: xhr.responseJSON.message ??
 							code,
 						icon: 'error',
 						customClass: {

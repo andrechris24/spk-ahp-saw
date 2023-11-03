@@ -125,7 +125,7 @@
 			<h4 class="card-title">Ranking</h4>
 		</div>
 		<div class="card-body">
-			<button type="button" class="btn btn-primary mb-3 d-none"
+			<button type="button" class="btn btn-primary mb-3"
 				data-bs-toggle="modal" data-bs-target="#RankModal" id="spare-button">
 				<i class="bi bi-bar-chart-line-fill"></i> Lihat Grafik
 			</button>
@@ -191,54 +191,54 @@
 					},
 					dom: 'Bfrtip',
 					buttons: [{
-							text: '<i class="bi bi-bar-chart-line-fill me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Lihat Grafik</span>',
-							className: 'btn btn-primary',
-							attr: {
-								'data-bs-toggle': 'modal',
-								'data-bs-target': '#RankModal'
-							}
-						}, {
-							extend: 'collection',
-							text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
-							className: 'btn btn-primary dropdown-toggle',
-							buttons: [{
-									extend: 'print',
-									title: 'Nilai Alternatif',
-									text: '<i class="bi bi-printer me-2"></i> Print',
-									className: 'dropdown-item'
-								}, {
-									extend: 'csv',
-									title: 'Nilai Alternatif',
-									text: '<i class="bi bi-file-text me-2"></i> CSV',
-									className: 'dropdown-item'
-								}, {
-									extend: 'excel',
-									title: 'Nilai Alternatif',
-									text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
-									className: 'dropdown-item'
-								}, {
-									extend: 'pdf',
-									title: 'Nilai Alternatif',
-									text: '<i class="bi bi-file-text me-2"></i> PDF',
-									className: 'dropdown-item'
-								}, {
-									extend: 'copy',
-									title: 'Nilai Alternatif',
-									text: '<i class="bi bi-clipboard me-2"></i> Copy',
-									className: 'dropdown-item'
-								}
-							]
+						text: '<i class="bi bi-bar-chart-line-fill me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Lihat Grafik</span>',
+						className: 'btn btn-primary',
+						attr: {
+							'data-bs-toggle': 'modal',
+							'data-bs-target': '#RankModal'
 						}
-					]
-				}).on('draw', setTableColor);
+					}, {
+						extend: 'collection',
+						text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
+						className: 'btn btn-primary dropdown-toggle',
+						buttons: [{
+							extend: 'print',
+							title: 'Nilai Alternatif',
+							text: '<i class="bi bi-printer me-2"></i> Print',
+							className: 'dropdown-item'
+						}, {
+							extend: 'csv',
+							title: 'Nilai Alternatif',
+							text: '<i class="bi bi-file-text me-2"></i> CSV',
+							className: 'dropdown-item'
+						}, {
+							extend: 'excel',
+							title: 'Nilai Alternatif',
+							text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
+							className: 'dropdown-item'
+						}, {
+							extend: 'pdf',
+							title: 'Nilai Alternatif',
+							text: '<i class="bi bi-file-text me-2"></i> PDF',
+							className: 'dropdown-item'
+						}, {
+							extend: 'copy',
+							title: 'Nilai Alternatif',
+							text: '<i class="bi bi-clipboard me-2"></i> Copy',
+							className: 'dropdown-item'
+						}]
+					}]
+				}).on('draw', setTableColor).on('init.dt',function(){
+					$('#spare-button').addClass('d-none');
+				});
 			} catch (dterr) {
 				Toastify({
 					text: "DataTables Error: " + dterr.message,
 					duration: 8000,
-					style:{background: "#dc3545"}
+					style: {
+						background: "#dc3545"
+					}
 				}).showToast();
-				if (!$.fn.DataTable.isDataTable('#table-hasil'))
-					$('#spare-button').removeClass('d-none');
 			}
 		});
 		var options = {

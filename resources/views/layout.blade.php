@@ -115,7 +115,8 @@
 									</li>
 								</ul>
 							</li>
-							<li class="sidebar-item has-sub {{ (request()->is('bobot/hasil')||request()->is('bobot/sub/*')) ? 'active' : '' }}">
+							<li
+								class="sidebar-item has-sub {{ request()->is('bobot/hasil') || request()->is('bobot/sub/*') ? 'active' : '' }}">
 								<a href="#" class="sidebar-link">
 									<i class="bi bi-calculator-fill"></i>
 									<span>Perhitungan AHP</span>
@@ -137,15 +138,13 @@
 									</li>
 								</ul>
 							</li>
-							<li
-								class="sidebar-item">
+							<li class="sidebar-item">
 								<a href="{{ route('nilai.index') }}" class="sidebar-link">
 									<i class="bi bi-pen-fill"></i>
 									<span>Perhitungan SAW</span>
 								</a>
 							</li>
-							<li
-								class="sidebar-item">
+							<li class="sidebar-item">
 								<a href="{{ route('nilai.show') }}" class="sidebar-link">
 									<i class="bi bi-bar-chart-line-fill"></i>
 									<span>Hasil</span>
@@ -262,15 +261,15 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		const currentRoute = "{{ url()->current() }}",
-		links = document.querySelectorAll('.sidebar-link, .submenu-link');
-		var list,sublist;
+		const currentRoute = location.href,
+			links = document.querySelectorAll('.sidebar-link, .submenu-link');
+		var list, sublist;
 		links.forEach((link) => {
 			list = link.closest('li.sidebar-item');
 			if (link.href == currentRoute) {
 				list.classList.add('active');
-				if(link.classList.contains('submenu-link')){
-					sublist=link.closest('li.submenu-item');
+				if (link.classList.contains('submenu-link')) {
+					sublist = link.closest('li.submenu-item');
 					sublist.classList.add('active');
 				}
 			}

@@ -150,8 +150,10 @@
 						<td>
 							{{ $data['result'] }}
 							@if (is_numeric($data['result']))
+								<span @class(['text-danger' => $data['result'] > 0.1])>
+									({{ round($data['result'] * 100, 2) }}%)
+								</span>
 								@php
-									echo '(' . round($data['result'] * 100, 2) . '%)';
 									$consistent = $data['result'] <= 0.1;
 								@endphp
 							@else
@@ -169,7 +171,7 @@
 							])>
 								@if (!is_numeric($data['result']))
 									<b>Tidak bisa dievaluasi</b>
-								@elseif ($data['result'] <= 0.1)
+								@elseif ($consistent)
 									<b>Konsisten</b>
 								@else
 									<b>Tidak Konsisten</b>, mohon untuk menginput ulang perbandingan!

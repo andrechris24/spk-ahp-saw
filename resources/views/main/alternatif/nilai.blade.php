@@ -78,7 +78,7 @@
 	<div class="card">
 		<div class="card-header">Daftar Nilai Alternatif</div>
 		<div class="card-body">
-			<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal"
+			<button type="button" class="btn btn-primary" data-bs-toggle="modal"
 				data-bs-target="#NilaiAlterModal" id="spare-button">
 				<i class="bi bi-plus-lg me-0 me-sm-1"></i> Tambah Nilai Alternatif
 			</button>
@@ -167,69 +167,69 @@
 					},
 					dom: 'Bfrtip',
 					buttons: [{
-							text: '<i class="bi bi-plus-lg me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Tambah Nilai Alternatif</span>',
-							className: 'add-new btn btn-primary',
-							attr: {
-								'data-bs-toggle': 'modal',
-								'data-bs-target': '#NilaiAlterModal'
+						text: '<i class="bi bi-plus-lg me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Tambah Nilai Alternatif</span>',
+						className: 'add-new btn btn-primary',
+						attr: {
+							'data-bs-toggle': 'modal',
+							'data-bs-target': '#NilaiAlterModal'
+						}
+					}, {
+						extend: 'collection',
+						text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
+						className: 'btn btn-primary dropdown-toggle',
+						buttons: [{
+							extend: 'print',
+							title: 'Nilai Alternatif',
+							text: '<i class="bi bi-printer me-2"></i> Print',
+							className: 'dropdown-item',
+							exportOptions: {
+								columns: 'th:not(:last-child)'
 							}
 						}, {
-							extend: 'collection',
-							text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
-							className: 'btn btn-primary dropdown-toggle',
-							buttons: [{
-									extend: 'print',
-									title: 'Nilai Alternatif',
-									text: '<i class="bi bi-printer me-2"></i> Print',
-									className: 'dropdown-item',
-									exportOptions: {
-										columns: 'th:not(:last-child)'
-									}
-								}, {
-									extend: 'csv',
-									title: 'Nilai Alternatif',
-									text: '<i class="bi bi-file-text me-2"></i> CSV',
-									className: 'dropdown-item',
-									exportOptions: {
-										columns: 'th:not(:last-child)'
-									}
-								}, {
-									extend: 'excel',
-									title: 'Nilai Alternatif',
-									text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
-									className: 'dropdown-item',
-									exportOptions: {
-										columns: 'th:not(:last-child)'
-									}
-								}, {
-									extend: 'pdf',
-									title: 'Nilai Alternatif',
-									text: '<i class="bi bi-file-text me-2"></i> PDF',
-									className: 'dropdown-item',
-									exportOptions: {
-										columns: 'th:not(:last-child)'
-									}
-								}, {
-									extend: 'copy',
-									title: 'Nilai Alternatif',
-									text: '<i class="bi bi-clipboard me-2"></i> Copy',
-									className: 'dropdown-item',
-									exportOptions: {
-										columns: 'th:not(:last-child)'
-									}
-								}
-							]
-						}
-					]
-				}).on('draw', setTableColor);
+							extend: 'csv',
+							title: 'Nilai Alternatif',
+							text: '<i class="bi bi-file-text me-2"></i> CSV',
+							className: 'dropdown-item',
+							exportOptions: {
+								columns: 'th:not(:last-child)'
+							}
+						}, {
+							extend: 'excel',
+							title: 'Nilai Alternatif',
+							text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
+							className: 'dropdown-item',
+							exportOptions: {
+								columns: 'th:not(:last-child)'
+							}
+						}, {
+							extend: 'pdf',
+							title: 'Nilai Alternatif',
+							text: '<i class="bi bi-file-text me-2"></i> PDF',
+							className: 'dropdown-item',
+							exportOptions: {
+								columns: 'th:not(:last-child)'
+							}
+						}, {
+							extend: 'copy',
+							title: 'Nilai Alternatif',
+							text: '<i class="bi bi-clipboard me-2"></i> Copy',
+							className: 'dropdown-item',
+							exportOptions: {
+								columns: 'th:not(:last-child)'
+							}
+						}]
+					}]
+				}).on('draw', setTableColor).on('init.dt',function(){
+					$('#spare-button').addClass('d-none');
+				});
 			} catch (dterr) {
 				Toastify({
 					text: "DataTables Error: " + dterr.message,
 					duration: 8000,
-					style:{background: "#dc3545"}
+					style: {
+						background: "#dc3545"
+					}
 				}).showToast();
-				if (!$.fn.DataTable.isDataTable('#table-nilaialt'))
-					$('#spare-button').removeClass('d-none');
 			}
 		});
 		$(document).on('click', '.delete-record', function() {
@@ -366,6 +366,7 @@
 		$('#NilaiAlterModal').on('hidden.bs.modal', function() {
 			$('#alternatif-value').prop('disabled', false);
 			$('#NilaiAlterForm')[0].reset();
+			$('#alternatif-hidden').val("");
 			$('#NilaiAlterLabel').html('Tambah Nilai Alternatif');
 		});
 	</script>

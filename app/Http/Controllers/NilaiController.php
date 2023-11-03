@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\Facades\DataTables;
 
 class NilaiController extends Controller
 {
@@ -53,6 +54,24 @@ class NilaiController extends Controller
 			Log::error($e);
 			return;
 		}
+	}
+	public function datatables(){
+		$kriteria=$subkriteria=[];
+		return DataTables::Eloquent(Nilai::query())->addColumn('subkriteria',function(Nilai $nilai){
+			$nilaialt = Nilai::leftJoin(
+				'alternatif',
+				'alternatif.id',
+				'nilai.alternatif_id'
+			)->leftJoin('kriteria', 'kriteria.id', 'nilai.kriteria_id')
+				->leftJoin('subkriteria', 'subkriteria.id', 'nilai.subkriteria_id')
+				->where('alternatif_id',$nilai->alternatif_id)->get();
+			if(count($nilaialt)>0){
+				foreach ($nilaialt as $key => $skor) {
+					$subkriteria[$key]=$skor->subkriteria->name;
+				}
+				return $subkriteria;
+			}
+		})->toJson();
 	}
 	public function index()
 	{
@@ -170,6 +189,20 @@ class NilaiController extends Controller
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil penilaian:')
 				->withErrors($e->errorInfo[2]);
+		}
+	}
+	public function edit($alt_id){
+		try {
+			$data=Nilai::where('alternatif_id',$alt_id)->firstOrFail();
+			return response()->json($kriteria);
+		} catch (QueryException $e) {
+			Log::error($e);
+			return response()->json(["message" => $e->errorInfo[2]], 500);
+		} catch (ModelNotFoundException $err) {
+			return response()->json([
+				'message' => 'Data Penilaian Alternatif tidak ditemukan',
+				'exception' => $err->getMessage()
+			], 404);
 		}
 	}
 	public function update(Request $request)

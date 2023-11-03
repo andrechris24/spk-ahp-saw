@@ -18,8 +18,8 @@ return new class extends Migration {
 				->cascadeOnDelete()->cascadeOnUpdate();
 			$table->foreignId('kriteria_id')->constrained('kriteria')
 				->cascadeOnDelete()->cascadeOnUpdate();
-			$table->foreignId('subkriteria_id')->constrained('subkriteria')
-				->cascadeOnDelete()->cascadeOnUpdate();
+			$table->foreignId('subkriteria_id')->nullable()->constrained('subkriteria')
+				->nullOnDelete()->cascadeOnUpdate();
 			$table->timestamps();
 		});
 	}

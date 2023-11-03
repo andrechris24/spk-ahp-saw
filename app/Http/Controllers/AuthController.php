@@ -78,8 +78,8 @@ class AuthController extends Controller
 			]);
 			$credentials['password'] = Hash::make($credentials['password']);
 			User::create($credentials);
-			return redirect('/login')->withSuccess("Akun sudah dibuat. ".
-					"Silahkan login menggunakan akun yang sudah didaftarkan.");
+			return redirect('/login')->withSuccess("Akun sudah dibuat. " .
+				"Silahkan login menggunakan akun yang sudah didaftarkan.");
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withInput()
@@ -138,8 +138,8 @@ class AuthController extends Controller
 			Log::error($e);
 			return redirect('/forget-password')
 				->withError('Kesalahan: ' . $e->errorInfo[2]);
-		// }catch(ModelNotFoundException){
-		// 	return redirect('/forget-password')->withError(__(''));
+			// }catch(ModelNotFoundException){
+			// 	return redirect('/forget-password')->withError(__(''));
 		}
 	}
 	public function submitResetPasswordForm(Request $request)
@@ -158,9 +158,9 @@ class AuthController extends Controller
 				return redirect('/login')->withSuccess('Reset password berhasil.
 					Silahkan login menggunakan password yang Anda buat.');
 			} else if ($status === Password::INVALID_TOKEN)
-				return back()->withError('Reset password gagal: '.__('passwords.token'));
+				return back()->withError('Reset password gagal: ' . __('passwords.token'));
 			else if ($status === Password::INVALID_USER)
-				return back()->withError('Reset password gagal: '.__('passwords.user'));
+				return back()->withError('Reset password gagal: ' . __('passwords.user'));
 			return back()->withError('Reset password gagal: Kesalahan tidak diketahui');
 		} catch (QueryException $e) {
 			Log::error($e);
