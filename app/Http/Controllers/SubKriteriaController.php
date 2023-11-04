@@ -103,7 +103,7 @@ class SubKriteriaController extends Controller
 				SubKriteria::where('kriteria_id', $idkriteria)
 					->update(['bobot' => 0.00000]);
 				$message .= "Silahkan input ulang perbandingan sub kriteria $namakriteria.";
-				// if($subkrcomp->count()==0) SubKriteriaComp::truncate();
+				if($subkrcomp->count()==0) SubKriteriaComp::truncate();
 			}
 			return response()->json(['message' => $message]);
 		} catch (ModelNotFoundException $e) {

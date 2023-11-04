@@ -19,7 +19,6 @@
 				<div class="modal-body">
 					<form method="POST" enctype="multipart/form-data" id="NilaiAlterForm">
 						<input type="hidden" name="alternatif_id" id="alternatif-hidden">
-						<input type="hidden" name="datatables_idx" id="edit-index">
 						<div class="input-group mb-3">
 							<label class="input-group-text" for="alternatif-value">
 								Nama Alternatif
@@ -96,72 +95,65 @@
 						<th>Aksi</th>
 					</tr>
 				</thead>
-				<tbody>
-					@foreach ($data['alternatif'] as $alt)
-						@php
-							$subcount = 0;
-							$subkr = [];
-							$skor = $data['nilai']->where('alternatif_id', $alt->id)->all();
-						@endphp
-						@if (count($skor) > 0)
-							<tr>
-								<td>{{ $alt->name }}</td>
-								@foreach ($skor as $skoralt)
-									@php
-										$subkr[$subcount]['subkriteria'] = $skoralt->subkriteria->id;
-										$subkr[$subcount]['kriteria'] = $skoralt->kriteria->id;
-									@endphp
-									<td>{{ $skoralt->subkriteria->name }}</td>
-									@php($subcount++)
-								@endforeach
-								<td>
-									<div class="btn-group" role="button">
-										<button type="button" class="btn btn-primary edit-record"
-											data-bs-toggle="modal" data-bs-target="#NilaiAlterModal"
-											data-bs-name="{{ $alt->id }}" title="Edit"
-											data-bs-score="{{ json_encode($subkr) }}">
-											<i class="bi bi-pencil-square"></i>
-										</button>
-										<button type="button" class="btn btn-danger delete-record"
-											data-bs-id="{{ $alt->id }}" title="Hapus"
-											data-bs-name="{{ $alt->name }}">
-											<i class="bi bi-trash3-fill"></i>
-										</button>
-									</div>
-								</td>
-							</tr>
-						@endif
-					@endforeach
-				</tbody>
 			</table>
-			@if (count($data['nilai']) > 0)
+			{{-- @if (count($data['nilai']) > 0)
 				<a href="{{ route('nilai.show') }}" class="btn btn-success">
 					Lihat hasil
 				</a>
-			@endif
+			@endif --}}
 		</div>
 	</div>
 @endsection
 @section('js')
 	<script type="text/javascript">
-		var formkriteria;
-
-		function split(item) {
-			formkriteria = document.getElementById('subkriteria-' + item.kriteria);
-			formkriteria.value = item.subkriteria;
-		}
 		var nilaialtdt;
 		$(document).ready(function() {
 			try {
+				$.fn.dataTable.ext.errMode = 'none';
 				nilaialtdt = $('#table-nilaialt').DataTable({
-					"stateSave": true,
 					"lengthChange": false,
 					"searching": false,
 					responsive: true,
-					columnDefs: [{
+					serverSide: true,
+					processing: true,
+					ajax: {
+						url: "{{ route('nilai.data') }}",
+						type: 'POST'
+					},
+					columnDefs: [
+						@foreach($data['kriteria'] as $kr)
+						{
+							orderable:false,
+							targets: 1+{{$loop->index}},
+							render:function(data,type,full){
+								if(data===null || data===""){
+									$('#alternatif-'+full['id']+' .edit-record').prop('disabled',true);
+									$('#alternatif-'+full['id']+' .delete-record').prop('disabled',true);
+								}
+								return data;
+							}
+						},
+						@endforeach
+					{
 						orderable: false,
-						targets: -1
+						targets: -1,
+						render: function(data, type, full) {
+							return (
+								'<div class="btn-group" role="group" id="alternatif-'+data+'">' +
+								`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#NilaiAlterModal" title="Edit"><i class="bi bi-pencil-square"></i></button>` +
+								`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}" title="Hapus"><i class="bi bi-trash3-fill"></i></button>` +
+								'</div>'
+							);
+						}
 					}],
+					columns:[{data: "name"},
+						@foreach($data['kriteria'] as $kr)
+						{
+							title: "{{$kr->name}}",
+							data: "subkriteria.{{Str::of($kr->name)->slug('-')}}"
+						},
+						@endforeach
+					{data: "id"}],
 					language: {
 						url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
 					},
@@ -219,8 +211,17 @@
 							}
 						}]
 					}]
-				}).on('draw', setTableColor).on('init.dt',function(){
+				}).on('draw', setTableColor).on('preInit.dt',function(){
 					$('#spare-button').addClass('d-none');
+				}).on('error.dt', function(e, settings, techNote,
+					message) {
+					Toastify({
+						text: message,
+						style: {
+							background: "#ffc107"
+						},
+						duration: 10000
+					}).showToast();
 				});
 			} catch (dterr) {
 				Toastify({
@@ -233,9 +234,8 @@
 			}
 		});
 		$(document).on('click', '.delete-record', function() {
-			var score_id = $(this).data('bs-id'),
-				score_name = $(this).data('bs-name'),
-				rowParent = $(this).parents('tr');
+			var score_id = $(this).data('id'),
+				score_name = $(this).data('name');
 			Swal.fire({
 				title: 'Hapus nilai alternatif?',
 				text: "Anda akan menghapus nilai alternatif " +
@@ -256,8 +256,8 @@
 						type: 'DELETE',
 						url: '/alternatif/nilai/del/' +
 							score_id,
-						// data: { "_token": "{{ csrf_token() }}" },
 						success: function(data) {
+							nilaialtdt.draw();
 							Swal.fire({
 								icon: 'success',
 								title: 'Dihapus',
@@ -266,10 +266,10 @@
 									confirmButton: 'btn btn-success'
 								}
 							});
-							nilaialtdt.row(rowParent)
-								.remove().draw();
 						},
 						error: function(xhr, stat) {
+							if (xhr.status === 404)
+								nilaialtdt.draw();
 							Swal.fire({
 								icon: 'error',
 								title: 'Gagal hapus',
@@ -296,24 +296,43 @@
 				}
 			});
 		}).on('click', '.edit-record', function() {
-			var dtparent = $(this).parents('tr'),
-				rownum = nilaialtdt.row(dtparent).index();
+			var nilai_id = $(this).data('id');
 
 			// changing the title of offcanvas
 			$('#NilaiAlterLabel').html('Edit Nilai Alternatif');
-			$('#alternatif-hidden').val($(this).data('bsName'));
-			$('#alternatif-value').val($(this).data('bsName'));
-			$('#alternatif-value').prop('disabled', true);
-			$('#edit-index').val(rownum);
-			const data = $(this).data('bsScore');
-			data.forEach(split);
+			$('#NilaiAlterForm :input').prop('disabled', true);
+			$('.data-submit').prop('disabled', true);
+			$('.spinner-grow').removeClass('d-none');
+
+			// get data
+			$.get('/alternatif/nilai/edit/' + nilai_id, function(data) {
+				$('#alternatif-value').val(data.alternatif_id);
+				$('#alternatif-hidden').val(data.alternatif_id);
+				@foreach($data['kriteria'] as $kr)
+					$("#subkriteria-{{$kr->id}}").val(data.subkriteria.{{Str::of($kr->name)->slug('_')}});
+				@endforeach
+			}).fail(function(xhr, status) {
+				if (xhr.status === 404) nilaialtdt.draw();
+				Swal.fire({
+					icon: 'error',
+					title: 'Kesalahan',
+					text: xhr.responseJSON.message ?? status,
+					customClass: {
+						confirmButton: 'btn btn-success'
+					}
+				});
+			}).always(function() {
+				$('#NilaiAlterForm :input').prop('disabled', false);
+				$('.data-submit').prop('disabled', false);
+				$('.spinner-grow').addClass('d-none');
+				$('#alternatif-value').prop('disabled', true);
+			});
 		});
 		$('#NilaiAlterForm').on('submit', function(event) {
 			event.preventDefault();
 			$.ajax({
 				data: $('#NilaiAlterForm').serialize(),
-				url: ($('#alternatif-hidden').val() == '' || $(
-						'#edit-index').val() == '') ?
+				url: $('#alternatif-hidden').val() == '' ?
 					'/alternatif/nilai/store' :
 					'/alternatif/nilai/update',
 				type: 'POST',
@@ -333,6 +352,7 @@
 				},
 				success: function(status) {
 					$('#NilaiAlterModal').modal('hide');
+					nilaialtdt.draw();
 					Swal.fire({
 						icon: 'success',
 						title: 'Sukses',
@@ -341,13 +361,6 @@
 							confirmButton: 'btn btn-success'
 						}
 					});
-					if ($('#alternatif-hidden').val() == '' || $(
-							'#edit-index').val() == '')
-						nilaialtdt.row.add(status).draw(false);
-					else {
-						nilaialtdt.row($('#edit-index').val())
-							.data(status).draw();
-					}
 				},
 				error: function(xhr, code) {
 					Swal.fire({

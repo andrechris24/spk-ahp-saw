@@ -17,6 +17,6 @@ return [
     'sent' => 'Link reset password sudah dikirim.',
     'throttled' => 'Tunggu sebentar sebelum meminta reset password lagi.',
     'token' => 'Token reset password tidak valid.',
-    'user' => "Akun tidak ditemukan.",
+    'user' =>'Tidak ditemukan akun yang menggunakan email tersebut.',
 
 ];

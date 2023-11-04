@@ -101,7 +101,10 @@
 					serverSide: true,
 					processing: true,
 					responsive: true,
-					ajax: "{{ route('subkriteria.data') }}",
+					ajax: {
+						url: "{{ route('subkriteria.data') }}",
+						type: 'POST'
+					},
 					columns: [{
 						data: 'id'
 					}, {

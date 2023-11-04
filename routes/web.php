@@ -59,7 +59,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		});
 		Route::prefix('kriteria')->group(function () {
 			Route::get('/', 'KriteriaController@index')->name('kriteria.index');
-			Route::get('data', 'KriteriaController@show')->name('kriteria.data');
+			Route::post('data', 'KriteriaController@show')->name('kriteria.data');
 			Route::post('store', 'KriteriaController@store')->name('kriteria.store');
 			Route::post('update', 'KriteriaController@update')->name('kriteria.update');
 			Route::get('edit/{id}', 'KriteriaController@edit')->name('kriteria.edit');
@@ -67,7 +67,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 				->name('kriteria.delete');
 			Route::prefix('sub')->group(function () {
 				Route::get('/', 'SubKriteriaController@index')->name('subkriteria.index');
-				Route::get('data', 'SubKriteriaController@show')->name('subkriteria.data');
+				Route::post('data', 'SubKriteriaController@show')
+					->name('subkriteria.data');
 				Route::get('edit/{id}', 'SubKriteriaController@edit')
 					->name('subkriteria.edit');
 				Route::post('store', 'SubKriteriaController@store')
@@ -101,7 +102,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		});
 		Route::prefix('alternatif')->group(function () {
 			Route::get('/', 'AlternatifController@index')->name('alternatif.index');
-			Route::get('data', 'AlternatifController@show')->name('alternatif.data');
+			Route::post('data', 'AlternatifController@show')->name('alternatif.data');
 			Route::get('edit/{id}', 'AlternatifController@edit')
 				->name('alternatif.edit');
 			Route::post('store', 'AlternatifController@store')->name('alternatif.store');
@@ -112,7 +113,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			Route::get('hasil', 'NilaiController@show')->name('nilai.show');
 			Route::prefix('nilai')->group(function () {
 				Route::get('/', 'NilaiController@index')->name('nilai.index');
-				Route::get('data','NilaiController@datatables')->name('nilai.data');
+				Route::post('data','NilaiController@datatables')->name('nilai.data');
+				Route::get('edit/{id}','NilaiController@edit')->name('nilai.edit');
 				Route::post('store', 'NilaiController@store')->name('nilai.store');
 				Route::post('update', 'NilaiController@update')->name('nilai.update');
 				Route::delete('del/{id}', 'NilaiController@destroy')->name('nilai.delete');

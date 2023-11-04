@@ -35,15 +35,13 @@ class HomeController extends Controller
 	public function updateProfil(Request $request)
 	{
 		try {
-			$req = $request->validate(
-				[
+			$req = $request->validate([
 					'name' => 'bail|required|min:5|regex:/^[\pL\s\-]+$/u',
 					'email' => 'bail|required|email|unique:users,email,' . Auth::id(),
 					'current_password' => 'bail|required|min:8',
 					'password' => 'nullable|bail|confirmed|between:8,20',
 					'password_confirmation' => 'required_with:password'
-				],
-				[
+				], [
 					'name.required' => 'Nama harus diisi',
 					'name.min' => 'Nama minimal 5 huruf',
 					'name.regex' => 'Nama tidak boleh mengandung simbol dan angka',
@@ -51,8 +49,7 @@ class HomeController extends Controller
 					'email.unique' => 'Email ' . $request->email . ' sudah digunakan',
 					'current_password.required' => 'Password lama harus diisi',
 					'password.confirmed' => 'Password konfirmasi salah'
-				]
-			);
+			]);
 			if (!Hash::check($req['current_password'], Auth::user()->password)) {
 				return response()->json([
 					'message' => __('auth.password'),

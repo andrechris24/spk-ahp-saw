@@ -28,11 +28,6 @@
 								required />
 							<div class="invalid-feedback" id="nama-error"></div>
 						</div>
-						{{-- <label for="kriteria-type">Atribut</label>
-						<div class="form-check-inline">
-							<input type="radio" name="type" value="cost" id="kriteria-type" required>Cost
-							<input type="radio" name="type" value="benefit" id="kriteria-type" required>Benefit
-						</div> --}}
 						<div class="input-group mb-3">
 							<label class="input-group-text" for="tipe-kriteria">
 								Atribut
@@ -109,7 +104,10 @@
 					serverSide: true,
 					processing: true,
 					responsive: true,
-					ajax: "{{ route('kriteria.data') }}",
+					ajax: {
+						url: "{{ route('kriteria.data') }}",
+						type: 'POST'
+					},
 					columns: [{
 						data: 'id'
 					}, {

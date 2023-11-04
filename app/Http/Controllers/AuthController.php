@@ -121,13 +121,7 @@ class AuthController extends Controller
 			return redirect()->route('home.index');
 		try {
 			$enctoken = DB::table('password_resets')->where('email', $_GET['email'])
-				->first();
-			if ($enctoken === null) {
-				return redirect('/forget-password')->withError(
-					'Token tidak valid atau Link sudah kedaluarsa. ' .
-					'Silahkan minta reset password lagi.'
-				);
-			}
+				->firstOrFail();
 			if (!Hash::check($token, $enctoken->token))
 				return redirect('/login')->withError(__('passwords.token'));
 			return view(
@@ -138,8 +132,11 @@ class AuthController extends Controller
 			Log::error($e);
 			return redirect('/forget-password')
 				->withError('Kesalahan: ' . $e->errorInfo[2]);
-			// }catch(ModelNotFoundException){
-			// 	return redirect('/forget-password')->withError(__(''));
+		}catch(ModelNotFoundException){
+			return redirect('/forget-password')->withError(
+				'Token tidak valid atau Link sudah kedaluarsa. ' .
+				'Silahkan minta reset password lagi.'
+			);
 		}
 	}
 	public function submitResetPasswordForm(Request $request)
@@ -155,8 +152,8 @@ class AuthController extends Controller
 				}
 			);
 			if ($status === Password::PASSWORD_RESET) {
-				return redirect('/login')->withSuccess('Reset password berhasil.
-					Silahkan login menggunakan password yang Anda buat.');
+				return redirect('/login')->withSuccess('Reset password berhasil. '.
+					'Silahkan login menggunakan password yang Anda buat.');
 			} else if ($status === Password::INVALID_TOKEN)
 				return back()->withError('Reset password gagal: ' . __('passwords.token'));
 			else if ($status === Password::INVALID_USER)

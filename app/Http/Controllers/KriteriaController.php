@@ -32,9 +32,7 @@ class KriteriaController extends Controller
 				], 422);
 			}
 			Kriteria::create($request->all());
-			if(Nilai::exists())
-				$message.="Kriteria sudah ditambah dan penilaian alternatif sudah direset. ";
-			else $message = "Kriteria sudah diinput. ";
+			$message = "Kriteria sudah diinput. ";
 			if (KriteriaComp::exists()) {
 				KriteriaComp::truncate();
 				Kriteria::where('bobot', '<>', 0.00000)->update(['bobot' => 0.00000]);

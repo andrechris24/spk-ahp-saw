@@ -80,8 +80,7 @@ class SubKriteriaCompController extends Controller
 			return view(
 				'main.subkriteria.comp',
 				compact('array', 'cek', 'jmlsubkriteria', 'value')
-			)
-				->with(['kriteria_id' => $idkriteria]);
+			)->with(['kriteria_id' => $idkriteria]);
 		} catch (ModelNotFoundException) {
 			return redirect('/bobot/sub')
 				->withErrors(['kriteria_id' => 'Kriteria tidak ditemukan']);

@@ -76,7 +76,10 @@
 					responsive: true,
 					serverSide: true,
 					processing: true,
-					ajax: "{{ route('alternatif.data') }}",
+					ajax: {
+						url: "{{ route('alternatif.data') }}",
+						type: 'POST'
+					},
 					columns: [{
 						data: 'id'
 					}, {
@@ -210,7 +213,6 @@
 					$.ajax({
 						type: 'DELETE',
 						url: '/alternatif/del/' + alt_id,
-						// data: { "_token": '{{ csrf_token() }}' },
 						success: function() {
 							dt_alternatif.draw();
 							Swal.fire({
