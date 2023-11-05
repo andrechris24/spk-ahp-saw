@@ -209,7 +209,7 @@
 						},
 						duration: 10000
 					}).showToast();
-				}).on('draw', setTableColor).on('preInit.dt',function(){
+				}).on('draw', setTableColor).on('preInit.dt', function() {
 					$('#spare-button').addClass('d-none');
 				});
 			} catch (dterr) {
@@ -351,17 +351,19 @@
 					});
 				},
 				error: function(xhr, code) {
-						if (typeof(xhr.responseJSON.errors.name)!=="undefined") {
-							$('#nama-sub').addClass('is-invalid');
-							$('#nama-error').text(xhr.responseJSON
-								.errors.name);
-						}
-						if (typeof(xhr.responseJSON.errors.kriteria_id)!=="undefined") {
-							$('#kriteria-select').addClass(
-								'is-invalid');
-							$('#kriteria-error').text(xhr.responseJSON
-								.errors.kriteria_id);
-						}
+					if (typeof(xhr.responseJSON.errors.name) !==
+						"undefined") {
+						$('#nama-sub').addClass('is-invalid');
+						$('#nama-error').text(xhr.responseJSON
+							.errors.name);
+					}
+					if (typeof(xhr.responseJSON.errors
+							.kriteria_id) !== "undefined") {
+						$('#kriteria-select').addClass(
+							'is-invalid');
+						$('#kriteria-error').text(xhr.responseJSON
+							.errors.kriteria_id);
+					}
 					Swal.fire({
 						title: 'Gagal',
 						text: xhr.responseJSON.message ??

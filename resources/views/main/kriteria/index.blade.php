@@ -206,7 +206,7 @@
 						},
 						duration: 10000
 					}).showToast();
-				}).on('draw', setTableColor).on('preInit.dt',function(){
+				}).on('draw', setTableColor).on('preInit.dt', function() {
 					$('#spare-button').addClass('d-none');
 				});
 			} catch (dterr) {
@@ -346,21 +346,24 @@
 					});
 				},
 				error: function(xhr, code) {
-						if (typeof(xhr.responseJSON.errors.name)!=="undefined") {
-							$('#nama-krit').addClass('is-invalid');
-							$('#nama-error').text(xhr.responseJSON
-								.errors.name);
-						}
-						if (typeof(xhr.responseJSON.errors.type)!=="undefined") {
-							$('#tipe-kriteria').addClass('is-invalid');
-							$('#type-error').text(xhr.responseJSON
-								.errors.type);
-						}
-						if (typeof(xhr.responseJSON.errors.desc)!=="undefined") {
-							$('#deskripsi').addClass('is-invalid');
-							$('#desc-error').text(xhr.responseJSON
-								.errors.desc);
-						}
+					if (typeof(xhr.responseJSON.errors.name) !==
+						"undefined") {
+						$('#nama-krit').addClass('is-invalid');
+						$('#nama-error').text(xhr.responseJSON
+							.errors.name);
+					}
+					if (typeof(xhr.responseJSON.errors.type) !==
+						"undefined") {
+						$('#tipe-kriteria').addClass('is-invalid');
+						$('#type-error').text(xhr.responseJSON
+							.errors.type);
+					}
+					if (typeof(xhr.responseJSON.errors.desc) !==
+						"undefined") {
+						$('#deskripsi').addClass('is-invalid');
+						$('#desc-error').text(xhr.responseJSON
+							.errors.desc);
+					}
 					Swal.fire({
 						title: 'Gagal',
 						text: xhr.responseJSON.message ??

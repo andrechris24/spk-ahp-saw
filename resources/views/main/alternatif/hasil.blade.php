@@ -125,8 +125,8 @@
 			<h4 class="card-title">Ranking</h4>
 		</div>
 		<div class="card-body">
-			<button type="button" class="btn btn-primary mb-3"
-				data-bs-toggle="modal" data-bs-target="#RankModal" id="spare-button">
+			<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal"
+				data-bs-target="#RankModal" id="spare-button">
 				<i class="bi bi-bar-chart-line-fill"></i> Lihat Grafik
 			</button>
 			<table class="table table-hover table-striped text-center" id="table-hasil"
@@ -228,7 +228,7 @@
 							className: 'dropdown-item'
 						}]
 					}]
-				}).on('draw', setTableColor).on('init.dt',function(){
+				}).on('draw', setTableColor).on('init.dt', function() {
 					$('#spare-button').addClass('d-none');
 				});
 			} catch (dterr) {

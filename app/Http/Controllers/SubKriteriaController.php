@@ -50,7 +50,7 @@ class SubKriteriaController extends Controller
 			if ($cek > 0) {
 				SubKriteriaComp::where('idkriteria', $req['kriteria_id'])->delete();
 				SubKriteria::where('kriteria_id', $req['kriteria_id'])
-					->update(['bobot'=>0.00000]);
+					->update(['bobot' => 0.00000]);
 				$querytype .= "Silahkan input ulang perbandingan sub kriteria $namakriteria.";
 			}
 			return response()->json(['message' => $querytype]);
@@ -103,7 +103,8 @@ class SubKriteriaController extends Controller
 				SubKriteria::where('kriteria_id', $idkriteria)
 					->update(['bobot' => 0.00000]);
 				$message .= "Silahkan input ulang perbandingan sub kriteria $namakriteria.";
-				if($subkrcomp->count()==0) SubKriteriaComp::truncate();
+				if ($subkrcomp->count() == 0)
+					SubKriteriaComp::truncate();
 			}
 			return response()->json(['message' => $message]);
 		} catch (ModelNotFoundException $e) {

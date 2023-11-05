@@ -226,30 +226,35 @@
 					});
 				},
 				error: function(xhr, code) {
-					if (typeof(xhr.responseJSON.errors.name)!=="undefined") {
+					if (typeof(xhr.responseJSON.errors.name) !==
+						"undefined") {
 						$('#nama-user').addClass('is-invalid');
 						$('#name-error').text(xhr.responseJSON
 							.errors.name);
 					}
-					if (typeof(xhr.responseJSON.errors.email)!=="undefined") {
+					if (typeof(xhr.responseJSON.errors.email) !==
+						"undefined") {
 						$('#email-user').addClass('is-invalid');
 						$('#email-error').text(xhr.responseJSON
 							.errors.email);
 					}
-					if (typeof(xhr.responseJSON.errors.current_password)!=="undefined") {
+					if (typeof(xhr.responseJSON.errors
+							.current_password) !== "undefined") {
 						$('#password-current').addClass(
 							'is-invalid');
 						$('#current-password-error').text(xhr
 							.responseJSON.errors
 							.current_password);
 					}
-					if (typeof(xhr.responseJSON.errors.password)!=="undefined") {
+					if (typeof(xhr.responseJSON.errors
+							.password) !== "undefined") {
 						$('#newpassword').addClass('is-invalid');
 						$('#newpassword-error').text(xhr
 							.responseJSON.errors.password);
 					}
 					if (typeof(xhr.responseJSON.errors
-						.password_confirmation)!=="undefined") {
+							.password_confirmation) !==
+						"undefined") {
 						$('#conf-password').addClass('is-invalid');
 						$('#confirm-password-error').text(xhr
 							.responseJSON.errors
@@ -305,7 +310,8 @@
 					location.href = "{{ url('/') }}";
 				},
 				error: function(xhr, code) {
-					if (typeof(xhr.responseJSON.errors.del_password)!=="undefined") {
+					if (typeof(xhr.responseJSON.errors
+							.del_password) !== "undefined") {
 						$('#pass-del').addClass('is-invalid');
 						$('#del-password-error').text(xhr
 							.responseJSON.errors.del_password);

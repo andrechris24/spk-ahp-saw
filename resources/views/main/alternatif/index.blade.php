@@ -176,7 +176,7 @@
 						},
 						duration: 10000
 					}).showToast();
-				}).on('draw', setTableColor).on('preInit.dt',function(){
+				}).on('draw', setTableColor).on('preInit.dt', function() {
 					$('#spare-button').addClass('d-none');
 				});
 			} catch (dterr) {
@@ -315,7 +315,8 @@
 					});
 				},
 				error: function(xhr, code) {
-					if (typeof(xhr.responseJSON.errors.name)!=="undefined") {
+					if (typeof(xhr.responseJSON.errors.name) !==
+						"undefined") {
 						$('#alter-name').addClass('is-invalid');
 						$('#alter-error').text(xhr.responseJSON
 							.errors.name);

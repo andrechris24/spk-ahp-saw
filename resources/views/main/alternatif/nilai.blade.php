@@ -96,11 +96,6 @@
 					</tr>
 				</thead>
 			</table>
-			{{-- @if (count($data['nilai']) > 0)
-				<a href="{{ route('nilai.show') }}" class="btn btn-success">
-					Lihat hasil
-				</a>
-			@endif --}}
 		</div>
 	</div>
 @endsection
@@ -121,39 +116,56 @@
 						type: 'POST'
 					},
 					columnDefs: [
-						@foreach($data['kriteria'] as $kr)
-						{
-							orderable:false,
-							targets: 1+{{$loop->index}},
-							render:function(data,type,full){
-								if(data===null || data===""){
-									$('#alternatif-'+full['id']+' .edit-record').prop('disabled',true);
-									$('#alternatif-'+full['id']+' .delete-record').prop('disabled',true);
+						@foreach ($data['kriteria'] as $kr)
+							{
+								orderable: false,
+								targets: 1 + {{ $loop->index }},
+								render: function(data, type,
+									full) {
+									if (data === null ||
+										data === "") {
+										$('#alternatif-' +
+											full['id'] +
+											' .edit-record'
+										).prop(
+											'disabled',
+											true);
+										$('#alternatif-' +
+											full['id'] +
+											' .delete-record'
+										).prop(
+											'disabled',
+											true);
+									}
+									return data;
 								}
-								return data;
+							},
+						@endforeach {
+							orderable: false,
+							targets: -1,
+							render: function(data, type, full) {
+								return (
+									'<div class="btn-group" role="group" id="alternatif-' +
+									data + '">' +
+									`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#NilaiAlterModal" title="Edit"><i class="bi bi-pencil-square"></i></button>` +
+									`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}" title="Hapus"><i class="bi bi-trash3-fill"></i></button>` +
+									'</div>'
+								);
 							}
-						},
-						@endforeach
-					{
-						orderable: false,
-						targets: -1,
-						render: function(data, type, full) {
-							return (
-								'<div class="btn-group" role="group" id="alternatif-'+data+'">' +
-								`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#NilaiAlterModal" title="Edit"><i class="bi bi-pencil-square"></i></button>` +
-								`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}" title="Hapus"><i class="bi bi-trash3-fill"></i></button>` +
-								'</div>'
-							);
 						}
-					}],
-					columns:[{data: "name"},
-						@foreach($data['kriteria'] as $kr)
-						{
-							title: "{{$kr->name}}",
-							data: "subkriteria.{{Str::of($kr->name)->slug('-')}}"
+					],
+					columns: [{
+							data: "name"
 						},
-						@endforeach
-					{data: "id"}],
+						@foreach ($data['kriteria'] as $kr)
+							{
+								title: "{{ $kr->name }}",
+								data: "subkriteria.{{ Str::of($kr->name)->slug('-') }}"
+							},
+						@endforeach {
+							data: "id"
+						}
+					],
 					language: {
 						url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
 					},
@@ -211,7 +223,7 @@
 							}
 						}]
 					}]
-				}).on('draw', setTableColor).on('preInit.dt',function(){
+				}).on('draw', setTableColor).on('preInit.dt', function() {
 					$('#spare-button').addClass('d-none');
 				}).on('error.dt', function(e, settings, techNote,
 					message) {
@@ -308,8 +320,10 @@
 			$.get('/alternatif/nilai/edit/' + nilai_id, function(data) {
 				$('#alternatif-value').val(data.alternatif_id);
 				$('#alternatif-hidden').val(data.alternatif_id);
-				@foreach($data['kriteria'] as $kr)
-					$("#subkriteria-{{$kr->id}}").val(data.subkriteria.{{Str::of($kr->name)->slug('_')}});
+				@foreach ($data['kriteria'] as $kr)
+					$("#subkriteria-{{ $kr->id }}").val(data
+						.subkriteria
+						.{{ Str::of($kr->name)->slug('_') }});
 				@endforeach
 			}).fail(function(xhr, status) {
 				if (xhr.status === 404) nilaialtdt.draw();

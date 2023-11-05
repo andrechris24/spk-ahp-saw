@@ -132,7 +132,7 @@ class AuthController extends Controller
 			Log::error($e);
 			return redirect('/forget-password')
 				->withError('Kesalahan: ' . $e->errorInfo[2]);
-		}catch(ModelNotFoundException){
+		} catch (ModelNotFoundException) {
 			return redirect('/forget-password')->withError(
 				'Token tidak valid atau Link sudah kedaluarsa. ' .
 				'Silahkan minta reset password lagi.'
@@ -152,7 +152,7 @@ class AuthController extends Controller
 				}
 			);
 			if ($status === Password::PASSWORD_RESET) {
-				return redirect('/login')->withSuccess('Reset password berhasil. '.
+				return redirect('/login')->withSuccess('Reset password berhasil. ' .
 					'Silahkan login menggunakan password yang Anda buat.');
 			} else if ($status === Password::INVALID_TOKEN)
 				return back()->withError('Reset password gagal: ' . __('passwords.token'));

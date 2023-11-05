@@ -7,7 +7,6 @@ use App\Models\Hasil;
 use App\Models\Kriteria;
 use App\Models\Nilai;
 use App\Models\SubKriteria;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -23,7 +22,7 @@ class NilaiController extends Controller
 		else if ($type === 'benefit')
 			$hasil = $skor / max($arr);
 		else
-			return round($skor, 5);//jika tipe salah
+			return round($skor, 5); //jika tipe salah
 		return round($hasil, 5);
 	}
 	public function getNilaiArr($kriteria_id): array
@@ -56,22 +55,28 @@ class NilaiController extends Controller
 			return;
 		}
 	}
-	public function datatables(){
-		return DataTables::Eloquent(Alternatif::query())->addColumn('subkriteria',function(Alternatif $alt){
-			$kriteria=Kriteria::get();
+	public function datatables()
+	{
+		return DataTables::Eloquent(Alternatif::query())->addColumn('subkriteria', function (Alternatif $alt) {
+			$kriteria = Kriteria::get();
 			foreach ($kriteria as $kr) {
-				$subkriteria[Str::slug($kr->name,'-')]='';
+				$subkriteria[Str::slug($kr->name, '-')] = '';
 			}
-			$nilaialt = Nilai::leftJoin(
+			$nilaialt = Nilai::select(
+				'nilai.*',
+				'alternatif.name',
+				'kriteria.name',
+				'subkriteria.name'
+			)->leftJoin(
 				'alternatif',
 				'alternatif.id',
 				'nilai.alternatif_id'
 			)->leftJoin('kriteria', 'kriteria.id', 'nilai.kriteria_id')
 				->leftJoin('subkriteria', 'subkriteria.id', 'nilai.subkriteria_id')
-				->where('alternatif_id',$alt->id)->get();
-			if(count($nilaialt)>0){
+				->where('alternatif_id', $alt->id)->get();
+			if (count($nilaialt) > 0) {
 				foreach ($nilaialt as $skor) {
-					$subkriteria[Str::slug($skor->kriteria->name,'-')]=$skor->subkriteria->name;
+					$subkriteria[Str::slug($skor->kriteria->name, '-')] = $skor->subkriteria->name;
 				}
 				return $subkriteria;
 			}
@@ -98,18 +103,17 @@ class NilaiController extends Controller
 			return redirect('alternatif')
 				->withWarning('Tambahkan alternatif dulu sebelum melakukan penilaian.');
 		}
-		$nilaialt = Nilai::leftJoin(
-			'alternatif',
-			'alternatif.id',
-			'nilai.alternatif_id'
-		)->leftJoin('kriteria', 'kriteria.id', 'nilai.kriteria_id')
-			->leftJoin('subkriteria', 'subkriteria.id', 'nilai.subkriteria_id')
-			->get();
+		// $nilaialt = Nilai::leftJoin(
+		// 	'alternatif',
+		// 	'alternatif.id',
+		// 	'nilai.alternatif_id'
+		// )->leftJoin('kriteria', 'kriteria.id', 'nilai.kriteria_id')
+		// 	->leftJoin('subkriteria', 'subkriteria.id', 'nilai.subkriteria_id')
+		// 	->get();
 		$data = [
 			'kriteria' => $kriteria,
 			'subkriteria' => $subkriteria,
-			'alternatif' => $alternatif,
-			'nilai' => $nilaialt
+			'alternatif' => $alternatif
 		];
 		return view('main.alternatif.nilai', compact('data'));
 	}
@@ -119,17 +123,19 @@ class NilaiController extends Controller
 		$scores = $request->all();
 		try {
 			$cek = Nilai::where('alternatif_id', $scores['alternatif_id'])->count();
-			$jmlkr=Kriteria::count();
-			if ($cek>=$jmlkr) {
+			$jmlkr = Kriteria::count();
+			if ($cek >= $jmlkr) {
 				return response()->json([
 					'message' => 'Alternatif sudah digunakan dalam penilaian'
 				], 422);
 			}
 			for ($a = 0; $a < count($scores['kriteria_id']); $a++) {
-				Nilai::updateOrCreate([
-					'alternatif_id' => $scores['alternatif_id'],
-					'kriteria_id' => $scores['kriteria_id'][$a]
-				], ['subkriteria_id' => $scores['subkriteria_id'][$a]]
+				Nilai::updateOrCreate(
+					[
+						'alternatif_id' => $scores['alternatif_id'],
+						'kriteria_id' => $scores['kriteria_id'][$a]
+					],
+					['subkriteria_id' => $scores['subkriteria_id'][$a]]
 				);
 			}
 			$hasil['message'] = 'Penilaian alternatif sudah ditambahkan';
@@ -178,17 +184,18 @@ class NilaiController extends Controller
 				->withErrors($e->errorInfo[2]);
 		}
 	}
-	public function edit($id){
+	public function edit($id)
+	{
 		try {
-			$nilai=Nilai::where('alternatif_id',$id)->get();
-			if($nilai->isEmpty()){
+			$nilai = Nilai::where('alternatif_id', $id)->get();
+			if ($nilai->isEmpty()) {
 				return response()->json([
 					'message' => 'Data Penilaian Alternatif tidak ditemukan atau belum diisi'
 				], 404);
 			}
-			$data['alternatif_id']=$id;
+			$data['alternatif_id'] = $id;
 			foreach ($nilai as $skor) {
-				$data['subkriteria'][Str::slug($skor->kriteria->name,'_')]=$skor->subkriteria_id;
+				$data['subkriteria'][Str::slug($skor->kriteria->name, '_')] = $skor->subkriteria_id;
 			}
 			return response()->json($data);
 		} catch (QueryException $e) {
@@ -205,10 +212,11 @@ class NilaiController extends Controller
 				Nilai::updateOrCreate([
 					'alternatif_id' => $scores['alternatif_id'],
 					'kriteria_id' => $scores['kriteria_id'][$a]
-				], ['subkriteria_id' => $scores['subkriteria_id'][$a]
+				], [
+					'subkriteria_id' => $scores['subkriteria_id'][$a]
 				]);
 			}
-			return response()->json(['message'=>"Nilai Alternatif sudah diupdate."]);
+			return response()->json(['message' => "Nilai Alternatif sudah diupdate."]);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->errorInfo[2]], 500);
@@ -236,8 +244,8 @@ class NilaiController extends Controller
 	{
 		try {
 			$result = Hasil::get();
-			if($result->isEmpty()) 
-				return response()->json(['message'=>'Ranking penilaian kosong'],422);
+			if ($result->isEmpty())
+				return response()->json(['message' => 'Ranking penilaian kosong'], 422);
 			foreach ($result as $index => $hasil) {
 				$data['alternatif'][$index] = $hasil->alternatif_id;
 				$data['skor'][$index] = $hasil->skor;
