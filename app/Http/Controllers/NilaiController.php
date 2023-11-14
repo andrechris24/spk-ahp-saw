@@ -57,7 +57,8 @@ class NilaiController extends Controller
 	}
 	public function datatables()
 	{
-		return DataTables::Eloquent(Alternatif::query())->addColumn('subkriteria', function (Alternatif $alt) {
+		return DataTables::Eloquent(Alternatif::query())
+		->addColumn('subkriteria', function (Alternatif $alt) {
 			$kriteria = Kriteria::get();
 			foreach ($kriteria as $kr) {
 				$subkriteria[Str::slug($kr->name, '-')] = '';
@@ -68,10 +69,10 @@ class NilaiController extends Controller
 				'kriteria.name',
 				'subkriteria.name'
 			)->leftJoin(
-				'alternatif',
-				'alternatif.id',
-				'nilai.alternatif_id'
-			)->leftJoin('kriteria', 'kriteria.id', 'nilai.kriteria_id')
+					'alternatif',
+					'alternatif.id',
+					'nilai.alternatif_id'
+				)->leftJoin('kriteria', 'kriteria.id', 'nilai.kriteria_id')
 				->leftJoin('subkriteria', 'subkriteria.id', 'nilai.subkriteria_id')
 				->where('alternatif_id', $alt->id)->get();
 			if (count($nilaialt) > 0) {

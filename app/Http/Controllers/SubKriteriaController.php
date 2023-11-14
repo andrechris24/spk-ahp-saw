@@ -38,14 +38,14 @@ class SubKriteriaController extends Controller
 		$request->validate(SubKriteria::$rules, SubKriteria::$message);
 		$req = $request->all();
 		try {
+			$namakriteria=SubKriteriaCompController::nama_kriteria($req['kriteria_id']);
 			if (SubKriteria::where('kriteria_id', $req['kriteria_id'])->count() >= 20) {
 				return response()->json([
-					'message' => 'Batas jumlah sub kriteria per kriteria sudah tercapai.'
+					'message' => "Batas jumlah sub kriteria ".$namakriteria." sudah tercapai."
 				], 422);
 			}
 			$sub = SubKriteria::create($req);
-			$namakriteria = $sub->kriteria->name;
-			$querytype = "Sub Kriteria sudah ditambah. ";
+			$querytype = "Sub Kriteria $namakriteria sudah ditambah. ";
 			$cek = SubKriteriaComp::where('idkriteria', $req['kriteria_id'])->count();
 			if ($cek > 0) {
 				SubKriteriaComp::where('idkriteria', $req['kriteria_id'])->delete();

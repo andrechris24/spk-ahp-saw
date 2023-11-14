@@ -14,14 +14,14 @@
 		</div>
 		<div class="card-content">
 			<div class="card-body">
-				@if ($cek > $jmlsubkriteria)
+				{{-- @if ($cek > $jmlsubkriteria)
 					<div class="alert alert-primary">
 						<i class="bi bi-info-circle-fill"></i>
 						Perbandingan sub kriteria {{ $title }} sudah dilakukan,
 						<a href="{{ url('/bobot/sub/hasil/' . $kriteria_id) }}">klik disini</a>
 						untuk melihat hasil perbandingan.
 					</div>
-				@endif
+				@endif --}}
 				<ul class="nav nav-tabs" id="InputCompTab" role="tablist">
 					<li class="nav-item" role="presentation">
 						<a class="nav-link active" id="info-tab" data-bs-toggle="tab"
@@ -67,7 +67,7 @@
 															<div class="input-group mb-3">
 																<input type="number" name="skala[{{ $loop->index }}]"
 																	min="1" max="9" class="form-control text-center"
-																	value="{{ old('skala.' . $loop->index) ?? ($value[$loop->index]['nilai'] ?? 1) }}"
+																	value="{{ old('skala.' . $loop->index) ?? ($value[$loop->index]['nilai'] ?? '') }}"
 																	required>
 															</div>
 														</td>
