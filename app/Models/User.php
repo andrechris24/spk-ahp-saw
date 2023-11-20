@@ -47,9 +47,7 @@ class User extends Authenticatable
 	];
 	public static array $loginmsg = [
 		'email.required' => 'Email harus diisi',
-		'email.email' => 'Format Email salah',
 		'email.exists' => 'Akun tidak ditemukan',
-		'password.required' => 'Password harus diisi',
 		'password.between' => 'Panjang password harus 8-20 karakter'
 	];
 	public static array $forgetrule = ['email' => 'bail|required|email|exists:users'];
@@ -61,11 +59,9 @@ class User extends Authenticatable
 	public static array $resetmsg = [
 		'token.required' => 'Token tidak valid',
 		'email.required' => 'Akun tidak ditemukan',
-		'email.email' => 'Format Email salah',
 		'email.exists' => 'Akun tidak ditemukan',
 		'password.required' => 'Password harus diisi',
-		'password.between' => 'Panjang password harus 8-20 karakter',
-		'password.confirmed' => 'Password konfirmasi salah'
+		'password.between' => 'Panjang password harus 8-20 karakter'
 	];
 	public static array $delakunrule = ['del_password' => 'required'];
 	public static array $avatarbg = [

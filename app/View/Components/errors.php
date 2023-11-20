@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class CapsLock extends Component
+class errors extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class CapsLock extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.caps-lock');
+        return view('components.errors');
     }
 }

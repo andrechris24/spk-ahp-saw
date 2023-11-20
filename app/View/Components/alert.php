@@ -6,12 +6,12 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class CapsLock extends Component
+class alert extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct(public string $type, public string $icon)
     {
         //
     }
@@ -21,6 +21,6 @@ class CapsLock extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.caps-lock');
+        return view('components.alert');
     }
 }

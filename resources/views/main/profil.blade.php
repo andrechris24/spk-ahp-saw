@@ -6,69 +6,19 @@
 	Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 @endsection
 @section('content')
-	<div class="modal fade text-left" id="DelAccountModal" tabindex="-1" role="dialog"
-		aria-labelledby="DelAccountLabel" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-			role="document">
-			<div class="modal-content">
-				<div class="modal-header bg-danger">
-					<h4 class="modal-title" id="DelAccountLabel">Hapus Akun</h4>
-					<button type="button" class="close" data-bs-dismiss="modal"
-						aria-label="Close">
-						<i data-feather="x"></i>
-					</button>
-				</div>
-				<div class="modal-body">
-					<form action="{{ url('/akun/del') }}" method="post"
-						enctype="multipart/form-data" id="form-delete-account">
-						<x-caps-lock id="capslock2" />
-						<p>Apakah Anda yakin ingin menghapus akun?</p>
-						<p>Jika yakin, masukkan password Anda.
-							Anda akan keluar secara otomatis setelah menghapus akun.</p>
-						<div class="form-group has-icon-left">
-							<div class="position-relative">
-								<input type="password" name="del_password" id="pass-del"
-									class="form-control" pattern=".{8,20}" maxlength="20"
-									placeholder="Password" required />
-								<div class="form-control-icon">
-									<i class="bi bi-lock"></i>
-								</div>
-								<div class="invalid-feedback" id="del-password-error"></div>
-							</div>
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<div class="spinner-grow text-danger d-none" role="status">
-						<span class="visually-hidden">Menghapus...</span>
-					</div>
-					<button type="button" class="btn btn-light-secondary"
-						data-bs-dismiss="modal">
-						<i class="bi bi-x d-block d-sm-none"></i>
-						<span class="d-none d-sm-block">Batal</span>
-					</button>
-					<button type="submit" class="btn btn-danger ml-1 data-submit"
-						form="form-delete-account">
-						<i class="bi bi-check d-block d-sm-none"></i>
-						<span class="d-none d-sm-block">Hapus</span>
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
 	<div class="card">
 		<div class="card-content">
 			<div class="card-body">
-				<x-caps-lock id="capslock" />
-				<form class="form form-horizontal" method="post"
-					action="{{ url('/akun') }}" id="form-edit-account">
+				<x-caps-lock />
+				<form class="form form-horizontal" method="post" action="{{ url('/akun') }}"
+					id="form-edit-account">
 					<div class="form-body">
 						<div class="row">
 							<div class="col-md-4"><label for="nama-user">Nama</label></div>
 							<div class="col-md-8">
 								<div class="form-group has-icon-left">
 									<div class="position-relative">
-										<input type="text" name="name" placeholder="Name" id="nama-user"
+										<input type="text" name="name" placeholder="Nama" id="nama-user"
 											class="form-control" value="{{ auth()->user()->name }}"
 											pattern="[A-z.,' ]{5,99}" maxlength="99" required />
 										<div class="form-control-icon">
@@ -153,8 +103,7 @@
 									<button type="submit" class="btn btn-primary data-submit">
 										<i class="bi bi-save-fill"></i> Simpan
 									</button>
-									<button type="button" class="btn btn-danger" data-bs-toggle="modal"
-										data-bs-target="#DelAccountModal">
+									<button type="button" class="btn btn-danger" id="#DelAccountBtn">
 										<i class="bi bi-trash3-fill"></i> Hapus Akun Ini
 									</button>
 								</div>
@@ -167,32 +116,10 @@
 	</div>
 @endsection
 @section('js')
+	<script type="text/javascript" src="{{ asset('js/password.js') }}"></script>
 	<script type="text/javascript">
-		const accpassword = document.querySelectorAll('input[type="password"]');
-		const message = document.querySelector('#capslock');
-		const popupmsg = document.querySelector('#capslock2');
-		for (let a = 0; a < accpassword.length; a++) {
-			accpassword[a].addEventListener('keydown', function(e) {
-				if (e.getModifierState('CapsLock')) {
-					message.classList.remove('d-none');
-					popupmsg.classList.remove('d-none');
-				} else {
-					message.classList.add('d-none');
-					popupmsg.classList.add('d-none');
-				}
-			});
-		}
-		var newpassform = document.getElementById("newpassword");
-		var passcekform = document.getElementById("conf-password");
-
-		function checkpassword() {
-			var pass1 = newpassform.value;
-			var pass2 = passcekform.value;
-			if (pass1 !== pass2)
-				passcekform.setCustomValidity("Password konfirmasi salah");
-			else passcekform.setCustomValidity("");
-		}
 		$('#form-edit-account').on('submit', function(e) {
+			var errmsg;
 			e.preventDefault();
 			$.ajax({
 				data: $('#form-edit-account').serialize(),
@@ -226,45 +153,55 @@
 					});
 				},
 				error: function(xhr, code) {
-					if (typeof(xhr.responseJSON.errors.name) !==
-						"undefined") {
-						$('#nama-user').addClass('is-invalid');
-						$('#name-error').text(xhr.responseJSON
-							.errors.name);
-					}
-					if (typeof(xhr.responseJSON.errors.email) !==
-						"undefined") {
-						$('#email-user').addClass('is-invalid');
-						$('#email-error').text(xhr.responseJSON
-							.errors.email);
-					}
-					if (typeof(xhr.responseJSON.errors
-							.current_password) !== "undefined") {
-						$('#password-current').addClass(
-							'is-invalid');
-						$('#current-password-error').text(xhr
-							.responseJSON.errors
-							.current_password);
-					}
-					if (typeof(xhr.responseJSON.errors
-							.password) !== "undefined") {
-						$('#newpassword').addClass('is-invalid');
-						$('#newpassword-error').text(xhr
-							.responseJSON.errors.password);
-					}
-					if (typeof(xhr.responseJSON.errors
-							.password_confirmation) !==
-						"undefined") {
-						$('#conf-password').addClass('is-invalid');
-						$('#confirm-password-error').text(xhr
-							.responseJSON.errors
-							.password_confirmation
-						);
-					}
+					if (xhr.status === 422) {
+						if (typeof(xhr.responseJSON.errors
+								.name) !==
+							"undefined") {
+							$('#nama-user').addClass('is-invalid');
+							$('#name-error').text(xhr.responseJSON
+								.errors.name);
+						}
+						if (typeof(xhr.responseJSON.errors
+								.email) !==
+							"undefined") {
+							$('#email-user').addClass(
+								'is-invalid');
+							$('#email-error').text(xhr.responseJSON
+								.errors.email);
+						}
+						if (typeof(xhr.responseJSON.errors
+								.current_password) !==
+							"undefined") {
+							$('#password-current').addClass(
+								'is-invalid');
+							$('#current-password-error').text(xhr
+								.responseJSON.errors
+								.current_password);
+						}
+						if (typeof(xhr.responseJSON.errors
+								.password) !== "undefined") {
+							$('#newpassword').addClass(
+								'is-invalid');
+							$('#newpassword-error').text(xhr
+								.responseJSON.errors.password);
+						}
+						if (typeof(xhr.responseJSON.errors
+								.password_confirmation) !==
+							"undefined") {
+							$('#conf-password').addClass(
+								'is-invalid');
+							$('#confirm-password-error').text(xhr
+								.responseJSON.errors
+								.password_confirmation
+							);
+						}
+						errmsg = xhr.responseJSON.message ?? code;
+					} else errmsg = 'Kesalahan HTTP ' + xhr
+						.status + '. ' + (xhr.responseJSON
+							.message ?? code)
 					Swal.fire({
 						title: 'Gagal update akun',
-						text: xhr.responseJSON.message ??
-							code,
+						text: errmsg,
 						icon: 'error',
 						customClass: {
 							confirmButton: 'btn btn-success'
@@ -273,60 +210,94 @@
 				}
 			});
 		});
-		$('#form-delete-account').on('submit', function(e) {
-			e.preventDefault();
-			$.ajax({
-				data: $('#form-delete-account').serialize(),
-				url: "{{ route('akun.delete') }}",
-				type: 'DELETE',
-				beforeSend: function() {
-					$('#form-delete-account :input').removeClass(
-						'is-invalid');
-					$('#form-delete-account :input').prop(
-						'disabled',
-						true);
-					$('.data-submit').prop('disabled', true);
-					$('.spinner-grow').removeClass('d-none');
+		$(document).on('click', "#DelAccountBtn", async function() {
+			const {
+				value: password
+			} = await Swal.fire({
+				title: 'Hapus Akun?',
+				text: 'Jika Anda sudah yakin ingin menghapus akun, ' +
+					'masukkan password Anda untuk melanjutkan.' +
+					'Anda akan log out setelah menghapus akun.',
+				input: 'password',
+				inputLabel: 'Password',
+				inputPlaceholder: "Password Anda",
+				inputAttributes: {
+					maxlength: 20,
+					autocapitalize: 'off',
+					autocorrect: 'off'
 				},
-				complete: function() {
-					$('#form-delete-account :input').prop(
-						'disabled',
-						false);
-					$('.data-submit').prop('disabled', false);
-					$('.spinner-grow').addClass('d-none');
+				inputValidator: (value) => {
+					if (!value)
+						return "Masukkan Password Anda";
+					else if (value.length < 8 || value.length >
+						20)
+						return "Panjang Password harus 8-20 karakter"
 				},
-				success: function(status) {
-					$('input[type=password]').val("");
-
-					// sweetalert
-					Swal.fire({
-						icon: 'success',
-						title: 'Akun sudah dihapus',
-						text: status.message,
-						customClass: {
-							confirmButton: 'btn btn-success'
-						}
-					});
-					location.href = "{{ url('/') }}";
+				icon: 'question',
+				showCancelButton: true,
+				confirmButtonText: "Ya",
+				cancelButtonText: "Tidak",
+				customClass: {
+					confirmButton: 'btn btn-primary me-3',
+					cancelButton: 'btn btn-label-secondary'
 				},
-				error: function(xhr, code) {
-					if (typeof(xhr.responseJSON.errors
-							.del_password) !== "undefined") {
-						$('#pass-del').addClass('is-invalid');
-						$('#del-password-error').text(xhr
-							.responseJSON.errors.del_password);
-					}
-					Swal.fire({
-						title: 'Gagal hapus akun',
-						text: xhr.responseJSON.message ??
-							code,
-						icon: 'error',
-						customClass: {
-							confirmButton: 'btn btn-success'
-						}
-					});
-				}
+				buttonsStyling: false
 			});
+			if (password) {
+				$.ajax({
+					url: "{{ route('akun.delete') }}",
+					type: 'DELETE',
+					data: {
+						del_password: password
+					},
+					headers: {
+						'X-CSRF-TOKEN': "{{ csrf_token() }}"
+					},
+					beforeSend: function() {
+						$('#form-edit-account :input')
+							.removeClass(
+								'is-invalid');
+						$('#form-edit-account :input').prop(
+							'disabled',
+							true);
+						$('.data-submit').prop('disabled',
+							true);
+						$('.spinner-grow').removeClass(
+							'd-none');
+					},
+					success: function(status) {
+						// sweetalert
+						Swal.fire({
+							icon: 'success',
+							title: "Akun sudah dihapus",
+							text: status.message,
+							customClass: {
+								confirmButton: 'btn btn-success'
+							}
+						});
+						location.href = "{{ route('login') }}";
+					},
+					error: function(xhr, code) {
+						$('#form-edit-account :input').prop(
+							'disabled',
+							false);
+						$('.data-submit').prop('disabled',
+							false);
+						$('.spinner-grow').addClass('d-none');
+						Swal.fire({
+							title: "Gagal hapus akun",
+							text: 'Kesalahan HTTP ' +
+								xhr.status + '. ' + (
+									xhr.responseJSON
+									.message ?? code),
+							icon: 'error',
+							customClass: {
+								confirmButton: 'btn btn-success'
+							}
+						});
+					}
+				});
+			}
 		});
 	</script>
 @endsection

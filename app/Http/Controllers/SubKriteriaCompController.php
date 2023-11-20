@@ -13,29 +13,54 @@ class SubKriteriaCompController extends Controller
 {
 	private function getSubKriteriaPerbandingan($id)
 	{
-		return SubKriteriaComp::join(
-			"subkriteria",
-			"subkriteria_banding.subkriteria1",
-			"subkriteria.id"
-		)->select(
-				"subkriteria_banding.subkriteria1 as idsubkriteria",
-				"subkriteria.name"
-			)->groupBy("subkriteria1", 'name')->where('kriteria_id', $id)->get();
+		try {
+			return SubKriteriaComp::join(
+				"subkriteria",
+				"subkriteria_banding.subkriteria1",
+				"subkriteria.id"
+			)->select(
+					"subkriteria_banding.subkriteria1 as idsubkriteria",
+					"subkriteria.name"
+				)->groupBy("subkriteria1", 'name')->where('kriteria_id', $id)->get();
+		} catch (QueryException $e) {
+			Log::error($e);
+			return back()->withError('Gagal memuat hasil perbandingan:')
+				->withErrors("Kesalahan #$e->errorInfo[0]/$e->errorInfo[1]. " .
+					$e->errorInfo[2]);
+		}
 	}
 	private function getPerbandinganBySubKriteria1($subkriteria1, $id)
 	{
-		return SubKriteriaComp::select('nilai', 'subkriteria2', 'subkriteria1')
-			->where("subkriteria2", $subkriteria1)->where('idkriteria', $id)->get();
+		try {
+			return SubKriteriaComp::select('nilai', 'subkriteria2', 'subkriteria1')
+				->where("subkriteria2", $subkriteria1)->where('idkriteria', $id)->get();
+		} catch (QueryException $e) {
+			Log::error($e);
+			return back()->withError('Gagal memuat hasil perbandingan:')
+				->withErrors("Kesalahan #$e->errorInfo[0]/$e->errorInfo[1]. " .
+					$e->errorInfo[2]);
+		}
 	}
 	private function getNilaiPerbandingan($kode_kriteria, $id)
 	{
-		return SubKriteriaComp::select("nilai", "subkriteria1")
-			->where("subkriteria1", $kode_kriteria)->where('idkriteria', $id)->get();
+		try {
+			return SubKriteriaComp::select("nilai", "subkriteria1")
+				->where("subkriteria1", $kode_kriteria)->where('idkriteria', $id)->get();
+		} catch (QueryException $e) {
+			Log::error($e);
+			return back()->withError('Gagal memuat hasil perbandingan:')
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[0]);
+		}
 	}
-	public function nama_kriteria($id)
+	public static function nama_kriteria($id)
 	{
-		$kriteria = Kriteria::firstWhere('id', $id);
-		return $kriteria['name'];
+		try {
+			$kriteria = Kriteria::firstWhere('id', $id);
+			return $kriteria['name'];
+		} catch (QueryException $e) {
+			Log::error($e);
+			return "E" . $e->errorInfo[0] . '/' . $e->errorInfo[1];
+		}
 	}
 	public function index()
 	{
@@ -114,8 +139,8 @@ class SubKriteriaCompController extends Controller
 			return back()->withError(
 				'Gagal menyimpan nilai perbandingan sub kriteria ' .
 				$this->nama_kriteria($kriteria_id)
-			)->withErrors($e->errorInfo[2])->with(['kriteria_id' => $kriteria_id])
-				->withInput();
+			)->withErrors("Kesalahan SQLState #" . $e->errorInfo[0])
+				->with(['kriteria_id' => $kriteria_id])->withInput();
 		}
 	}
 	public function show($id)
@@ -282,8 +307,9 @@ class SubKriteriaCompController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil perbandingan sub kriteria ' .
-				$this->nama_kriteria($id) . ':')->withErrors($e->errorInfo[2])
-				->withInput()->with(['kriteria_id' => $id]);
+				$this->nama_kriteria($id) . ':')
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[0])->withInput()
+				->with(['kriteria_id' => $id]);
 		}
 	}
 	public function destroy($id)
@@ -293,12 +319,13 @@ class SubKriteriaCompController extends Controller
 			SubKriteriaComp::where('idkriteria', $id)->delete();
 			SubKriteria::where('kriteria_id', $id)->update(['bobot' => 0.00000]);
 			return redirect('/bobot/sub')
-				->withSuccess('Perbandingan Sub kriteria ' . $kr->name . ' sudah direset')
+				->withSuccess("Perbandingan Sub kriteria $kr->name sudah direset")
 				->with(['kriteria_id' => $id]);
 		} catch (QueryException $e) {
 			return back()
-				->withError('Perbandingan Sub kriteria ' . $kr->name . ' gagal direset')
-				->withErrors($e->errorInfo[2])->with(['kriteria_id' => $id]);
+				->withError("Perbandingan Sub kriteria $kr->name gagal direset")
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[0])
+				->with(['kriteria_id' => $id]);
 		}
 	}
 }

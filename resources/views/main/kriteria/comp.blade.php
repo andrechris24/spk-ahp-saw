@@ -76,7 +76,7 @@
 								</form>
 							</div>
 						@else
-							<div class="alert alert-warning mt-3">
+							<div class="alert alert-danger mt-3">
 								<i class="bi bi-sign-stop-fill"></i>
 								Masukkan data <a href="{{ route('kriteria.index') }}">Kriteria</a>
 								dulu (Minimal 2) untuk melakukan perbandingan.

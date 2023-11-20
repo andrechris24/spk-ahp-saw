@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Services\Login\RememberMeExpiration;
+// use App\Services\Login\RememberMeExpiration;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -18,7 +18,7 @@ use Symfony\Component\Mailer\Exception\TransportException;
 
 class AuthController extends Controller
 {
-	use RememberMeExpiration;
+	// use RememberMeExpiration;
 	public function showlogin()
 	{
 		if (Auth::viaRemember() || Auth::check())
@@ -39,22 +39,24 @@ class AuthController extends Controller
 			return back()->withInput()->withErrors(['password' => __('auth.password')]);
 		} catch (QueryException $e) {
 			Log::error($e);
-			return back()->withInput()->withError('Gagal login: ' . $e->errorInfo[2]);
+			return back()->withInput()->withError('Gagal login: ' .
+				"Kesalahan SQLState #" . $e->errorInfo[0]);
 		}
 	}
 	public function logout()
 	{
 		try {
-			User::findOrFail(Auth::id())->update(['remember_token' => null]);
+			User::find(Auth::id())->update(['remember_token' => null]);
 			Auth::logout();
 			Session::invalidate();
 			Session::regenerateToken();
-			return redirect('/login')->withSuccess('Anda sudah logout.');
-		} catch (ModelNotFoundException) {
-			return back()->withError("Gagal logout: Akun tidak ditemukan");
+			return redirect()->route('login')->withSuccess('Anda sudah logout.');
+			// } catch (ModelNotFoundException) {
+			// 	return back()->withError("Gagal logout: Akun tidak ditemukan");
 		} catch (QueryException $e) {
 			Log::error($e);
-			return back()->withError('Gagal logout: ' . $e->errorInfo[2]);
+			return back()->withError('Gagal logout: ' .
+				"Kesalahan SQLState #" . $e->errorInfo[0]);
 		}
 	}
 	public function showregister()
@@ -69,12 +71,7 @@ class AuthController extends Controller
 			$credentials = $request->validate(User::$regrules, [
 				'name.required' => 'Nama harus diisi',
 				'name.regex' => 'Nama tidak boleh mengandung simbol dan angka',
-				'name.min' => 'Nama minimal 5 huruf',
-				'email.required' => 'Email harus diisi',
-				'email.unique' => 'Email ' . $request->email . ' sudah digunakan',
-				'password.required' => 'Password harus diisi',
-				'password.between' => 'Panjang password harus 8-20 karakter',
-				'password.confirmed' => 'Password konfirmasi salah'
+				'email.unique' => 'Email ' . $request->email . ' sudah digunakan'
 			]);
 			$credentials['password'] = Hash::make($credentials['password']);
 			User::create($credentials);
@@ -83,7 +80,8 @@ class AuthController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withInput()
-				->withError("Gagal membuat akun: " . $e->errorInfo[2]);
+				->withError("Gagal membuat akun: " .
+					"Kesalahan SQLState #" . $e->errorInfo[0]);
 		}
 	}
 	public function showForgetPasswordForm()
@@ -110,7 +108,8 @@ class AuthController extends Controller
 		} catch (QueryException $sql) {
 			Log::error($sql);
 			return back()->withInput()
-				->withError("Gagal mengirim link reset password: " . $sql->errorInfo[2]);
+				->withError("Gagal membuat token reset password: " .
+					"Kesalahan SQLState #" . $sql->errorInfo[0]);
 		}
 		return back()
 			->withError('Gagal mengirim link reset password: Kesalahan tidak diketahui');
@@ -131,7 +130,7 @@ class AuthController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return redirect('/forget-password')
-				->withError('Kesalahan: ' . $e->errorInfo[2]);
+				->withError("Terjadi Kesalahan SQLState #" . $e->errorInfo[0]);
 		} catch (ModelNotFoundException) {
 			return redirect('/forget-password')->withError(
 				'Token tidak valid atau Link sudah kedaluarsa. ' .
@@ -161,7 +160,8 @@ class AuthController extends Controller
 			return back()->withError('Reset password gagal: Kesalahan tidak diketahui');
 		} catch (QueryException $e) {
 			Log::error($e);
-			return back()->withError('Reset password gagal: ' . $e->errorInfo[2]);
+			return back()->withError('Reset password gagal: ' .
+				"Kesalahan SQLState #" . $e->errorInfo[0]);
 		}
 	}
 }

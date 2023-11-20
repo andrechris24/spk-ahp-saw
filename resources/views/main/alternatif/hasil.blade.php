@@ -280,7 +280,8 @@
 			}).fail(function(e, status) {
 				Swal.fire({
 					title: 'Gagal memuat grafik',
-					text: e.responseJSON.message ?? status,
+					text: 'Kesalahan HTTP ' + e.status + '. ' +
+						(e.responseJSON.message ?? status),
 					icon: 'error',
 					customClass: {
 						confirmButton: 'btn btn-success'

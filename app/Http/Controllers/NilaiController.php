@@ -58,30 +58,30 @@ class NilaiController extends Controller
 	public function datatables()
 	{
 		return DataTables::Eloquent(Alternatif::query())
-		->addColumn('subkriteria', function (Alternatif $alt) {
-			$kriteria = Kriteria::get();
-			foreach ($kriteria as $kr) {
-				$subkriteria[Str::slug($kr->name, '-')] = '';
-			}
-			$nilaialt = Nilai::select(
-				'nilai.*',
-				'alternatif.name',
-				'kriteria.name',
-				'subkriteria.name'
-			)->leftJoin(
-					'alternatif',
-					'alternatif.id',
-					'nilai.alternatif_id'
-				)->leftJoin('kriteria', 'kriteria.id', 'nilai.kriteria_id')
-				->leftJoin('subkriteria', 'subkriteria.id', 'nilai.subkriteria_id')
-				->where('alternatif_id', $alt->id)->get();
-			if (count($nilaialt) > 0) {
-				foreach ($nilaialt as $skor) {
-					$subkriteria[Str::slug($skor->kriteria->name, '-')] = $skor->subkriteria->name;
+			->addColumn('subkriteria', function (Alternatif $alt) {
+				$kriteria = Kriteria::get();
+				foreach ($kriteria as $kr) {
+					$subkriteria[Str::slug($kr->name, '-')] = '';
 				}
-				return $subkriteria;
-			}
-		})->toJson();
+				$nilaialt = Nilai::select(
+					'nilai.*',
+					'alternatif.name',
+					'kriteria.name',
+					'subkriteria.name'
+				)->leftJoin(
+						'alternatif',
+						'alternatif.id',
+						'nilai.alternatif_id'
+					)->leftJoin('kriteria', 'kriteria.id', 'nilai.kriteria_id')
+					->leftJoin('subkriteria', 'subkriteria.id', 'nilai.subkriteria_id')
+					->where('alternatif_id', $alt->id)->get();
+				if (count($nilaialt) > 0) {
+					foreach ($nilaialt as $skor) {
+						$subkriteria[Str::slug($skor->kriteria->name, '-')] = $skor->subkriteria->name;
+					}
+					return $subkriteria;
+				}
+			})->toJson();
 	}
 	public function index()
 	{
@@ -104,13 +104,6 @@ class NilaiController extends Controller
 			return redirect('alternatif')
 				->withWarning('Tambahkan alternatif dulu sebelum melakukan penilaian.');
 		}
-		// $nilaialt = Nilai::leftJoin(
-		// 	'alternatif',
-		// 	'alternatif.id',
-		// 	'nilai.alternatif_id'
-		// )->leftJoin('kriteria', 'kriteria.id', 'nilai.kriteria_id')
-		// 	->leftJoin('subkriteria', 'subkriteria.id', 'nilai.subkriteria_id')
-		// 	->get();
 		$data = [
 			'kriteria' => $kriteria,
 			'subkriteria' => $subkriteria,
@@ -139,7 +132,7 @@ class NilaiController extends Controller
 					['subkriteria_id' => $scores['subkriteria_id'][$a]]
 				);
 			}
-			$hasil['message'] = 'Penilaian alternatif sudah ditambahkan';
+			$hasil['message'] = 'Nilai Alternatif sudah diinput';
 			return response()->json($hasil);
 		} catch (QueryException $e) {
 			Log::error($e);
@@ -182,7 +175,7 @@ class NilaiController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil penilaian:')
-				->withErrors($e->errorInfo[2]);
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[0]);
 		}
 	}
 	public function edit($id)
@@ -191,7 +184,7 @@ class NilaiController extends Controller
 			$nilai = Nilai::where('alternatif_id', $id)->get();
 			if ($nilai->isEmpty()) {
 				return response()->json([
-					'message' => 'Data Penilaian Alternatif tidak ditemukan atau belum diisi'
+					'message' => 'Nilai Alternatif tidak ditemukan atau belum diisi.'
 				], 404);
 			}
 			$data['alternatif_id'] = $id;
@@ -217,7 +210,7 @@ class NilaiController extends Controller
 					'subkriteria_id' => $scores['subkriteria_id'][$a]
 				]);
 			}
-			return response()->json(['message' => "Nilai Alternatif sudah diupdate."]);
+			return response()->json(['message' => "Nilai Alternatif sudah diupdate"]);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->errorInfo[2]], 500);
@@ -229,13 +222,13 @@ class NilaiController extends Controller
 			$cek = Nilai::where('alternatif_id', $id);
 			if (!$cek->exists()) {
 				return response()->json([
-					'message' => 'Penilaian alternatif tidak ditemukan'
+					'message' => 'Nilai Alternatif tidak ditemukan.'
 				], 404);
 			}
 			$cek->delete();
 			if (Nilai::count() === 0)
 				Nilai::truncate();
-			return response()->json(['message' => 'Penilaian alternatif sudah dihapus']);
+			return response()->json(['message' => 'Nilai Alternatif sudah dihapus']);
 		} catch (QueryException $err) {
 			Log::error($err);
 			return response()->json(['message' => $err->errorInfo[2]], 500);

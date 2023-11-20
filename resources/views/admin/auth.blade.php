@@ -29,8 +29,10 @@
 					<h1 class="auth-title">@yield('auth-title')</h1>
 					<p class="auth-subtitle mb-5">@yield('auth-subtitle')</p>
 					<x-no-script />
-					@include('components.message')
-					<x-caps-lock id="capslock" />
+					<x-alert type="error" icon="bi bi-x-circle-fill" />
+					<x-alert type="warning" icon="bi bi-exclamation-circle-fill" />
+					<x-alert type="success" icon="bi bi-check-circle-fill" />
+					<x-caps-lock />
 					@yield('content')
 				</div>
 			</div>
@@ -40,23 +42,8 @@
 		</div>
 	</div>
 	<script src="{{ asset('assets/compiled/js/app.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/tooltip.js') }}"></script>
 	@yield('js')
-	<script type="text/javascript">
-		// If you want to use tooltips in your project, we suggest initializing them globally
-		// instead of a "per-page" level.
-		document.addEventListener(
-			"DOMContentLoaded",
-			function() {
-				var tooltipTriggerList = [].slice.call(
-					document.querySelectorAll('[data-bs-toggle="tooltip"]')
-				);
-				tooltipTriggerList.map(function(tooltipTriggerEl) {
-					return new bootstrap.Tooltip(tooltipTriggerEl);
-				});
-			},
-			false
-		);
-	</script>
 </body>
 
 </html>

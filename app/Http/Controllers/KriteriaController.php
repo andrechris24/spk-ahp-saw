@@ -29,7 +29,7 @@ class KriteriaController extends Controller
 			if (Kriteria::count() >= 20) {
 				return response()->json([
 					'message' => 'Jumlah kriteria maksimal sudah tercapai.'
-				], 422);
+				], 400);
 			}
 			Kriteria::create($request->all());
 			$message = "Kriteria sudah diinput. ";
@@ -53,7 +53,7 @@ class KriteriaController extends Controller
 				['id' => $req['id']],
 				['name' => $req['name'], 'type' => $req['type'], 'desc' => $req['desc']]
 			);
-			return response()->json(['message' => 'Kriteria sudah diupdate.']);
+			return response()->json(['message' => 'Kriteria sudah diupdate']);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->errorInfo[2]], 500);
@@ -69,8 +69,7 @@ class KriteriaController extends Controller
 			return response()->json(["message" => $e->errorInfo[2]], 500);
 		} catch (ModelNotFoundException $err) {
 			return response()->json([
-				'message' => 'Data Kriteria tidak ditemukan',
-				'exception' => $err->getMessage()
+				'message' => 'Kriteria yang Anda cari tidak ditemukan.'
 			], 404);
 		}
 	}
@@ -85,11 +84,8 @@ class KriteriaController extends Controller
 				$message .= 'Silahkan input ulang perbandingan Kriteria.';
 			}
 			return response()->json(['message' => $message]);
-		} catch (ModelNotFoundException $e) {
-			return response()->json([
-				'message' => 'Kriteria tidak ditemukan',
-				'exception' => $e->getMessage()
-			], 404);
+		} catch (ModelNotFoundException) {
+			return response()->json(['message' => 'Kriteria tidak ditemukan.'], 404);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->errorInfo[2]], 500);

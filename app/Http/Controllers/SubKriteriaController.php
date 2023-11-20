@@ -38,14 +38,14 @@ class SubKriteriaController extends Controller
 		$request->validate(SubKriteria::$rules, SubKriteria::$message);
 		$req = $request->all();
 		try {
-			$namakriteria=SubKriteriaCompController::nama_kriteria($req['kriteria_id']);
+			$namakriteria = SubKriteriaCompController::nama_kriteria($req['kriteria_id']);
 			if (SubKriteria::where('kriteria_id', $req['kriteria_id'])->count() >= 20) {
 				return response()->json([
-					'message' => "Batas jumlah sub kriteria ".$namakriteria." sudah tercapai."
-				], 422);
+					'message' => "Batas jumlah sub kriteria $namakriteria sudah tercapai."
+				], 400);
 			}
-			$sub = SubKriteria::create($req);
-			$querytype = "Sub Kriteria $namakriteria sudah ditambah. ";
+			SubKriteria::create($req);
+			$querytype = "Sub Kriteria $namakriteria sudah diinput. ";
 			$cek = SubKriteriaComp::where('idkriteria', $req['kriteria_id'])->count();
 			if ($cek > 0) {
 				SubKriteriaComp::where('idkriteria', $req['kriteria_id'])->delete();
@@ -68,7 +68,7 @@ class SubKriteriaController extends Controller
 				['id' => $req['id']],
 				['name' => $req['name'], 'kriteria_id' => $req['kriteria_id']]
 			);
-			return response()->json(['message' => 'Sub Kriteria sudah diupdate.']);
+			return response()->json(['message' => 'Sub Kriteria sudah diupdate']);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->errorInfo[2]], 500);
@@ -82,10 +82,9 @@ class SubKriteriaController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->errorInfo[2]], 500);
-		} catch (ModelNotFoundException $err) {
+		} catch (ModelNotFoundException) {
 			return response()->json([
-				"message" => 'Data Sub Kriteria tidak ditemukan',
-				'exception' => $err->getMessage()
+				"message" => 'Sub Kriteria yang Anda cari tidak ditemukan.'
 			], 404);
 		}
 	}
@@ -107,11 +106,8 @@ class SubKriteriaController extends Controller
 					SubKriteriaComp::truncate();
 			}
 			return response()->json(['message' => $message]);
-		} catch (ModelNotFoundException $e) {
-			return response()->json([
-				'message' => 'Sub Kriteria tidak ditemukan',
-				'exception' => $e->getMessage()
-			], 404);
+		} catch (ModelNotFoundException) {
+			return response()->json(['message' => 'Sub Kriteria tidak ditemukan.'], 404);
 		} catch (QueryException $sql) {
 			Log::error($sql);
 			return response()->json(['message' => $sql->errorInfo[2]], 500);

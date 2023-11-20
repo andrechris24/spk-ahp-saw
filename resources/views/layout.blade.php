@@ -240,7 +240,10 @@
 					</div>
 					<section class="content">
 						<x-no-script />
-						@include('components.message')
+						<x-errors />
+						<x-alert type="error" icon="bi bi-x-circle-fill" />
+						<x-alert type="warning" icon="bi bi-exclamation-circle-fill" />
+						<x-alert type="success" icon="bi bi-check-circle-fill" />
 						@yield('content')
 					</section>
 				</div>
@@ -260,28 +263,14 @@
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript">
-		const currentRoute = location.href,
-			links = document.querySelectorAll('.sidebar-link, .submenu-link');
-		var list, sublist;
-		links.forEach((link) => {
-			list = link.closest('li.sidebar-item');
-			if (link.href == currentRoute) {
-				list.classList.add('active');
-				if (link.classList.contains('submenu-link')) {
-					sublist = link.closest('li.submenu-item');
-					sublist.classList.add('active');
-				}
-			}
-		});
-	</script>
+	<script type="text/javascript" src="{{ asset('js/navbar.js') }}"></script>
 	<script src="{{ asset('assets/static/js/components/dark.js') }}"></script>
-	<script
-		src="{{ asset('assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}">
-	</script>
 	<script src="{{ asset('assets/compiled/js/app.js') }}"></script>
 	<script type="text/javascript"
 		src="{{ asset('assets/extensions/jquery/jquery.min.js') }}"></script>
+	<script
+		src="{{ asset('assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}">
+	</script>
 	<script type="text/javascript"
 		src="{{ asset('assets/extensions/DataTables/datatables.min.js') }}">
 	</script>
@@ -293,25 +282,9 @@
 	<script type="text/javascript"
 		src="{{ asset('assets/extensions/sweetalert2/sweetalert2.min.js') }}">
 	</script>
+	<script type="text/javascript" src="{{ asset('js/tooltip.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/datatables.js') }}"></script>
 	<script type="text/javascript">
-		document.addEventListener(
-			"DOMContentLoaded",
-			function() {
-				var tooltipTriggerList = [].slice.call(
-					document.querySelectorAll('[data-bs-toggle="tooltip"]')
-				);
-				tooltipTriggerList.map(function(tooltipTriggerEl) {
-					return new bootstrap.Tooltip(tooltipTriggerEl);
-				});
-			},
-			false
-		);
-		const setTableColor = () => {
-			document.querySelectorAll('.dataTables_paginate .pagination').forEach(
-				dt => {
-					dt.classList.add('pagination-primary');
-				});
-		};
 		// ajax setup
 		$.ajaxSetup({
 			headers: {

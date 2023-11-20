@@ -12,24 +12,42 @@ class KriteriaCompController extends Controller
 {
 	private function getKriteriaPerbandingan()
 	{
-		return KriteriaComp::join(
-			"kriteria",
-			"kriteria_banding.kriteria1",
-			"kriteria.id"
-		)->select(
-				"kriteria_banding.kriteria1 as idkriteria",
-				"kriteria.name"
-			)->groupBy("kriteria1", 'name')->get();
+		try {
+			return KriteriaComp::join(
+				"kriteria",
+				"kriteria_banding.kriteria1",
+				"kriteria.id"
+			)->select(
+					"kriteria_banding.kriteria1 as idkriteria",
+					"kriteria.name"
+				)->groupBy("kriteria1", 'name')->get();
+		} catch (QueryException $e) {
+			Log::error($e);
+			return back()->withError('Gagal memuat hasil perbandingan:')
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[0]);
+		}
 	}
 	private function getPerbandinganByKriteria1($kriteria1)
 	{
-		return KriteriaComp::select('nilai', 'kriteria2', 'kriteria1')
-			->where("kriteria2", $kriteria1)->get();
+		try {
+			return KriteriaComp::select('nilai', 'kriteria2', 'kriteria1')
+				->where("kriteria2", $kriteria1)->get();
+		} catch (QueryException $e) {
+			Log::error($e);
+			return back()->withError('Gagal memuat hasil perbandingan:')
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[0]);
+		}
 	}
 	private function getNilaiPerbandingan($kode_kriteria)
 	{
-		return KriteriaComp::select("nilai", "kriteria1")
-			->where("kriteria1", $kode_kriteria)->get();
+		try {
+			return KriteriaComp::select("nilai", "kriteria1")
+				->where("kriteria1", $kode_kriteria)->get();
+		} catch (QueryException $e) {
+			Log::error($e);
+			return back()->withError('Gagal memuat hasil perbandingan:')
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[0]);
+		}
 	}
 	public function index()
 	{
@@ -69,7 +87,7 @@ class KriteriaCompController extends Controller
 		} catch (QueryException $sql) {
 			Log::error($sql);
 			return back()->withInput()->withError('Gagal menyimpan nilai perbandingan:')
-				->withErrors($sql->errorInfo[2]);
+				->withErrors("Kesalahan SQLState #" . $sql->errorInfo[0]);
 		}
 		return redirect('/bobot/hasil');
 	}
@@ -230,9 +248,8 @@ class KriteriaCompController extends Controller
 			return view('main.kriteria.hasil', compact('data'));
 		} catch (QueryException $e) {
 			Log::error($e);
-			return redirect('/bobot')
-				->withError('Gagal memuat hasil perbandingan kriteria:')
-				->withErrors($e->errorInfo[2]);
+			return back()->withError('Gagal memuat hasil perbandingan kriteria:')
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[0]);
 		}
 	}
 	public function destroy()
@@ -245,7 +262,7 @@ class KriteriaCompController extends Controller
 		} catch (QueryException $sql) {
 			Log::error($sql);
 			return back()->withError('Perbandingan Kriteria gagal direset:')
-				->withErrors($sql->errorInfo[2]);
+				->withErrors("Kesalahan SQLState #" . $sql->errorInfo[0]);
 		}
 	}
 }

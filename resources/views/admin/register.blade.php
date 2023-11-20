@@ -57,29 +57,5 @@
 	</div>
 @endsection
 @section('js')
-	<script type="text/javascript">
-		const accpassword = document.querySelectorAll('input[type="password"]');
-		const message = document.querySelector('#capslock');
-		for (a = 0; a < accpassword.length; a++) {
-			accpassword[a].addEventListener('keyup', function(e) {
-				if (e.getModifierState('CapsLock')) {
-					message.classList.remove('d-none');
-					message.classList.add('d-block');
-				} else {
-					message.classList.remove('d-block');
-					message.classList.add('d-none');
-				}
-			});
-		}
-		var newpassform = document.getElementById("password");
-		var passcekform = document.getElementById("confirm-password");
-
-		function checkpassword() {
-			var pass1 = newpassform.value;
-			var pass2 = passcekform.value;
-			if (pass1 !== pass2)
-				passcekform.setCustomValidity("Password konfirmasi salah");
-			else passcekform.setCustomValidity("");
-		}
-	</script>
+	<script type="text/javascript" src="{{ asset('js/password.js') }}"></script>
 @endsection

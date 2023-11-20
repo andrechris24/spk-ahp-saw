@@ -98,9 +98,9 @@
 			try {
 				$.fn.dataTable.ext.errMode = 'none';
 				dt_kriteria = $('#table-crit').DataTable({
-					"stateSave": true,
-					"lengthChange": false,
-					"searching": false,
+					stateSave: true,
+					lengthChange: false,
+					searching: false,
 					serverSide: true,
 					processing: true,
 					responsive: true,
@@ -260,10 +260,12 @@
 							Swal.fire({
 								icon: 'error',
 								title: 'Gagal hapus',
-								text: xhr
-									.responseJSON
-									.message ??
-									stat,
+								text: 'Kesalahan HTTP ' +
+									xhr.status +
+									'. ' + (xhr
+										.responseJSON
+										.message ??
+										stat),
 								customClass: {
 									confirmButton: 'btn btn-success'
 								}
@@ -303,7 +305,9 @@
 				Swal.fire({
 					icon: 'error',
 					title: 'Kesalahan',
-					text: xhr.responseJSON.message ?? status,
+					text: 'Kesalahan HTTP ' + xhr.status +
+						'. ' + (xhr.responseJSON.message ??
+							status),
 					customClass: {
 						confirmButton: 'btn btn-success'
 					}
@@ -315,6 +319,7 @@
 			});
 		});
 		$('#CritForm').on('submit', function(event) {
+			var errmsg;
 			event.preventDefault();
 			$.ajax({
 				data: $('#CritForm').serialize(),
@@ -346,28 +351,38 @@
 					});
 				},
 				error: function(xhr, code) {
-					if (typeof(xhr.responseJSON.errors.name) !==
-						"undefined") {
-						$('#nama-krit').addClass('is-invalid');
-						$('#nama-error').text(xhr.responseJSON
-							.errors.name);
-					}
-					if (typeof(xhr.responseJSON.errors.type) !==
-						"undefined") {
-						$('#tipe-kriteria').addClass('is-invalid');
-						$('#type-error').text(xhr.responseJSON
-							.errors.type);
-					}
-					if (typeof(xhr.responseJSON.errors.desc) !==
-						"undefined") {
-						$('#deskripsi').addClass('is-invalid');
-						$('#desc-error').text(xhr.responseJSON
-							.errors.desc);
+					if (xhr.status === 422) {
+						if (typeof(xhr.responseJSON.errors
+								.name) !==
+							"undefined") {
+							$('#nama-krit').addClass('is-invalid');
+							$('#nama-error').text(xhr.responseJSON
+								.errors.name);
+						}
+						if (typeof(xhr.responseJSON.errors
+								.type) !==
+							"undefined") {
+							$('#tipe-kriteria').addClass(
+								'is-invalid');
+							$('#type-error').text(xhr.responseJSON
+								.errors.type);
+						}
+						if (typeof(xhr.responseJSON.errors
+								.desc) !==
+							"undefined") {
+							$('#deskripsi').addClass('is-invalid');
+							$('#desc-error').text(xhr.responseJSON
+								.errors.desc);
+						}
+						errmsg = xhr.responseJSON.message ?? code;
+					} else {
+						errmsg = 'Kesalahan HTTP ' + xhr
+							.status + '. ' + (xhr.responseJSON
+								.message ?? code);
 					}
 					Swal.fire({
 						title: 'Gagal',
-						text: xhr.responseJSON.message ??
-							code,
+						text: errmsg,
 						icon: 'error',
 						customClass: {
 							confirmButton: 'btn btn-success'

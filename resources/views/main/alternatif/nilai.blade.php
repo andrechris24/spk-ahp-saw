@@ -101,7 +101,7 @@
 @endsection
 @section('js')
 	<script type="text/javascript">
-		var nilaialtdt;
+		var nilaialtdt, errmsg;
 		$(document).ready(function() {
 			try {
 				$.fn.dataTable.ext.errMode = 'none';
@@ -285,10 +285,12 @@
 							Swal.fire({
 								icon: 'error',
 								title: 'Gagal hapus',
-								text: xhr
-									.responseJSON
-									.message ??
-									stat,
+								text: 'Kesalahan HTTP ' +
+									xhr.status +
+									'. ' + (xhr
+										.responseJSON
+										.message ??
+										stat),
 								customClass: {
 									confirmButton: 'btn btn-success'
 								}
@@ -330,7 +332,9 @@
 				Swal.fire({
 					icon: 'error',
 					title: 'Kesalahan',
-					text: xhr.responseJSON.message ?? status,
+					text: 'Kesalahan HTTP ' + xhr.status +
+						'. ' + (xhr.responseJSON.message ??
+							status),
 					customClass: {
 						confirmButton: 'btn btn-success'
 					}
@@ -377,10 +381,25 @@
 					});
 				},
 				error: function(xhr, code) {
+					if (xhr.status === 422) {
+						console.log(xhr.responseJSON.errors);
+						if (typeof(xhr.responseJSON.errors
+								.alternatif_id) !== "undefined") {
+							$('#alternatif-value').addClass(
+								'is-invalid');
+							$('#alternatif-error').text(xhr
+								.responseJSON.errors
+								.alternatif_id);
+						}
+						errmsg = xhr.responseJSON.message ?? code;
+					} else {
+						errmsg = 'Kesalahan HTTP ' + xhr
+							.status + '. ' + (xhr.responseJSON
+								.message ?? code);
+					}
 					Swal.fire({
 						title: 'Gagal',
-						text: xhr.responseJSON.message ??
-							code,
+						text: errmsg,
 						icon: 'error',
 						customClass: {
 							confirmButton: 'btn btn-success'

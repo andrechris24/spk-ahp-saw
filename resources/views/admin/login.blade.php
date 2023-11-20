@@ -55,13 +55,5 @@
 	</div>
 @endsection
 @section('js')
-	<script type="text/javascript">
-		const password = document.querySelector('#password');
-		const message = document.querySelector('#capslock');
-		password.addEventListener('keydown', function(e) {
-			if (e.getModifierState('CapsLock'))
-				message.classList.remove('d-none');
-			else message.classList.add('d-none');
-		});
-	</script>
+	<script type="text/javascript" src="{{ asset('js/password.js') }}"></script>
 @endsection

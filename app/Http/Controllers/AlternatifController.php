@@ -24,7 +24,7 @@ class AlternatifController extends Controller
 		$request->validate(Alternatif::$rules, Alternatif::$message);
 		try {
 			Alternatif::create($request->all());
-			return response()->json(['message' => 'Alternatif sudah ditambah.']);
+			return response()->json(['message' => 'Alternatif sudah diinput']);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->errorInfo[2]], 500);
@@ -36,7 +36,7 @@ class AlternatifController extends Controller
 		$req = $request->all();
 		try {
 			Alternatif::updateOrCreate(['id' => $req['id']], ['name' => $req['name']]);
-			return response()->json(['message' => 'Alternatif sudah diupdate.']);
+			return response()->json(['message' => 'Alternatif sudah diupdate']);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->errorInfo[2]], 500);
@@ -50,10 +50,9 @@ class AlternatifController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(["message" => $e->errorInfo[2]], 500);
-		} catch (ModelNotFoundException $e) {
+		} catch (ModelNotFoundException) {
 			return response()->json([
-				'message' => 'Data Alternatif tidak ditemukan',
-				'exception' => $e->getMessage()
+				'message' => 'Alternatif yang Anda cari tidak ditemukan.'
 			], 404);
 		}
 	}
@@ -62,11 +61,8 @@ class AlternatifController extends Controller
 		try {
 			Alternatif::findOrFail($id)->delete();
 			return response()->json(['message' => 'Alternatif sudah dihapus']);
-		} catch (ModelNotFoundException $e) {
-			return response()->json([
-				'message' => 'Alternatif tidak ditemukan',
-				'exception' => $e->getMessage()
-			], 404);
+		} catch (ModelNotFoundException) {
+			return response()->json(['message' => 'Alternatif tidak ditemukan.'], 404);
 		} catch (QueryException $sql) {
 			Log::error($sql);
 			return response()->json(['message' => $sql->errorInfo[2]], 500);
