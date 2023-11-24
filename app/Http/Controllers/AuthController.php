@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-// use App\Services\Login\RememberMeExpiration;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -18,7 +17,6 @@ use Symfony\Component\Mailer\Exception\TransportException;
 
 class AuthController extends Controller
 {
-	// use RememberMeExpiration;
 	public function showlogin()
 	{
 		if (Auth::viaRemember() || Auth::check())
@@ -28,7 +26,7 @@ class AuthController extends Controller
 	public function login(Request $request)
 	{
 		try {
-			$credentials = $request->validate(User::$loginrules, User::$loginmsg);
+			$credentials = $request->validate(User::$loginrules);
 			if (Auth::attempt($credentials, $request->get('remember'))) {
 				$user = User::firstWhere('email', $request->email);
 				Auth::login($user, $request->get('remember'));
@@ -68,11 +66,7 @@ class AuthController extends Controller
 	public function register(Request $request)
 	{
 		try {
-			$credentials = $request->validate(User::$regrules, [
-				'name.required' => 'Nama harus diisi',
-				'name.regex' => 'Nama tidak boleh mengandung simbol dan angka',
-				'email.unique' => 'Email ' . $request->email . ' sudah digunakan'
-			]);
+			$credentials = $request->validate(User::$regrules, User::$regmsg);
 			$credentials['password'] = Hash::make($credentials['password']);
 			User::create($credentials);
 			return redirect('/login')->withSuccess("Akun sudah dibuat. " .

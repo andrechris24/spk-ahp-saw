@@ -190,7 +190,7 @@
 							<i class="bi bi-arrow-counterclockwise"></i> Reset
 						</a>
 						@if ($consistent)
-							<a href="{{ url('/bobot/sub') }}" class="btn btn-primary">
+							<a href="{{ route('bobotsubkriteria.pick') }}" class="btn btn-primary">
 								<i class="bi bi-arrow-right"></i> Lanjut
 							</a>
 						@else
@@ -200,8 +200,7 @@
 							</button>
 						@endif
 					</div>
-					<form action="{{ route('bobotkriteria.reset') }}" method="POST"
-						id="reset-kriteria">
+					<form action="{{ route('bobotkriteria.reset') }}" method="POST" id="reset-kriteria">
 						@csrf
 						@method('DELETE')
 					</form>

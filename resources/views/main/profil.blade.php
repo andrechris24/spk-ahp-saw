@@ -10,7 +10,7 @@
 		<div class="card-content">
 			<div class="card-body">
 				<x-caps-lock />
-				<form class="form form-horizontal" method="post" action="{{ url('/akun') }}"
+				<form class="form form-horizontal" method="post" action="{{ route('akun.perform') }}"
 					id="form-edit-account">
 					<div class="form-body">
 						<div class="row">
@@ -32,9 +32,8 @@
 							<div class="col-md-8">
 								<div class="form-group has-icon-left">
 									<div class="position-relative">
-										<input type="email" name="email" placeholder="Email"
-											id="email-user" value="{{ auth()->user()->email }}"
-											class="form-control" required />
+										<input type="email" name="email" placeholder="Email" id="email-user"
+											value="{{ auth()->user()->email }}" class="form-control" required />
 										<div class="form-control-icon">
 											<i class="bi bi-envelope"></i>
 										</div>
@@ -47,8 +46,7 @@
 								<div class="form-group has-icon-left">
 									<div class="position-relative">
 										<input type="password" name="current_password" id="password-current"
-											class="form-control" placeholder="Password Anda" maxlength="20"
-											required />
+											class="form-control" placeholder="Password Anda" maxlength="20" required />
 										<div class="form-control-icon">
 											<i class="bi bi-lock"></i>
 										</div>
@@ -63,10 +61,9 @@
 								<div class="form-group has-icon-left">
 									<div class="position-relative">
 										<input type="password" name="password" class="form-control"
-											placeholder="Kosongkan jika tidak ganti password"
-											oninput="checkpassword()" pattern=".{8,20}" id="newpassword"
-											data-bs-toggle="tooltip" maxlength="20" data-bs-placement="top"
-											title="8-20 karakter" />
+											placeholder="Kosongkan jika tidak ganti password" oninput="checkpassword()"
+											pattern=".{8,20}" id="newpassword" data-bs-toggle="tooltip" maxlength="20"
+											data-bs-placement="top" title="8-20 karakter" />
 										<div class="form-control-icon">
 											<i class="bi bi-lock"></i>
 										</div>
@@ -126,22 +123,18 @@
 				url: "{{ route('akun.perform') }}",
 				type: 'POST',
 				beforeSend: function() {
-					$('#form-edit-account :input').removeClass(
-						'is-invalid');
-					$('#form-edit-account :input').prop('disabled',
-						true);
+					$('#form-edit-account :input').removeClass('is-invalid')
+						.prop('disabled', true);
 					$('.data-submit').prop('disabled', true);
 					$('.spinner-grow').removeClass('d-none');
 				},
 				complete: function() {
-					$('#form-edit-account :input').prop('disabled',
-						false);
+					$('#form-edit-account :input').prop('disabled', false);
 					$('.data-submit').prop('disabled', false);
 					$('.spinner-grow').addClass('d-none');
 				},
 				success: function(status) {
 					$('input[type=password]').val("");
-
 					// sweetalert
 					Swal.fire({
 						icon: 'success',
@@ -154,51 +147,42 @@
 				},
 				error: function(xhr, code) {
 					if (xhr.status === 422) {
-						if (typeof(xhr.responseJSON.errors
-								.name) !==
+						if (typeof xhr.responseJSON.errors.name !==
 							"undefined") {
 							$('#nama-user').addClass('is-invalid');
-							$('#name-error').text(xhr.responseJSON
-								.errors.name);
+							$('#name-error')
+								.text(xhr.responseJSON.errors.name);
 						}
-						if (typeof(xhr.responseJSON.errors
-								.email) !==
+						if (typeof xhr.responseJSON.errors.email !==
 							"undefined") {
-							$('#email-user').addClass(
-								'is-invalid');
-							$('#email-error').text(xhr.responseJSON
-								.errors.email);
+							$('#email-user').addClass('is-invalid');
+							$('#email-error')
+								.text(xhr.responseJSON.errors.email);
 						}
-						if (typeof(xhr.responseJSON.errors
-								.current_password) !==
-							"undefined") {
-							$('#password-current').addClass(
-								'is-invalid');
+						if (typeof xhr.responseJSON.errors
+							.current_password !== "undefined") {
+							$('#password-current').addClass('is-invalid');
 							$('#current-password-error').text(xhr
-								.responseJSON.errors
-								.current_password);
+								.responseJSON.errors.current_password);
 						}
-						if (typeof(xhr.responseJSON.errors
-								.password) !== "undefined") {
-							$('#newpassword').addClass(
-								'is-invalid');
-							$('#newpassword-error').text(xhr
-								.responseJSON.errors.password);
-						}
-						if (typeof(xhr.responseJSON.errors
-								.password_confirmation) !==
+						if (typeof xhr.responseJSON.errors.password !==
 							"undefined") {
-							$('#conf-password').addClass(
-								'is-invalid');
+							$('#newpassword').addClass('is-invalid');
+							$('#newpassword-error')
+								.text(xhr.responseJSON.errors.password);
+						}
+						if (typeof xhr.responseJSON.errors
+							.password_confirmation !== "undefined") {
+							$('#conf-password').addClass('is-invalid');
 							$('#confirm-password-error').text(xhr
 								.responseJSON.errors
-								.password_confirmation
-							);
+								.password_confirmation);
 						}
 						errmsg = xhr.responseJSON.message ?? code;
-					} else errmsg = 'Kesalahan HTTP ' + xhr
-						.status + '. ' + (xhr.responseJSON
-							.message ?? code)
+					} else {
+						errmsg = 'Kesalahan HTTP ' + xhr.status + '. ' +
+							(xhr.responseJSON.message ?? code)
+					}
 					Swal.fire({
 						title: 'Gagal update akun',
 						text: errmsg,
@@ -227,10 +211,8 @@
 					autocorrect: 'off'
 				},
 				inputValidator: (value) => {
-					if (!value)
-						return "Masukkan Password Anda";
-					else if (value.length < 8 || value.length >
-						20)
+					if (!value) return "Masukkan Password Anda";
+					else if (value.length < 8 || value.length > 20)
 						return "Panjang Password harus 8-20 karakter"
 				},
 				icon: 'question',
@@ -254,16 +236,10 @@
 						'X-CSRF-TOKEN': "{{ csrf_token() }}"
 					},
 					beforeSend: function() {
-						$('#form-edit-account :input')
-							.removeClass(
-								'is-invalid');
-						$('#form-edit-account :input').prop(
-							'disabled',
-							true);
-						$('.data-submit').prop('disabled',
-							true);
-						$('.spinner-grow').removeClass(
-							'd-none');
+						$('#form-edit-account :input').removeClass(
+							'is-invalid').prop('disabled', true);
+						$('.data-submit').prop('disabled', true);
+						$('.spinner-grow').removeClass('d-none');
 					},
 					success: function(status) {
 						// sweetalert
@@ -278,18 +254,16 @@
 						location.href = "{{ route('login') }}";
 					},
 					error: function(xhr, code) {
-						$('#form-edit-account :input').prop(
-							'disabled',
-							false);
-						$('.data-submit').prop('disabled',
-							false);
+						$('#form-edit-account :input')
+							.prop('disabled', false);
+						$('.data-submit').prop('disabled', false);
 						$('.spinner-grow').addClass('d-none');
 						Swal.fire({
 							title: "Gagal hapus akun",
-							text: 'Kesalahan HTTP ' +
-								xhr.status + '. ' + (
-									xhr.responseJSON
-									.message ?? code),
+							text: 'Kesalahan HTTP ' + xhr
+								.status + '. ' + (xhr
+									.responseJSON.message ?? code
+								),
 							icon: 'error',
 							customClass: {
 								confirmButton: 'btn btn-success'

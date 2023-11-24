@@ -39,7 +39,7 @@ class NilaiController extends Controller
 	public function getBobot($idkriteria)
 	{
 		try {
-			$kueri = Kriteria::where('id', $idkriteria)->first();
+			$kueri = Kriteria::firstWhere('id', $idkriteria);
 			return $kueri->bobot ?? 0;
 		} catch (QueryException $err) {
 			Log::error($err);
@@ -86,21 +86,21 @@ class NilaiController extends Controller
 	public function index()
 	{
 		$kriteria = Kriteria::get();
-		if (count($kriteria) === 0) {
+		if ($kriteria->isEmpty()) {
 			return redirect('kriteria')->withWarning(
 				'Tambahkan kriteria dan sub kriteria dulu ' .
 				'sebelum melakukan penilaian alternatif.'
 			);
 		}
 		$subkriteria = SubKriteria::get();
-		if (count($subkriteria) === 0) {
+		if ($subkriteria->isEmpty()) {
 			return redirect('kriteria/sub')
 				->withWarning(
 					'Tambahkan sub kriteria dulu sebelum melakukan penilaian alternatif.'
 				);
 		}
 		$alternatif = Alternatif::get();
-		if (count($alternatif) === 0) {
+		if ($alternatif->isEmpty()) {
 			return redirect('alternatif')
 				->withWarning('Tambahkan alternatif dulu sebelum melakukan penilaian.');
 		}

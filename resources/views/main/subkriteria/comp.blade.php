@@ -24,14 +24,14 @@
 				@endif --}}
 				<ul class="nav nav-tabs" id="InputCompTab" role="tablist">
 					<li class="nav-item" role="presentation">
-						<a class="nav-link active" id="info-tab" data-bs-toggle="tab"
-							href="#info" role="tab" aria-controls="info" aria-selected="true">
+						<a class="nav-link active" id="info-tab" data-bs-toggle="tab" href="#info"
+							role="tab" aria-controls="info" aria-selected="true">
 							Tabel Nilai Perbandingan
 						</a>
 					</li>
 					<li class="nav-item" role="presentation">
-						<a class="nav-link" id="input-tab" data-bs-toggle="tab" href="#input"
-							role="tab" aria-controls="input" aria-selected="false">
+						<a class="nav-link" id="input-tab" data-bs-toggle="tab" href="#input" role="tab"
+							aria-controls="input" aria-selected="false">
 							Input Perbandingan
 						</a>
 					</li>
@@ -40,16 +40,16 @@
 					<div class="tab-pane fade show active" id="info" role="tabpanel"
 						aria-labelledby="info-tab">
 						<x-ahp-table />
-						<a href="{{ url('/bobot/sub') }}" class="btn btn-secondary">
+						<a href="{{ route('bobotsubkriteria.pick') }}" class="btn btn-secondary">
 							<i class="bi bi-arrow-left"></i> Kembali
 						</a>
 					</div>
-					<div class="tab-pane fade" id="input" role="tabpanel"
-						aria-labelledby="input-tab">
+					<div class="tab-pane fade" id="input" role="tabpanel" aria-labelledby="input-tab">
 						@if ($jmlsubkriteria >= 2)
 							<div class="table-responsive">
 								<form method="POST" enctype="multipart/form-data"
-									action="{{ url('/bobot/sub/comp/' . $kriteria_id) }}">@csrf
+									action="{{ route('bobotsubkriteria.store', $kriteria_id) }}">
+									@csrf
 									<table class="table table-lg table-hover table-striped text-center">
 										<thead>
 											<tr>
@@ -65,8 +65,8 @@
 														<th>{{ $krit['baris'] }}</th>
 														<td>
 															<div class="input-group mb-3">
-																<input type="number" name="skala[{{ $loop->index }}]"
-																	min="1" max="9" class="form-control text-center"
+																<input type="number" name="skala[{{ $loop->index }}]" min="1"
+																	max="9" class="form-control text-center"
 																	value="{{ old('skala.' . $loop->index) ?? ($value[$loop->index]['nilai'] ?? '') }}"
 																	required>
 															</div>
@@ -79,8 +79,7 @@
 									</table>
 									<div class="col-12 d-flex justify-content-end">
 										<div class="btn-group">
-											<a href="{{ route('bobotsubkriteria.pick') }}"
-												class="btn btn-secondary">
+											<a href="{{ route('bobotsubkriteria.pick') }}" class="btn btn-secondary">
 												<i class="bi bi-arrow-left"></i> Kembali
 											</a>
 											<button type="submit" class="btn btn-primary">
@@ -106,8 +105,8 @@
 @endsection
 @section('js')
 	<script type="text/javascript">
-		const tabList = document.querySelectorAll(
-			'#InputCompTab a[data-bs-toggle="tab"]');
+		const tabList =
+			document.querySelectorAll('#InputCompTab a[data-bs-toggle="tab"]');
 		tabList.forEach(tabEl => {
 			tabEl.addEventListener('shown.bs.tab', event => {
 				if (history.pushState)
@@ -118,8 +117,8 @@
 		});
 		var hash = location.hash;
 		if (!(hash === null || hash === "")) {
-			const triggerEl = document.querySelector('#InputCompTab a[href="' + hash +
-				'"]');
+			const triggerEl =
+				document.querySelector('#InputCompTab a[href="' + hash + '"]');
 			bootstrap.Tab.getOrCreateInstance(triggerEl).show();
 		}
 	</script>

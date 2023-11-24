@@ -44,15 +44,10 @@ class HomeController extends Controller
 			$req = $request->validate([
 				'name' => 'bail|required|min:5|regex:/^[\pL\s\-]+$/u',
 				'email' => 'bail|required|email|unique:users,email,' . Auth::id(),
-				'current_password' => 'bail|required|min:8|current_password',
+				'current_password' => 'bail|required|current_password',
 				'password' => 'nullable|bail|confirmed|between:8,20',
 				'password_confirmation' => 'required_with:password'
-			], [
-				'name.required' => 'Nama harus diisi',
-				'name.regex' => 'Nama tidak boleh mengandung simbol dan angka',
-				'email.unique' => 'Email ' . $request->email . ' sudah digunakan',
-				'current_password.required' => 'Password lama harus diisi',
-			]);
+			], User::$message);
 			// if (!Hash::check($req['current_password'], Auth::user()->password)) {
 			// 	return response()->json([
 			// 		'message' => __('auth.password'),
@@ -77,12 +72,12 @@ class HomeController extends Controller
 	{
 		try {
 			$req = $request->validate(User::$delakunrule);
-			if (!Hash::check($req['del_password'], Auth::user()->password)) {
-				return response()->json([
-					'message' => __('auth.password'),
-					'errors' => ['del_password' => __('auth.password')]
-				], 422);
-			}
+			// if (!Hash::check($req['del_password'], Auth::user()->password)) {
+			// 	return response()->json([
+			// 		'message' => __('auth.password'),
+			// 		'errors' => ['del_password' => __('auth.password')]
+			// 	], 422);
+			// }
 			User::findOrFail(Auth::id())->delete();
 			Auth::logout();
 			Session::invalidate();

@@ -1,9 +1,9 @@
-@extends('layout')
 @php
 	use App\Http\Controllers\NilaiController;
 	$saw = new NilaiController();
 	$countkriteria = count($data['kriteria']);
 @endphp
+@extends('layout')
 @section('title', 'Hasil Penilaian Alternatif')
 @section('subtitle', 'Hasil Penilaian Alternatif')
 @section('content')
@@ -96,14 +96,12 @@
 	</div>
 	<div class="modal fade text-left" id="RankModal" tabindex="-1" role="dialog"
 		aria-labelledby="RankLabel" aria-hidden="true">
-		<div
-			class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-lg-down modal-lg"
-			role="document">
+		<div role="document"
+			class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-lg-down modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title" id="RankLabel">Grafik hasil penilaian</h4>
-					<button type="button" class="close" data-bs-dismiss="modal"
-						aria-label="Close">
+					<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
 						<i data-feather="x"></i>
 					</button>
 				</div>
@@ -233,12 +231,12 @@
 				});
 			} catch (dterr) {
 				Toastify({
-					text: "DataTables Error: " + dterr.message,
-					duration: 8000,
+					text: "Terjadi kesalahan saat mengurutkan hasil penilaian",
 					style: {
 						background: "#dc3545"
 					}
 				}).showToast();
+				console.error(dterr.message)
 			}
 		});
 		var options = {
@@ -272,7 +270,6 @@
 			$.getJSON('{{ route('hasil.ranking') }}', function(response) {
 				$('#SkorHasil').text(response.score);
 				$('#SkorTertinggi').text(response.nama);
-				console.log(response.result);
 				chart.updateSeries([{
 					name: 'Nilai',
 					data: response.result.skor

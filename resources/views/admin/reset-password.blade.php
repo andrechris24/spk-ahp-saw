@@ -2,15 +2,15 @@
 @section('title', 'Reset Password')
 @section('auth-title', 'Reset Password')
 @section('auth-subtitle',
-	'Selamat datang kembali! Silahkan masukkan password
-	baru untuk melanjutkan.')
+	'Selamat datang kembali! Silahkan masukkan password baru untuk
+	melanjutkan.')
 @section('auth-css', asset('assets/compiled/css/auth-forgot-password.css'))
 @section('content')
 	<form action="{{ route('password.update') }}" method="post">@csrf
 		<input type="hidden" name="token" value="{{ $token }}">
 		<div class="form-group position-relative has-icon-left mb-4">
-			<input type="email" placeholder="Email" name="email"
-				value="{{ $email }}" readonly required
+			<input type="email" placeholder="Email" name="email" value="{{ $email }}"
+				readonly required
 				class="form-control form-control-xl @error('email') is-invalid @enderror " />
 			<div class="form-control-icon"><i class="bi bi-envelope"></i></div>
 			@error('email')
@@ -30,8 +30,7 @@
 		</div>
 		<div class="form-group position-relative has-icon-left mb-4">
 			<input type="password" name="password_confirmation" id="confirm-password"
-				placeholder="Konfirmasi Password" maxlength="20" required
-				oninput="checkpassword()"
+				placeholder="Konfirmasi Password" maxlength="20" required oninput="checkpassword()"
 				class="form-control
 				form-control-xl @error('password_confirmation') is-invalid @enderror " />
 			<div class="form-control-icon"><i class="bi bi-shield-lock"></i></div>

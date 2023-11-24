@@ -59,6 +59,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		});
 		Route::prefix('kriteria')->group(function () {
 			Route::get('/', 'KriteriaController@index')->name('kriteria.index');
+			Route::get('count', 'KriteriaController@getCount')
+				->name('kriteria.count');
 			Route::post('data', 'KriteriaController@show')->name('kriteria.data');
 			Route::post('store', 'KriteriaController@store')->name('kriteria.store');
 			Route::post('update', 'KriteriaController@update')->name('kriteria.update');
@@ -67,6 +69,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 				->name('kriteria.delete');
 			Route::prefix('sub')->group(function () {
 				Route::get('/', 'SubKriteriaController@index')->name('subkriteria.index');
+				Route::get('count', 'SubKriteriaController@getCount')
+					->name('subkriteria.count');
 				Route::post('data', 'SubKriteriaController@show')
 					->name('subkriteria.data');
 				Route::get('edit/{id}', 'SubKriteriaController@edit')
@@ -102,6 +106,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		});
 		Route::prefix('alternatif')->group(function () {
 			Route::get('/', 'AlternatifController@index')->name('alternatif.index');
+			Route::get('count', 'AlternatifController@getCount')
+				->name('alternatif.count');
 			Route::post('data', 'AlternatifController@show')->name('alternatif.data');
 			Route::get('edit/{id}', 'AlternatifController@edit')
 				->name('alternatif.edit');

@@ -4,13 +4,11 @@
 @section('content')
 	<div class="modal fade text-left" id="CritModal" tabindex="-1" role="dialog"
 		aria-labelledby="CritLabel" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-			role="document">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title" id="CritLabel">Tambah Kriteria</h4>
-					<button type="button" class="close" data-bs-dismiss="modal"
-						aria-label="Close">
+					<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
 						<i data-feather="x"></i>
 					</button>
 				</div>
@@ -24,8 +22,7 @@
 						@endif
 						<label for="nama-krit">Nama Kriteria</label>
 						<div class="form-group">
-							<input type="text" class="form-control" name="name" id="nama-krit"
-								required />
+							<input type="text" class="form-control" name="name" id="nama-krit" required />
 							<div class="invalid-feedback" id="nama-error"></div>
 						</div>
 						<div class="input-group mb-3">
@@ -41,8 +38,7 @@
 						</div>
 						<label for="deskripsi">Keterangan</label>
 						<div class="form-group">
-							<input type="text" class="form-control" name="desc" id="deskripsi"
-								required />
+							<input type="text" class="form-control" name="desc" id="deskripsi" required />
 							<div class="invalid-feedback" id="desc-error"></div>
 						</div>
 					</form>
@@ -51,16 +47,50 @@
 					<div class="spinner-grow text-primary d-none" role="status">
 						<span class="visually-hidden">Menyimpan...</span>
 					</div>
-					<button type="button" class="btn btn-light-secondary"
-						data-bs-dismiss="modal">
+					<button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
 						<i class="bi bi-x d-block d-sm-none"></i>
 						<span class="d-none d-sm-block">Batal</span>
 					</button>
-					<button type="submit" class="btn btn-primary ml-1 data-submit"
-						form="CritForm">
+					<button type="submit" class="btn btn-primary ml-1 data-submit" form="CritForm">
 						<i class="bi bi-check d-block d-sm-none"></i>
 						<span class="d-none d-sm-block">Simpan</span>
 					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="card">
+				<div class="card-body">
+					<div class="d-flex align-items-start justify-content-between">
+						<div class="content-left">
+							<span>Jumlah</span>
+							<div class="d-flex align-items-end mt-2">
+								<h3 class="mb-0 me-2"><span id="total-counter">-</span></h3>
+							</div>
+						</div>
+						<span class="badge bg-primary rounded p-2">
+							<i class="fas fa-list"></i>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="card">
+				<div class="card-body">
+					<div class="d-flex align-items-start justify-content-between">
+						<div class="content-left">
+							<span>Kriteria Duplikat</span>
+							<div class="d-flex align-items-end mt-2">
+								<h3 class="mb-0 me-2"><span id="total-duplicate">-</span></h3>
+							</div>
+						</div>
+						<span class="badge bg-warning rounded p-2">
+							<i class="bi bi-exclamation-circle-fill"></i>
+						</span>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -70,18 +100,16 @@
 		<div class="card-body">
 			<button type="button" class="btn btn-primary" data-bs-toggle="modal"
 				data-bs-target="#CritModal" id="spare-button">
-				<i class="bi bi-plus-lg me-0 me-sm-1"></i> Tambah Kriteria
+				<i class="bi bi-plus-lg"></i> Tambah Kriteria
 			</button>
-			<table class="table table-hover table-striped" id="table-crit"
-				style="width: 100%">
+			<table class="table table-hover table-striped" id="table-crit" style="width: 100%">
 				<thead>
 					<tr>
 						<th>No</th>
 						<th>Nama Kriteria</th>
 						<th>Atribut</th>
 						<th>Keterangan</th>
-						<th data-bs-toggle="tooltip"
-							title="Bobot didapat setelah melakukan perbandingan">
+						<th data-bs-toggle="tooltip" title="Bobot didapat setelah melakukan perbandingan">
 							Bobot
 						</th>
 						<th>Aksi</th>
@@ -123,8 +151,7 @@
 					}],
 					columnDefs: [{
 						targets: 0,
-						render: function(data, type, full,
-							meta) {
+						render: function(data, type, full, meta) {
 							return meta.row + meta.settings
 								._iDisplayStart + 1;
 						}
@@ -197,8 +224,7 @@
 							}
 						}]
 					}],
-				}).on('error.dt', function(e, settings, techNote,
-					message) {
+				}).on('error.dt', function(e, settings, techNote, message) {
 					Toastify({
 						text: message,
 						style: {
@@ -208,14 +234,28 @@
 					}).showToast();
 				}).on('draw', setTableColor).on('preInit.dt', function() {
 					$('#spare-button').addClass('d-none');
+					$.get("{{ route('kriteria.count') }}", function(data) {
+						$("#total-duplicate").text(data.duplicates);
+						$("#total-counter").text(data.total);
+					}).fail(function(xhr, status) {
+						Toastify({
+							text: "Gagal memuat jumlah: Kesalahan HTTP " +
+								xhr.status + '. ' +
+								status,
+							style: {
+								background: "#dc3545"
+							}
+						}).showToast();
+					});
 				});
 			} catch (dterr) {
 				Toastify({
-					text: "DataTables Error: " + dterr.message,
+					text: "Terjadi kesalahan saat menampilkan data",
 					style: {
-						background: "#dc3545"
-					}
+						background: "#dc3545",
+					},
 				}).showToast();
+				console.error(dterr.message);
 			}
 		});
 		// Delete Record
@@ -260,20 +300,17 @@
 							Swal.fire({
 								icon: 'error',
 								title: 'Gagal hapus',
-								text: 'Kesalahan HTTP ' +
-									xhr.status +
-									'. ' + (xhr
+								text: 'Kesalahan HTTP ' + xhr
+									.status + '. ' + (xhr
 										.responseJSON
-										.message ??
-										stat),
+										.message ?? stat),
 								customClass: {
 									confirmButton: 'btn btn-success'
 								}
 							});
 						}
 					});
-				} else if (result.dismiss === Swal.DismissReason
-					.cancel) {
+				} else if (result.dismiss === Swal.DismissReason.cancel) {
 					Swal.fire({
 						title: 'Dibatalkan',
 						text: 'Kriteria tidak dihapus.',
@@ -301,13 +338,13 @@
 				$('#tipe-kriteria').val(data.type);
 				$('#deskripsi').val(data.desc);
 			}).fail(function(xhr, status) {
-				if (xhr.status === 404) dt_kriteria.draw();
+				if (xhr.status === 404)
+					dt_kriteria.draw();
 				Swal.fire({
 					icon: 'error',
 					title: 'Kesalahan',
-					text: 'Kesalahan HTTP ' + xhr.status +
-						'. ' + (xhr.responseJSON.message ??
-							status),
+					text: 'Kesalahan HTTP ' + xhr.status + '. ' +
+						(xhr.responseJSON.message ?? status),
 					customClass: {
 						confirmButton: 'btn btn-success'
 					}
@@ -327,9 +364,8 @@
 					'/kriteria/store' : '/kriteria/update',
 				type: 'POST',
 				beforeSend: function() {
-					$('#CritForm :input').prop('disabled', true);
-					$('#CritForm :input').removeClass(
-						'is-invalid');
+					$('#CritForm :input').prop('disabled', true)
+						.removeClass('is-invalid');
 					$('.data-submit').prop('disabled', true);
 					$('.spinner-grow').removeClass('d-none');
 				},
@@ -352,33 +388,28 @@
 				},
 				error: function(xhr, code) {
 					if (xhr.status === 422) {
-						if (typeof(xhr.responseJSON.errors
-								.name) !==
+						if (typeof xhr.responseJSON.errors.name !==
 							"undefined") {
 							$('#nama-krit').addClass('is-invalid');
-							$('#nama-error').text(xhr.responseJSON
-								.errors.name);
+							$('#nama-error')
+								.text(xhr.responseJSON.errors.name);
 						}
-						if (typeof(xhr.responseJSON.errors
-								.type) !==
+						if (typeof xhr.responseJSON.errors.type !==
 							"undefined") {
-							$('#tipe-kriteria').addClass(
-								'is-invalid');
-							$('#type-error').text(xhr.responseJSON
-								.errors.type);
+							$('#tipe-kriteria').addClass('is-invalid');
+							$('#type-error')
+								.text(xhr.responseJSON.errors.type);
 						}
-						if (typeof(xhr.responseJSON.errors
-								.desc) !==
+						if (typeof xhr.responseJSON.errors.desc !==
 							"undefined") {
 							$('#deskripsi').addClass('is-invalid');
-							$('#desc-error').text(xhr.responseJSON
-								.errors.desc);
+							$('#desc-error')
+								.text(xhr.responseJSON.errors.desc);
 						}
 						errmsg = xhr.responseJSON.message ?? code;
 					} else {
-						errmsg = 'Kesalahan HTTP ' + xhr
-							.status + '. ' + (xhr.responseJSON
-								.message ?? code);
+						errmsg = 'Kesalahan HTTP ' + xhr.status + '. ' +
+							(xhr.responseJSON.message ?? code);
 					}
 					Swal.fire({
 						title: 'Gagal',

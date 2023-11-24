@@ -4,13 +4,11 @@
 @section('auth-subtitle', 'Selamat datang! Silahkan masukkan data Anda.')
 @section('auth-css', asset('assets/compiled/css/auth.css'))
 @section('content')
-	<form action="{{ route('register.perform') }}" method="post"
-		enctype="multipart/form-data">
+	<form action="{{ route('register.perform') }}" method="post" enctype="multipart/form-data">
 		@csrf
 		<div class="form-group position-relative has-icon-left mb-4">
-			<input type="text" name="email" placeholder="Email"
-				value="{{ old('email') }}" required
-				class="form-control form-control-xl @error('email') is-invalid @enderror " />
+			<input type="text" name="email" placeholder="Email" value="{{ old('email') }}"
+				required class="form-control form-control-xl @error('email') is-invalid @enderror " />
 			<div class="form-control-icon"><i class="bi bi-envelope"></i></div>
 			@error('email')
 				<div class="invalid-feedback">{{ $message }}</div>

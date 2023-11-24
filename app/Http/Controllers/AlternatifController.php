@@ -11,6 +11,15 @@ use Yajra\DataTables\Facades\DataTables;
 
 class AlternatifController extends Controller
 {
+	public function getCount()
+	{
+		$alternatives = Alternatif::get();
+		$altUnique = $alternatives->unique(['name']);
+		return response()->json([
+			'total' => $alternatives->count(),
+			'duplicates' => $alternatives->diff($altUnique)->count()
+		]);
+	}
 	public function index()
 	{
 		return view('main.alternatif.index');

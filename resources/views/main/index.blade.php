@@ -14,13 +14,12 @@
 			</h4>
 		</div>
 		<div class="card-body">
-			<p>Sistem ini akan membantu seseorang membuat keputusan dengan menggunakan
-				metode Simple Additive Weighting (SAW) dan Analytical Hierarchy Process
-				(AHP).</p>
-			<p>Pembobotan Kriteria dan Sub Kriteria menggunakan metode AHP, sedangkan
-				pembobotan Alternatif menggunakan metode SAW.</p>
-			<p>Bobot Kriteria dan Sub Kriteria didapat dengan cara melakukan perbandingan
-				secara konsisten (Nilai CR &#8804; 10%). </p>
+			<p>Sistem ini akan membantu seseorang membuat keputusan dengan menggunakan metode Simple
+				Additive Weighting (SAW) dan Analytical Hierarchy Process (AHP).</p>
+			<p>Pembobotan Kriteria dan Sub Kriteria menggunakan metode AHP, sedangkan pembobotan
+				Alternatif menggunakan metode Simple Additive Weighting (SAW).</p>
+			<p>Bobot Kriteria dan Sub Kriteria didapat dengan cara melakukan perbandingan secara
+				konsisten (Nilai CR &#8804; 10%). </p>
 		</div>
 	</div>
 	@auth
@@ -35,8 +34,7 @@
 					<div class="card">
 						<div class="card-body px-4 py-4-5">
 							<div class="row">
-								<div
-									class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start">
+								<div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start">
 									<div class="stats-icon purple mb-2">
 										<i class="iconly-boldShow"></i>
 									</div>
@@ -53,8 +51,7 @@
 					<div class="card">
 						<div class="card-body px-4 py-4-5">
 							<div class="row">
-								<div
-									class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start">
+								<div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start">
 									<div class="stats-icon blue mb-2">
 										<i class="iconly-boldProfile"></i>
 									</div>
@@ -71,8 +68,7 @@
 					<div class="card">
 						<div class="card-body px-4 py-4-5">
 							<div class="row">
-								<div
-									class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start">
+								<div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start">
 									<div class="stats-icon green mb-2">
 										<i class="iconly-boldAdd-User"></i>
 									</div>

@@ -4,18 +4,16 @@
 @section('content')
 	<div class="modal fade text-left" id="SubCritModal" tabindex="-1" role="dialog"
 		aria-labelledby="SubCritLabel" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-			role="document">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title" id="SubCritLabel">Tambah Sub Kriteria</h4>
-					<button type="button" class="close" data-bs-dismiss="modal"
-						aria-label="Close">
+					<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
 						<i data-feather="x"></i>
 					</button>
 				</div>
 				<div class="modal-body">
-					<form action="{{ url('/kriteria/sub/store') }}" method="post"
+					<form action="{{ route('subkriteria.store') }}" method="post"
 						enctype="multipart/form-data" id="SubCritForm">
 						<input type="hidden" name="id" id="subkriteria-id">
 						@if ($compskr > 0)
@@ -26,16 +24,14 @@
 						@endif
 						<label for="nama-sub">Nama Sub Kriteria</label>
 						<div class="form-group">
-							<input type="text" class="form-control" name="name" id="nama-sub"
-								required />
+							<input type="text" class="form-control" name="name" id="nama-sub" required />
 							<div class="invalid-feedback" id="nama-error"></div>
 						</div>
 						<div class="input-group mb-3">
 							<label class="input-group-text" for="kriteria-select">
 								Kriteria
 							</label>
-							<select class="form-select" id="kriteria-select" name="kriteria_id"
-								required>
+							<select class="form-select" id="kriteria-select" name="kriteria_id" required>
 								<option value="">Pilih</option>
 								@foreach ($kriteria as $kr)
 									<option value="{{ $kr->id }}">{{ $kr->name }}</option>
@@ -49,16 +45,50 @@
 					<div class="spinner-grow text-primary d-none" role="status">
 						<span class="visually-hidden">Menyimpan...</span>
 					</div>
-					<button type="button" class="btn btn-light-secondary"
-						data-bs-dismiss="modal">
+					<button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
 						<i class="bi bi-x d-block d-sm-none"></i>
 						<span class="d-none d-sm-block">Batal</span>
 					</button>
-					<button type="submit" class="btn btn-primary ml-1 data-submit"
-						form="SubCritForm">
+					<button type="submit" class="btn btn-primary ml-1 data-submit" form="SubCritForm">
 						<i class="bi bi-check d-block d-sm-none"></i>
 						<span class="d-none d-sm-block">Simpan</span>
 					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="card">
+				<div class="card-body">
+					<div class="d-flex align-items-start justify-content-between">
+						<div class="content-left">
+							<span>Jumlah</span>
+							<div class="d-flex align-items-end mt-2">
+								<h3 class="mb-0 me-2"><span id="total-counter">-</span></h3>
+							</div>
+						</div>
+						<span class="badge bg-primary rounded p-2">
+							<i class="bi bi-list-nested"></i>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="card">
+				<div class="card-body">
+					<div class="d-flex align-items-start justify-content-between">
+						<div class="content-left">
+							<span>Sub Kriteria Duplikat</span>
+							<div class="d-flex align-items-end mt-2">
+								<h3 class="mb-0 me-2"><span id="total-duplicate">-</span></h3>
+							</div>
+						</div>
+						<span class="badge bg-warning rounded p-2">
+							<i class="bi bi-exclamation-circle-fill"></i>
+						</span>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -68,17 +98,15 @@
 		<div class="card-body">
 			<button type="button" class="btn btn-primary" data-bs-toggle="modal"
 				data-bs-target="#SubCritModal" id="spare-button">
-				<i class="bi bi-plus-lg me-0 me-sm-1"></i> Tambah Sub Kriteria
+				<i class="bi bi-plus-lg"></i> Tambah Sub Kriteria
 			</button>
-			<table class="table table-hover table-striped" id="table-subcrit"
-				style="width: 100%">
+			<table class="table table-hover table-striped" id="table-subcrit" style="width: 100%">
 				<thead>
 					<tr>
 						<th>No</th>
 						<th>Nama Sub Kriteria</th>
 						<th>Kriteria</th>
-						<th data-bs-toggle="tooltip"
-							title="Bobot didapat setelah melakukan perbandingan">
+						<th data-bs-toggle="tooltip" title="Bobot didapat setelah melakukan perbandingan">
 							Bobot
 						</th>
 						<th>Aksi</th>
@@ -118,17 +146,15 @@
 					}],
 					columnDefs: [{
 						targets: 0,
-						render: function(data, type, full,
-							meta) {
+						render: function(data, type, full, meta) {
 							return meta.row + meta.settings
 								._iDisplayStart + 1;
 						}
 					}, {
 						targets: 2,
 						render: function(data, type, full) {
-							return '<span title="' +
-								full['desc_kr'] + '">' +
-								data +
+							return '<span title="' + full[
+									'desc_kr'] + '">' + data +
 								'</span>';
 						}
 					}, { //Aksi
@@ -200,26 +226,38 @@
 							}
 						}]
 					}],
-				}).on('error.dt', function(e, settings, techNote,
-					message) {
+				}).on('error.dt', function(e, settings, techNote, message) {
 					Toastify({
 						text: message,
 						style: {
 							background: "#ffc107"
 						},
 						duration: 10000
-					}).showToast();
+					});
 				}).on('draw', setTableColor).on('preInit.dt', function() {
 					$('#spare-button').addClass('d-none');
+					$.get("{{ route('subkriteria.count') }}", function(data) {
+						$("#total-duplicate").text(data.duplicates);
+						$("#total-counter").text(data.total);
+					}).fail(function(xhr, status) {
+						Toastify({
+							text: "Gagal memuat jumlah: Kesalahan HTTP " +
+								xhr.status + '. ' +
+								status,
+							style: {
+								background: "#dc3545"
+							}
+						}).showToast();
+					});
 				});
 			} catch (dterr) {
 				Toastify({
-					text: "DataTables Error: " + dterr.message,
-					duration: 8000,
+					text: "Terjadi kesalahan saat menampilkan data",
 					style: {
-						background: "#dc3545"
-					}
+						background: "#dc3545",
+					},
 				}).showToast();
+				console.error(dterr.message);
 			}
 		});
 		// Delete Record
@@ -263,20 +301,17 @@
 							Swal.fire({
 								icon: 'error',
 								title: 'Gagal hapus',
-								text: 'Kesalahan HTTP ' +
-									xhr.status +
-									'. ' + (xhr
+								text: 'Kesalahan HTTP ' + xhr
+									.status + '. ' + (xhr
 										.responseJSON
-										.message ??
-										stat),
+										.message ?? stat),
 								customClass: {
 									confirmButton: 'btn btn-success'
 								}
 							});
 						}
 					});
-				} else if (result.dismiss === Swal.DismissReason
-					.cancel) {
+				} else if (result.dismiss === Swal.DismissReason.cancel) {
 					Swal.fire({
 						title: 'Dibatalkan',
 						text: 'Sub Kriteria tidak dihapus.',
@@ -304,13 +339,13 @@
 				$('#nama-sub').val(data.name);
 				$('#kriteria-select').val(data.kriteria_id);
 			}).fail(function(xhr, status) {
-				if (xhr.status === 404) dt_subkriteria.draw();
+				if (xhr.status === 404)
+					dt_subkriteria.draw();
 				Swal.fire({
 					icon: 'error',
 					title: 'Kesalahan',
-					text: 'Kesalahan HTTP ' + xhr.status +
-						'. ' + (xhr.responseJSON.message ??
-							status),
+					text: 'Kesalahan HTTP ' + xhr.status + '. ' +
+						(xhr.responseJSON.message ?? status),
 					customClass: {
 						confirmButton: 'btn btn-success'
 					}
@@ -330,21 +365,22 @@
 					'/kriteria/sub/store' : '/kriteria/sub/update',
 				type: 'POST',
 				beforeSend: function() {
-					$('#SubCritForm :input').prop('disabled',
-						true);
-					$('#SubCritForm :input').removeClass(
-						'is-invalid');
+					$('#SubCritForm :input')
+						.prop('disabled', true);
+					$('#SubCritForm :input')
+						.removeClass('is-invalid');
 					$('.data-submit').prop('disabled', true);
 					$('.spinner-grow').removeClass('d-none');
 				},
 				complete: function() {
-					$('#SubCritForm :input').prop('disabled',
-						false);
+					$('#SubCritForm :input')
+						.prop('disabled', false);
 					$('.data-submit').prop('disabled', false);
 					$('.spinner-grow').addClass('d-none');
 				},
 				success: function(status) {
-					dt_subkriteria.draw();
+					if ($.fn.DataTable.isDataTable("#table-subcrit"))
+						dt_subkriteria.draw();
 					$('#SubCritModal').modal('hide');
 					Swal.fire({
 						icon: 'success',
@@ -357,26 +393,22 @@
 				},
 				error: function(xhr, code) {
 					if (xhr.status === 422) {
-						if (typeof(xhr.responseJSON.errors
-								.name) !==
+						if (typeof xhr.responseJSON.errors.name !==
 							"undefined") {
 							$('#nama-sub').addClass('is-invalid');
-							$('#nama-error').text(xhr.responseJSON
-								.errors.name);
+							$('#nama-error')
+								.text(xhr.responseJSON.errors.name);
 						}
-						if (typeof(xhr.responseJSON.errors
-								.kriteria_id) !== "undefined") {
-							$('#kriteria-select').addClass(
-								'is-invalid');
-							$('#kriteria-error').text(xhr
-								.responseJSON
-								.errors.kriteria_id);
+						if (typeof xhr.responseJSON.errors.kriteria_id !==
+							"undefined") {
+							$('#kriteria-select').addClass('is-invalid');
+							$('#kriteria-error')
+								.text(xhr.responseJSON.errors.kriteria_id);
 						}
 						errmsg = xhr.responseJSON.message ?? code;
 					} else {
-						errmsg = 'Kesalahan HTTP ' + xhr
-							.status + '. ' + (xhr.responseJSON
-								.message ?? code);
+						errmsg = 'Kesalahan HTTP ' + xhr.status + '. ' +
+							(xhr.responseJSON.message ?? code);
 					}
 					Swal.fire({
 						title: 'Gagal',

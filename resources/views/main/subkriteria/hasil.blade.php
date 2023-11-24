@@ -198,7 +198,7 @@
 							<i class="bi bi-arrow-counterclockwise"></i> Reset
 						</a>
 						@if ($data['bobot_sub_kosong'] == 0)
-							<a href="{{ url('/alternatif/nilai') }}" class="btn btn-primary">
+							<a href="{{ route('nilai.index') }}" class="btn btn-primary">
 								<i class="bi bi-arrow-right"></i> Lanjut
 							</a>
 						@elseif(!$consistent)
@@ -236,11 +236,9 @@
 				buttonsStyling: false
 			}).then(function(result) {
 				if (result.value) {
-					document.getElementById('reset-subkriteria')
-						.submit();
+					document.getElementById('reset-subkriteria').submit();
 					$('.spinner-grow').removeClass('d-none');
-				} else if (result.dismiss === Swal.DismissReason
-					.cancel) {
+				} else if (result.dismiss === Swal.DismissReason.cancel) {
 					Swal.fire({
 						title: 'Dibatalkan',
 						text: "Perbandingan Sub Kriteria {{ $title }} tidak direset.",

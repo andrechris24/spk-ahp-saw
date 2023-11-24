@@ -13,6 +13,15 @@ use Yajra\DataTables\Facades\DataTables;
 
 class SubKriteriaController extends Controller
 {
+	public function getCount()
+	{
+		$subcriterias = SubKriteria::get();
+		$scUnique = $subcriterias->unique(['name']);
+		return response()->json([
+			'total' => $subcriterias->count(),
+			'duplicates' => $subcriterias->diff($scUnique)->count()
+		]);
+	}
 	public function index()
 	{
 		$kriteria = Kriteria::get();

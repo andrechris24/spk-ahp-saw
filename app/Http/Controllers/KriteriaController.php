@@ -13,6 +13,15 @@ use Yajra\DataTables\Facades\DataTables;
 
 class KriteriaController extends Controller
 {
+	public function getCount()
+	{
+		$criterias = Kriteria::get();
+		$critUnique = $criterias->unique(['name']);
+		return response()->json([
+			'total' => $criterias->count(),
+			'duplicates' => $criterias->diff($critUnique)->count()
+		]);
+	}
 	public function index()
 	{
 		$compkr = KriteriaComp::count();

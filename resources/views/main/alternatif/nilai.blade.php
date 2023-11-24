@@ -4,15 +4,13 @@
 @section('content')
 	<div class="modal fade text-left" id="NilaiAlterModal" tabindex="-1" role="dialog"
 		aria-labelledby="NilaiAlterLabel" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-			role="document">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title" id="NilaiAlterLabel">
 						Tambah Nilai Alternatif
 					</h4>
-					<button type="button" class="close" data-bs-dismiss="modal"
-						aria-label="Close">
+					<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
 						<i data-feather="x"></i>
 					</button>
 				</div>
@@ -23,8 +21,7 @@
 							<label class="input-group-text" for="alternatif-value">
 								Nama Alternatif
 							</label>
-							<select class="form-select" id="alternatif-value" name="alternatif_id"
-								required>
+							<select class="form-select" id="alternatif-value" name="alternatif_id" required>
 								<option value="">Pilih</option>
 								@foreach ($data['alternatif'] as $alt)
 									<option value="{{ $alt->id }}">{{ $alt->name }}</option>
@@ -60,13 +57,11 @@
 					<div class="spinner-grow text-primary d-none" role="status">
 						<span class="visually-hidden">Menyimpan...</span>
 					</div>
-					<button type="button" class="btn btn-light-secondary"
-						data-bs-dismiss="modal">
+					<button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
 						<i class="bi bi-x d-block d-sm-none"></i>
 						<span class="d-none d-sm-block">Batal</span>
 					</button>
-					<button type="submit" class="btn btn-primary ml-1 data-submit"
-						form="NilaiAlterForm">
+					<button type="submit" class="btn btn-primary ml-1 data-submit" form="NilaiAlterForm">
 						<i class="bi bi-check d-block d-sm-none"></i>
 						<span class="d-none d-sm-block">Simpan</span>
 					</button>
@@ -79,10 +74,9 @@
 		<div class="card-body">
 			<button type="button" class="btn btn-primary" data-bs-toggle="modal"
 				data-bs-target="#NilaiAlterModal" id="spare-button">
-				<i class="bi bi-plus-lg me-0 me-sm-1"></i> Tambah Nilai Alternatif
+				<i class="bi bi-plus-lg"></i> Tambah Nilai Alternatif
 			</button>
-			<table class="table table-hover table-striped" id="table-nilaialt"
-				style="width: 100%">
+			<table class="table table-hover table-striped" id="table-nilaialt" style="width: 100%">
 				<thead>
 					<tr>
 						<th>Nama Alternatif</th>
@@ -120,22 +114,14 @@
 							{
 								orderable: false,
 								targets: 1 + {{ $loop->index }},
-								render: function(data, type,
-									full) {
-									if (data === null ||
-										data === "") {
-										$('#alternatif-' +
-											full['id'] +
-											' .edit-record'
-										).prop(
-											'disabled',
-											true);
-										$('#alternatif-' +
-											full['id'] +
-											' .delete-record'
-										).prop(
-											'disabled',
-											true);
+								render: function(data, type, full) {
+									if (data === null || data === "") {
+										$('#alternatif-' + full['id'] +
+												' .edit-record')
+											.prop('disabled', true);
+										$('#alternatif-' + full['id'] +
+												' .delete-record')
+											.prop('disabled', true);
 									}
 									return data;
 								}
@@ -225,8 +211,7 @@
 					}]
 				}).on('draw', setTableColor).on('preInit.dt', function() {
 					$('#spare-button').addClass('d-none');
-				}).on('error.dt', function(e, settings, techNote,
-					message) {
+				}).on('error.dt', function(e, settings, techNote, message) {
 					Toastify({
 						text: message,
 						style: {
@@ -237,12 +222,12 @@
 				});
 			} catch (dterr) {
 				Toastify({
-					text: "DataTables Error: " + dterr.message,
-					duration: 8000,
+					text: "Terjadi kesalahan saat menampilkan data",
 					style: {
-						background: "#dc3545"
-					}
+						background: "#dc3545",
+					},
 				}).showToast();
+				console.error(dterr.message);
 			}
 		});
 		$(document).on('click', '.delete-record', function() {
@@ -250,8 +235,7 @@
 				score_name = $(this).data('name');
 			Swal.fire({
 				title: 'Hapus nilai alternatif?',
-				text: "Anda akan menghapus nilai alternatif " +
-					score_name + ".",
+				text: "Anda akan menghapus nilai alternatif " + score_name + ".",
 				icon: 'question',
 				showCancelButton: true,
 				confirmButtonText: 'Ya',
@@ -266,8 +250,7 @@
 					// delete the data
 					$.ajax({
 						type: 'DELETE',
-						url: '/alternatif/nilai/del/' +
-							score_id,
+						url: '/alternatif/nilai/del/' + score_id,
 						success: function(data) {
 							nilaialtdt.draw();
 							Swal.fire({
@@ -285,12 +268,10 @@
 							Swal.fire({
 								icon: 'error',
 								title: 'Gagal hapus',
-								text: 'Kesalahan HTTP ' +
-									xhr.status +
-									'. ' + (xhr
+								text: 'Kesalahan HTTP ' + xhr
+									.status + '. ' + (xhr
 										.responseJSON
-										.message ??
-										stat),
+										.message ?? stat),
 								customClass: {
 									confirmButton: 'btn btn-success'
 								}
@@ -323,18 +304,17 @@
 				$('#alternatif-value').val(data.alternatif_id);
 				$('#alternatif-hidden').val(data.alternatif_id);
 				@foreach ($data['kriteria'] as $kr)
-					$("#subkriteria-{{ $kr->id }}").val(data
-						.subkriteria
-						.{{ Str::of($kr->name)->slug('_') }});
+					$("#subkriteria-{{ $kr->id }}")
+						.val(data.subkriteria
+							.{{ Str::of($kr->name)->slug('_') }});
 				@endforeach
 			}).fail(function(xhr, status) {
 				if (xhr.status === 404) nilaialtdt.draw();
 				Swal.fire({
 					icon: 'error',
 					title: 'Kesalahan',
-					text: 'Kesalahan HTTP ' + xhr.status +
-						'. ' + (xhr.responseJSON.message ??
-							status),
+					text: 'Kesalahan HTTP ' + xhr.status + '. ' +
+						(xhr.responseJSON.message ?? status),
 					customClass: {
 						confirmButton: 'btn btn-success'
 					}
@@ -351,26 +331,23 @@
 			$.ajax({
 				data: $('#NilaiAlterForm').serialize(),
 				url: $('#alternatif-hidden').val() == '' ?
-					'/alternatif/nilai/store' :
-					'/alternatif/nilai/update',
+					'/alternatif/nilai/store' : '/alternatif/nilai/update',
 				type: 'POST',
 				beforeSend: function() {
-					$('#NilaiAlterForm :input').prop('disabled',
-						true);
-					$('#NilaiAlterForm :input').removeClass(
-						'is-invalid');
+					$('#NilaiAlterForm :input').prop('disabled', true)
+						.removeClass('is-invalid');
 					$('.data-submit').prop('disabled', true);
 					$('.spinner-grow').removeClass('d-none');
 				},
 				complete: function() {
-					$('#NilaiAlterForm :input').prop('disabled',
-						false);
+					$('#NilaiAlterForm :input').prop('disabled', false);
 					$('.data-submit').prop('disabled', false);
 					$('.spinner-grow').addClass('d-none');
 				},
 				success: function(status) {
+					if ($.fn.DataTable.isDataTable("#table-nilaialt"))
+						nilaialtdt.draw();
 					$('#NilaiAlterModal').modal('hide');
-					nilaialtdt.draw();
 					Swal.fire({
 						icon: 'success',
 						title: 'Sukses',
@@ -382,20 +359,17 @@
 				},
 				error: function(xhr, code) {
 					if (xhr.status === 422) {
-						console.log(xhr.responseJSON.errors);
-						if (typeof(xhr.responseJSON.errors
-								.alternatif_id) !== "undefined") {
-							$('#alternatif-value').addClass(
-								'is-invalid');
-							$('#alternatif-error').text(xhr
-								.responseJSON.errors
-								.alternatif_id);
+						console.warn(xhr.responseJSON.errors);
+						if (typeof(xhr.responseJSON.errors.alternatif_id) !==
+							"undefined") {
+							$('#alternatif-value').addClass('is-invalid');
+							$('#alternatif-error').text(xhr.responseJSON
+								.errors.alternatif_id);
 						}
 						errmsg = xhr.responseJSON.message ?? code;
 					} else {
-						errmsg = 'Kesalahan HTTP ' + xhr
-							.status + '. ' + (xhr.responseJSON
-								.message ?? code);
+						errmsg = 'Kesalahan HTTP ' + xhr.status + '. ' +
+							(xhr.responseJSON.message ?? code);
 					}
 					Swal.fire({
 						title: 'Gagal',

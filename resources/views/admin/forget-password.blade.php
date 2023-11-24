@@ -1,16 +1,13 @@
 @extends('admin.auth')
 @section('title', 'Lupa Password')
 @section('auth-title', 'Lupa Password')
-@section('auth-subtitle',
-	'Masukkan email Anda untuk mendapatkan link reset
-	password')
+@section('auth-subtitle', 'Masukkan email Anda untuk mendapatkan link reset password')
 @section('auth-css', asset('assets/compiled/css/auth-forgot-password.css'))
 @section('content')
 	<form action="{{ route('password.email') }}" method="post">@csrf
 		<div class="form-group position-relative has-icon-left mb-4">
-			<input type="email" placeholder="Email" name="email"
-				value="{{ old('email') }}" required
-				class="form-control form-control-xl @error('email') is-invalid @enderror " />
+			<input type="email" placeholder="Email" name="email" value="{{ old('email') }}"
+				class="form-control form-control-xl @error('email') is-invalid @enderror " required />
 			<div class="form-control-icon"><i class="bi bi-envelope"></i></div>
 			@error('email')
 				<div class="invalid-feedback">{{ $message }}</div>
