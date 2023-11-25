@@ -76,6 +76,9 @@
 				data-bs-target="#NilaiAlterModal" id="spare-button">
 				<i class="bi bi-plus-lg"></i> Tambah Nilai Alternatif
 			</button>
+			<div class="spinner-grow text-danger d-none" role="status">
+				<span class="visually-hidden">Menghapus...</span>
+			</div>
 			<table class="table table-hover table-striped" id="table-nilaialt" style="width: 100%">
 				<thead>
 					<tr>
@@ -100,8 +103,8 @@
 			try {
 				$.fn.dataTable.ext.errMode = 'none';
 				nilaialtdt = $('#table-nilaialt').DataTable({
-					"lengthChange": false,
-					"searching": false,
+					lengthChange: false,
+					searching: false,
 					responsive: true,
 					serverSide: true,
 					processing: true,
@@ -116,11 +119,7 @@
 								targets: 1 + {{ $loop->index }},
 								render: function(data, type, full) {
 									if (data === null || data === "") {
-										$('#alternatif-' + full['id'] +
-												' .edit-record')
-											.prop('disabled', true);
-										$('#alternatif-' + full['id'] +
-												' .delete-record')
+										$(`button[data-id="${full['id']}"]`)
 											.prop('disabled', true);
 									}
 									return data;
@@ -131,8 +130,7 @@
 							targets: -1,
 							render: function(data, type, full) {
 								return (
-									'<div class="btn-group" role="group" id="alternatif-' +
-									data + '">' +
+									'<div class="btn-group" role="group">' +
 									`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#NilaiAlterModal" title="Edit"><i class="bi bi-pencil-square"></i></button>` +
 									`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}" title="Hapus"><i class="bi bi-trash3-fill"></i></button>` +
 									'</div>'
@@ -209,28 +207,13 @@
 							}
 						}]
 					}]
-				}).on('draw', setTableColor).on('preInit.dt', function() {
-					$('#spare-button').addClass('d-none');
 				}).on('error.dt', function(e, settings, techNote, message) {
-					Toastify({
-						text: message,
-						style: {
-							background: "#ffc107"
-						},
-						duration: 10000
-					}).showToast();
-				});
+					errorDT(message, techNote);
+				}).on('draw', setTableColor).on('preInit.dt', removeBtn());
 			} catch (dterr) {
-				Toastify({
-					text: "Terjadi kesalahan saat menampilkan data",
-					style: {
-						background: "#dc3545",
-					},
-				}).showToast();
-				console.error(dterr.message);
+				initError(dterr.message);
 			}
-		});
-		$(document).on('click', '.delete-record', function() {
+		}).on('click', '.delete-record', function() {
 			var score_id = $(this).data('id'),
 				score_name = $(this).data('name');
 			Swal.fire({
@@ -246,11 +229,18 @@
 				},
 				buttonsStyling: false
 			}).then(function(result) {
-				if (result.value) {
-					// delete the data
+				if (result.value) {// delete the data
 					$.ajax({
 						type: 'DELETE',
-						url: '/alternatif/nilai/del/' + score_id,
+						url: '/nilai/del/' + score_id,
+					beforeSend: function() {
+						$('.spinner-grow.text-danger')
+							.removeClass('d-none');
+					},
+					complete: function() {
+						$('.spinner-grow.text-danger')
+							.addClass('d-none');
+					},
 						success: function(data) {
 							nilaialtdt.draw();
 							Swal.fire({
@@ -297,7 +287,7 @@
 			$('#NilaiAlterLabel').html('Edit Nilai Alternatif');
 			$('#NilaiAlterForm :input').prop('disabled', true);
 			$('.data-submit').prop('disabled', true);
-			$('.spinner-grow').removeClass('d-none');
+			$('.spinner-grow.text-primary').removeClass('d-none');
 
 			// get data
 			$.get('/alternatif/nilai/edit/' + nilai_id, function(data) {
@@ -322,7 +312,7 @@
 			}).always(function() {
 				$('#NilaiAlterForm :input').prop('disabled', false);
 				$('.data-submit').prop('disabled', false);
-				$('.spinner-grow').addClass('d-none');
+				$('.spinner-grow.text-primary').addClass('d-none');
 				$('#alternatif-value').prop('disabled', true);
 			});
 		});
@@ -331,18 +321,18 @@
 			$.ajax({
 				data: $('#NilaiAlterForm').serialize(),
 				url: $('#alternatif-hidden').val() == '' ?
-					'/alternatif/nilai/store' : '/alternatif/nilai/update',
+					'/nilai/store' : '/nilai/update',
 				type: 'POST',
 				beforeSend: function() {
 					$('#NilaiAlterForm :input').prop('disabled', true)
 						.removeClass('is-invalid');
 					$('.data-submit').prop('disabled', true);
-					$('.spinner-grow').removeClass('d-none');
+					$('.spinner-grow.text-primary').removeClass('d-none');
 				},
 				complete: function() {
 					$('#NilaiAlterForm :input').prop('disabled', false);
 					$('.data-submit').prop('disabled', false);
-					$('.spinner-grow').addClass('d-none');
+					$('.spinner-grow.text-primary').addClass('d-none');
 				},
 				success: function(status) {
 					if ($.fn.DataTable.isDataTable("#table-nilaialt"))

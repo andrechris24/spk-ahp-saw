@@ -181,7 +181,7 @@
 					</tr>
 				</table>
 				<div class="col-12 d-flex justify-content-end">
-					<div class="spinner-grow text-primary me-3 d-none" role="status">
+					<div class="spinner-grow text-info me-3 d-none" role="status">
 						<span class="visually-hidden">Mereset...</span>
 					</div>
 					<div class="btn-group">

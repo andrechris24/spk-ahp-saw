@@ -82,6 +82,9 @@
 				data-bs-target="#AlterModal" id="spare-button">
 				<i class="bi bi-plus-lg"></i> Tambah Alternatif
 			</button>
+			<div class="spinner-grow text-danger d-none" role="status">
+				<span class="visually-hidden">Menghapus...</span>
+			</div>
 			<table class="table table-hover table-striped" id="table-alter" style="width: 100%">
 				<thead>
 					<tr>
@@ -194,15 +197,8 @@
 						}],
 					}],
 				}).on("error.dt", function(e, settings, techNote, message) {
-					Toastify({
-						text: message,
-						style: {
-							background: "#ffc107"
-						},
-						duration: 10000
-					}).showToast();
-				}).on("draw", setTableColor).on("preInit.dt", function() {
-					$("#spare-button").addClass("d-none");
+					errorDT(message, techNote);
+				}).on("preDraw", function() {
 					$.get("{{ route('alternatif.count') }}", function(data) {
 						$("#total-duplicate").text(data.duplicates);
 						$("#total-counter").text(data.total);
@@ -212,10 +208,11 @@
 								xhr.status + '. ' + status,
 							style: {
 								background: "#dc3545"
-							}
+							},
+							duration: 9000
 						}).showToast();
 					});
-				});
+				}).on("draw", setTableColor).on('preInit.dt', removeBtn());
 			} catch (dterr) {
 				Toastify({
 					text: "Terjadi kesalahan saat menampilkan data",
@@ -225,9 +222,7 @@
 				}).showToast();
 				console.error(dterr.message);
 			}
-		});
-		// Delete Record
-		$(document).on("click", ".delete-record", function() {
+		}).on("click", ".delete-record", function() {
 			var alt_id = $(this).data("id"),
 				alt_name = $(this).data("name");
 
@@ -245,11 +240,18 @@
 				},
 				buttonsStyling: false,
 			}).then(function(result) {
-				if (result.value) {
-					// delete the data
+				if (result.value) {// delete the data
 					$.ajax({
 						type: "DELETE",
 						url: "/alternatif/del/" + alt_id,
+						beforeSend: function() {
+							$('.spinner-grow.text-danger')
+								.removeClass('d-none');
+						},
+						complete: function() {
+							$('.spinner-grow.text-danger')
+								.addClass('d-none');
+						},
 						success: function() {
 							dt_alternatif.draw();
 							Swal.fire({
@@ -297,7 +299,7 @@
 			$("#AlterLabel").html("Edit Alternatif");
 			$("#AlterForm :input").prop("disabled", true);
 			$(".data-submit").prop("disabled", true);
-			$(".spinner-grow").removeClass("d-none");
+			$(".spinner-grow.text-primary").removeClass("d-none");
 
 			// get data
 			$.get("/alternatif/edit/" + alt_id, function(data) {
@@ -318,7 +320,7 @@
 			}).always(function() {
 				$("#AlterForm :input").prop("disabled", false);
 				$(".data-submit").prop("disabled", false);
-				$(".spinner-grow").addClass("d-none");
+				$(".spinner-grow.text-primary").addClass("d-none");
 			});
 		});
 		$("#AlterForm").on("submit", function(event) {
@@ -333,12 +335,12 @@
 					$("#AlterForm :input").prop("disabled", true)
 						.removeClass("is-invalid");
 					$(".data-submit").prop("disabled", true);
-					$(".spinner-grow").removeClass("d-none");
+					$(".spinner-grow.text-primary").removeClass("d-none");
 				},
 				complete: function() {
 					$("#AlterForm :input").prop("disabled", false);
 					$(".data-submit").prop("disabled", false);
-					$(".spinner-grow").addClass("d-none");
+					$(".spinner-grow.text-primary").addClass("d-none");
 				},
 				success: function(status) {
 					if ($.fn.DataTable.isDataTable("#table-alter"))

@@ -102,6 +102,9 @@
 				data-bs-target="#CritModal" id="spare-button">
 				<i class="bi bi-plus-lg"></i> Tambah Kriteria
 			</button>
+			<div class="spinner-grow text-danger d-none" role="status">
+				<span class="visually-hidden">Menghapus...</span>
+			</div>
 			<table class="table table-hover table-striped" id="table-crit" style="width: 100%">
 				<thead>
 					<tr>
@@ -225,41 +228,26 @@
 						}]
 					}],
 				}).on('error.dt', function(e, settings, techNote, message) {
-					Toastify({
-						text: message,
-						style: {
-							background: "#ffc107"
-						},
-						duration: 10000
-					}).showToast();
-				}).on('draw', setTableColor).on('preInit.dt', function() {
-					$('#spare-button').addClass('d-none');
+					errorDT(message, techNote);
+				}).on('draw', setTableColor).on('preDraw', function() {
 					$.get("{{ route('kriteria.count') }}", function(data) {
 						$("#total-duplicate").text(data.duplicates);
 						$("#total-counter").text(data.total);
 					}).fail(function(xhr, status) {
 						Toastify({
 							text: "Gagal memuat jumlah: Kesalahan HTTP " +
-								xhr.status + '. ' +
-								status,
+								xhr.status + '. ' + status,
 							style: {
 								background: "#dc3545"
-							}
+							},
+							duration: 9000
 						}).showToast();
 					});
-				});
+				}).on('preInit.dt', removeBtn());
 			} catch (dterr) {
-				Toastify({
-					text: "Terjadi kesalahan saat menampilkan data",
-					style: {
-						background: "#dc3545",
-					},
-				}).showToast();
-				console.error(dterr.message);
+				initError(dterr.message);
 			}
-		});
-		// Delete Record
-		$(document).on('click', '.delete-record', function() {
+		}).on('click', '.delete-record', function() {
 			var kr_id = $(this).data('id'),
 				kr_name = $(this).data('name');
 
@@ -277,14 +265,20 @@
 				},
 				buttonsStyling: false
 			}).then(function(result) {
-				if (result.value) {
-					// delete the data
+				if (result.value) {// delete the data
 					$.ajax({
 						type: 'DELETE',
 						url: '/kriteria/del/' + kr_id,
+					beforeSend: function() {
+						$('.spinner-grow.text-danger')
+							.removeClass('d-none');
+					},
+					complete: function() {
+						$('.spinner-grow.text-danger')
+							.addClass('d-none');
+					},
 						success: function(data) {
 							dt_kriteria.draw();
-							// success sweetalert
 							Swal.fire({
 								icon: 'success',
 								title: 'Dihapus',
@@ -328,7 +322,7 @@
 			$('#CritForm :input').prop('disabled', true);
 			$('#CritLabel').html('Edit Kriteria');
 			$('.data-submit').prop('disabled', true);
-			$('.spinner-grow').removeClass('d-none');
+			$('.spinner-grow.text-primary').removeClass('d-none');
 			if ($('#kriteria-alert').length)
 				$('#kriteria-alert').addClass('d-none');
 			// get data
@@ -352,7 +346,7 @@
 			}).always(function() {
 				$('#CritForm :input').prop('disabled', false);
 				$('.data-submit').prop('disabled', false);
-				$('.spinner-grow').addClass('d-none');
+				$('.spinner-grow.text-primary').addClass('d-none');
 			});
 		});
 		$('#CritForm').on('submit', function(event) {
@@ -367,12 +361,12 @@
 					$('#CritForm :input').prop('disabled', true)
 						.removeClass('is-invalid');
 					$('.data-submit').prop('disabled', true);
-					$('.spinner-grow').removeClass('d-none');
+					$('.spinner-grow.text-primary').removeClass('d-none');
 				},
 				complete: function() {
 					$('#CritForm :input').prop('disabled', false);
 					$('.data-submit').prop('disabled', false);
-					$('.spinner-grow').addClass('d-none');
+					$('.spinner-grow.text-primary').addClass('d-none');
 				},
 				success: function(status) {
 					dt_kriteria.draw();

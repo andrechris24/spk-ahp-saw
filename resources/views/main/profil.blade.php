@@ -93,7 +93,7 @@
 								</div>
 							</div>
 							<div class="col-12 d-flex justify-content-end">
-								<div class="spinner-grow text-primary me-3 d-none" role="status">
+								<div class="spinner-grow text-info me-3 d-none" role="status">
 									<span class="visually-hidden">Menyimpan...</span>
 								</div>
 								<div class="btn-group">
@@ -126,16 +126,17 @@
 					$('#form-edit-account :input').removeClass('is-invalid')
 						.prop('disabled', true);
 					$('.data-submit').prop('disabled', true);
+					$('#DelAccountBtn').prop('disabled', true);
 					$('.spinner-grow').removeClass('d-none');
 				},
 				complete: function() {
 					$('#form-edit-account :input').prop('disabled', false);
 					$('.data-submit').prop('disabled', false);
+					$('#DelAccountBtn').prop('disabled', false);
 					$('.spinner-grow').addClass('d-none');
 				},
 				success: function(status) {
 					$('input[type=password]').val("");
-					// sweetalert
 					Swal.fire({
 						icon: 'success',
 						title: 'Sukses',
@@ -238,11 +239,11 @@
 					beforeSend: function() {
 						$('#form-edit-account :input').removeClass(
 							'is-invalid').prop('disabled', true);
+						$('#DelAccountBtn').prop('disabled', true);
 						$('.data-submit').prop('disabled', true);
 						$('.spinner-grow').removeClass('d-none');
 					},
 					success: function(status) {
-						// sweetalert
 						Swal.fire({
 							icon: 'success',
 							title: "Akun sudah dihapus",
@@ -256,6 +257,7 @@
 					error: function(xhr, code) {
 						$('#form-edit-account :input')
 							.prop('disabled', false);
+						$('#DelAccountBtn').prop('disabled', false);
 						$('.data-submit').prop('disabled', false);
 						$('.spinner-grow').addClass('d-none');
 						Swal.fire({
