@@ -49,8 +49,6 @@ class AuthController extends Controller
 			Session::invalidate();
 			Session::regenerateToken();
 			return redirect()->route('login')->withSuccess('Anda sudah logout.');
-			// } catch (ModelNotFoundException) {
-			// 	return back()->withError("Gagal logout: Akun tidak ditemukan");
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal logout: ' .
@@ -69,7 +67,7 @@ class AuthController extends Controller
 			$credentials = $request->validate(User::$regrules, User::$regmsg);
 			$credentials['password'] = Hash::make($credentials['password']);
 			User::create($credentials);
-			return redirect('/login')->withSuccess("Akun sudah dibuat. " .
+			return redirect()->route('login')->withSuccess("Akun sudah dibuat. " .
 				"Silahkan login menggunakan akun yang sudah didaftarkan.");
 		} catch (QueryException $e) {
 			Log::error($e);
@@ -116,17 +114,17 @@ class AuthController extends Controller
 			$enctoken = DB::table('password_resets')->where('email', $_GET['email'])
 				->firstOrFail();
 			if (!Hash::check($token, $enctoken->token))
-				return redirect('/login')->withError(__('passwords.token'));
+				return redirect()->route('login')->withError(__('passwords.token'));
 			return view(
 				'admin.reset-password',
 				['token' => $token, 'email' => $_GET['email']]
 			);
 		} catch (QueryException $e) {
 			Log::error($e);
-			return redirect('/forget-password')
+			return redirect()->route('password.request')
 				->withError("Terjadi Kesalahan SQLState #" . $e->errorInfo[0]);
 		} catch (ModelNotFoundException) {
-			return redirect('/forget-password')->withError(
+			return redirect()->route('password.request')->withError(
 				'Token tidak valid atau Link sudah kedaluarsa. ' .
 				'Silahkan minta reset password lagi.'
 			);
@@ -145,7 +143,7 @@ class AuthController extends Controller
 				}
 			);
 			if ($status === Password::PASSWORD_RESET) {
-				return redirect('/login')->withSuccess('Reset password berhasil. ' .
+				return redirect()->route('login')->withSuccess('Reset password berhasil. ' .
 					'Silahkan login menggunakan password yang Anda buat.');
 			} else if ($status === Password::INVALID_TOKEN)
 				return back()->withError('Reset password gagal: ' . __('passwords.token'));

@@ -8,14 +8,6 @@
 		</div>
 		<div class="card-content">
 			<div class="card-body">
-				{{-- @if ($cek > $jmlcrit)
-					<div class="alert alert-primary">
-						<i class="bi bi-info-circle-fill"></i>
-						Perbandingan kriteria sudah dilakukan,
-						<a href="{{ url('bobot/hasil') }}">klik disini</a>
-						untuk melihat hasil perbandingan.
-					</div>
-				@endif --}}
 				<ul class="nav nav-tabs" id="InputCompTab" role="tablist">
 					<li class="nav-item" role="presentation">
 						<a class="nav-link active" id="info-tab" data-bs-toggle="tab" href="#info"

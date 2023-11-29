@@ -1,7 +1,6 @@
 @php
 	use App\Http\Controllers\NilaiController;
 	$saw = new NilaiController();
-	$countkriteria = count($data['kriteria']);
 @endphp
 @extends('layout')
 @section('title', 'Hasil Penilaian Alternatif')
@@ -17,7 +16,7 @@
 					<thead>
 						<tr>
 							<th rowspan="2">Alternatif</th>
-							<th colspan="{{ $countkriteria }}">Kriteria</th>
+							<th colspan="{{ count($data['kriteria']) }}">Kriteria</th>
 						</tr>
 						<tr>
 							@foreach ($data['kriteria'] as $krit)
@@ -56,7 +55,7 @@
 					<thead>
 						<tr>
 							<th rowspan="2">Alternatif</th>
-							<th colspan="{{ $countkriteria }}">Kriteria</th>
+							<th colspan="{{ count($data['kriteria']) }}">Kriteria</th>
 						</tr>
 						<tr>
 							@foreach ($data['kriteria'] as $krit)
@@ -80,8 +79,8 @@
 											@php
 												$arrays = $saw->getNilaiArr($nilai->kriteria_id);
 												$result = $saw->normalisasi($arrays, $nilai->kriteria->type, $nilai->subkriteria->bobot);
-												echo $result;
 												$lresult[$alts->id][$counter] = $result * $saw->getBobot($nilai->kriteria_id);
+												echo $result;
 												$counter++;
 											@endphp
 										</td>
@@ -153,17 +152,17 @@
 							<tr>
 								<th>{{ $alts->name }}</th>
 								@foreach ($lresult[$alts->id] as $datas)
-									<td>
-										@php
-											echo round($datas, 5);
-											$jml += round($datas, 5);
-										@endphp
-									</td>
+									@php
+										echo '<td>' . round($datas, 5) . '</td>';
+										$jml += round($datas, 5);
+									@endphp
 								@endforeach
-								@php
-									$saw->simpanHasil($alts->id, $jml);
-									echo "<td>$jml</td>";
-								@endphp
+								<td class="text-info">
+									@php
+										$saw->simpanHasil($alts->id, $jml);
+										echo $jml;
+									@endphp
+								</td>
 							</tr>
 						@endif
 					@endforeach
@@ -178,11 +177,11 @@
 		$(document).ready(function() {
 			try {
 				dt_hasil = $('#table-hasil').DataTable({
-					"lengthChange": false,
-					"searching": false,
+					lengthChange: false,
+					searching: false,
 					responsive: true,
 					order: [
-						[1 + {{ $countkriteria }}, 'desc']
+						[1 + {{ count($data['kriteria']) }}, 'desc']
 					],
 					language: {
 						url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
@@ -234,9 +233,10 @@
 					text: "Terjadi kesalahan saat mengurutkan hasil penilaian",
 					style: {
 						background: "#dc3545"
-					}
+					},
+					duration: 7000
 				}).showToast();
-				console.error(dterr.message)
+				console.error(dterr.message);
 			}
 		});
 		var options = {
@@ -277,8 +277,7 @@
 			}).fail(function(e, status) {
 				Swal.fire({
 					title: 'Gagal memuat grafik',
-					text: 'Kesalahan HTTP ' + e.status + '. ' +
-						(e.responseJSON.message ?? status),
+					text: 'Kesalahan HTTP ' + e.status + '. ' + status,
 					icon: 'error',
 					customClass: {
 						confirmButton: 'btn btn-success'

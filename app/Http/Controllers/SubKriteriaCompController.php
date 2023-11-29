@@ -25,8 +25,7 @@ class SubKriteriaCompController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil perbandingan:')
-				->withErrors("Kesalahan #$e->errorInfo[0]/$e->errorInfo[1]. " .
-					$e->errorInfo[2]);
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[0] . ".");
 		}
 	}
 	private function getPerbandinganBySubKriteria1($subkriteria1, $id)
@@ -37,8 +36,7 @@ class SubKriteriaCompController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil perbandingan:')
-				->withErrors("Kesalahan #$e->errorInfo[0]/$e->errorInfo[1]. " .
-					$e->errorInfo[2]);
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[0] . ".");
 		}
 	}
 	private function getNilaiPerbandingan($kode_kriteria, $id)
@@ -66,12 +64,12 @@ class SubKriteriaCompController extends Controller
 	{
 		$allkrit = Kriteria::get();
 		if ($allkrit->isEmpty()) {
-			return redirect('/kriteria')->withWarning(
+			return redirect()->route('kriteria.index')->withWarning(
 				'Masukkan kriteria dulu untuk melakukan perbandingan sub kriteria.'
 			);
 		}
 		if (SubKriteria::count() === 0) {
-			return redirect('/kriteria/sub')->withWarning(
+			return redirect()->route('subkriteria.index')->withWarning(
 				'Masukkan data sub kriteria dulu ' .
 				'untuk melakukan perbandingan sub kriteria.'
 			);
@@ -80,12 +78,12 @@ class SubKriteriaCompController extends Controller
 	}
 	public function create(Request $request)
 	{
+		$request->validate(
+			SubKriteriaComp::$selectrules,
+			SubKriteriaComp::$selectmessage
+		);
+		$idkriteria = $request->kriteria_id;
 		try {
-			$request->validate(
-				SubKriteriaComp::$selectrules,
-				SubKriteriaComp::$selectmessage
-			);
-			$idkriteria = $request->kriteria_id;
 			Kriteria::findOrFail($idkriteria);
 			$subkriteria = SubKriteria::where('kriteria_id', $idkriteria)->get();
 			$jmlsubkriteria = count($subkriteria);
@@ -107,8 +105,13 @@ class SubKriteriaCompController extends Controller
 				compact('array', 'cek', 'jmlsubkriteria', 'value')
 			)->with(['kriteria_id' => $idkriteria]);
 		} catch (ModelNotFoundException) {
-			return redirect('/bobot/sub')
-				->withErrors(['kriteria_id' => 'Kriteria tidak ditemukan']);
+			return back()->withErrors(['kriteria_id' => 'Kriteria tidak ditemukan']);
+		} catch (QueryException $e) {
+			Log::error($e);
+			return back()->withError(
+				'Gagal memuat form perbandingan sub kriteria ' .
+				$this->nama_kriteria($idkriteria)
+			)->withErrors("Kesalahan SQLState #" . $e->errorInfo[0])->withInput();
 		}
 	}
 	public function store(Request $request, $kriteria_id)
@@ -133,7 +136,7 @@ class SubKriteriaCompController extends Controller
 					$a++;
 				}
 			}
-			return redirect('/bobot/sub/hasil/' . $kriteria_id);
+			return redirect()->route('bobotsubkriteria.result', $kriteria_id);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError(
@@ -318,7 +321,7 @@ class SubKriteriaCompController extends Controller
 			$kr = Kriteria::firstWhere('id', $id);
 			SubKriteriaComp::where('idkriteria', $id)->delete();
 			SubKriteria::where('kriteria_id', $id)->update(['bobot' => 0.00000]);
-			return redirect('/bobot/sub')
+			return redirect()->route('bobotsubkriteria.pick')
 				->withSuccess("Perbandingan Sub kriteria $kr->name sudah direset")
 				->with(['kriteria_id' => $id]);
 		} catch (QueryException $e) {

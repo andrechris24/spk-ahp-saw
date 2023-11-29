@@ -83,25 +83,36 @@ class NilaiController extends Controller
 				}
 			})->toJson();
 	}
+	public function getCount()
+	{
+		$alternatives = Alternatif::count();
+		$dinilai = Nilai::join('alternatif', 'nilai.alternatif_id', 'alternatif.id')
+			->select('nilai.alternatif_id as idalt', 'alternatif.name')
+			->groupBy('idalt', 'name')->get()->count();
+		return response()->json([
+			'alter' => $alternatives,
+			'unused' => $alternatives - $dinilai,
+			'criteria' => Kriteria::count()
+		]);
+	}
 	public function index()
 	{
 		$kriteria = Kriteria::get();
 		if ($kriteria->isEmpty()) {
-			return redirect('kriteria')->withWarning(
+			return redirect()->route('kriteria.index')->withWarning(
 				'Tambahkan kriteria dan sub kriteria dulu ' .
 				'sebelum melakukan penilaian alternatif.'
 			);
 		}
 		$subkriteria = SubKriteria::get();
 		if ($subkriteria->isEmpty()) {
-			return redirect('kriteria/sub')
-				->withWarning(
-					'Tambahkan sub kriteria dulu sebelum melakukan penilaian alternatif.'
-				);
+			return redirect()->route('subkriteria.index')->withWarning(
+				'Tambahkan sub kriteria dulu sebelum melakukan penilaian alternatif.'
+			);
 		}
 		$alternatif = Alternatif::get();
 		if ($alternatif->isEmpty()) {
-			return redirect('alternatif')
+			return redirect()->route('alternatif.index')
 				->withWarning('Tambahkan alternatif dulu sebelum melakukan penilaian.');
 		}
 		$data = [
@@ -155,19 +166,19 @@ class NilaiController extends Controller
 			$cekbobotkr = Kriteria::where('bobot', 0.00000)->count();
 			$cekbobotskr = SubKriteria::where('bobot', 0.00000)->count();
 			if ($cekbobotkr > 0) {
-				return redirect('bobot')->withWarning(
+				return redirect()->route('bobotkriteria.index')->withWarning(
 					'Lakukan perbandingan kriteria secara konsisten ' .
 					'sebelum melihat hasil penilaian alternatif.'
 				);
 			}
 			if ($cekbobotskr > 0) {
-				return redirect('bobot/sub')->withWarning(
+				return redirect()->route('bobotsubkriteria.pick')->withWarning(
 					'Satu atau lebih perbandingan sub kriteria ' .
 					'belum dilakukan secara konsisten.'
 				);
 			}
 			if ($hasil->isEmpty()) {
-				return redirect('alternatif/nilai')
+				return redirect()->route('nilai.index')
 					->withWarning('Masukkan data penilaian alternatif dulu');
 			}
 			$data = ['alternatif' => $alt, 'kriteria' => $kr, 'subkriteria' => $skr];
@@ -226,8 +237,11 @@ class NilaiController extends Controller
 				], 404);
 			}
 			$cek->delete();
+			Hasil::where('alternatif_id', $id)->delete();
 			if (Nilai::count() === 0)
 				Nilai::truncate();
+			if (Hasil::count() === 0)
+				Hasil::truncate();
 			return response()->json(['message' => 'Nilai Alternatif sudah dihapus']);
 		} catch (QueryException $err) {
 			Log::error($err);

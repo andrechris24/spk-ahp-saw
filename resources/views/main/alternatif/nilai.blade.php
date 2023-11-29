@@ -15,9 +15,10 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<form method="POST" enctype="multipart/form-data" id="NilaiAlterForm">
+					<form method="POST" enctype="multipart/form-data" id="NilaiAlterForm"
+						class="needs-validation">
 						<input type="hidden" name="alternatif_id" id="alternatif-hidden">
-						<div class="input-group mb-3">
+						<div class="input-group has-validation mb-3">
 							<label class="input-group-text" for="alternatif-value">
 								Nama Alternatif
 							</label>
@@ -27,11 +28,13 @@
 									<option value="{{ $alt->id }}">{{ $alt->name }}</option>
 								@endforeach
 							</select>
-							<div class="invalid-feedback" id="alternatif-error"></div>
+							<div class="invalid-feedback" id="alternatif-error">
+								Pilih alternatif
+							</div>
 						</div>
 						@foreach ($data['kriteria'] as $kr)
 							<input type="hidden" name="kriteria_id[]" value="{{ $kr->id }}">
-							<div class="input-group mb-3">
+							<div class="input-group has-validation mb-3">
 								<label class="input-group-text" for="subkriteria-{{ $kr->id }}"
 									title="{{ $kr->desc }}">
 									{{ $kr->name }}
@@ -48,6 +51,7 @@
 									@endforeach
 								</select>
 								<div class="invalid-feedback" id="subkriteria-error-{{ $kr->id }}">
+									Pilih salah satu sub kriteria {{ $kr->name }}
 								</div>
 							</div>
 						@endforeach
@@ -69,6 +73,59 @@
 			</div>
 		</div>
 	</div>
+	<div class="row">
+		<div class="col-md-4">
+			<div class="card">
+				<div class="card-body">
+					<div class="d-flex align-items-start justify-content-between">
+						<div class="content-left">
+							<span>Jumlah Alternatif</span>
+							<div class="d-flex align-items-end mt-2">
+								<h3 class="mb-0 me-2"><span id="total-alter">-</span></h3>
+							</div>
+						</div>
+						<span class="badge bg-primary rounded p-2">
+							<i class="fas fa-file-alt"></i>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="card">
+				<div class="card-body">
+					<div class="d-flex align-items-start justify-content-between">
+						<div class="content-left">
+							<span>Jumlah Kriteria</span>
+							<div class="d-flex align-items-end mt-2">
+								<h3 class="mb-0 me-2"><span id="total-criteria">-</span></h3>
+							</div>
+						</div>
+						<span class="badge bg-success rounded p-2">
+							<i class="fas fa-list"></i>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="card">
+				<div class="card-body">
+					<div class="d-flex align-items-start justify-content-between">
+						<div class="content-left">
+							<span>Belum dinilai</span>
+							<div class="d-flex align-items-end mt-2">
+								<h3 class="mb-0 me-2"><span id="total-noscore">-</span></h3>
+							</div>
+						</div>
+						<span class="badge bg-warning rounded p-2">
+							<i class="bi bi-question-circle-fill"></i>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="card">
 		<div class="card-header">Daftar Nilai Alternatif</div>
 		<div class="card-body">
@@ -79,7 +136,8 @@
 			<div class="spinner-grow text-danger d-none" role="status">
 				<span class="visually-hidden">Menghapus...</span>
 			</div>
-			<table class="table table-hover table-striped" id="table-nilaialt" style="width: 100%">
+			<table class="table table-hover table-striped" id="table-nilaialt"
+				style="width: 100%">
 				<thead>
 					<tr>
 						<th>Nama Alternatif</th>
@@ -99,6 +157,10 @@
 @section('js')
 	<script type="text/javascript">
 		var nilaialtdt, errmsg;
+
+		function setName(id) {
+			$('#alternatif-value').val(id).trigger('change');
+		}
 		$(document).ready(function() {
 			try {
 				$.fn.dataTable.ext.errMode = 'none';
@@ -129,6 +191,11 @@
 							orderable: false,
 							targets: -1,
 							render: function(data, type, full) {
+								if (full['subkriteria'] === null) {
+									return (
+										`<button class="btn btn-sm btn-info" onclick="setName(${data})" data-bs-toggle="modal" data-bs-target="#NilaiAlterModal" title="Tambah"><i class="bi bi-plus-lg"></i></button>`
+									);
+								}
 								return (
 									'<div class="btn-group" role="group">' +
 									`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#NilaiAlterModal" title="Edit"><i class="bi bi-pencil-square"></i></button>` +
@@ -209,6 +276,22 @@
 					}]
 				}).on('error.dt', function(e, settings, techNote, message) {
 					errorDT(message, techNote);
+				}).on("preDraw", function() {
+					$.get("{{ route('nilai.count') }}", function(data) {
+						$("#total-alter").text(data.alter);
+						$("#total-criteria").text(data.criteria);
+						$('#total-noscore').text(data.unused);
+					}).fail(function(xhr, status) {
+						Toastify({
+							text: "Gagal memuat jumlah: Kesalahan HTTP " +
+								xhr.status + '. ' + (xhr
+									.statusText ?? status),
+							style: {
+								background: "#dc3545"
+							},
+							duration: 9000
+						}).showToast();
+					});
 				}).on('draw', setTableColor).on('preInit.dt', removeBtn());
 			} catch (dterr) {
 				initError(dterr.message);
@@ -225,22 +308,22 @@
 				cancelButtonText: 'Tidak',
 				customClass: {
 					confirmButton: 'btn btn-primary me-3',
-					cancelButton: 'btn btn-label-secondary'
+					cancelButton: 'btn btn-secondary'
 				},
 				buttonsStyling: false
 			}).then(function(result) {
-				if (result.value) {// delete the data
+				if (result.value) { // delete the data
 					$.ajax({
 						type: 'DELETE',
 						url: '/nilai/del/' + score_id,
-					beforeSend: function() {
-						$('.spinner-grow.text-danger')
-							.removeClass('d-none');
-					},
-					complete: function() {
-						$('.spinner-grow.text-danger')
-							.addClass('d-none');
-					},
+						beforeSend: function() {
+							$('.spinner-grow.text-danger')
+								.removeClass('d-none');
+						},
+						complete: function() {
+							$('.spinner-grow.text-danger')
+								.addClass('d-none');
+						},
 						success: function(data) {
 							nilaialtdt.draw();
 							Swal.fire({
@@ -290,7 +373,7 @@
 			$('.spinner-grow.text-primary').removeClass('d-none');
 
 			// get data
-			$.get('/alternatif/nilai/edit/' + nilai_id, function(data) {
+			$.get('/nilai/edit/' + nilai_id, function(data) {
 				$('#alternatif-value').val(data.alternatif_id);
 				$('#alternatif-hidden').val(data.alternatif_id);
 				@foreach ($data['kriteria'] as $kr)
@@ -316,12 +399,14 @@
 				$('#alternatif-value').prop('disabled', true);
 			});
 		});
-		$('#NilaiAlterForm').on('submit', function(event) {
+
+		function submitform(event) {
+			var errmsg, actionurl = $('#alternatif-hidden').val() == '' ?
+				"{{ route('nilai.store') }}" : "{{ route('nilai.update') }}";
 			event.preventDefault();
 			$.ajax({
 				data: $('#NilaiAlterForm').serialize(),
-				url: $('#alternatif-hidden').val() == '' ?
-					'/nilai/store' : '/nilai/update',
+				url: actionurl,
 				type: 'POST',
 				beforeSend: function() {
 					$('#NilaiAlterForm :input').prop('disabled', true)
@@ -371,9 +456,10 @@
 					});
 				}
 			});
-		});
+		};
 		// clearing form data when modal hidden
 		$('#NilaiAlterModal').on('hidden.bs.modal', function() {
+			resetvalidation();
 			$('#alternatif-value').prop('disabled', false);
 			$('#NilaiAlterForm')[0].reset();
 			$('#alternatif-hidden').val("");

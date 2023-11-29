@@ -4,25 +4,35 @@
 @section('auth-subtitle', 'Login untuk menggunakan Aplikasi Sistem Pendukung Keputusan')
 @section('auth-css', asset('assets/compiled/css/auth.css'))
 @section('content')
-	<form action="{{ route('login.perform') }}" method="post" enctype="multipart/form-data">
+	<form action="{{ route('login.perform') }}" method="post" enctype="multipart/form-data"
+		class="needs-validation">
 		@csrf
 		<div class="form-group position-relative has-icon-left mb-4">
 			<input type="email" placeholder="Email" name="email" value="{{ old('email') }}"
 				class="form-control form-control-xl @error('email') is-invalid @enderror " required />
 			<div class="form-control-icon"><i class="bi bi-envelope"></i></div>
-			@error('email')
-				<div class="invalid-feedback">{{ $message }}</div>
-			@enderror
+			<div class="invalid-feedback">
+				@error('email')
+					{{ $message }}
+				@else
+					Masukkan Email
+				@enderror
+			</div>
 		</div>
 		<div class="form-group position-relative has-icon-left mb-4">
-			<input type="password" placeholder="Password" name="password" pattern=".{8,20}"
-				id="password" title="8-20 karakter" maxlength="20" required
+			<input type="password" placeholder="Password" name="password" minlength="8"
+				id="password" title="8-20 karakter" maxlength="20"
 				class="form-control
-				form-control-xl @error('password') is-invalid @enderror " />
+				form-control-xl @error('password') is-invalid @enderror "
+				required />
 			<div class="form-control-icon"><i class="bi bi-shield-lock"></i></div>
-			@error('password')
-				<div class="invalid-feedback">{{ $message }}</div>
-			@enderror
+			<div class="invalid-feedback">
+				@error('password')
+					{{ $message }}
+				@else
+					Masukkan Password
+				@enderror
+			</div>
 		</div>
 		<div class="form-check form-check-lg d-flex align-items-end">
 			<input class="form-check-input me-2" type="checkbox" id="remember-me" name="remember"
@@ -47,7 +57,4 @@
 			</a>
 		</p>
 	</div>
-@endsection
-@section('js')
-	<script type="text/javascript" src="{{ asset('js/password.js') }}"></script>
 @endsection

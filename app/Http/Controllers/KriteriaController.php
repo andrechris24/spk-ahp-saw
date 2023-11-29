@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Kriteria;
 use App\Models\KriteriaComp;
-use App\Models\Nilai;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -29,7 +28,10 @@ class KriteriaController extends Controller
 	}
 	public function show(Request $request)
 	{
-		return DataTables::of(Kriteria::query())->make();
+		return DataTables::of(Kriteria::query())
+			->editColumn('type', function (Kriteria $krit) {
+				return ucfirst($krit->type);
+			})->make();
 	}
 	public function store(Request $request)
 	{
@@ -71,12 +73,12 @@ class KriteriaController extends Controller
 	public function edit($id)
 	{
 		try {
-			$kriteria = Kriteria::where('id', $id)->firstOrFail();
+			$kriteria = Kriteria::findOrFail($id);
 			return response()->json($kriteria);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(["message" => $e->errorInfo[2]], 500);
-		} catch (ModelNotFoundException $err) {
+		} catch (ModelNotFoundException) {
 			return response()->json([
 				'message' => 'Kriteria yang Anda cari tidak ditemukan.'
 			], 404);

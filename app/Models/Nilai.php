@@ -17,8 +17,7 @@ class Nilai extends Model
 		'kriteria_id.*' => 'integer',
 		'subkriteria_id' => 'required',
 		'subkriteria_id.*' => 'integer'
-	];
-	public static array $message = [
+	], $message = [
 		'alternatif_id.required' => 'Nama alternatif harus dipilih',
 		'alternatif_id.integer' => 'Alternatif tidak valid',
 		'kriteria_id.required' => 'Kriteria tidak ditemukan',

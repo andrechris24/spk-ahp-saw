@@ -15,10 +15,16 @@ class SubKriteriaController extends Controller
 {
 	public function getCount()
 	{
+		$criterias = Kriteria::get();
 		$subcriterias = SubKriteria::get();
 		$scUnique = $subcriterias->unique(['name']);
+		$totalsub = [];
+		foreach ($criterias as $kr) {
+			$totalsub[] = SubKriteria::where('kriteria_id', $kr->id)->count();
+		}
 		return response()->json([
 			'total' => $subcriterias->count(),
+			'max' => collect($totalsub)->max(),
 			'duplicates' => $subcriterias->diff($scUnique)->count()
 		]);
 	}
@@ -27,7 +33,7 @@ class SubKriteriaController extends Controller
 		$kriteria = Kriteria::get();
 		$compskr = SubKriteriaComp::count();
 		if ($kriteria->isEmpty()) {
-			return redirect('kriteria')
+			return redirect()->route('kriteria.index')
 				->withWarning('Tambahkan kriteria dulu sebelum menambah sub kriteria.');
 		}
 		return view('main.subkriteria.index', compact('kriteria', 'compskr'));
@@ -86,7 +92,7 @@ class SubKriteriaController extends Controller
 	public function edit($id)
 	{
 		try {
-			$sub = SubKriteria::where('id', $id)->firstOrFail();
+			$sub = SubKriteria::findOrFail($id);
 			return response()->json($sub);
 		} catch (QueryException $e) {
 			Log::error($e);
@@ -104,14 +110,14 @@ class SubKriteriaController extends Controller
 			$idkriteria = $cek->kriteria_id;
 			$namakriteria = $cek->kriteria->name;
 			$cek->delete();
-			$subkrcomp = SubKriteriaComp::where('idkriteria', $cek->kriteria_id);
+			$subkrcomp = SubKriteriaComp::where('idkriteria', $idkriteria);
 			$message = 'Sub Kriteria sudah dihapus. ';
 			if ($subkrcomp->count() > 0) {
 				$subkrcomp->delete();
 				SubKriteria::where('kriteria_id', $idkriteria)
 					->update(['bobot' => 0.00000]);
 				$message .= "Silahkan input ulang perbandingan sub kriteria $namakriteria.";
-				if ($subkrcomp->count() == 0)
+				if (SubKriteriaComp::count() == 0)
 					SubKriteriaComp::truncate();
 			}
 			return response()->json(['message' => $message]);

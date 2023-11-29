@@ -54,7 +54,7 @@ class AlternatifController extends Controller
 	public function edit($id)
 	{
 		try {
-			$alter = Alternatif::where('id', $id)->firstOrFail();
+			$alter = Alternatif::findOrFail($id);
 			return response()->json($alter);
 		} catch (QueryException $e) {
 			Log::error($e);

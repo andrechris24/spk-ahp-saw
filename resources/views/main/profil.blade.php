@@ -10,8 +10,8 @@
 		<div class="card-content">
 			<div class="card-body">
 				<x-caps-lock />
-				<form class="form form-horizontal" method="post" action="{{ route('akun.perform') }}"
-					id="form-edit-account">
+				<form class="form form-horizontal needs-validation" method="post"
+					action="{{ route('akun.perform') }}" id="form-edit-account">
 					<div class="form-body">
 						<div class="row">
 							<div class="col-md-4"><label for="nama-user">Nama</label></div>
@@ -24,7 +24,9 @@
 										<div class="form-control-icon">
 											<i class="bi bi-person"></i>
 										</div>
-										<div class="invalid-feedback" id="name-error"></div>
+										<div class="invalid-feedback" id="name-error">
+											Masukkan Nama (Tanpa simbol dan angka)
+										</div>
 									</div>
 								</div>
 							</div>
@@ -32,25 +34,33 @@
 							<div class="col-md-8">
 								<div class="form-group has-icon-left">
 									<div class="position-relative">
-										<input type="email" name="email" placeholder="Email" id="email-user"
-											value="{{ auth()->user()->email }}" class="form-control" required />
+										<input type="email" name="email" placeholder="mail@example.com"
+											id="email-user" value="{{ auth()->user()->email }}" class="form-control"
+											required />
 										<div class="form-control-icon">
 											<i class="bi bi-envelope"></i>
 										</div>
-										<div class="invalid-feedback" id="email-error"></div>
+										<div class="invalid-feedback" id="email-error">
+											Masukkan Email (email@example.com)
+										</div>
 									</div>
 								</div>
 							</div>
-							<div class="col-md-4"><label>Password Lama</label></div>
+							<div class="col-md-4">
+								<label for="password-current">Password Lama</label>
+							</div>
 							<div class="col-md-8">
 								<div class="form-group has-icon-left">
 									<div class="position-relative">
 										<input type="password" name="current_password" id="password-current"
-											class="form-control" placeholder="Password Anda" maxlength="20" required />
+											class="form-control" placeholder="Password Anda" minlength="8" maxlength="20"
+											required />
 										<div class="form-control-icon">
 											<i class="bi bi-lock"></i>
 										</div>
-										<div class="invalid-feedback" id="current-password-error"></div>
+										<div class="invalid-feedback" id="current-password-error">
+											Masukkan Password Anda
+										</div>
 									</div>
 								</div>
 							</div>
@@ -60,14 +70,16 @@
 							<div class="col-md-8">
 								<div class="form-group has-icon-left">
 									<div class="position-relative">
-										<input type="password" name="password" class="form-control"
+										<input type="password" name="password" class="form-control" id="newpassword"
 											placeholder="Kosongkan jika tidak ganti password" oninput="checkpassword()"
-											pattern=".{8,20}" id="newpassword" data-bs-toggle="tooltip" maxlength="20"
-											data-bs-placement="top" title="8-20 karakter" />
+											minlength="8" maxlength="20" data-bs-toggle="tooltip" data-bs-placement="top"
+											title="8-20 karakter" />
 										<div class="form-control-icon">
 											<i class="bi bi-lock"></i>
 										</div>
-										<div class="invalid-feedback" id="newpassword-error"></div>
+										<div class="invalid-feedback" id="newpassword-error">
+											Password baru harus terdiri dari 8-20 karakter
+										</div>
 									</div>
 									<p>
 										<small class="text-muted">
@@ -82,13 +94,15 @@
 							<div class="col-md-8">
 								<div class="form-group has-icon-left">
 									<div class="position-relative">
-										<input type="password" name="password_confirmation" maxlength="20"
+										<input type="password" name="password_confirmation" minlength="8" maxlength="20"
 											id="conf-password" oninput="checkpassword()" class="form-control"
 											placeholder="Ketik ulang Password baru" />
 										<div class="form-control-icon">
 											<i class="bi bi-lock"></i>
 										</div>
-										<div class="invalid-feedback" id="confirm-password-error"></div>
+										<div class="invalid-feedback" id="confirm-password-error">
+											Password Konfirmasi salah
+										</div>
 									</div>
 								</div>
 							</div>
@@ -100,7 +114,7 @@
 									<button type="submit" class="btn btn-primary data-submit">
 										<i class="bi bi-save-fill"></i> Simpan
 									</button>
-									<button type="button" class="btn btn-danger" id="#DelAccountBtn">
+									<button type="button" class="btn btn-danger" id="DelAccountBtn">
 										<i class="bi bi-trash3-fill"></i> Hapus Akun Ini
 									</button>
 								</div>
@@ -115,7 +129,7 @@
 @section('js')
 	<script type="text/javascript" src="{{ asset('js/password.js') }}"></script>
 	<script type="text/javascript">
-		$('#form-edit-account').on('submit', function(e) {
+		function submitform(e) {
 			var errmsg;
 			e.preventDefault();
 			$.ajax({
@@ -137,6 +151,7 @@
 				},
 				success: function(status) {
 					$('input[type=password]').val("");
+					resetvalidation();
 					Swal.fire({
 						icon: 'success',
 						title: 'Sukses',
@@ -194,7 +209,7 @@
 					});
 				}
 			});
-		});
+		};
 		$(document).on('click', "#DelAccountBtn", async function() {
 			const {
 				value: password
@@ -222,7 +237,7 @@
 				cancelButtonText: "Tidak",
 				customClass: {
 					confirmButton: 'btn btn-primary me-3',
-					cancelButton: 'btn btn-label-secondary'
+					cancelButton: 'btn btn-secondary'
 				},
 				buttonsStyling: false
 			});

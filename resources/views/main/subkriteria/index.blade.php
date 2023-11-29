@@ -14,20 +14,21 @@
 				</div>
 				<div class="modal-body">
 					<form action="{{ route('subkriteria.store') }}" method="post"
-						enctype="multipart/form-data" id="SubCritForm">
+						enctype="multipart/form-data" id="SubCritForm" class="needs-validation">
 						<input type="hidden" name="id" id="subkriteria-id">
 						@if ($compskr > 0)
 							<div class="alert alert-warning" id="subkriteria-alert">
-								Menambahkan sub kriteria akan mereset perbandingan sub kriteria
-								terkait.
+								Menambahkan sub kriteria akan mereset perbandingan sub kriteria terkait.
 							</div>
 						@endif
 						<label for="nama-sub">Nama Sub Kriteria</label>
 						<div class="form-group">
 							<input type="text" class="form-control" name="name" id="nama-sub" required />
-							<div class="invalid-feedback" id="nama-error"></div>
+							<div class="invalid-feedback" id="nama-error">
+								Masukkan Nama Sub Kriteria
+							</div>
 						</div>
-						<div class="input-group mb-3">
+						<div class="input-group has-validation mb-3">
 							<label class="input-group-text" for="kriteria-select">
 								Kriteria
 							</label>
@@ -37,7 +38,9 @@
 									<option value="{{ $kr->id }}">{{ $kr->name }}</option>
 								@endforeach
 							</select>
-							<div class="invalid-feedback" id="kriteria-error"></div>
+							<div class="invalid-feedback" id="kriteria-error">
+								Pilih Kriteria
+							</div>
 						</div>
 					</form>
 				</div>
@@ -58,7 +61,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-sm-6">
+		<div class="col-md-4">
 			<div class="card">
 				<div class="card-body">
 					<div class="d-flex align-items-start justify-content-between">
@@ -75,12 +78,29 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-sm-6">
+		<div class="col-md-4">
 			<div class="card">
 				<div class="card-body">
 					<div class="d-flex align-items-start justify-content-between">
 						<div class="content-left">
-							<span>Sub Kriteria Duplikat</span>
+							<span>Terbanyak</span>
+							<div class="d-flex align-items-end mt-2">
+								<h3 class="mb-0 me-2"><span id="total-max">-</span></h3>
+							</div>
+						</div>
+						<span class="badge bg-success rounded p-2">
+							<i class="bi bi-list-ol"></i>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="card">
+				<div class="card-body">
+					<div class="d-flex align-items-start justify-content-between">
+						<div class="content-left">
+							<span>Duplikat</span>
 							<div class="d-flex align-items-end mt-2">
 								<h3 class="mb-0 me-2"><span id="total-duplicate">-</span></h3>
 							</div>
@@ -103,13 +123,14 @@
 			<div class="spinner-grow text-danger d-none" role="status">
 				<span class="visually-hidden">Menghapus...</span>
 			</div>
-			<table class="table table-hover table-striped" id="table-subcrit" style="width: 100%">
+			<table class="table table-hover table-striped" id="table-subcrit"
+				style="width: 100%">
 				<thead>
 					<tr>
 						<th>No</th>
 						<th>Nama Sub Kriteria</th>
 						<th>Kriteria</th>
-						<th data-bs-toggle="tooltip" title="Bobot didapat setelah melakukan perbandingan">
+						<th data-bs-toggle="tooltip" title="Bobot didapat melalui perhitungan AHP">
 							Bobot
 						</th>
 						<th>Aksi</th>
@@ -136,6 +157,9 @@
 						url: "{{ route('subkriteria.data') }}",
 						type: 'POST'
 					},
+					order: [
+						[2, 'asc']
+					],
 					columns: [{
 						data: 'id'
 					}, {
@@ -234,11 +258,13 @@
 				}).on('preDraw', function() {
 					$.get("{{ route('subkriteria.count') }}", function(data) {
 						$("#total-duplicate").text(data.duplicates);
+						$('#total-max').text(data.max);
 						$("#total-counter").text(data.total);
 					}).fail(function(xhr, status) {
 						Toastify({
 							text: "Gagal memuat jumlah: Kesalahan HTTP " +
-								xhr.status + '. ' + status,
+								xhr.status + '. ' + (xhr
+									.statusText ?? status),
 							style: {
 								background: "#dc3545"
 							},
@@ -263,22 +289,22 @@
 				cancelButtonText: 'Tidak',
 				customClass: {
 					confirmButton: 'btn btn-primary me-3',
-					cancelButton: 'btn btn-label-secondary'
+					cancelButton: 'btn btn-secondary'
 				},
 				buttonsStyling: false
 			}).then(function(result) {
-				if (result.value) {// delete the data
+				if (result.value) { // delete the data
 					$.ajax({
 						type: 'DELETE',
 						url: '/kriteria/sub/del/' + sub_id,
-					beforeSend: function() {
-						$('.spinner-grow.text-danger')
-							.removeClass('d-none');
-					},
-					complete: function() {
-						$('.spinner-grow.text-danger')
-							.addClass('d-none');
-					},
+						beforeSend: function() {
+							$('.spinner-grow.text-danger')
+								.removeClass('d-none');
+						},
+						complete: function() {
+							$('.spinner-grow.text-danger')
+								.addClass('d-none');
+						},
 						success: function(data) {
 							dt_subkriteria.draw();
 							Swal.fire({
@@ -351,13 +377,14 @@
 				$('.spinner-grow.text-primary').addClass('d-none');
 			});
 		});
-		$('#SubCritForm').on('submit', function(event) {
-			var errmsg;
+
+		function submitform(event) {
+			var errmsg, actionurl = $('#subkriteria-id').val() == '' ?
+				"{{ route('subkriteria.store') }}" : "{{ route('subkriteria.update') }}";
 			event.preventDefault();
 			$.ajax({
 				data: $('#SubCritForm').serialize(),
-				url: $('#subkriteria-id').val() == '' ?
-					'/kriteria/sub/store' : '/kriteria/sub/update',
+				url: actionurl,
 				type: 'POST',
 				beforeSend: function() {
 					$('#SubCritForm :input')
@@ -400,7 +427,7 @@
 							$('#kriteria-error')
 								.text(xhr.responseJSON.errors.kriteria_id);
 						}
-						errmsg = xhr.responseJSON.message ?? code;
+						errmsg = xhr.responseJSON.message;
 					} else {
 						errmsg = 'Kesalahan HTTP ' + xhr.status + '. ' +
 							(xhr.responseJSON.message ?? code);
@@ -415,12 +442,12 @@
 					});
 				}
 			});
-		});
+		};
 		// clearing form data when modal hidden
 		$('#SubCritModal').on('hidden.bs.modal', function() {
+			resetvalidation();
 			$('#SubCritForm')[0].reset();
 			$('#subkriteria-id').val("");
-			$('#SubCritForm :input').removeClass('is-invalid');
 			$('#SubCritLabel').html('Tambah Sub Kriteria');
 			if ($('#subkriteria-alert').length)
 				$('#subkriteria-alert').removeClass('d-none');

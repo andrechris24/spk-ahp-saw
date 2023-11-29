@@ -15,8 +15,7 @@ class Kriteria extends Model
 		'name' => 'required',
 		'type' => 'bail|required|in:cost,benefit',
 		'desc' => 'required'
-	];
-	public static array $message = [
+	], $message = [
 		'name.required' => 'Nama kriteria harus diisi',
 		'type.required' => 'Tipe Kriteria harus dipilih',
 		'type.in' => 'Tipe Kriteria harus berupa Cost atau Benefit',

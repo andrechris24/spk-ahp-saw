@@ -79,7 +79,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 					Route::get('/', 'index')->name('bobotsubkriteria.pick');
 					Route::get('comp', 'create')->name('bobotsubkriteria.index');
 					Route::post('comp/{kriteria_id}', 'store')
-					->name('bobotsubkriteria.store');
+						->name('bobotsubkriteria.store');
 					Route::get('hasil/{id}', 'show')->name('bobotsubkriteria.result');
 					Route::delete('reset/{id}', 'destroy')->name('bobotsubkriteria.reset');
 				});
@@ -97,6 +97,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		Route::controller('NilaiController')->group(function () {
 			Route::prefix('nilai')->group(function () {
 				Route::get('/', 'index')->name('nilai.index');
+				Route::get('count', 'getCount')->name('nilai.count');
 				Route::post('data', 'datatables')->name('nilai.data');
 				Route::get('edit/{id}', 'edit')->name('nilai.edit');
 				Route::post('store', 'store')->name('nilai.store');

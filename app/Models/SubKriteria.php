@@ -15,8 +15,7 @@ class SubKriteria extends Model
 	public static array $rules = [
 		'name' => 'required',
 		'kriteria_id' => 'bail|required|integer|exists:kriteria,id'
-	];
-	public static array $message = [
+	], $message = [
 		'name.required' => 'Nama sub kriteria harus diisi',
 		'kriteria_id.required' => 'Kriteria harus dipilih',
 		'kriteria_id.integer' => 'Kriteria tidak valid',

@@ -13,7 +13,8 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<form method="POST" enctype="multipart/form-data" id="CritForm">
+					<form method="POST" enctype="multipart/form-data" id="CritForm"
+						class="needs-validation">
 						<input type="hidden" name="id" id="kriteria-id">
 						@if ($compkr > 0)
 							<div class="alert alert-warning" id="kriteria-alert">
@@ -23,9 +24,11 @@
 						<label for="nama-krit">Nama Kriteria</label>
 						<div class="form-group">
 							<input type="text" class="form-control" name="name" id="nama-krit" required />
-							<div class="invalid-feedback" id="nama-error"></div>
+							<div class="invalid-feedback" id="nama-error">
+								Masukkan Nama Kriteria
+							</div>
 						</div>
-						<div class="input-group mb-3">
+						<div class="input-group has-validation mb-3">
 							<label class="input-group-text" for="tipe-kriteria">
 								Atribut
 							</label>
@@ -34,12 +37,16 @@
 								<option value="cost">Cost</option>
 								<option value="benefit">Benefit</option>
 							</select>
-							<div class="invalid-feedback" id="type-error"></div>
+							<div class="invalid-feedback" id="type-error">
+								Pilih salah satu Atribut
+							</div>
 						</div>
 						<label for="deskripsi">Keterangan</label>
 						<div class="form-group">
 							<input type="text" class="form-control" name="desc" id="deskripsi" required />
-							<div class="invalid-feedback" id="desc-error"></div>
+							<div class="invalid-feedback" id="desc-error">
+								Masukkan keterangan
+							</div>
 						</div>
 					</form>
 				</div>
@@ -82,7 +89,7 @@
 				<div class="card-body">
 					<div class="d-flex align-items-start justify-content-between">
 						<div class="content-left">
-							<span>Kriteria Duplikat</span>
+							<span>Duplikat</span>
 							<div class="d-flex align-items-end mt-2">
 								<h3 class="mb-0 me-2"><span id="total-duplicate">-</span></h3>
 							</div>
@@ -112,7 +119,7 @@
 						<th>Nama Kriteria</th>
 						<th>Atribut</th>
 						<th>Keterangan</th>
-						<th data-bs-toggle="tooltip" title="Bobot didapat setelah melakukan perbandingan">
+						<th data-bs-toggle="tooltip" title="Bobot didapat melalui perhitungan AHP">
 							Bobot
 						</th>
 						<th>Aksi</th>
@@ -157,6 +164,15 @@
 						render: function(data, type, full, meta) {
 							return meta.row + meta.settings
 								._iDisplayStart + 1;
+						}
+					}, { //Keterangan
+						targets: 3,
+						render: function(data, type) {
+							return type === 'display' && data
+								.length > 60 ?
+								'<span title="' + data + '">' + data
+								.substr(0, 58) + '...</span>' :
+								data;
 						}
 					}, { //Aksi
 						orderable: false,
@@ -236,7 +252,8 @@
 					}).fail(function(xhr, status) {
 						Toastify({
 							text: "Gagal memuat jumlah: Kesalahan HTTP " +
-								xhr.status + '. ' + status,
+								xhr.status + '. ' + (xhr
+									.statusText ?? status),
 							style: {
 								background: "#dc3545"
 							},
@@ -261,22 +278,22 @@
 				cancelButtonText: 'Tidak',
 				customClass: {
 					confirmButton: 'btn btn-primary me-3',
-					cancelButton: 'btn btn-label-secondary'
+					cancelButton: 'btn btn-secondary'
 				},
 				buttonsStyling: false
 			}).then(function(result) {
-				if (result.value) {// delete the data
+				if (result.value) { // delete the data
 					$.ajax({
 						type: 'DELETE',
 						url: '/kriteria/del/' + kr_id,
-					beforeSend: function() {
-						$('.spinner-grow.text-danger')
-							.removeClass('d-none');
-					},
-					complete: function() {
-						$('.spinner-grow.text-danger')
-							.addClass('d-none');
-					},
+						beforeSend: function() {
+							$('.spinner-grow.text-danger')
+								.removeClass('d-none');
+						},
+						complete: function() {
+							$('.spinner-grow.text-danger')
+								.addClass('d-none');
+						},
 						success: function(data) {
 							dt_kriteria.draw();
 							Swal.fire({
@@ -349,13 +366,14 @@
 				$('.spinner-grow.text-primary').addClass('d-none');
 			});
 		});
-		$('#CritForm').on('submit', function(event) {
-			var errmsg;
+
+		function submitform(event) {
+			var errmsg, actionurl = $('#kriteria-id').val() == '' ?
+				"{{ route('kriteria.store') }}" : "{{ route('kriteria.update') }}";
 			event.preventDefault();
 			$.ajax({
 				data: $('#CritForm').serialize(),
-				url: $('#kriteria-id').val() == '' ?
-					'/kriteria/store' : '/kriteria/update',
+				url: actionurl,
 				type: 'POST',
 				beforeSend: function() {
 					$('#CritForm :input').prop('disabled', true)
@@ -369,7 +387,8 @@
 					$('.spinner-grow.text-primary').addClass('d-none');
 				},
 				success: function(status) {
-					dt_kriteria.draw();
+					if ($.fn.DataTable.isDataTable("#table-crit"))
+						dt_kriteria.draw();
 					$('#CritModal').modal('hide');
 					Swal.fire({
 						icon: 'success',
@@ -415,11 +434,12 @@
 					});
 				}
 			});
-		});
+		};
 		// clearing form data when modal hidden
 		$('#CritModal').on('hidden.bs.modal', function() {
+			resetvalidation();
+			$('#kriteria-id').val('');
 			$('#CritForm')[0].reset();
-			$('#CritForm :input').removeClass('is-invalid');
 			$('#CritLabel').html('Tambah Kriteria');
 			if ($('#kriteria-alert').length)
 				$('#kriteria-alert').removeClass('d-none');

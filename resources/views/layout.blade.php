@@ -28,7 +28,7 @@
 	<script src="{{ asset('assets/static/js/initTheme.js') }}"></script>
 </head>
 
-<body>
+<body onload="switchvalidation()">
 	<div id="app">
 		<div id="sidebar" class="active">
 			<div class="sidebar-wrapper active">
@@ -267,6 +267,9 @@
 	</script>
 	<script type="text/javascript"
 		src="{{ asset('assets/extensions/DataTables/datatables.min.js') }}"></script>
+	<script type="text/javascript"
+		src="{{ asset('assets/extensions/DataTables/Buttons-2.4.2/js/buttons.print.min.js') }}">
+	</script>
 	<script src="{{ asset('assets/extensions/apexcharts/apexcharts.min.js') }}"></script>
 	<script type="text/javascript"
 		src="{{ asset('assets/extensions/toastify-js/src/toastify.js') }}"></script>
@@ -274,8 +277,8 @@
 		src="{{ asset('assets/extensions/sweetalert2/sweetalert2.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/tooltip.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/datatables.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/validate.js') }}"></script>
 	<script type="text/javascript">
-		// ajax setup
 		$.ajaxSetup({
 			headers: {
 				'X-CSRF-TOKEN': "{{ csrf_token() }}"

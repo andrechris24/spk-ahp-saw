@@ -6,13 +6,13 @@ for (let a = 0; a < accpassword.length; a++) {
         else message.classList.add("d-none");
     });
 }
-var newpassform = document.getElementById("password"),
-    passcekform = document.getElementById("confirm-password");
+var newpassform = document.getElementsByName("password"),
+    passcekform = document.getElementsByName("password_confirmation");
 
 function checkpassword() {
-    var pass1 = newpassform.value,
-        pass2 = passcekform.value;
+    var pass1 = newpassform[0].value,
+        pass2 = passcekform[0].value;
     if (pass1 !== pass2)
-        passcekform.setCustomValidity("Password konfirmasi salah");
-    else passcekform.setCustomValidity("");
+        passcekform[0].setCustomValidity("Password konfirmasi salah");
+    else passcekform[0].setCustomValidity("");
 }

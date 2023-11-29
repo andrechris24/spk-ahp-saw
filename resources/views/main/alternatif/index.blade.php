@@ -13,13 +13,16 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<form method="POST" enctype="multipart/form-data" id="AlterForm">
+					<form method="POST" enctype="multipart/form-data" id="AlterForm"
+						class="needs-validation">
 						<input type="hidden" name="id" id="alter-id">
 						<label for="alter-name">Nama Alternatif</label>
 						<div class="form-group">
 							<input type="text" class="form-control" name="name" id="alter-name"
 								required />
-							<div class="invalid-feedback" id="alter-error"></div>
+							<div class="invalid-feedback" id="alter-error">
+								Masukkan Nama Alternatif
+							</div>
 						</div>
 					</form>
 				</div>
@@ -62,7 +65,7 @@
 				<div class="card-body">
 					<div class="d-flex align-items-start justify-content-between">
 						<div class="content-left">
-							<span>Alternatif Duplikat</span>
+							<span>Duplikat</span>
 							<div class="d-flex align-items-end mt-2">
 								<h3 class="mb-0 me-2"><span id="total-duplicate">-</span></h3>
 							</div>
@@ -205,7 +208,8 @@
 					}).fail(function(xhr, status) {
 						Toastify({
 							text: "Gagal memuat jumlah: Kesalahan HTTP " +
-								xhr.status + '. ' + status,
+								xhr.status + '. ' + (xhr
+									.statusText ?? status),
 							style: {
 								background: "#dc3545"
 							},
@@ -214,13 +218,7 @@
 					});
 				}).on("draw", setTableColor).on('preInit.dt', removeBtn());
 			} catch (dterr) {
-				Toastify({
-					text: "Terjadi kesalahan saat menampilkan data",
-					style: {
-						background: "#dc3545",
-					},
-				}).showToast();
-				console.error(dterr.message);
+				initError(dterr.message);
 			}
 		}).on("click", ".delete-record", function() {
 			var alt_id = $(this).data("id"),
@@ -236,11 +234,11 @@
 				cancelButtonText: "Tidak",
 				customClass: {
 					confirmButton: "btn btn-primary me-3",
-					cancelButton: "btn btn-label-secondary"
+					cancelButton: "btn btn-secondary"
 				},
 				buttonsStyling: false,
 			}).then(function(result) {
-				if (result.value) {// delete the data
+				if (result.value) { // delete the data
 					$.ajax({
 						type: "DELETE",
 						url: "/alternatif/del/" + alt_id,
@@ -323,13 +321,15 @@
 				$(".spinner-grow.text-primary").addClass("d-none");
 			});
 		});
-		$("#AlterForm").on("submit", function(event) {
-			var errmsg;
+
+		function submitform(event) {
+			var errmsg, actionurl = $("#alter-id").val() == "" ?
+				"{{ route('alternatif.store') }}" :
+				"{{ route('alternatif.update') }}";
 			event.preventDefault();
 			$.ajax({
 				data: $("#AlterForm").serialize(),
-				url: $("#alter-id").val() == "" ? "/alternatif/store" :
-					"/alternatif/update",
+				url: actionurl,
 				type: "POST",
 				beforeSend: function() {
 					$("#AlterForm :input").prop("disabled", true)
@@ -378,12 +378,12 @@
 					});
 				}
 			});
-		});
+		};
 		// clearing form data when modal hidden
 		$("#AlterModal").on("hidden.bs.modal", function() {
+			resetvalidation();
 			$("#AlterForm")[0].reset();
 			$("#alter-id").val("");
-			$("#AlterForm :input").removeClass("is-invalid");
 			$("#AlterLabel").html("Tambah Alternatif");
 		});
 	</script>

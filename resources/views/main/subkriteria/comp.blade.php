@@ -14,14 +14,6 @@
 		</div>
 		<div class="card-content">
 			<div class="card-body">
-				{{-- @if ($cek > $jmlsubkriteria)
-					<div class="alert alert-primary">
-						<i class="bi bi-info-circle-fill"></i>
-						Perbandingan sub kriteria {{ $title }} sudah dilakukan,
-						<a href="{{ url('/bobot/sub/hasil/' . $kriteria_id) }}">klik disini</a>
-						untuk melihat hasil perbandingan.
-					</div>
-				@endif --}}
 				<ul class="nav nav-tabs" id="InputCompTab" role="tablist">
 					<li class="nav-item" role="presentation">
 						<a class="nav-link active" id="info-tab" data-bs-toggle="tab" href="#info"
@@ -109,10 +101,9 @@
 			document.querySelectorAll('#InputCompTab a[data-bs-toggle="tab"]');
 		tabList.forEach(tabEl => {
 			tabEl.addEventListener('shown.bs.tab', event => {
-				if (history.pushState)
-					history.pushState(null, null, $(event.target).attr(
-						'href'));
-				else location.hash = $(event.target).attr('href');
+				if (history.pushState) {
+					history.pushState(null, null, $(event.target).attr('href'));
+				} else location.hash = $(event.target).attr('href');
 			});
 		});
 		var hash = location.hash;

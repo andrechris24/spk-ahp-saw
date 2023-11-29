@@ -76,7 +76,7 @@
 						<tr>
 							<th>Jumlah</th>
 							@foreach ($data['jumlah'] as $nilai)
-								<td>{{ $nilai }}</td>
+								<td class="text-info">{{ $nilai }}</td>
 							@endforeach
 						</tr>
 					</tbody>
@@ -100,7 +100,9 @@
 								</th>
 							@endforeach
 							<th>Jumlah Baris</th>
-							<th>Eigen</th>
+							<th data-bs-toggle="tooltip" title="Bobot Prioritas">
+								Eigen
+							</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -116,8 +118,8 @@
 								@endforeach
 								@foreach ($data['bobot_prioritas'] as $bp)
 									@if ($bp['kode_kriteria'] === $kr->idsubkriteria)
-										<td>{{ $bp['jumlah_baris'] }}</td>
-										<td>{{ $bp['bobot'] }}</td>
+										<td class="text-info">{{ $bp['jumlah_baris'] }}</td>
+										<td class="text-info">{{ $bp['bobot'] }}</td>
 									@endif
 								@endforeach
 							</tr>
@@ -224,14 +226,15 @@
 			e.preventDefault();
 			Swal.fire({
 				title: 'Reset perbandingan?',
-				text: "Anda akan mereset perbandingan Sub Kriteria {{ $title }}. Bobot Sub Kriteria {{ $title }} akan direset!",
+				text: "Anda akan mereset perbandingan Sub Kriteria {{ $title }}. " +
+					"Bobot Sub Kriteria {{ $title }} akan direset!",
 				icon: 'question',
 				showCancelButton: true,
 				confirmButtonText: 'Ya',
 				cancelButtonText: 'Tidak',
 				customClass: {
 					confirmButton: 'btn btn-primary me-3',
-					cancelButton: 'btn btn-label-secondary'
+					cancelButton: 'btn btn-secondary'
 				},
 				buttonsStyling: false
 			}).then(function(result) {

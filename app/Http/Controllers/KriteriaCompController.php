@@ -89,7 +89,7 @@ class KriteriaCompController extends Controller
 			return back()->withInput()->withError('Gagal menyimpan nilai perbandingan:')
 				->withErrors("Kesalahan SQLState #" . $sql->errorInfo[0]);
 		}
-		return redirect('/bobot/hasil');
+		return redirect()->route('bobotkriteria.result');
 	}
 	public function hasil()
 	{
@@ -257,7 +257,7 @@ class KriteriaCompController extends Controller
 		try {
 			KriteriaComp::truncate();
 			Kriteria::where('bobot', '<>', 0.00000)->update(['bobot' => 0.00000]);
-			return redirect('/bobot')
+			return redirect()->route('bobotkriteria.index')
 				->withSuccess('Perbandingan Kriteria sudah direset.');
 		} catch (QueryException $sql) {
 			Log::error($sql);
