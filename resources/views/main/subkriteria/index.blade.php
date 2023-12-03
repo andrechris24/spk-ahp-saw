@@ -16,11 +16,6 @@
 					<form action="{{ route('subkriteria.store') }}" method="post"
 						enctype="multipart/form-data" id="SubCritForm" class="needs-validation">
 						<input type="hidden" name="id" id="subkriteria-id">
-						@if ($compskr > 0)
-							<div class="alert alert-warning" id="subkriteria-alert">
-								Menambahkan sub kriteria akan mereset perbandingan sub kriteria terkait.
-							</div>
-						@endif
 						<label for="nama-sub">Nama Sub Kriteria</label>
 						<div class="form-group">
 							<input type="text" class="form-control" name="name" id="nama-sub" required />
@@ -81,7 +76,8 @@
 		<div class="col-md-4">
 			<div class="card">
 				<div class="card-body">
-					<div class="d-flex align-items-start justify-content-between">
+					<div class="d-flex align-items-start justify-content-between" data-bs-toggle="tooltip"
+						title="Sub Kriteria Terbanyak per Kriteria">
 						<div class="content-left">
 							<span>Terbanyak</span>
 							<div class="d-flex align-items-end mt-2">
@@ -98,7 +94,8 @@
 		<div class="col-md-4">
 			<div class="card">
 				<div class="card-body">
-					<div class="d-flex align-items-start justify-content-between">
+					<div class="d-flex align-items-start justify-content-between" data-bs-toggle="tooltip"
+						title="Klik kolom Nama Sub Kriteria untuk mencari Sub Kriteria duplikat">
 						<div class="content-left">
 							<span>Duplikat</span>
 							<div class="d-flex align-items-end mt-2">
@@ -128,6 +125,7 @@
 				<thead>
 					<tr>
 						<th>No</th>
+						<th>Kode</th>
 						<th>Nama Sub Kriteria</th>
 						<th>Kriteria</th>
 						<th data-bs-toggle="tooltip" title="Bobot didapat melalui perhitungan AHP">
@@ -161,6 +159,8 @@
 						[2, 'asc']
 					],
 					columns: [{
+						data: 'kr_name'
+					}, {
 						data: 'id'
 					}, {
 						data: 'name'
@@ -173,16 +173,20 @@
 					}],
 					columnDefs: [{
 						targets: 0,
+						orderable: false,
 						render: function(data, type, full, meta) {
 							return meta.row + meta.settings
 								._iDisplayStart + 1;
 						}
 					}, {
-						targets: 2,
+						targets: 1,
+						render: function(data) {
+							return 'S' + data;
+						}
+					}, {
+						targets: 3,
 						render: function(data, type, full) {
-							return '<span title="' + full[
-									'desc_kr'] + '">' + data +
-								'</span>';
+							return `<span title="${full['desc_kr']}">C${data}: ${full['kr_name']}</span>`;
 						}
 					}, { //Aksi
 						orderable: false,
@@ -202,7 +206,7 @@
 					dom: 'Bfrtip',
 					buttons: [{
 						text: '<i class="bi bi-plus-lg me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Tambah Sub Kriteria</span>',
-						className: 'add-new btn btn-primary',
+						className: 'add-new btn',
 						attr: {
 							'data-bs-toggle': 'modal',
 							'data-bs-target': '#SubCritModal'
@@ -210,14 +214,14 @@
 					}, {
 						extend: 'collection',
 						text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
-						className: 'btn btn-primary dropdown-toggle',
+						className: 'btn dropdown-toggle',
 						buttons: [{
 							extend: 'print',
 							title: 'Sub Kriteria',
 							text: '<i class="bi bi-printer me-2"></i> Print',
 							className: 'dropdown-item',
 							exportOptions: {
-								columns: [1, 2, 3]
+								columns: [1, 2, 3, 4]
 							}
 						}, {
 							extend: 'csv',
@@ -225,7 +229,7 @@
 							text: '<i class="bi bi-file-text me-2"></i> CSV',
 							className: 'dropdown-item',
 							exportOptions: {
-								columns: [1, 2, 3]
+								columns: [1, 2, 3, 4]
 							}
 						}, {
 							extend: 'excel',
@@ -233,7 +237,7 @@
 							text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
 							className: 'dropdown-item',
 							exportOptions: {
-								columns: [1, 2, 3]
+								columns: [1, 2, 3, 4]
 							}
 						}, {
 							extend: 'pdf',
@@ -241,7 +245,7 @@
 							text: '<i class="bi bi-file-text me-2"></i> PDF',
 							className: 'dropdown-item',
 							exportOptions: {
-								columns: [1, 2, 3]
+								columns: [1, 2, 3, 4]
 							}
 						}, {
 							extend: 'copy',
@@ -249,7 +253,7 @@
 							text: '<i class="bi bi-clipboard me-2"></i> Copy',
 							className: 'dropdown-item',
 							exportOptions: {
-								columns: [1, 2, 3]
+								columns: [1, 2, 3, 4]
 							}
 						}]
 					}],
@@ -281,8 +285,7 @@
 
 			Swal.fire({
 				title: 'Hapus sub kriteria?',
-				text: "Anda akan menghapus sub kriteria " + sub_name +
-					". Jika sudah dilakukan perbandingan, perbandingan terkait akan dihapus!",
+				text: "Anda akan menghapus sub kriteria " + sub_name + ".",
 				icon: 'question',
 				showCancelButton: true,
 				confirmButtonText: 'Ya',
@@ -351,8 +354,6 @@
 			$('#SubCritLabel').html('Edit Sub Kriteria');
 			$('.data-submit').prop('disabled', true);
 			$('.spinner-grow.text-primary').removeClass('d-none');
-			if ($('#subkriteria-alert').length)
-				$('#subkriteria-alert').addClass('d-none');
 
 			// get data
 			$.get('/kriteria/sub/edit/' + sub_id, function(data) {
@@ -415,6 +416,7 @@
 				},
 				error: function(xhr, code) {
 					if (xhr.status === 422) {
+						resetvalidation();
 						if (typeof xhr.responseJSON.errors.name !==
 							"undefined") {
 							$('#nama-sub').addClass('is-invalid');
@@ -449,8 +451,6 @@
 			$('#SubCritForm')[0].reset();
 			$('#subkriteria-id').val("");
 			$('#SubCritLabel').html('Tambah Sub Kriteria');
-			if ($('#subkriteria-alert').length)
-				$('#subkriteria-alert').removeClass('d-none');
 		});
 	</script>
 @endsection

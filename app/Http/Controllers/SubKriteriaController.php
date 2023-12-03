@@ -31,18 +31,16 @@ class SubKriteriaController extends Controller
 	public function index()
 	{
 		$kriteria = Kriteria::get();
-		$compskr = SubKriteriaComp::count();
 		if ($kriteria->isEmpty()) {
-			return redirect()->route('kriteria.index')
+			return to_route('kriteria.index')
 				->withWarning('Tambahkan kriteria dulu sebelum menambah sub kriteria.');
 		}
-		return view('main.subkriteria.index', compact('kriteria', 'compskr'));
+		return view('main.subkriteria.index', compact('kriteria'));
 	}
-	public function show(Request $request)
+	public function show()
 	{
-		$subkriteria = SubKriteria::query();
-		return DataTables::eloquent($subkriteria)
-			->editColumn('kriteria_id', function (SubKriteria $skr) {
+		return DataTables::eloquent(SubKriteria::query())
+			->addColumn('kr_name', function (SubKriteria $skr) {
 				return $skr->kriteria->name;
 			})->addColumn('desc_kr', function (SubKriteria $kr) {
 			return $kr->kriteria->desc;
@@ -60,15 +58,9 @@ class SubKriteriaController extends Controller
 				], 400);
 			}
 			SubKriteria::create($req);
-			$querytype = "Sub Kriteria $namakriteria sudah diinput. ";
-			$cek = SubKriteriaComp::where('idkriteria', $req['kriteria_id'])->count();
-			if ($cek > 0) {
-				SubKriteriaComp::where('idkriteria', $req['kriteria_id'])->delete();
-				SubKriteria::where('kriteria_id', $req['kriteria_id'])
-					->update(['bobot' => 0.00000]);
-				$querytype .= "Silahkan input ulang perbandingan sub kriteria $namakriteria.";
-			}
-			return response()->json(['message' => $querytype]);
+			return response()->json([
+				'message' => "Sub Kriteria $namakriteria sudah diinput."
+			]);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->errorInfo[2]], 500);
@@ -79,11 +71,15 @@ class SubKriteriaController extends Controller
 		$request->validate(SubKriteria::$rules, SubKriteria::$message);
 		$req = $request->all();
 		try {
+			$namakriteria =
+				SubKriteriaCompController::nama_kriteria($req['kriteria_id']);
 			SubKriteria::updateOrCreate(
 				['id' => $req['id']],
 				['name' => $req['name'], 'kriteria_id' => $req['kriteria_id']]
 			);
-			return response()->json(['message' => 'Sub Kriteria sudah diupdate']);
+			return response()->json([
+				'message' => "Sub Kriteria $namakriteria sudah diupdate"
+			]);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->errorInfo[2]], 500);
@@ -107,22 +103,17 @@ class SubKriteriaController extends Controller
 	{
 		try {
 			$cek = SubKriteria::findOrFail($id);
-			$idkriteria = $cek->kriteria_id;
 			$namakriteria = $cek->kriteria->name;
 			$cek->delete();
-			$subkrcomp = SubKriteriaComp::where('idkriteria', $idkriteria);
-			$message = 'Sub Kriteria sudah dihapus. ';
-			if ($subkrcomp->count() > 0) {
-				$subkrcomp->delete();
-				SubKriteria::where('kriteria_id', $idkriteria)
-					->update(['bobot' => 0.00000]);
-				$message .= "Silahkan input ulang perbandingan sub kriteria $namakriteria.";
-				if (SubKriteriaComp::count() == 0)
-					SubKriteriaComp::truncate();
-			}
-			return response()->json(['message' => $message]);
+			if (!SubKriteriaComp::exists())
+				SubKriteriaComp::truncate();
+			return response()->json([
+				'message' => "Sub Kriteria $namakriteria sudah dihapus."
+			]);
 		} catch (ModelNotFoundException) {
-			return response()->json(['message' => 'Sub Kriteria tidak ditemukan.'], 404);
+			return response()->json([
+				'message' => 'Sub Kriteria tidak ditemukan.'
+			], 404);
 		} catch (QueryException $sql) {
 			Log::error($sql);
 			return response()->json(['message' => $sql->errorInfo[2]], 500);

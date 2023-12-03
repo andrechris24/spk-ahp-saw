@@ -39,7 +39,7 @@ class NilaiController extends Controller
 	public function getBobot($idkriteria)
 	{
 		try {
-			$kueri = Kriteria::firstWhere('id', $idkriteria);
+			$kueri = Kriteria::find($idkriteria);
 			return $kueri->bobot ?? 0;
 		} catch (QueryException $err) {
 			Log::error($err);
@@ -77,7 +77,8 @@ class NilaiController extends Controller
 					->where('alternatif_id', $alt->id)->get();
 				if (count($nilaialt) > 0) {
 					foreach ($nilaialt as $skor) {
-						$subkriteria[Str::slug($skor->kriteria->name, '-')] = $skor->subkriteria->name;
+						$subkriteria[Str::slug($skor->kriteria->name, '-')] =
+							$skor->subkriteria->name;
 					}
 					return $subkriteria;
 				}
@@ -89,30 +90,26 @@ class NilaiController extends Controller
 		$dinilai = Nilai::join('alternatif', 'nilai.alternatif_id', 'alternatif.id')
 			->select('nilai.alternatif_id as idalt', 'alternatif.name')
 			->groupBy('idalt', 'name')->get()->count();
-		return response()->json([
-			'alter' => $alternatives,
-			'unused' => $alternatives - $dinilai,
-			'criteria' => Kriteria::count()
-		]);
+		return response()->json(['unused' => $alternatives - $dinilai]);
 	}
 	public function index()
 	{
 		$kriteria = Kriteria::get();
 		if ($kriteria->isEmpty()) {
-			return redirect()->route('kriteria.index')->withWarning(
+			return to_route('kriteria.index')->withWarning(
 				'Tambahkan kriteria dan sub kriteria dulu ' .
 				'sebelum melakukan penilaian alternatif.'
 			);
 		}
 		$subkriteria = SubKriteria::get();
 		if ($subkriteria->isEmpty()) {
-			return redirect()->route('subkriteria.index')->withWarning(
+			return to_route('subkriteria.index')->withWarning(
 				'Tambahkan sub kriteria dulu sebelum melakukan penilaian alternatif.'
 			);
 		}
 		$alternatif = Alternatif::get();
 		if ($alternatif->isEmpty()) {
-			return redirect()->route('alternatif.index')
+			return to_route('alternatif.index')
 				->withWarning('Tambahkan alternatif dulu sebelum melakukan penilaian.');
 		}
 		$data = [
@@ -131,17 +128,19 @@ class NilaiController extends Controller
 			$jmlkr = Kriteria::count();
 			if ($cek >= $jmlkr) {
 				return response()->json([
-					'message' => 'Alternatif sudah digunakan dalam penilaian'
+					'message' => 'Alternatif sudah digunakan dalam penilaian',
+					'errors' => [
+						'alternatif_id' => 'Alternatif sudah digunakan'
+					]
 				], 422);
 			}
 			for ($a = 0; $a < count($scores['kriteria_id']); $a++) {
-				Nilai::updateOrCreate(
-					[
-						'alternatif_id' => $scores['alternatif_id'],
-						'kriteria_id' => $scores['kriteria_id'][$a]
-					],
-					['subkriteria_id' => $scores['subkriteria_id'][$a]]
-				);
+				Nilai::updateOrCreate([
+					'alternatif_id' => $scores['alternatif_id'],
+					'kriteria_id' => $scores['kriteria_id'][$a]
+				], [
+					'subkriteria_id' => $scores['subkriteria_id'][$a]
+				]);
 			}
 			$hasil['message'] = 'Nilai Alternatif sudah diinput';
 			return response()->json($hasil);
@@ -166,19 +165,19 @@ class NilaiController extends Controller
 			$cekbobotkr = Kriteria::where('bobot', 0.00000)->count();
 			$cekbobotskr = SubKriteria::where('bobot', 0.00000)->count();
 			if ($cekbobotkr > 0) {
-				return redirect()->route('bobotkriteria.index')->withWarning(
+				return to_route('bobotkriteria.index')->withWarning(
 					'Lakukan perbandingan kriteria secara konsisten ' .
 					'sebelum melihat hasil penilaian alternatif.'
 				);
 			}
 			if ($cekbobotskr > 0) {
-				return redirect()->route('bobotsubkriteria.pick')->withWarning(
+				return to_route('bobotsubkriteria.pick')->withWarning(
 					'Satu atau lebih perbandingan sub kriteria ' .
 					'belum dilakukan secara konsisten.'
 				);
 			}
 			if ($hasil->isEmpty()) {
-				return redirect()->route('nilai.index')
+				return to_route('nilai.index')
 					->withWarning('Masukkan data penilaian alternatif dulu');
 			}
 			$data = ['alternatif' => $alt, 'kriteria' => $kr, 'subkriteria' => $skr];
@@ -200,7 +199,8 @@ class NilaiController extends Controller
 			}
 			$data['alternatif_id'] = $id;
 			foreach ($nilai as $skor) {
-				$data['subkriteria'][Str::slug($skor->kriteria->name, '_')] = $skor->subkriteria_id;
+				$data['subkriteria'][Str::slug($skor->kriteria->name, '_')] =
+					$skor->subkriteria_id;
 			}
 			return response()->json($data);
 		} catch (QueryException $e) {
@@ -253,7 +253,7 @@ class NilaiController extends Controller
 		try {
 			$result = Hasil::get();
 			if ($result->isEmpty())
-				return response()->json(['message' => 'Ranking penilaian kosong'], 422);
+				return response()->json(['message' => 'Ranking penilaian kosong'], 400);
 			foreach ($result as $index => $hasil) {
 				$data['alternatif'][$index] = $hasil->alternatif_id;
 				$data['skor'][$index] = $hasil->skor;

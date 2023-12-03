@@ -19,18 +19,14 @@
 						<tr>
 							<th>Sub Kriteria</th>
 							@foreach ($data['subkriteria'] as $kr)
-								<th data-bs-toggle="tooltip" title="{{ $kr->desc }}">
-									{{ $kr->name }}
-								</th>
+								<th>{{ $kr->name }}</th>
 							@endforeach
 						</tr>
 					</thead>
 					<tbody>
 						@foreach ($data['subkriteria'] as $kr)
 							<tr>
-								<th data-bs-toggle="tooltip" title="{{ $kr->desc }}">
-									{{ $kr->name }}
-								</th>
+								<th>{{ $kr->name }}</th>
 								@foreach ($data['matriks_awal'] as $ma)
 									@if ($ma['kode_kriteria'] === $kr->idsubkriteria)
 										<td>{!! $ma['nilai'] !!}</td>
@@ -54,18 +50,14 @@
 						<tr>
 							<th>Sub Kriteria</th>
 							@foreach ($data['subkriteria'] as $kr)
-								<th data-bs-toggle="tooltip" title="{{ $kr->desc }}">
-									{{ $kr->name }}
-								</th>
+								<th>{{ $kr->name }}</th>
 							@endforeach
 						</tr>
 					</thead>
 					<tbody>
 						@foreach ($data['subkriteria'] as $kr)
 							<tr>
-								<th data-bs-toggle="tooltip" title="{{ $kr->desc }}">
-									{{ $kr->name }}
-								</th>
+								<th>{{ $kr->name }}</th>
 								@foreach ($data['matriks_perbandingan'] as $mp)
 									@if ($mp['kode_kriteria'] === $kr->idsubkriteria)
 										<td>{{ $mp['nilai'] }}</td>
@@ -95,9 +87,7 @@
 						<tr>
 							<th>Sub Kriteria</th>
 							@foreach ($data['subkriteria'] as $kr)
-								<th data-bs-toggle="tooltip" title="{{ $kr->desc }}">
-									{{ $kr->name }}
-								</th>
+								<th>{{ $kr->name }}</th>
 							@endforeach
 							<th>Jumlah Baris</th>
 							<th data-bs-toggle="tooltip" title="Bobot Prioritas">
@@ -108,9 +98,7 @@
 					<tbody>
 						@foreach ($data['subkriteria'] as $kr)
 							<tr>
-								<th data-bs-toggle="tooltip" title="{{ $kr->desc }}">
-									{{ $kr->name }}
-								</th>
+								<th>{{ $kr->name }}</th>
 								@foreach ($data['matriks_normalisasi'] as $mn)
 									@if ($mn['kode_kriteria'] === $kr->idsubkriteria)
 										<td>{{ $mn['nilai'] }}</td>
@@ -137,7 +125,7 @@
 			<div class="table-responsive">
 				<table class="table table-hover">
 					<tr>
-						<td>Consistency Measure</td>
+						<td>Consistency Measure (CM)</td>
 						<td>
 							@foreach ($data['cm'] as $cm)
 								[{{ $cm['cm'] }}]
@@ -145,7 +133,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td>Rata-rata Consistency Measure</td>
+						<td>Rata-rata CM</td>
 						<td>{{ $data['average_cm'] }}</td>
 					</tr>
 					<tr>

@@ -36,22 +36,18 @@ class User extends Authenticatable
 		'email' => 'bail|required|email|unique:users',
 		'password' => 'bail|required|between:8,20|confirmed',
 		'password_confirmation' => 'required'
-	],
-	$regmsg = [
+	], $regmsg = [
 		'name.required' => 'Nama harus diisi',
 		'name.regex' => 'Nama tidak boleh mengandung simbol dan angka',
 		'email.email' => 'Format Email salah'
-	],
-	$resetpass = [
+	], $resetpass = [
 		'token' => 'required',
 		'email' => 'bail|required|email|exists:users',
 		'password' => 'bail|required|between:8,20|confirmed'
-	],
-	$loginrules = [
+	], $loginrules = [
 		'email' => 'bail|required|email|exists:users',
 		'password' => 'bail|required|between:8,20'
-	],
-	$forgetrule = ['email' => 'bail|required|email|exists:users'],
+	], $forgetrule = ['email' => 'bail|required|email|exists:users'],
 	$forgetmsg = ['email.email' => 'Format Email salah'],
 	$resetmsg = ['token.required' => 'Token tidak valid'],
 	$delakunrule = ['del_password' => 'bail|required|current_password'],
@@ -59,8 +55,7 @@ class User extends Authenticatable
 		'name.required' => 'Nama harus diisi',
 		'name.regex' => 'Nama tidak boleh mengandung simbol dan angka',
 		'current_password.required' => 'Password lama harus diisi'
-	],
-	$avatarbg = [
+	], $avatarbg = [
 		0 => 'text-bg-primary',
 		1 => 'text-bg-secondary',
 		2 => 'text-bg-success',

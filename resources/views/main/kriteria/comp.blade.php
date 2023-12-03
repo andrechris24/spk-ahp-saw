@@ -26,6 +26,11 @@
 					<div class="tab-pane fade show active" id="info" role="tabpanel"
 						aria-labelledby="info-tab">
 						<x-ahp-table />
+						@if ($cek > 0)
+							<a href="{{ route('bobotkriteria.result') }}" class="btn btn-success">
+								<i class="bi bi-arrow-right"></i> Lihat Hasil
+							</a>
+						@endif
 					</div>
 					<div class="tab-pane fade" id="input" role="tabpanel" aria-labelledby="input-tab">
 						@if ($jmlcrit >= 2)
@@ -42,18 +47,41 @@
 										</thead>
 										<tbody>
 											@foreach ($array as $krit)
-												@if ($krit['baris'] !== $krit['kolom'])
+												@if ($krit['idbaris'] !== $krit['idkolom'])
 													<tr>
-														<th>{{ $krit['baris'] }}</th>
+														<th>
+															<input type="radio" class="btn-check" name="kriteria[{{ $loop->index }}]"
+																id="left-{{ $loop->index }}" value="left" autocomplete="off" required
+																{{ $value[$loop->index]['nilai'] > 0 || old('kriteria.' . $loop->index) == 'left' ? 'checked' : '' }}>
+															<label class="btn btn-outline-light" for="left-{{ $loop->index }}">
+																C{{ $krit['idbaris'] }}
+																<small>{{ $krit['namabaris'] }}</small>
+															</label>
+														</th>
 														<td>
 															<div class="input-group mb-3">
 																<input type="number" name="skala[{{ $loop->index }}]" min="1"
-																	max="9" class="form-control text-center"
-																	value="{{ old('skala.' . $loop->index) ?? ($value[$loop->index]['nilai'] ?? '') }}"
+																	max="9"
+																	class="form-control text-center @error('skala.' . $loop->index) is-invalid @enderror "
+																	value="{{ old('skala.' . $loop->index) ?? (abs($value[$loop->index]['nilai']) ?? '') }}"
 																	required>
+																@error('skala.' . $loop->index)
+																	<div class="invalid-feedback">
+																		{{ $message }}
+																	</div>
+																@enderror
 															</div>
 														</td>
-														<th>{{ $krit['kolom'] }}</th>
+														<th>
+															<input type="radio" name="kriteria[{{ $loop->index }}]"
+																class="btn-check" value="right" id="right-{{ $loop->index }}"
+																autocomplete="off"
+																{{ $value[$loop->index]['nilai'] < 0 || old('kriteria.' . $loop->index) == 'right' ? 'checked' : '' }}>
+															<label class="btn btn-outline-light" for="right-{{ $loop->index }}">
+																C{{ $krit['idkolom'] }}
+																<small>{{ $krit['namakolom'] }}</small>
+															</label>
+														</th>
 													</tr>
 												@endif
 											@endforeach

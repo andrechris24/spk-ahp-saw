@@ -16,11 +16,6 @@
 					<form method="POST" enctype="multipart/form-data" id="CritForm"
 						class="needs-validation">
 						<input type="hidden" name="id" id="kriteria-id">
-						@if ($compkr > 0)
-							<div class="alert alert-warning" id="kriteria-alert">
-								Menambahkan kriteria akan mereset perbandingan kriteria.
-							</div>
-						@endif
 						<label for="nama-krit">Nama Kriteria</label>
 						<div class="form-group">
 							<input type="text" class="form-control" name="name" id="nama-krit" required />
@@ -34,8 +29,8 @@
 							</label>
 							<select class="form-select" id="tipe-kriteria" name="type" required>
 								<option value="">Pilih</option>
-								<option value="cost">Cost</option>
-								<option value="benefit">Benefit</option>
+								<option value="cost">Cost (Biaya)</option>
+								<option value="benefit">Benefit (Keuntungan)</option>
 							</select>
 							<div class="invalid-feedback" id="type-error">
 								Pilih salah satu Atribut
@@ -67,7 +62,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-sm-6">
+		<div class="col-md-4">
 			<div class="card">
 				<div class="card-body">
 					<div class="d-flex align-items-start justify-content-between">
@@ -84,10 +79,11 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-sm-6">
+		<div class="col-md-4">
 			<div class="card">
 				<div class="card-body">
-					<div class="d-flex align-items-start justify-content-between">
+					<div class="d-flex align-items-start justify-content-between" data-bs-toggle="tooltip"
+						title="Klik kolom Nama Kriteria untuk mencari Kriteria duplikat">
 						<div class="content-left">
 							<span>Duplikat</span>
 							<div class="d-flex align-items-end mt-2">
@@ -95,6 +91,23 @@
 							</div>
 						</div>
 						<span class="badge bg-warning rounded p-2">
+							<i class="bi bi-exclamation-circle-fill"></i>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="card">
+				<div class="card-body">
+					<div class="d-flex align-items-start justify-content-between">
+						<div class="content-left">
+							<span>Tidak digunakan</span>
+							<div class="d-flex align-items-end mt-2">
+								<h3 class="mb-0 me-2"><span id="total-unused">-</span></h3>
+							</div>
+						</div>
+						<span class="badge bg-danger rounded p-2">
 							<i class="bi bi-exclamation-circle-fill"></i>
 						</span>
 					</div>
@@ -116,6 +129,7 @@
 				<thead>
 					<tr>
 						<th>No</th>
+						<th>Kode</th>
 						<th>Nama Kriteria</th>
 						<th>Atribut</th>
 						<th>Keterangan</th>
@@ -149,6 +163,8 @@
 					columns: [{
 						data: 'id'
 					}, {
+						data: "id"
+					}, {
 						data: 'name'
 					}, {
 						data: 'type'
@@ -161,17 +177,23 @@
 					}],
 					columnDefs: [{
 						targets: 0,
+						orderable: false,
 						render: function(data, type, full, meta) {
 							return meta.row + meta.settings
 								._iDisplayStart + 1;
 						}
+					}, {
+						targets: 1,
+						render: function(data) {
+							return 'C' + data;
+						}
 					}, { //Keterangan
-						targets: 3,
+						targets: 4,
 						render: function(data, type) {
 							return type === 'display' && data
-								.length > 60 ?
+								.length > 50 ?
 								'<span title="' + data + '">' + data
-								.substr(0, 58) + '...</span>' :
+								.substr(0, 48) + '...</span>' :
 								data;
 						}
 					}, { //Aksi
@@ -192,7 +214,7 @@
 					dom: 'Bfrtip',
 					buttons: [{
 						text: '<i class="bi bi-plus-lg me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Tambah Kriteria</span>',
-						className: 'add-new btn btn-primary',
+						className: 'add-new btn',
 						attr: {
 							'data-bs-toggle': 'modal',
 							'data-bs-target': '#CritModal'
@@ -200,14 +222,14 @@
 					}, {
 						extend: 'collection',
 						text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
-						className: 'btn btn-primary dropdown-toggle',
+						className: 'btn dropdown-toggle',
 						buttons: [{
 							extend: 'print',
 							title: 'Kriteria',
 							text: '<i class="bi bi-printer me-2"></i> Print',
 							className: 'dropdown-item',
 							exportOptions: {
-								columns: [1, 2, 3, 4]
+								columns: [1, 2, 3, 4, 5]
 							}
 						}, {
 							extend: 'csv',
@@ -215,7 +237,7 @@
 							text: '<i class="bi bi-file-text me-2"></i> CSV',
 							className: 'dropdown-item',
 							exportOptions: {
-								columns: [1, 2, 3, 4]
+								columns: [1, 2, 3, 4, 5]
 							}
 						}, {
 							extend: 'excel',
@@ -223,7 +245,7 @@
 							text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
 							className: 'dropdown-item',
 							exportOptions: {
-								columns: [1, 2, 3, 4]
+								columns: [1, 2, 3, 4, 5]
 							}
 						}, {
 							extend: 'pdf',
@@ -231,7 +253,7 @@
 							text: '<i class="bi bi-file-text me-2"></i> PDF',
 							className: 'dropdown-item',
 							exportOptions: {
-								columns: [1, 2, 3, 4]
+								columns: [1, 2, 3, 4, 5]
 							}
 						}, {
 							extend: 'copy',
@@ -239,7 +261,7 @@
 							text: '<i class="bi bi-clipboard me-2"></i> Copy',
 							className: 'dropdown-item',
 							exportOptions: {
-								columns: [1, 2, 3, 4]
+								columns: [1, 2, 3, 4, 5]
 							}
 						}]
 					}],
@@ -249,6 +271,7 @@
 					$.get("{{ route('kriteria.count') }}", function(data) {
 						$("#total-duplicate").text(data.duplicates);
 						$("#total-counter").text(data.total);
+						$('#total-unused').text(data.unused);
 					}).fail(function(xhr, status) {
 						Toastify({
 							text: "Gagal memuat jumlah: Kesalahan HTTP " +
@@ -270,8 +293,7 @@
 
 			Swal.fire({
 				title: 'Hapus kriteria?',
-				text: "Anda akan menghapus sub kriteria " + kr_name +
-					". Jika sudah dilakukan perbandingan, perbandingan akan dihapus!",
+				text: "Anda akan menghapus kriteria " + kr_name + ".",
 				icon: 'question',
 				showCancelButton: true,
 				confirmButtonText: 'Ya',
@@ -340,8 +362,7 @@
 			$('#CritLabel').html('Edit Kriteria');
 			$('.data-submit').prop('disabled', true);
 			$('.spinner-grow.text-primary').removeClass('d-none');
-			if ($('#kriteria-alert').length)
-				$('#kriteria-alert').addClass('d-none');
+
 			// get data
 			$.get('/kriteria/edit/' + kr_id, function(data) {
 				$('#kriteria-id').val(data.id);
@@ -401,6 +422,7 @@
 				},
 				error: function(xhr, code) {
 					if (xhr.status === 422) {
+						resetvalidation();
 						if (typeof xhr.responseJSON.errors.name !==
 							"undefined") {
 							$('#nama-krit').addClass('is-invalid');
@@ -419,7 +441,7 @@
 							$('#desc-error')
 								.text(xhr.responseJSON.errors.desc);
 						}
-						errmsg = xhr.responseJSON.message ?? code;
+						errmsg = xhr.responseJSON.message;
 					} else {
 						errmsg = 'Kesalahan HTTP ' + xhr.status + '. ' +
 							(xhr.responseJSON.message ?? code);
@@ -441,8 +463,6 @@
 			$('#kriteria-id').val('');
 			$('#CritForm')[0].reset();
 			$('#CritLabel').html('Tambah Kriteria');
-			if ($('#kriteria-alert').length)
-				$('#kriteria-alert').removeClass('d-none');
 		});
 	</script>
 @endsection

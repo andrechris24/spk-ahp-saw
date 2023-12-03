@@ -3,7 +3,7 @@
 @section('subtitle', 'Nilai Alternatif')
 @section('content')
 	<div class="modal fade text-left" id="NilaiAlterModal" tabindex="-1" role="dialog"
-		aria-labelledby="NilaiAlterLabel" aria-hidden="true">
+		aria-labelledby="NilaiAlterLabel" aria-hidden="true" data-bs-focus="false">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -25,7 +25,9 @@
 							<select class="form-select" id="alternatif-value" name="alternatif_id" required>
 								<option value="">Pilih</option>
 								@foreach ($data['alternatif'] as $alt)
-									<option value="{{ $alt->id }}">{{ $alt->name }}</option>
+									<option value="{{ $alt->id }}">
+										A{{ $alt->id }}: {{ $alt->name }}
+									</option>
 								@endforeach
 							</select>
 							<div class="invalid-feedback" id="alternatif-error">
@@ -34,10 +36,10 @@
 						</div>
 						@foreach ($data['kriteria'] as $kr)
 							<input type="hidden" name="kriteria_id[]" value="{{ $kr->id }}">
-							<div class="input-group has-validation mb-3">
-								<label class="input-group-text" for="subkriteria-{{ $kr->id }}"
-									title="{{ $kr->desc }}">
-									{{ $kr->name }}
+							<div class="input-group has-validation mb-3" data-bs-toggle="tooltip"
+								data-bs-placement="right" title="{{ $kr->name }}">
+								<label class="input-group-text" for="subkriteria-{{ $kr->id }}">
+									C{{ $kr->id }}
 								</label>
 								<select class="form-select" id="subkriteria-{{ $kr->id }}"
 									name="subkriteria_id[]" required>
@@ -81,7 +83,7 @@
 						<div class="content-left">
 							<span>Jumlah Alternatif</span>
 							<div class="d-flex align-items-end mt-2">
-								<h3 class="mb-0 me-2"><span id="total-alter">-</span></h3>
+								<h3 class="mb-0 me-2">{{ count($data['alternatif']) }}</h3>
 							</div>
 						</div>
 						<span class="badge bg-primary rounded p-2">
@@ -98,7 +100,7 @@
 						<div class="content-left">
 							<span>Jumlah Kriteria</span>
 							<div class="d-flex align-items-end mt-2">
-								<h3 class="mb-0 me-2"><span id="total-criteria">-</span></h3>
+								<h3 class="mb-0 me-2">{{ count($data['kriteria']) }}</h3>
 							</div>
 						</div>
 						<span class="badge bg-success rounded p-2">
@@ -140,11 +142,11 @@
 				style="width: 100%">
 				<thead>
 					<tr>
-						<th>Nama Alternatif</th>
+						<th>Alternatif</th>
 						@foreach ($data['kriteria'] as $kr)
 							<th data-bs-toggle="tooltip" data-bs-placement="bottom"
-								title="{{ $kr->desc }}">
-								{{ $kr->name }}
+								title="{{ $kr->name }}">
+								C{{ $kr->id }}
 							</th>
 						@endforeach
 						<th>Aksi</th>
@@ -174,7 +176,12 @@
 						url: "{{ route('nilai.data') }}",
 						type: 'POST'
 					},
-					columnDefs: [
+					columnDefs: [{
+							targets: 0,
+							render: function(data, type, full) {
+								return `<span title="${full['name']}">A${data}</span>`
+							}
+						},
 						@foreach ($data['kriteria'] as $kr)
 							{
 								orderable: false,
@@ -206,11 +213,10 @@
 						}
 					],
 					columns: [{
-							data: "name"
+							data: "id"
 						},
 						@foreach ($data['kriteria'] as $kr)
 							{
-								title: "{{ $kr->name }}",
 								data: "subkriteria.{{ Str::of($kr->name)->slug('-') }}"
 							},
 						@endforeach {
@@ -223,7 +229,7 @@
 					dom: 'Bfrtip',
 					buttons: [{
 						text: '<i class="bi bi-plus-lg me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Tambah Nilai Alternatif</span>',
-						className: 'add-new btn btn-primary',
+						className: 'add-new btn',
 						attr: {
 							'data-bs-toggle': 'modal',
 							'data-bs-target': '#NilaiAlterModal'
@@ -231,7 +237,7 @@
 					}, {
 						extend: 'collection',
 						text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
-						className: 'btn btn-primary dropdown-toggle',
+						className: 'btn dropdown-toggle',
 						buttons: [{
 							extend: 'print',
 							title: 'Nilai Alternatif',
@@ -278,8 +284,6 @@
 					errorDT(message, techNote);
 				}).on("preDraw", function() {
 					$.get("{{ route('nilai.count') }}", function(data) {
-						$("#total-alter").text(data.alter);
-						$("#total-criteria").text(data.criteria);
 						$('#total-noscore').text(data.unused);
 					}).fail(function(xhr, status) {
 						Toastify({
@@ -377,9 +381,8 @@
 				$('#alternatif-value').val(data.alternatif_id);
 				$('#alternatif-hidden').val(data.alternatif_id);
 				@foreach ($data['kriteria'] as $kr)
-					$("#subkriteria-{{ $kr->id }}")
-						.val(data.subkriteria
-							.{{ Str::of($kr->name)->slug('_') }});
+					$("#subkriteria-{{ $kr->id }}").val(data.subkriteria
+						.{{ Str::of($kr->name)->slug('_') }});
 				@endforeach
 			}).fail(function(xhr, status) {
 				if (xhr.status === 404) nilaialtdt.draw();
@@ -434,14 +437,18 @@
 				},
 				error: function(xhr, code) {
 					if (xhr.status === 422) {
-						console.warn(xhr.responseJSON.errors);
-						if (typeof(xhr.responseJSON.errors.alternatif_id) !==
+						resetvalidation();
+						if (typeof xhr.responseJSON.errors.alternatif_id !==
 							"undefined") {
 							$('#alternatif-value').addClass('is-invalid');
 							$('#alternatif-error').text(xhr.responseJSON
 								.errors.alternatif_id);
 						}
-						errmsg = xhr.responseJSON.message ?? code;
+						if (typeof xhr.responseJSON.errors.subkriteria_id !==
+							"undefined") {
+							console.warn(xhr.responseJSON.errors.subkriteria_id);
+						}
+						errmsg = xhr.responseJSON.message;
 					} else {
 						errmsg = 'Kesalahan HTTP ' + xhr.status + '. ' +
 							(xhr.responseJSON.message ?? code);

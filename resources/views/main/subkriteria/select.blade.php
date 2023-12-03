@@ -14,7 +14,7 @@
 						@foreach ($allkrit as $kr)
 							<option value="{{ $kr->id }}"
 								{{ old('kriteria_id') == $kr->id ? 'selected' : '' }}>
-								{{ $kr->name }}
+								C{{ $kr->id }}: {{ $kr->name }}
 							</option>
 						@endforeach
 					</select>

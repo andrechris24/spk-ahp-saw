@@ -14,14 +14,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/phpinfo', function () {
 	phpinfo();
 })->name('php.info');
-Route::get('/laravel-info', function () {
-	return view('welcome');
-})->name('laravel.welcome');
+Route::view('/laravel-info', 'welcome')->name('laravel.welcome');
 Route::group(['namespace' => 'App\Http\Controllers'], function () {
 	Route::get('/', 'HomeController@index')->name('home.index');
-	Route::get('home', function () {
-		return redirect()->route('home.index');
-	})->name('home.failsafe');
+	Route::redirect('/home', '/')->name('home.failsafe');
 	Route::middleware(['guest'])->controller('AuthController')->group(function () {
 		Route::prefix('register')->group(function () {
 			Route::get('/', 'showregister')->name('register.show');
@@ -49,8 +45,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		Route::prefix('kriteria')->group(function () {
 			Route::controller('KriteriaController')->group(function () {
 				Route::get('/', 'index')->name('kriteria.index');
-				Route::get('count', 'getCount')->name('kriteria.count');
-				Route::post('data', 'show')->name('kriteria.data');
+				Route::get('count', 'getCount')->name('kriteria.count')->block();
+				Route::post('data', 'show')->name('kriteria.data')->block();
 				Route::post('store', 'store')->name('kriteria.store');
 				Route::post('update', 'update')->name('kriteria.update');
 				Route::get('edit/{id}', 'edit')->name('kriteria.edit');
@@ -59,8 +55,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			Route::controller('SubKriteriaController')->prefix('sub')
 				->group(function () {
 					Route::get('/', 'index')->name('subkriteria.index');
-					Route::get('count', 'getCount')->name('subkriteria.count');
-					Route::post('data', 'show')->name('subkriteria.data');
+					Route::get('count', 'getCount')->name('subkriteria.count')->block();
+					Route::post('data', 'show')->name('subkriteria.data')->block();
 					Route::get('edit/{id}', 'edit')->name('subkriteria.edit');
 					Route::post('store', 'store')->name('subkriteria.store');
 					Route::post('update', 'update')->name('subkriteria.update');
@@ -87,8 +83,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		Route::controller('AlternatifController')->prefix('alternatif')
 			->group(function () {
 				Route::get('/', 'index')->name('alternatif.index');
-				Route::get('count', 'getCount')->name('alternatif.count');
-				Route::post('data', 'show')->name('alternatif.data');
+				Route::get('count', 'getCount')->name('alternatif.count')->block();
+				Route::post('data', 'show')->name('alternatif.data')->block();
 				Route::get('edit/{id}', 'edit')->name('alternatif.edit');
 				Route::post('store', 'store')->name('alternatif.store');
 				Route::post('update', 'update')->name('alternatif.update');
@@ -97,8 +93,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		Route::controller('NilaiController')->group(function () {
 			Route::prefix('nilai')->group(function () {
 				Route::get('/', 'index')->name('nilai.index');
-				Route::get('count', 'getCount')->name('nilai.count');
-				Route::post('data', 'datatables')->name('nilai.data');
+				Route::get('count', 'getCount')->name('nilai.count')->block();
+				Route::post('data', 'datatables')->name('nilai.data')->block();
 				Route::get('edit/{id}', 'edit')->name('nilai.edit');
 				Route::post('store', 'store')->name('nilai.store');
 				Route::post('update', 'update')->name('nilai.update');

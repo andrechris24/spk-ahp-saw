@@ -12,10 +12,10 @@ class KriteriaComp extends Model
 	protected $fillable = ["kriteria1", "kriteria2", "nilai"];
 	public static array $rules = [
 		'skala' => 'bail|required|array',
-		'skala.*' => 'bail|required|integer|between:1,9'
+		'skala.*' => 'bail|required|numeric|between:1,9'
 	], $message = [
-		'skala.required' => 'Semua nilai perbandingan harus diisi',
-		'skala.integer' => 'Nilai perbandingan harus berupa angka',
-		'skala.between' => 'Nilai perbandingan harus diantara :min sampai :max sesuai teori AHP'
+		'skala.*.required' => 'Nilai perbandingan :attr harus diisi',
+		'skala.*.numeric' => 'Nilai perbandingan harus berupa angka',
+		'skala.*.between' => 'Nilai perbandingan harus diantara :min sampai :max sesuai teori AHP'
 	];
 }

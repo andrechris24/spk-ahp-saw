@@ -16,10 +16,10 @@ class SubKriteriaComp extends Model
 		'kriteria_id.integer' => 'Kriteria tidak valid'
 	], $rules = [
 		'skala' => 'bail|required|array',
-		'skala.*' => 'bail|required|integer|between:1,9'
+		'skala.*' => 'bail|required|numeric|between:1,9'
 	], $message = [
-		'skala.required' => 'Semua nilai perbandingan harus diisi',
-		'skala.integer' => 'Nilai perbandingan harus berupa angka',
-		'skala.between' => 'Nilai perbandingan harus diantara :min sampai :max sesuai teori AHP'
+		'skala.*.required' => 'Nilai perbandingan :attr harus diisi',
+		'skala.*.integer' => 'Nilai perbandingan harus berupa angka',
+		'skala.*.between' => 'Nilai perbandingan harus diantara :min sampai :max sesuai teori AHP'
 	];
 }

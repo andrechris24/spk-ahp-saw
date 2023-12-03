@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Kriteria;
 use App\Models\KriteriaComp;
+use App\Models\SubKriteria;
+use App\Models\SubKriteriaComp;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -16,17 +18,22 @@ class KriteriaController extends Controller
 	{
 		$criterias = Kriteria::get();
 		$critUnique = $criterias->unique(['name']);
+		$unused = 0;
+		foreach ($criterias as $kr) {
+			if (SubKriteria::where('kriteria_id', $kr->id)->count() === 0)
+				$unused++;
+		}
 		return response()->json([
 			'total' => $criterias->count(),
+			'unused' => $unused,
 			'duplicates' => $criterias->diff($critUnique)->count()
 		]);
 	}
 	public function index()
 	{
-		$compkr = KriteriaComp::count();
-		return view('main.kriteria.index', compact('compkr'));
+		return view('main.kriteria.index');
 	}
-	public function show(Request $request)
+	public function show()
 	{
 		return DataTables::of(Kriteria::query())
 			->editColumn('type', function (Kriteria $krit) {
@@ -43,13 +50,7 @@ class KriteriaController extends Controller
 				], 400);
 			}
 			Kriteria::create($request->all());
-			$message = "Kriteria sudah diinput. ";
-			if (KriteriaComp::exists()) {
-				KriteriaComp::truncate();
-				Kriteria::where('bobot', '<>', 0.00000)->update(['bobot' => 0.00000]);
-				$message .= "Silahkan input ulang perbandingan kriteria.";
-			}
-			return response()->json(['message' => $message]);
+			return response()->json(['message' => "Kriteria sudah diinput."]);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->errorInfo[2]], 500);
@@ -88,13 +89,11 @@ class KriteriaController extends Controller
 	{
 		try {
 			Kriteria::findOrFail($id)->delete();
-			$message = 'Kriteria sudah dihapus. ';
-			if (KriteriaComp::exists()) {
+			if (KriteriaComp::count() === 0)
 				KriteriaComp::truncate();
-				Kriteria::where('bobot', '<>', 0.00000)->update(['bobot' => 0.00000]);
-				$message .= 'Silahkan input ulang perbandingan Kriteria.';
-			}
-			return response()->json(['message' => $message]);
+			if (SubKriteriaComp::count() === 0)
+				SubKriteriaComp::truncate();
+			return response()->json(['message' => 'Kriteria sudah dihapus.']);
 		} catch (ModelNotFoundException) {
 			return response()->json(['message' => 'Kriteria tidak ditemukan.'], 404);
 		} catch (QueryException $e) {

@@ -63,7 +63,8 @@
 		<div class="col-sm-6">
 			<div class="card">
 				<div class="card-body">
-					<div class="d-flex align-items-start justify-content-between">
+					<div class="d-flex align-items-start justify-content-between" data-bs-toggle="tooltip"
+						title="Klik kolom Nama Alternatif untuk mencari Alternatif duplikat">
 						<div class="content-left">
 							<span>Duplikat</span>
 							<div class="d-flex align-items-end mt-2">
@@ -92,6 +93,7 @@
 				<thead>
 					<tr>
 						<th>No</th>
+						<th>Kode</th>
 						<th>Nama Alternatif</th>
 						<th>Aksi</th>
 					</tr>
@@ -120,15 +122,23 @@
 					columns: [{
 						data: "id"
 					}, {
+						data: "id"
+					}, {
 						data: "name"
 					}, {
 						data: "id"
 					}],
 					columnDefs: [{
 						targets: 0,
+						orderable: false,
 						render: function(data, type, full, meta) {
 							return meta.row + meta.settings
 								._iDisplayStart + 1;
+						}
+					}, {
+						targets: 1,
+						render: function(data) {
+							return 'A' + data;
 						}
 					}, { //Aksi
 						orderable: false,
@@ -148,7 +158,7 @@
 					dom: "Bfrtip",
 					buttons: [{
 						text: '<i class="bi bi-plus-lg me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Tambah Alternatif</span>',
-						className: "add-new btn btn-primary",
+						className: "add-new btn",
 						attr: {
 							"data-bs-toggle": "modal",
 							"data-bs-target": "#AlterModal"
@@ -156,14 +166,14 @@
 					}, {
 						extend: "collection",
 						text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
-						className: "btn btn-primary dropdown-toggle",
+						className: "btn dropdown-toggle",
 						buttons: [{
 							extend: "print",
 							title: "Alternatif",
 							text: '<i class="bi bi-printer me-2"></i> Print',
 							className: "dropdown-item",
 							exportOptions: {
-								columns: [1]
+								columns: [1, 2]
 							}
 						}, {
 							extend: "csv",
@@ -171,7 +181,7 @@
 							text: '<i class="bi bi-file-text me-2"></i> CSV',
 							className: "dropdown-item",
 							exportOptions: {
-								columns: [1]
+								columns: [1, 2]
 							}
 						}, {
 							extend: "excel",
@@ -179,7 +189,7 @@
 							text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
 							className: "dropdown-item",
 							exportOptions: {
-								columns: [1]
+								columns: [1, 2]
 							}
 						}, {
 							extend: "pdf",
@@ -187,7 +197,7 @@
 							text: '<i class="bi bi-file-text me-2"></i> PDF',
 							className: "dropdown-item",
 							exportOptions: {
-								columns: [1],
+								columns: [1, 2],
 							}
 						}, {
 							extend: "copy",
@@ -195,7 +205,7 @@
 							text: '<i class="bi bi-clipboard me-2"></i> Copy',
 							className: "dropdown-item",
 							exportOptions: {
-								columns: [1]
+								columns: [1, 2]
 							}
 						}],
 					}],
@@ -357,13 +367,14 @@
 				},
 				error: function(xhr, code) {
 					if (xhr.status === 422) {
+						resetvalidation();
 						if (typeof xhr.responseJSON.errors.name !==
 							"undefined") {
 							$("#alter-name").addClass("is-invalid");
 							$("#alter-error")
 								.text(xhr.responseJSON.errors.name);
 						}
-						errmsg = xhr.responseJSON.message ?? code;
+						errmsg = xhr.responseJSON.message;
 					} else {
 						errmsg = "Kesalahan HTTP " + xhr.status + ". " +
 							(xhr.responseJSON.message ?? code);

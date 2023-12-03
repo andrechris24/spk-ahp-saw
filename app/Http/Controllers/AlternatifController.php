@@ -24,7 +24,7 @@ class AlternatifController extends Controller
 	{
 		return view('main.alternatif.index');
 	}
-	public function show(Request $request)
+	public function show()
 	{
 		return DataTables::of(Alternatif::query())->make();
 	}

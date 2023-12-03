@@ -11,8 +11,8 @@
 		<input type="hidden" name="token" value="{{ $token }}">
 		<div class="form-group position-relative has-icon-left mb-4">
 			<input type="email" placeholder="Email" name="email" value="{{ $email }}"
-				readonly required
-				class="form-control form-control-xl @error('email') is-invalid @enderror " />
+				class="form-control form-control-xl @error('email') is-invalid @enderror "
+				readonly required />
 			<div class="form-control-icon"><i class="bi bi-envelope"></i></div>
 			<div class="invalid-feedback">
 				@error('email')

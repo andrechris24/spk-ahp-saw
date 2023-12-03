@@ -48,12 +48,6 @@ class HomeController extends Controller
 				'password' => 'nullable|bail|confirmed|between:8,20',
 				'password_confirmation' => 'required_with:password'
 			], User::$message);
-			// if (!Hash::check($req['current_password'], Auth::user()->password)) {
-			// 	return response()->json([
-			// 		'message' => __('auth.password'),
-			// 		'errors' => ['current_password' => __('auth.password')]
-			// 	], 422);
-			// }
 			if (empty($req['password'])) {
 				unset($req['password']);
 				unset($req['password_confirmation']);
@@ -72,12 +66,6 @@ class HomeController extends Controller
 	{
 		try {
 			$req = $request->validate(User::$delakunrule);
-			// if (!Hash::check($req['del_password'], Auth::user()->password)) {
-			// 	return response()->json([
-			// 		'message' => __('auth.password'),
-			// 		'errors' => ['del_password' => __('auth.password')]
-			// 	], 422);
-			// }
 			User::findOrFail(Auth::id())->delete();
 			Auth::logout();
 			Session::invalidate();

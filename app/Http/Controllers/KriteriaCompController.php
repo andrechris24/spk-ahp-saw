@@ -19,6 +19,7 @@ class KriteriaCompController extends Controller
 				"kriteria.id"
 			)->select(
 					"kriteria_banding.kriteria1 as idkriteria",
+					"kriteria.id",
 					"kriteria.name"
 				)->groupBy("kriteria1", 'name')->get();
 		} catch (QueryException $e) {
@@ -57,11 +58,15 @@ class KriteriaCompController extends Controller
 		$counter = 0;
 		for ($a = 0; $a < $jmlcrit; $a++) {
 			for ($b = $a; $b < $jmlcrit; $b++) {
-				$array[$counter]["baris"] = $crit[$a]->name;
-				$array[$counter]["kolom"] = $crit[$b]->name;
+				$array[$counter]["idbaris"] = $crit[$a]->id;
+				$array[$counter]["namabaris"] = $crit[$a]->name;
+				$array[$counter]["idkolom"] = $crit[$b]->id;
+				$array[$counter]["namakolom"] = $crit[$b]->name;
 				$value[$counter] = KriteriaComp::select('nilai')
 					->where('kriteria1', $crit[$a]->id)
-					->where('kriteria2', $crit[$b]->id)->first();
+					->where('kriteria2', $crit[$b]->id)->firstOr(function () {
+						return ['nilai' => 0]; //jika tidak ada
+					});
 				$counter++;
 			}
 		}
@@ -72,14 +77,20 @@ class KriteriaCompController extends Controller
 	{
 		$request->validate(KriteriaComp::$rules, KriteriaComp::$message);
 		try {
-			KriteriaComp::truncate();
 			$kriteria = Kriteria::get();
 			$a = 0;
 			for ($i = 0; $i < count($kriteria); $i++) {
 				for ($j = $i; $j < count($kriteria); $j++) {
+					if ($kriteria[$i]->id === $kriteria[$j]->id)
+						$nilai = 1;
+					else {
+						$nilai = $request->skala[$a];
+						if ($request->kriteria[$a] === "right")
+							$nilai = 0 - $request->skala[$a];
+					}
 					KriteriaComp::updateOrCreate(
 						['kriteria1' => $kriteria[$i]->id, 'kriteria2' => $kriteria[$j]->id],
-						['nilai' => $kriteria[$i]->id === $kriteria[$j]->id ? 1 : $request->skala[$a]]
+						['nilai' => $nilai]
 					);
 					$a++;
 				}
@@ -89,10 +100,12 @@ class KriteriaCompController extends Controller
 			return back()->withInput()->withError('Gagal menyimpan nilai perbandingan:')
 				->withErrors("Kesalahan SQLState #" . $sql->errorInfo[0]);
 		}
-		return redirect()->route('bobotkriteria.result');
+		return to_route('bobotkriteria.result');
 	}
 	public function hasil()
 	{
+		if (KriteriaComp::count() === 0)
+			return back()->withWarning('Perbandingan kriteria belum dilakukan');
 		$kriteria = $this->getKriteriaPerbandingan();
 		$a = 0;
 		$matriks_perbandingan = $matriks_awal = [];
@@ -257,7 +270,7 @@ class KriteriaCompController extends Controller
 		try {
 			KriteriaComp::truncate();
 			Kriteria::where('bobot', '<>', 0.00000)->update(['bobot' => 0.00000]);
-			return redirect()->route('bobotkriteria.index')
+			return to_route('bobotkriteria.index')
 				->withSuccess('Perbandingan Kriteria sudah direset.');
 		} catch (QueryException $sql) {
 			Log::error($sql);

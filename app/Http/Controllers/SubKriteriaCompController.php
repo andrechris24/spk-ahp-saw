@@ -53,7 +53,7 @@ class SubKriteriaCompController extends Controller
 	public static function nama_kriteria($id)
 	{
 		try {
-			$kriteria = Kriteria::firstWhere('id', $id);
+			$kriteria = Kriteria::find($id);
 			return $kriteria['name'];
 		} catch (QueryException $e) {
 			Log::error($e);
@@ -64,12 +64,12 @@ class SubKriteriaCompController extends Controller
 	{
 		$allkrit = Kriteria::get();
 		if ($allkrit->isEmpty()) {
-			return redirect()->route('kriteria.index')->withWarning(
+			return to_route('kriteria.index')->withWarning(
 				'Masukkan kriteria dulu untuk melakukan perbandingan sub kriteria.'
 			);
 		}
 		if (SubKriteria::count() === 0) {
-			return redirect()->route('subkriteria.index')->withWarning(
+			return to_route('subkriteria.index')->withWarning(
 				'Masukkan data sub kriteria dulu ' .
 				'untuk melakukan perbandingan sub kriteria.'
 			);
@@ -95,7 +95,9 @@ class SubKriteriaCompController extends Controller
 					$array[$counter]["kolom"] = $subkriteria[$b]->name;
 					$value[$counter] = SubKriteriaComp::select('nilai')
 						->where('subkriteria1', $subkriteria[$a]->id)
-						->where('subkriteria2', $subkriteria[$b]->id)->first();
+						->where('subkriteria2', $subkriteria[$b]->id)->firstOr(function () {
+							return ['nilai' => 0]; //jika tidak ada
+						});
 					$counter++;
 				}
 			}
@@ -118,25 +120,28 @@ class SubKriteriaCompController extends Controller
 	{
 		$request->validate(SubKriteriaComp::$rules, SubKriteriaComp::$message);
 		try {
-			SubKriteriaComp::where('idkriteria', $kriteria_id)->delete();
-			if (SubKriteriaComp::count() === 0)
-				SubKriteriaComp::truncate();
 			$subkriteria = SubKriteria::where('kriteria_id', $kriteria_id)->get();
 			$a = 0;
 			for ($i = 0; $i < count($subkriteria); $i++) {
 				for ($j = $i; $j < count($subkriteria); $j++) {
-					SubKriteriaComp::updateOrCreate(
-						[
-							'idkriteria' => $kriteria_id,
-							'subkriteria1' => $subkriteria[$i]->id,
-							'subkriteria2' => $subkriteria[$j]->id
-						],
-						['nilai' => $subkriteria[$i]->id === $subkriteria[$j]->id ? 1 : $request->skala[$a]]
-					);
+					if ($subkriteria[$i]->id === $subkriteria[$j]->id)
+						$nilai = 1;
+					else {
+						$nilai = $request->skala[$a];
+						if ($request->subkriteria[$a] === "right")
+							$nilai = 0 - $request->skala[$a];
+					}
+					SubKriteriaComp::updateOrCreate([
+						'idkriteria' => $kriteria_id,
+						'subkriteria1' => $subkriteria[$i]->id,
+						'subkriteria2' => $subkriteria[$j]->id
+					], [
+						'nilai' => $nilai
+					]);
 					$a++;
 				}
 			}
-			return redirect()->route('bobotsubkriteria.result', $kriteria_id);
+			return to_route('bobotsubkriteria.result', $kriteria_id);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError(
@@ -148,6 +153,8 @@ class SubKriteriaCompController extends Controller
 	}
 	public function show($id)
 	{
+		if (SubKriteriaComp::where('idkriteria', $id)->count() === 0)
+			return back()->withWarning('Perbandingan sub kriteria belum dilakukan');
 		$subkriteria = $this->getSubKriteriaPerbandingan($id);
 		$a = 0;
 		$matriks_perbandingan = $matriks_awal = [];
@@ -181,7 +188,8 @@ class SubKriteriaCompController extends Controller
 						$nilai = round(abs(1 / $hb->nilai), 5);
 						$nilai2 = "<sup>1</sup>/<sub>" . abs($hb->nilai) . "</sub>";
 					} else {
-						$nilai = round(abs(($hb->nilai > 1) ? $hb->nilai / 1 : $hb->nilai), 5);
+						$nilai =
+							round(abs(($hb->nilai > 1) ? $hb->nilai / 1 : $hb->nilai), 5);
 						$nilai2 = "<sup>" . abs($hb->nilai) . "</sup>/<sub>1</sub>";
 					}
 					$matriks_perbandingan[$a] = [
@@ -318,10 +326,13 @@ class SubKriteriaCompController extends Controller
 	public function destroy($id)
 	{
 		try {
-			$kr = Kriteria::firstWhere('id', $id);
-			SubKriteriaComp::where('idkriteria', $id)->delete();
+			$kr = Kriteria::find($id);
+			if (SubKriteriaComp::where('idkriteria', '<>', $id)->count() === 0)
+				SubKriteriaComp::truncate();
+			else
+				SubKriteriaComp::where('idkriteria', $id)->delete();
 			SubKriteria::where('kriteria_id', $id)->update(['bobot' => 0.00000]);
-			return redirect()->route('bobotsubkriteria.pick')
+			return to_route('bobotsubkriteria.pick')
 				->withSuccess("Perbandingan Sub kriteria $kr->name sudah direset")
 				->with(['kriteria_id' => $id]);
 		} catch (QueryException $e) {

@@ -18,10 +18,9 @@ class Kriteria extends Model
 	], $message = [
 		'name.required' => 'Nama kriteria harus diisi',
 		'type.required' => 'Tipe Kriteria harus dipilih',
-		'type.in' => 'Tipe Kriteria harus berupa Cost atau Benefit',
+		'type.in' => 'Tipe Kriteria harus berupa Cost atau Benefit sesuai teori SAW',
 		'desc.required' => 'Keterangan kriteria harus diisi'
-	];
-	public static array $ratio_index = [
+	], $ratio_index = [
 		1 => 0,
 		2 => 0,
 		3 => 0.58,

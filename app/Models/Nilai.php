@@ -14,16 +14,16 @@ class Nilai extends Model
 	public static array $rules = [
 		'alternatif_id' => 'bail|required|integer',
 		'kriteria_id' => 'required',
-		'kriteria_id.*' => 'integer',
+		'kriteria_id.*' => 'bail|required|integer',
 		'subkriteria_id' => 'required',
-		'subkriteria_id.*' => 'integer'
+		'subkriteria_id.*' => 'bail|required|integer'
 	], $message = [
-		'alternatif_id.required' => 'Nama alternatif harus dipilih',
+		'alternatif_id.required' => 'Alternatif harus dipilih',
 		'alternatif_id.integer' => 'Alternatif tidak valid',
-		'kriteria_id.required' => 'Kriteria tidak ditemukan',
-		'subkriteria_id.required' => 'Semua sub kriteria harus dipilih',
-		'kriteria_id.integer' => 'Kriteria tidak valid',
-		'subkriteria_id.integer' => 'Sub kriteria tidak valid'
+		'kriteria_id.*.required' => 'Kriteria tidak ditemukan',
+		'kriteria_id.*.integer' => 'Kriteria tidak valid',
+		'subkriteria_id.*.required' => 'Sub kriteria :attr harus dipilih',
+		'subkriteria_id.*.integer' => 'Sub kriteria :attr tidak valid'
 	];
 	public function alternatif(): BelongsTo
 	{

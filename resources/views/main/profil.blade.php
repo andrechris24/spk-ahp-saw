@@ -163,6 +163,7 @@
 				},
 				error: function(xhr, code) {
 					if (xhr.status === 422) {
+						resetvalidation();
 						if (typeof xhr.responseJSON.errors.name !==
 							"undefined") {
 							$('#nama-user').addClass('is-invalid');
@@ -194,7 +195,7 @@
 								.responseJSON.errors
 								.password_confirmation);
 						}
-						errmsg = xhr.responseJSON.message ?? code;
+						errmsg = xhr.responseJSON.message;
 					} else {
 						errmsg = 'Kesalahan HTTP ' + xhr.status + '. ' +
 							(xhr.responseJSON.message ?? code)

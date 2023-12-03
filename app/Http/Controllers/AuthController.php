@@ -20,7 +20,7 @@ class AuthController extends Controller
 	public function showlogin()
 	{
 		if (Auth::viaRemember() || Auth::check())
-			return redirect()->route('home.index');
+			return to_route('home.index');
 		return view('admin.login');
 	}
 	public function login(Request $request)
@@ -32,7 +32,7 @@ class AuthController extends Controller
 				Auth::login($user, $request->get('remember'));
 				Session::put('avatar-bg', User::$avatarbg[random_int(0, 8)]);
 				Session::regenerate();
-				return redirect()->route('home.index');
+				return to_route('home.index');
 			}
 			return back()->withInput()->withErrors(['password' => __('auth.password')]);
 		} catch (QueryException $e) {
@@ -48,7 +48,7 @@ class AuthController extends Controller
 			Auth::logout();
 			Session::invalidate();
 			Session::regenerateToken();
-			return redirect()->route('login')->withSuccess('Anda sudah logout.');
+			return to_route('login')->withSuccess('Anda sudah logout.');
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal logout: ' .
@@ -58,7 +58,7 @@ class AuthController extends Controller
 	public function showregister()
 	{
 		if (Auth::viaRemember() || Auth::check())
-			return redirect()->route('home.index');
+			return to_route('home.index');
 		return view('admin.register');
 	}
 	public function register(Request $request)
@@ -67,19 +67,18 @@ class AuthController extends Controller
 			$credentials = $request->validate(User::$regrules, User::$regmsg);
 			$credentials['password'] = Hash::make($credentials['password']);
 			User::create($credentials);
-			return redirect()->route('login')->withSuccess("Akun sudah dibuat. " .
+			return to_route('login')->withSuccess("Akun sudah dibuat. " .
 				"Silahkan login menggunakan akun yang sudah didaftarkan.");
 		} catch (QueryException $e) {
 			Log::error($e);
-			return back()->withInput()
-				->withError("Gagal membuat akun: " .
-					"Kesalahan SQLState #" . $e->errorInfo[0]);
+			return back()->withInput()->withError("Gagal membuat akun: " .
+				"Kesalahan SQLState #" . $e->errorInfo[0]);
 		}
 	}
 	public function showForgetPasswordForm()
 	{
 		if (Auth::viaRemember() || Auth::check())
-			return redirect()->route('home.index');
+			return to_route('home.index');
 		return view('admin.forget-password');
 	}
 	public function submitForgetPasswordForm(Request $request)
@@ -109,22 +108,22 @@ class AuthController extends Controller
 	public function showResetPasswordForm($token)
 	{
 		if (Auth::viaRemember() || Auth::check())
-			return redirect()->route('home.index');
+			return to_route('home.index');
 		try {
 			$enctoken = DB::table('password_resets')->where('email', $_GET['email'])
 				->firstOrFail();
 			if (!Hash::check($token, $enctoken->token))
-				return redirect()->route('login')->withError(__('passwords.token'));
+				return to_route('login')->withError(__('passwords.token'));
 			return view(
 				'admin.reset-password',
 				['token' => $token, 'email' => $_GET['email']]
 			);
 		} catch (QueryException $e) {
 			Log::error($e);
-			return redirect()->route('password.request')
+			return to_route('password.request')
 				->withError("Terjadi Kesalahan SQLState #" . $e->errorInfo[0]);
 		} catch (ModelNotFoundException) {
-			return redirect()->route('password.request')->withError(
+			return to_route('password.request')->withError(
 				'Token tidak valid atau Link sudah kedaluarsa. ' .
 				'Silahkan minta reset password lagi.'
 			);
@@ -143,7 +142,7 @@ class AuthController extends Controller
 				}
 			);
 			if ($status === Password::PASSWORD_RESET) {
-				return redirect()->route('login')->withSuccess('Reset password berhasil. ' .
+				return to_route('login')->withSuccess('Reset password berhasil. ' .
 					'Silahkan login menggunakan password yang Anda buat.');
 			} else if ($status === Password::INVALID_TOKEN)
 				return back()->withError('Reset password gagal: ' . __('passwords.token'));
