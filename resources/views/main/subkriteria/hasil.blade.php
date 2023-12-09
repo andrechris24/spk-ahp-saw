@@ -180,7 +180,7 @@
 						<span class="visually-hidden">Mereset...</span>
 					</div>
 					<div class="btn-group">
-						<a href="{{ route('bobotsubkriteria.pick') }}" class="btn btn-secondary">
+						<a href="javascript:history.back();" class="btn btn-secondary">
 							<i class="bi bi-arrow-left"></i> Kembali
 						</a>
 						<a href="{{ route('bobotsubkriteria.reset', $kriteria_id) }}"

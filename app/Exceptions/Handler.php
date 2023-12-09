@@ -46,5 +46,17 @@ class Handler extends ExceptionHandler
 		$this->reportable(function (Throwable $e) {
 		    //
 		});
+		$this->renderable(function (\Exception $e) {
+			if ($e->getPrevious() instanceof \Illuminate\Session\TokenMismatchException) {
+				if(request()->wantsJson()){
+					return response()->json([
+						'message' => 'Token CSRF tidak valid. Silahkan muat ulang halaman.'
+					], 419);
+				}
+				return back()
+					->withInput(request()->except('_token'))
+					->withError('Gagal: Kesalahan HTTP 419 (CSRF Token mismatch). Silahkan coba lagi.');
+			};
+		});
 	}
 }

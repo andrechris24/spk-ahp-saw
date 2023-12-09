@@ -161,7 +161,7 @@
 						}
 					});
 				},
-				error: function(xhr, code) {
+				error: function(xhr, st, err) {
 					if (xhr.status === 422) {
 						resetvalidation();
 						if (typeof xhr.responseJSON.errors.name !==
@@ -198,7 +198,7 @@
 						errmsg = xhr.responseJSON.message;
 					} else {
 						errmsg = 'Kesalahan HTTP ' + xhr.status + '. ' +
-							(xhr.responseJSON.message ?? code)
+							(xhr.responseJSON.message ?? err)
 					}
 					Swal.fire({
 						title: 'Gagal update akun',
@@ -270,7 +270,7 @@
 						});
 						location.href = "{{ route('login') }}";
 					},
-					error: function(xhr, code) {
+					error: function(xhr, st, err) {
 						$('#form-edit-account :input')
 							.prop('disabled', false);
 						$('#DelAccountBtn').prop('disabled', false);
@@ -280,7 +280,7 @@
 							title: "Gagal hapus akun",
 							text: 'Kesalahan HTTP ' + xhr
 								.status + '. ' + (xhr
-									.responseJSON.message ?? code
+									.responseJSON.message ?? err
 								),
 							icon: 'error',
 							customClass: {

@@ -215,11 +215,11 @@
 					$.get("{{ route('alternatif.count') }}", function(data) {
 						$("#total-duplicate").text(data.duplicates);
 						$("#total-counter").text(data.total);
-					}).fail(function(xhr, status) {
+					}).fail(function(xhr, st, err) {
 						Toastify({
 							text: "Gagal memuat jumlah: Kesalahan HTTP " +
 								xhr.status + '. ' + (xhr
-									.statusText ?? status),
+									.statusText ?? err),
 							style: {
 								background: "#dc3545"
 							},
@@ -273,7 +273,7 @@
 								}
 							});
 						},
-						error: function(xhr, stat) {
+						error: function(xhr, stat, err) {
 							if (xhr.status === 404)
 								dt_alternatif.draw();
 							Swal.fire({
@@ -282,7 +282,7 @@
 								text: "Kesalahan HTTP " + xhr
 									.status + "." + (xhr
 										.responseJSON
-										.message ?? stat),
+										.message ?? err),
 								customClass: {
 									confirmButton: "btn btn-success",
 								},
@@ -313,14 +313,14 @@
 			$.get("/alternatif/edit/" + alt_id, function(data) {
 				$("#alter-id").val(data.id);
 				$("#alter-name").val(data.name);
-			}).fail(function(xhr, status) {
+			}).fail(function(xhr, st, err) {
 				if (xhr.status === 404)
 					dt_alternatif.draw();
 				Swal.fire({
 					icon: "error",
 					title: "Gagal memuat data",
 					text: "Kesalahan HTTP " + xhr.status + ". " +
-						(xhr.responseJSON.message ?? status),
+						(xhr.responseJSON.message ?? err),
 					customClass: {
 						confirmButton: "btn btn-success"
 					}
@@ -365,7 +365,7 @@
 						}
 					});
 				},
-				error: function(xhr, code) {
+				error: function(xhr, stat, err) {
 					if (xhr.status === 422) {
 						resetvalidation();
 						if (typeof xhr.responseJSON.errors.name !==
@@ -377,7 +377,7 @@
 						errmsg = xhr.responseJSON.message;
 					} else {
 						errmsg = "Kesalahan HTTP " + xhr.status + ". " +
-							(xhr.responseJSON.message ?? code);
+							(xhr.responseJSON.message ?? err);
 					}
 					Swal.fire({
 						title: "Gagal",

@@ -1,5 +1,5 @@
 @extends('layout')
-@section('title', 'Perhitungan SAW');
+@section('title', 'Penilaian Alternatif');
 @section('subtitle', 'Nilai Alternatif')
 @section('content')
 	<div class="modal fade text-left" id="NilaiAlterModal" tabindex="-1" role="dialog"
@@ -179,20 +179,13 @@
 					columnDefs: [{
 							targets: 0,
 							render: function(data, type, full) {
-								return `<span title="${full['name']}">A${data}</span>`
+								return `A${data}<br><small>${full['name']}</small>`
 							}
 						},
 						@foreach ($data['kriteria'] as $kr)
 							{
 								orderable: false,
-								targets: 1 + {{ $loop->index }},
-								render: function(data, type, full) {
-									if (data === null || data === "") {
-										$(`button[data-id="${full['id']}"]`)
-											.prop('disabled', true);
-									}
-									return data;
-								}
+								targets: 1 + {{ $loop->index }}
 							},
 						@endforeach {
 							orderable: false,
@@ -285,11 +278,11 @@
 				}).on("preDraw", function() {
 					$.get("{{ route('nilai.count') }}", function(data) {
 						$('#total-noscore').text(data.unused);
-					}).fail(function(xhr, status) {
+					}).fail(function(xhr, st, err) {
 						Toastify({
 							text: "Gagal memuat jumlah: Kesalahan HTTP " +
 								xhr.status + '. ' + (xhr
-									.statusText ?? status),
+									.statusText ?? err),
 							style: {
 								background: "#dc3545"
 							},
@@ -339,7 +332,7 @@
 								}
 							});
 						},
-						error: function(xhr, stat) {
+						error: function(xhr, stat, err) {
 							if (xhr.status === 404)
 								nilaialtdt.draw();
 							Swal.fire({
@@ -348,7 +341,7 @@
 								text: 'Kesalahan HTTP ' + xhr
 									.status + '. ' + (xhr
 										.responseJSON
-										.message ?? stat),
+										.message ?? err),
 								customClass: {
 									confirmButton: 'btn btn-success'
 								}
@@ -384,13 +377,13 @@
 					$("#subkriteria-{{ $kr->id }}").val(data.subkriteria
 						.{{ Str::of($kr->name)->slug('_') }});
 				@endforeach
-			}).fail(function(xhr, status) {
+			}).fail(function(xhr, st, err) {
 				if (xhr.status === 404) nilaialtdt.draw();
 				Swal.fire({
 					icon: 'error',
 					title: 'Kesalahan',
 					text: 'Kesalahan HTTP ' + xhr.status + '. ' +
-						(xhr.responseJSON.message ?? status),
+						(xhr.responseJSON.message ?? err),
 					customClass: {
 						confirmButton: 'btn btn-success'
 					}
@@ -435,7 +428,7 @@
 						}
 					});
 				},
-				error: function(xhr, code) {
+				error: function(xhr, st, err) {
 					if (xhr.status === 422) {
 						resetvalidation();
 						if (typeof xhr.responseJSON.errors.alternatif_id !==
@@ -451,7 +444,7 @@
 						errmsg = xhr.responseJSON.message;
 					} else {
 						errmsg = 'Kesalahan HTTP ' + xhr.status + '. ' +
-							(xhr.responseJSON.message ?? code);
+							(xhr.responseJSON.message ?? err);
 					}
 					Swal.fire({
 						title: 'Gagal',

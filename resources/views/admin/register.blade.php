@@ -5,8 +5,7 @@
 @section('auth-css', asset('assets/compiled/css/auth.css'))
 @section('content')
 	<form action="{{ route('register.perform') }}" method="post" enctype="multipart/form-data"
-		class="needs-validation">
-		@csrf
+		class="needs-validation">@csrf
 		<div class="form-group position-relative has-icon-left mb-4">
 			<input type="text" name="email" placeholder="Email" value="{{ old('email') }}"
 				required class="form-control form-control-xl @error('email') is-invalid @enderror " />

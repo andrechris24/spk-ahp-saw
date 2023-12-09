@@ -39,6 +39,9 @@
 						<label for="deskripsi">Keterangan</label>
 						<div class="form-group">
 							<input type="text" class="form-control" name="desc" id="deskripsi" required />
+							<div class="form-text">
+								Isikan dengan "-" (tanpa tanda kutip) jika tanpa keterangan
+							</div>
 							<div class="invalid-feedback" id="desc-error">
 								Masukkan keterangan
 							</div>
@@ -133,7 +136,7 @@
 						<th>Nama Kriteria</th>
 						<th>Atribut</th>
 						<th>Keterangan</th>
-						<th data-bs-toggle="tooltip" title="Bobot didapat melalui perhitungan AHP">
+						<th data-bs-toggle="tooltip" title="Bobot didapat melalui pembobotan Kriteria secara konsisten">
 							Bobot
 						</th>
 						<th>Aksi</th>
@@ -272,11 +275,11 @@
 						$("#total-duplicate").text(data.duplicates);
 						$("#total-counter").text(data.total);
 						$('#total-unused').text(data.unused);
-					}).fail(function(xhr, status) {
+					}).fail(function(xhr, stat, err) {
 						Toastify({
 							text: "Gagal memuat jumlah: Kesalahan HTTP " +
 								xhr.status + '. ' + (xhr
-									.statusText ?? status),
+									.statusText ?? err),
 							style: {
 								background: "#dc3545"
 							},
@@ -327,7 +330,7 @@
 								}
 							});
 						},
-						error: function(xhr, stat) {
+						error: function(xhr, stat, err) {
 							if (xhr.status === 404)
 								dt_kriteria.draw();
 							Swal.fire({
@@ -336,7 +339,7 @@
 								text: 'Kesalahan HTTP ' + xhr
 									.status + '. ' + (xhr
 										.responseJSON
-										.message ?? stat),
+										.message ?? err),
 								customClass: {
 									confirmButton: 'btn btn-success'
 								}
@@ -369,14 +372,14 @@
 				$('#nama-krit').val(data.name);
 				$('#tipe-kriteria').val(data.type);
 				$('#deskripsi').val(data.desc);
-			}).fail(function(xhr, status) {
+			}).fail(function(xhr, stat, err) {
 				if (xhr.status === 404)
 					dt_kriteria.draw();
 				Swal.fire({
 					icon: 'error',
 					title: 'Kesalahan',
 					text: 'Kesalahan HTTP ' + xhr.status + '. ' +
-						(xhr.responseJSON.message ?? status),
+						(xhr.responseJSON.message ?? err),
 					customClass: {
 						confirmButton: 'btn btn-success'
 					}
@@ -420,7 +423,7 @@
 						}
 					});
 				},
-				error: function(xhr, code) {
+				error: function(xhr, stat, err) {
 					if (xhr.status === 422) {
 						resetvalidation();
 						if (typeof xhr.responseJSON.errors.name !==
@@ -444,7 +447,7 @@
 						errmsg = xhr.responseJSON.message;
 					} else {
 						errmsg = 'Kesalahan HTTP ' + xhr.status + '. ' +
-							(xhr.responseJSON.message ?? code);
+							(xhr.responseJSON.message ?? err);
 					}
 					Swal.fire({
 						title: 'Gagal',

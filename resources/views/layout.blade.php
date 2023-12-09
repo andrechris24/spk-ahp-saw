@@ -114,21 +114,21 @@
 								class="sidebar-item has-sub {{ request()->is('bobot/hasil') || request()->is('bobot/sub/*') ? 'active' : '' }}">
 								<a href="#" class="sidebar-link">
 									<i class="bi bi-calculator-fill"></i>
-									<span>Perhitungan AHP</span>
+									<span>Pembobotan</span>
 								</a>
 								<ul class="submenu">
 									<li
 										class="submenu-item
 									 {{ request()->is('bobot/hasil') ? 'active' : '' }}">
 										<a href="{{ route('bobotkriteria.index') }}" class="submenu-link">
-											Perbandingan Kriteria
+											Kriteria
 										</a>
 									</li>
 									<li
 										class="submenu-item
 									 {{ request()->is('bobot/sub/*') ? 'active' : '' }}">
 										<a href="{{ route('bobotsubkriteria.pick') }}" class="submenu-link">
-											Perbandingan Sub Kriteria
+											Sub Kriteria
 										</a>
 									</li>
 								</ul>
@@ -136,7 +136,7 @@
 							<li class="sidebar-item">
 								<a href="{{ route('nilai.index') }}" class="sidebar-link">
 									<i class="bi bi-pen-fill"></i>
-									<span>Perhitungan SAW</span>
+									<span>Penilaian Alternatif</span>
 								</a>
 							</li>
 							<li class="sidebar-item">

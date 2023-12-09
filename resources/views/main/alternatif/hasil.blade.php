@@ -16,15 +16,15 @@
 				<table class="table table-hover table-striped text-center">
 					<thead>
 						<tr>
-							<th rowspan="2">Alternatif</th>
-							<th colspan="{{ count($data['kriteria']) }}">Kriteria</th>
-						</tr>
-						<tr>
+							<th>Alternatif</th>
 							@foreach ($data['kriteria'] as $krit)
-								<th data-bs-toggle="tooltip" title="{{ $krit->name }}">
-									C{{ $krit->id }}
+								<th>
+									C{{ $krit->id }}<br>
+									<small>{{ $krit->name }}</small>
 								</th>
 							@endforeach
+						</tr>
+						<tr>
 						</tr>
 					</thead>
 					<tbody>
@@ -59,13 +59,11 @@
 				<table class="table table-hover table-striped text-center">
 					<thead>
 						<tr>
-							<th rowspan="2">Alternatif</th>
-							<th colspan="{{ count($data['kriteria']) }}">Kriteria</th>
-						</tr>
-						<tr>
+							<th>Alternatif</th>
 							@foreach ($data['kriteria'] as $krit)
-								<th data-bs-toggle="tooltip" title="{{ $krit->name }}">
-									C{{ $krit->id }}
+								<th>
+									C{{ $krit->id }}<br>
+									<small>{{ $krit->name }}</small>
 								</th>
 							@endforeach
 						</tr>
@@ -111,7 +109,7 @@
 			'modal-lg' => $totalalts > 5 && $totalalts <= 10,
 			'modal-fullscreen-xl-down' => $totalalts > 10 && $totalalts <= 20,
 			'modal-xl' => $totalalts > 10 && $totalalts <= 20,
-			'modal-fullscreen' => $totalalts > 20
+			'modal-fullscreen' => $totalalts > 20,
 		])>
 			<div class="modal-content">
 				<div class="modal-header">
@@ -146,16 +144,14 @@
 				style="width: 100%">
 				<thead class="text-center">
 					<tr>
-						<th rowspan="2">Alternatif</th>
-						<th colspan="{{ count($data['kriteria']) }}">Kriteria</th>
-						<th rowspan="2">Jumlah</th>
-					</tr>
-					<tr>
+						<th>Alternatif</th>
 						@foreach ($data['kriteria'] as $krit)
-							<th data-bs-toggle="tooltip" title="{{ $krit->name }}">
-								C{{ $krit->id }}
+							<th>
+								C{{ $krit->id }}<br>
+								<small>{{ $krit->name }}</small>
 							</th>
 						@endforeach
+						<th>Jumlah</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -191,7 +187,7 @@
 @endsection
 @section('js')
 	<script type="text/javascript">
-		var dt_hasil, loaded=false;
+		var dt_hasil, loaded = false;
 		$(document).ready(function() {
 			try {
 				$.fn.dataTable.ext.errMode = "none";
@@ -261,54 +257,55 @@
 			}
 		});
 		var options = {
-			chart: {
-				height: 320,
-				type: 'bar'
+				chart: {
+					height: 320,
+					type: 'bar'
+				},
+				dataLabels: {
+					enabled: true
+				},
+				legend: {
+					show: false
+				},
+				series: [],
+				title: {
+					text: 'Hasil Penilaian'
+				},
+				noData: {
+					text: 'Memuat grafik...'
+				},
+				xaxis: {
+					categories: [
+						@foreach ($data['alternatif'] as $alts)
+							["A{{ $alts->id }}", "{{ $alts->name }}"],
+						@endforeach
+					]
+				},
+				plotOptions: {
+					bar: {
+						distributed: true
+					}
+				}
 			},
-			dataLabels: {
-        enabled: true
-      },
-      legend: {
-        show: false
-      },
-			series: [],
-			title: {
-				text: 'Hasil Penilaian'
-			},
-			noData: {
-				text: 'Memuat grafik...'
-			},
-			xaxis: {
-				categories: [
-					@foreach ($data['alternatif'] as $alts)
-						["A{{ $alts->id }}","{{$alts->name}}"],
-					@endforeach
-				]
-			},
-			plotOptions: {
-		    bar: {
-		      distributed: true
-		    }
-		  }  
-		}
-		var chart = new ApexCharts(
-			document.querySelector("#chart-ranking"), options
-		);
+			chart = new ApexCharts(
+				document.querySelector("#chart-ranking"), options
+			);
 		chart.render();
 		$('#RankModal').on('show.bs.modal', function() {
-			if(!loaded){
-				$.getJSON('{{ route('hasil.ranking') }}', function(response) {
-					loaded=true;
+			if (!loaded) {
+				$.getJSON("{{ route('hasil.ranking') }}", function(response) {
 					$('#SkorHasil').text(response.score);
 					$('#SkorTertinggi').text(response.nama);
 					chart.updateSeries([{
 						name: 'Nilai',
 						data: response.result.skor
 					}]);
+					loaded = true;
 				}).fail(function(e, status) {
 					Swal.fire({
 						title: 'Gagal memuat grafik',
-						text: 'Kesalahan HTTP ' + e.status + '. ' + status,
+						text: 'Kesalahan HTTP ' + e.status + '. ' +
+							status,
 						icon: 'error',
 						customClass: {
 							confirmButton: 'btn btn-success'

@@ -56,7 +56,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-4">
+		<div class="col-sm-6">
 			<div class="card">
 				<div class="card-body">
 					<div class="d-flex align-items-start justify-content-between">
@@ -73,7 +73,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-4">
+		<div class="col-sm-6">
 			<div class="card">
 				<div class="card-body">
 					<div class="d-flex align-items-start justify-content-between" data-bs-toggle="tooltip"
@@ -91,7 +91,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-4">
+		{{-- <div class="col-md-4">
 			<div class="card">
 				<div class="card-body">
 					<div class="d-flex align-items-start justify-content-between" data-bs-toggle="tooltip"
@@ -108,7 +108,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> --}}
 	</div>
 	<div class="card">
 		<div class="card-header">Daftar Sub Kriteria</div>
@@ -128,7 +128,7 @@
 						<th>Kode</th>
 						<th>Nama Sub Kriteria</th>
 						<th>Kriteria</th>
-						<th data-bs-toggle="tooltip" title="Bobot didapat melalui perhitungan AHP">
+						<th data-bs-toggle="tooltip" title="Bobot didapat melalui pembobotan Sub Kriteria secara konsisten">
 							Bobot
 						</th>
 						<th>Aksi</th>
@@ -156,7 +156,7 @@
 						type: 'POST'
 					},
 					order: [
-						[2, 'asc']
+						[3, 'asc']
 					],
 					columns: [{
 						data: 'kr_name'
@@ -261,14 +261,14 @@
 					errorDT(message, techNote);
 				}).on('preDraw', function() {
 					$.get("{{ route('subkriteria.count') }}", function(data) {
-						$("#total-duplicate").text(data.duplicates);
+						// $("#total-duplicate").text(data.duplicates);
 						$('#total-max').text(data.max);
 						$("#total-counter").text(data.total);
-					}).fail(function(xhr, status) {
+					}).fail(function(xhr, stat, err) {
 						Toastify({
 							text: "Gagal memuat jumlah: Kesalahan HTTP " +
 								xhr.status + '. ' + (xhr
-									.statusText ?? status),
+									.statusText ?? err),
 							style: {
 								background: "#dc3545"
 							},
@@ -319,7 +319,7 @@
 								}
 							});
 						},
-						error: function(xhr, stat) {
+						error: function(xhr, stat, err) {
 							if (xhr.status === 404)
 								dt_subkriteria.draw();
 							Swal.fire({
@@ -328,7 +328,7 @@
 								text: 'Kesalahan HTTP ' + xhr
 									.status + '. ' + (xhr
 										.responseJSON
-										.message ?? stat),
+										.message ?? err),
 								customClass: {
 									confirmButton: 'btn btn-success'
 								}
@@ -360,14 +360,14 @@
 				$('#subkriteria-id').val(data.id);
 				$('#nama-sub').val(data.name);
 				$('#kriteria-select').val(data.kriteria_id);
-			}).fail(function(xhr, status) {
+			}).fail(function(xhr, stat, err) {
 				if (xhr.status === 404)
 					dt_subkriteria.draw();
 				Swal.fire({
 					icon: 'error',
 					title: 'Kesalahan',
 					text: 'Kesalahan HTTP ' + xhr.status + '. ' +
-						(xhr.responseJSON.message ?? status),
+						(xhr.responseJSON.message ?? err),
 					customClass: {
 						confirmButton: 'btn btn-success'
 					}
@@ -414,7 +414,7 @@
 						}
 					});
 				},
-				error: function(xhr, code) {
+				error: function(xhr, st, err) {
 					if (xhr.status === 422) {
 						resetvalidation();
 						if (typeof xhr.responseJSON.errors.name !==
@@ -432,7 +432,7 @@
 						errmsg = xhr.responseJSON.message;
 					} else {
 						errmsg = 'Kesalahan HTTP ' + xhr.status + '. ' +
-							(xhr.responseJSON.message ?? code);
+							(xhr.responseJSON.message ?? err);
 					}
 					Swal.fire({
 						title: 'Gagal',

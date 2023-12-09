@@ -44,7 +44,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		});
 		Route::prefix('kriteria')->group(function () {
 			Route::controller('KriteriaController')->group(function () {
-				Route::get('/', 'index')->name('kriteria.index');
+				Route::get('/', 'index')->name('kriteria.index')->block();
 				Route::get('count', 'getCount')->name('kriteria.count')->block();
 				Route::post('data', 'show')->name('kriteria.data')->block();
 				Route::post('store', 'store')->name('kriteria.store');
@@ -54,7 +54,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			});
 			Route::controller('SubKriteriaController')->prefix('sub')
 				->group(function () {
-					Route::get('/', 'index')->name('subkriteria.index');
+					Route::get('/', 'index')->name('subkriteria.index')->block();
 					Route::get('count', 'getCount')->name('subkriteria.count')->block();
 					Route::post('data', 'show')->name('subkriteria.data')->block();
 					Route::get('edit/{id}', 'edit')->name('subkriteria.edit');
@@ -82,7 +82,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		});
 		Route::controller('AlternatifController')->prefix('alternatif')
 			->group(function () {
-				Route::get('/', 'index')->name('alternatif.index');
+				Route::get('/', 'index')->name('alternatif.index')->block();
 				Route::get('count', 'getCount')->name('alternatif.count')->block();
 				Route::post('data', 'show')->name('alternatif.data')->block();
 				Route::get('edit/{id}', 'edit')->name('alternatif.edit');
@@ -92,7 +92,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			});
 		Route::controller('NilaiController')->group(function () {
 			Route::prefix('nilai')->group(function () {
-				Route::get('/', 'index')->name('nilai.index');
+				Route::get('/', 'index')->name('nilai.index')->block();
 				Route::get('count', 'getCount')->name('nilai.count')->block();
 				Route::post('data', 'datatables')->name('nilai.data')->block();
 				Route::get('edit/{id}', 'edit')->name('nilai.edit');

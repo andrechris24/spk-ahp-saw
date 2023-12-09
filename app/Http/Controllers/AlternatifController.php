@@ -9,10 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
-class AlternatifController extends Controller
-{
-	public function getCount()
-	{
+class AlternatifController extends Controller {
+	public function getCount() {
 		$alternatives = Alternatif::get();
 		$altUnique = $alternatives->unique(['name']);
 		return response()->json([
@@ -20,16 +18,13 @@ class AlternatifController extends Controller
 			'duplicates' => $alternatives->diff($altUnique)->count()
 		]);
 	}
-	public function index()
-	{
+	public function index() {
 		return view('main.alternatif.index');
 	}
-	public function show()
-	{
+	public function show() {
 		return DataTables::of(Alternatif::query())->make();
 	}
-	public function store(Request $request)
-	{
+	public function store(Request $request) {
 		$request->validate(Alternatif::$rules, Alternatif::$message);
 		try {
 			Alternatif::create($request->all());
@@ -39,8 +34,7 @@ class AlternatifController extends Controller
 			return response()->json(['message' => $e->errorInfo[2]], 500);
 		}
 	}
-	public function update(Request $request)
-	{
+	public function update(Request $request) {
 		$request->validate(Alternatif::$rules, Alternatif::$message);
 		$req = $request->all();
 		try {
@@ -51,8 +45,7 @@ class AlternatifController extends Controller
 			return response()->json(['message' => $e->errorInfo[2]], 500);
 		}
 	}
-	public function edit($id)
-	{
+	public function edit($id) {
 		try {
 			$alter = Alternatif::findOrFail($id);
 			return response()->json($alter);
@@ -65,10 +58,11 @@ class AlternatifController extends Controller
 			], 404);
 		}
 	}
-	public function hapus($id)
-	{
+	public function hapus($id) {
 		try {
 			Alternatif::findOrFail($id)->delete();
+			$model=new Alternatif;
+			HomeController::refreshDB($model);
 			return response()->json(['message' => 'Alternatif sudah dihapus']);
 		} catch (ModelNotFoundException) {
 			return response()->json(['message' => 'Alternatif tidak ditemukan.'], 404);
