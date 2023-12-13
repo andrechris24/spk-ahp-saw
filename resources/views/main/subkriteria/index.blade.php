@@ -120,15 +120,15 @@
 			<div class="spinner-grow text-danger d-none" role="status">
 				<span class="visually-hidden">Menghapus...</span>
 			</div>
-			<table class="table table-hover table-striped" id="table-subcrit"
-				style="width: 100%">
+			<table class="table table-hover table-striped" id="table-subcrit" style="width: 100%">
 				<thead>
 					<tr>
 						<th>No</th>
 						<th>Kode</th>
 						<th>Nama Sub Kriteria</th>
 						<th>Kriteria</th>
-						<th data-bs-toggle="tooltip" title="Bobot didapat melalui pembobotan Sub Kriteria secara konsisten">
+						<th data-bs-toggle="tooltip"
+							title="Bobot didapat melalui pembobotan Sub Kriteria secara konsisten">
 							Bobot
 						</th>
 						<th>Aksi</th>

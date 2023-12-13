@@ -1,8 +1,9 @@
 @extends('layout')
 @php
-	use App\Http\Controllers\SubKriteriaCompController;
-	$subkriteriacomp = new SubKriteriaCompController();
+	use App\Http\Controllers\SubKriteriaController;
+	$subkriteriacomp = new SubKriteriaController();
 	$title = $subkriteriacomp->nama_kriteria($kriteria_id);
+	$numindex = 0;
 @endphp
 @section('title', 'Perbandingan Sub Kriteria ' . $title)
 @section('subtitle', 'Perbandingan Sub Kriteria ' . $title)
@@ -31,17 +32,6 @@
 						</div>
 					</div>
 				</div>
-				<div class="btn-group">
-					<a href="{{ route('bobotsubkriteria.pick') }}" class="btn btn-secondary">
-						<i class="bi bi-arrow-left"></i> Kembali
-					</a>
-					@if ($cek > 0)
-						<a href="{{ route('bobotsubkriteria.result', $kriteria_id) }}"
-							class="btn btn-success">
-							<i class="bi bi-arrow-right"></i> Lihat Hasil
-						</a>
-					@endif
-				</div>
 				@if ($jmlsubkriteria >= 2)
 					<div class="table-responsive">
 						<form method="POST" enctype="multipart/form-data"
@@ -50,6 +40,7 @@
 							<table class="table table-lg table-hover table-striped text-center">
 								<thead>
 									<tr>
+										<th>No</th>
 										<th>Sub Kriteria</th>
 										<th>Perbandingan</th>
 										<th>Sub Kriteria</th>
@@ -59,11 +50,12 @@
 									@foreach ($array as $krit)
 										@if ($krit['baris'] !== $krit['kolom'])
 											<tr>
+												<td>{{ ++$numindex }}</td>
 												<th>
 													<input type="radio" class="btn-check"
 														name="subkriteria[{{ $loop->index }}]" id="left-{{ $loop->index }}"
 														value="left" autocomplete="off" required
-														{{ $value[$loop->index]['nilai'] > 0 || old('kriteria.' . $loop->index) == 'left' ? 'checked' : '' }}>
+														{{ $value[$loop->index]['nilai'] > 0 || old('subkriteria.' . $loop->index) == 'left' ? 'checked' : '' }}>
 													<label class="btn btn-outline-info" for="left-{{ $loop->index }}">
 														{{ $krit['baris'] }}
 													</label>
@@ -76,9 +68,7 @@
 															value="{{ old('skala.' . $loop->index) ?? (abs($value[$loop->index]['nilai']) ?? '') }}"
 															required>
 														@error('skala.' . $loop->index)
-															<div class="invalid-feedback">
-																{{ $message }}
-															</div>
+															<div class="invalid-feedback">{{ $message }}</div>
 														@enderror
 													</div>
 												</td>
@@ -86,7 +76,7 @@
 													<input type="radio" name="subkriteria[{{ $loop->index }}]"
 														class="btn-check" value="right" id="right-{{ $loop->index }}"
 														autocomplete="off"
-														{{ $value[$loop->index]['nilai'] < 0 || old('kriteria.' . $loop->index) == 'right' ? 'checked' : '' }}>
+														{{ $value[$loop->index]['nilai'] < 0 || old('subkriteria.' . $loop->index) == 'right' ? 'checked' : '' }}>
 													<label class="btn btn-outline-warning" for="right-{{ $loop->index }}">
 														{{ $krit['kolom'] }}
 													</label>

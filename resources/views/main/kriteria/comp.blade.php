@@ -2,6 +2,7 @@
 @section('title', 'Perbandingan Kriteria')
 @section('subtitle', 'Perbandingan Kriteria')
 @section('content')
+	@php($numindex = 0)
 	<div class="card">
 		<div class="card-header">
 			<h4 class="card-title">Masukkan Perbandingan</h4>
@@ -47,7 +48,7 @@
 									@foreach ($array as $krit)
 										@if ($krit['idbaris'] !== $krit['idkolom'])
 											<tr>
-												<td>{{$loop->index}}</td>
+												<td>{{ ++$numindex }}</td>
 												<th>
 													<input type="radio" class="btn-check" name="kriteria[{{ $loop->index }}]"
 														id="left-{{ $loop->index }}" value="left" autocomplete="off" required
@@ -65,9 +66,7 @@
 															value="{{ old('skala.' . $loop->index) ?? (abs($value[$loop->index]['nilai']) ?? '') }}"
 															required>
 														@error('skala.' . $loop->index)
-															<div class="invalid-feedback">
-																{{ $message }}
-															</div>
+															<div class="invalid-feedback">{{ $message }}</div>
 														@enderror
 													</div>
 												</td>

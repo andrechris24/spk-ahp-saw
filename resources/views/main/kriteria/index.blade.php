@@ -136,7 +136,8 @@
 						<th>Nama Kriteria</th>
 						<th>Atribut</th>
 						<th>Keterangan</th>
-						<th data-bs-toggle="tooltip" title="Bobot didapat melalui pembobotan Kriteria secara konsisten">
+						<th data-bs-toggle="tooltip"
+							title="Bobot didapat melalui pembobotan Kriteria secara konsisten">
 							Bobot
 						</th>
 						<th>Aksi</th>

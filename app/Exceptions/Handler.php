@@ -53,9 +53,8 @@ class Handler extends ExceptionHandler
 						'message' => 'Token CSRF tidak valid. Silahkan muat ulang halaman.'
 					], 419);
 				}
-				return back()
-					->withInput(request()->except('_token'))
-					->withError('Gagal: Kesalahan HTTP 419 (CSRF Token mismatch). Silahkan coba lagi.');
+				return to_route('login')
+					->withWarning('Sesi Sistem Pendukung Keputusan sudah habis. Silahkan login ulang untuk melanjutkan.');
 			};
 		});
 	}

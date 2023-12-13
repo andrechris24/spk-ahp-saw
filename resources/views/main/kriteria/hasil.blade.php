@@ -63,7 +63,7 @@
 								</th>
 								@foreach ($data['matriks_perbandingan'] as $mp)
 									@if ($mp['kode_kriteria'] === $kr->idkriteria)
-										<td>{{ $mp['nilai'] }}</td>
+										<td>{{ round($mp['nilai'], 5) }}</td>
 									@endif
 								@endforeach
 							</tr>
@@ -71,7 +71,7 @@
 						<tr>
 							<th>Jumlah</th>
 							@foreach ($data['jumlah'] as $nilai)
-								<td class="text-info">{{ $nilai }}</td>
+								<td class="text-info">{{ round($nilai, 5) }}</td>
 							@endforeach
 						</tr>
 					</tbody>
@@ -96,6 +96,7 @@
 							@endforeach
 							<th>Jumlah Baris</th>
 							<th data-bs-toggle="tooltip" title="Bobot Prioritas">Eigen</th>
+							<th>Consistency Measure</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -106,15 +107,22 @@
 								</th>
 								@foreach ($data['matriks_normalisasi'] as $mn)
 									@if ($mn['kode_kriteria'] === $kr->idkriteria)
-										<td>{{ $mn['nilai'] }}</td>
+										<td>{{ round($mn['nilai'], 5) }}</td>
 									@endif
 								@endforeach
-								@foreach ($data['bobot_prioritas'] as $bp)
-									@if ($bp['kode_kriteria'] === $kr->idkriteria)
-										<td class="text-info">{{ $bp['jumlah_baris'] }}</td>
-										<td class="text-info">{{ $bp['bobot'] }}</td>
-									@endif
-								@endforeach
+								@if ($data['bobot_prioritas'][$loop->index]['kode_kriteria'] === $kr->idkriteria)
+									<td class="text-info">
+										{{ round($data['bobot_prioritas'][$loop->index]['jumlah_baris'], 5) }}
+									</td>
+									<td class="text-info">
+										{{ round($data['bobot_prioritas'][$loop->index]['bobot'], 5) }}
+									</td>
+								@endif
+								@if ($data['cm'][$loop->index]['kode_kriteria'] === $kr->idkriteria)
+									<td class="text-info">
+										{{ round($data['cm'][$loop->index]['cm'], 5) }}
+									</td>
+								@endif
 							</tr>
 						@endforeach
 					</tbody>
@@ -130,26 +138,18 @@
 			<div class="table-responsive">
 				<table class="table table-hover">
 					<tr>
-						<td>Consistency Measure (CM)</td>
-						<td>
-							@foreach ($data['cm'] as $cm)
-								[{{ $cm['cm'] }}]
-							@endforeach
-						</td>
-					</tr>
-					<tr>
-						<td>Rata-rata CM</td>
-						<td>{{ $data['average_cm'] }}</td>
+						<td>Principe Eigen Vektor</td>
+						<td>{{ round($data['average_cm'], 5) }}</td>
 					</tr>
 					<tr>
 						<td>Consistency Index (CI)</td>
-						<td>{{ $data['ci'] }}</td>
+						<td>{{ round($data['ci'], 5) }}</td>
 					</tr>
 					<tr>
 						<td>Consistency Ratio (CR)</td>
 						<td>
-							{{ $data['result'] }}
 							@if (is_numeric($data['result']))
+								{{ round($data['result'], 5) }}
 								<span @class(['text-danger' => $data['result'] > 0.1])>
 									({{ round($data['result'] * 100, 2) }}%)
 								</span>
@@ -157,7 +157,10 @@
 									$consistent = $data['result'] <= 0.1;
 								@endphp
 							@else
-								@php($consistent = true)
+								@php
+									$consistent = true;
+									echo '-';
+								@endphp
 							@endif
 						</td>
 					</tr>
@@ -185,6 +188,9 @@
 						<span class="visually-hidden">Mereset...</span>
 					</div>
 					<div class="btn-group">
+						<a href="{{ route('bobotkriteria.index') }}" class="btn btn-secondary">
+							<i class="bi bi-arrow-left"></i> Kembali
+						</a>
 						<a href="{{ route('bobotkriteria.reset') }}" class="btn btn-warning"
 							id="reset-button">
 							<i class="bi bi-arrow-counterclockwise"></i> Reset

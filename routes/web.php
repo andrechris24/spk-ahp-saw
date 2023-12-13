@@ -61,6 +61,17 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 					Route::post('store', 'store')->name('subkriteria.store');
 					Route::post('update', 'update')->name('subkriteria.update');
 					Route::delete('del/{id}', 'destroy')->name('subkriteria.delete');
+					// Route::controller('SubSubKriteriaController')->prefix('sub')
+					// 	->group(function () {
+					// 		Route::get('/', 'index')->name('subsubkriteria.index')->block();
+					// 		Route::get('count', 'getCount')->name('subsubkriteria.count')
+					// 			->block();
+					// 		Route::post('data', 'show')->name('subsubkriteria.data')->block();
+					// 		Route::get('edit/{id}', 'edit')->name('subsubkriteria.edit');
+					// 		Route::post('store', 'store')->name('subsubkriteria.store');
+					// 		Route::post('update', 'update')->name('subsubkriteria.update');
+					// 		Route::delete('del/{id}', 'destroy')->name('subsubkriteria.delete');
+					// 	});
 				});
 		});
 		Route::prefix('bobot')->group(function () {
@@ -72,12 +83,25 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			});
 			Route::controller('SubKriteriaCompController')->prefix('sub')
 				->group(function () {
-					Route::get('/', 'index')->name('bobotsubkriteria.pick');
-					Route::get('comp', 'create')->name('bobotsubkriteria.index');
-					Route::post('comp/{kriteria_id}', 'store')
-						->name('bobotsubkriteria.store');
-					Route::get('hasil/{id}', 'show')->name('bobotsubkriteria.result');
-					Route::delete('reset/{id}', 'destroy')->name('bobotsubkriteria.reset');
+					Route::post('data', 'datatables')->name('bobotsubkriteria.data')
+						->block();
+					Route::get('/', 'index')->name('bobotsubkriteria.pick')->block();
+					// Route::controller('SubSubKriteriaCompController')->prefix('sub')
+					// 	->group(function () {
+					// 		Route::get('/', 'index')->name('bobotsubsubkriteria.pick');
+					// 		Route::get('comp', 'create')->name('bobotsubsubkriteria.index');
+					// 		Route::post('comp/{subkriteria_id}', 'store')
+					// 			->name('bobotsubsubkriteria.store');
+					// 		Route::get('hasil/{id}', 'show')->name('bobotsubsubkriteria.result');
+					// 		Route::delete('reset/{id}', 'destroy')
+					// 			->name('bobotsubsubkriteria.reset');
+					// 	});
+					Route::prefix('{kriteria_id}')->group(function () {
+						Route::get('/', 'create')->name('bobotsubkriteria.index');
+						Route::post('/', 'store')->name('bobotsubkriteria.store');
+						Route::get('hasil', 'show')->name('bobotsubkriteria.result');
+						Route::delete('del', 'destroy')->name('bobotsubkriteria.reset');
+					});
 				});
 		});
 		Route::controller('AlternatifController')->prefix('alternatif')

@@ -10,13 +10,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
-class KriteriaController extends Controller {
-	public function getCount() {
+class KriteriaController extends Controller
+{
+	public function getCount()
+	{
 		$criterias = Kriteria::get();
 		$critUnique = $criterias->unique(['name']);
 		$unused = 0;
-		foreach($criterias as $kr) {
-			if(SubKriteria::where('kriteria_id', $kr->id)->count() === 0)
+		foreach ($criterias as $kr) {
+			if (SubKriteria::where('kriteria_id', $kr->id)->count() === 0)
 				$unused++;
 		}
 		return response()->json([
@@ -25,19 +27,22 @@ class KriteriaController extends Controller {
 			'duplicates' => $criterias->diff($critUnique)->count()
 		]);
 	}
-	public function index() {
+	public function index()
+	{
 		return view('main.kriteria.index');
 	}
-	public function show() {
+	public function show()
+	{
 		return DataTables::of(Kriteria::query())
 			->editColumn('type', function (Kriteria $krit) {
 				return ucfirst($krit->type);
 			})->make();
 	}
-	public function store(Request $request) {
+	public function store(Request $request)
+	{
 		$request->validate(Kriteria::$rules, Kriteria::$message);
 		try {
-			if(Kriteria::count() >= 20) {
+			if (Kriteria::count() >= 20) {
 				return response()->json([
 					'message' => 'Jumlah kriteria maksimal sudah tercapai.'
 				], 400);
@@ -49,17 +54,18 @@ class KriteriaController extends Controller {
 			return response()->json(['message' => $e->errorInfo[2]], 500);
 		}
 	}
-	public function update(Request $request) {
+	public function update(Request $request)
+	{
 		$request->validate(Kriteria::$rules, Kriteria::$message);
 		$req = $request->all();
 		try {
-			if($request->has('reset')) {
+			if ($request->has('reset')) {
 				Kriteria::updateOrCreate(['id' => $req['id']], [
-						'name' => $req['name'],
-						'type' => $req['type'],
-						'desc' => $req['desc'],
-						'bobot' => 0.00000
-					]);
+					'name' => $req['name'],
+					'type' => $req['type'],
+					'desc' => $req['desc'],
+					'bobot' => 0.00000
+				]);
 			} else {
 				Kriteria::updateOrCreate(
 					['id' => $req['id']],
@@ -72,7 +78,8 @@ class KriteriaController extends Controller {
 			return response()->json(['message' => $e->errorInfo[2]], 500);
 		}
 	}
-	public function edit($id) {
+	public function edit($id)
+	{
 		try {
 			$kriteria = Kriteria::findOrFail($id);
 			return response()->json($kriteria);
@@ -85,10 +92,11 @@ class KriteriaController extends Controller {
 			], 404);
 		}
 	}
-	public function hapus($id) {
+	public function hapus($id)
+	{
 		try {
 			Kriteria::findOrFail($id)->delete();
-			$model=new Kriteria;
+			$model = new Kriteria;
 			HomeController::refreshDB($model);
 			return response()->json(['message' => 'Kriteria sudah dihapus.']);
 		} catch (ModelNotFoundException) {

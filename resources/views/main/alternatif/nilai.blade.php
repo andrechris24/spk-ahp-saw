@@ -326,7 +326,9 @@
 							Swal.fire({
 								icon: 'success',
 								title: 'Dihapus',
-								text: data.message,
+								text: 'Nilai Alternatif ' +
+									score_name +
+									' sudah dihapus.',
 								customClass: {
 									confirmButton: 'btn btn-success'
 								}

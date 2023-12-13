@@ -15,19 +15,21 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
-class HomeController extends Controller {
-	public static function refreshDB($model):void
+class HomeController extends Controller
+{
+	public static function refreshDB($model): void
 	{
 		try {
-			$max = $model->max('id') + 1; 
-	    DB::statement("ALTER TABLE users AUTO_INCREMENT =  $max");
+			$max = $model->max('id') + 1;
+			DB::statement("ALTER TABLE users AUTO_INCREMENT =  $max");
 		} catch (QueryException $e) {
 			Log::error($e);
 		}
 	}
-	public function index() {
+	public function index()
+	{
 		$jml = [];
-		if(Auth::check()) {
+		if (Auth::check()) {
 			try {
 				$jml = [
 					'kriteria' => Kriteria::count(),
@@ -36,25 +38,27 @@ class HomeController extends Controller {
 				];
 			} catch (QueryException $e) {
 				Log::error($e);
-				$jml['error'] = "Kesalahan SQLState #".$e->errorInfo[0].'/'. 
-					$e->errorInfo[1] .'. '. $e->errorInfo[2];
+				$jml['error'] = "Kesalahan SQLState #" . $e->errorInfo[0] . '/' .
+					$e->errorInfo[1] . '. ' . $e->errorInfo[2];
 			}
 		}
 		return view('main.index', compact('jml'));
 	}
-	public function profile() {
+	public function profile()
+	{
 		return view('main.profil');
 	}
-	public function updateProfil(Request $request) {
+	public function updateProfil(Request $request)
+	{
 		try {
 			$req = $request->validate([
 				'name' => 'bail|required|min:5|regex:/^[\pL\s\-]+$/u',
-				'email' => 'bail|required|email|unique:users,email,'.Auth::id(),
+				'email' => 'bail|required|email|unique:users,email,' . Auth::id(),
 				'current_password' => 'bail|required|current_password',
 				'password' => 'nullable|bail|confirmed|between:8,20',
 				'password_confirmation' => 'required_with:password'
 			], User::$message);
-			if(empty($req['password'])) {
+			if (empty($req['password'])) {
 				unset($req['password']);
 				unset($req['password_confirmation']);
 			} else
@@ -68,7 +72,8 @@ class HomeController extends Controller {
 			return response()->json(['message' => $db->errorInfo[2]], 500);
 		}
 	}
-	public function delAkun(Request $request) {
+	public function delAkun(Request $request)
+	{
 		try {
 			$req = $request->validate(User::$delakunrule);
 			User::findOrFail(Auth::id())->delete();
