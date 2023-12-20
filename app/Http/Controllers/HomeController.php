@@ -31,11 +31,9 @@ class HomeController extends Controller
 		$jml = [];
 		if (Auth::check()) {
 			try {
-				$jml = [
-					'kriteria' => Kriteria::count(),
+				$jml = ['kriteria' => Kriteria::count(),
 					'subkriteria' => SubKriteria::count(),
-					'alternatif' => Alternatif::count()
-				];
+					'alternatif' => Alternatif::count()];
 			} catch (QueryException $e) {
 				Log::error($e);
 				$jml['error'] = "Kesalahan SQLState #" . $e->errorInfo[0] . '/' .

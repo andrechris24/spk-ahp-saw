@@ -15,10 +15,8 @@ class AlternatifController extends Controller
 	{
 		$alternatives = Alternatif::get();
 		$altUnique = $alternatives->unique(['name']);
-		return response()->json([
-			'total' => $alternatives->count(),
-			'duplicates' => $alternatives->diff($altUnique)->count()
-		]);
+		return response()->json(['total' => $alternatives->count(),
+			'duplicates' => $alternatives->diff($altUnique)->count()]);
 	}
 	public function index()
 	{

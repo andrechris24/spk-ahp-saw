@@ -18,4 +18,7 @@ class KriteriaComp extends Model
 		'skala.*.numeric' => 'Nilai perbandingan harus berupa angka',
 		'skala.*.between' => 'Nilai perbandingan harus diantara :min sampai :max sesuai teori AHP'
 	];
+	public function kriteria(){
+		return $this->belongsTo(Kriteria::class);
+	}
 }

@@ -4,8 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SubKriteria extends Model
 {
@@ -21,12 +19,15 @@ class SubKriteria extends Model
 		'kriteria_id.integer' => 'Kriteria tidak valid',
 		'kriteria_id.exists' => 'Kriteria tidak ditemukan'
 	];
-	public function kriteria(): BelongsTo
+	public function kriteria()
 	{
 		return $this->belongsTo(Kriteria::class, 'kriteria_id');
 	}
-	public function nilai(): HasMany
+	public function nilai()
 	{
-		return $this->hasMany(Nilai::class, 'subkriteria_id');
+		return $this->hasOne(Nilai::class, 'subkriteria_id');
+	}
+	public function subkriteriacomp(){
+		return $this->hasMany(SubKriteriaComp::class);
 	}
 }

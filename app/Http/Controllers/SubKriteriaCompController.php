@@ -15,14 +15,11 @@ class SubKriteriaCompController extends Controller
 	private function getSubKriteriaPerbandingan($id)
 	{
 		try {
-			return SubKriteriaComp::join(
-				"subkriteria",
-				"subkriteria_banding.subkriteria1",
-				"subkriteria.id"
-			)->select(
-					"subkriteria_banding.subkriteria1 as idsubkriteria",
-					"subkriteria.name"
-				)->groupBy("subkriteria1", 'name')->where('kriteria_id', $id)->get();
+			return SubKriteriaComp::join("subkriteria",
+				"subkriteria_banding.subkriteria1", "subkriteria.id"
+			)->select("subkriteria_banding.subkriteria1 as idsubkriteria",
+					"subkriteria.name")->groupBy("subkriteria1", 'name')
+				->where('kriteria_id', $id)->get();
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil perbandingan:')
@@ -66,23 +63,20 @@ class SubKriteriaCompController extends Controller
 		$allkrit = Kriteria::get();
 		if ($allkrit->isEmpty()) {
 			return to_route('kriteria.index')->withWarning(
-				'Masukkan kriteria dulu untuk melakukan perbandingan sub kriteria.'
-			);
+				'Masukkan kriteria dulu untuk melakukan perbandingan sub kriteria.');
 		}
 		if (SubKriteria::count() === 0) {
 			return to_route('subkriteria.index')->withWarning(
 				'Masukkan data sub kriteria dulu ' .
-				'untuk melakukan perbandingan sub kriteria.'
-			);
+				'untuk melakukan perbandingan sub kriteria.');
 		}
 		return view('main.subkriteria.select', compact('allkrit'));
 	}
 	public function create($kriteria_id)
 	{
-		$idkriteria = $kriteria_id;
 		try {
-			Kriteria::findOrFail($idkriteria);
-			$subkriteria = SubKriteria::where('kriteria_id', $idkriteria)->get();
+			Kriteria::findOrFail($kriteria_id);
+			$subkriteria = SubKriteria::where('kriteria_id', $kriteria_id)->get();
 			$jmlsubkriteria = count($subkriteria);
 			$array = $value = [];
 			$counter = 0;
@@ -98,19 +92,16 @@ class SubKriteriaCompController extends Controller
 					$counter++;
 				}
 			}
-			return view(
-				'main.subkriteria.comp',
-				compact('array', 'jmlsubkriteria', 'value', 'kriteria_id')
-			);
+			return view('main.subkriteria.comp',
+				compact('array', 'jmlsubkriteria', 'value', 'kriteria_id'));
 		} catch (ModelNotFoundException) {
 			return back()->withError('Gagal memuat form perbandingan sub kriteria: ' .
 				'Kriteria tidak ditemukan');
 		} catch (QueryException $e) {
 			Log::error($e);
-			return back()->withError(
-				'Gagal memuat form perbandingan sub kriteria ' .
-				SubKriteriaController::nama_kriteria($idkriteria)
-			)->withErrors("Kesalahan SQLState #" . $e->errorInfo[0]);
+			return back()->withError('Gagal memuat form perbandingan sub kriteria ' .
+				SubKriteriaController::nama_kriteria($kriteria_id))->withErrors(
+					"Kesalahan SQLState #" . $e->errorInfo[0]);
 		}
 	}
 	public function store(Request $request, $kriteria_id)
@@ -132,9 +123,7 @@ class SubKriteriaCompController extends Controller
 						'idkriteria' => $kriteria_id,
 						'subkriteria1' => $subkriteria[$i]->id,
 						'subkriteria2' => $subkriteria[$j]->id
-					], [
-						'nilai' => $nilai
-					]);
+					], ['nilai' => $nilai]);
 					$a++;
 				}
 			}
@@ -277,7 +266,7 @@ class SubKriteriaCompController extends Controller
 				for ($i = 0; $i < count($subkriteria); $i++) {
 					SubKriteria::where("id", $subkriteria[$i]->idsubkriteria)
 						->where('kriteria_id', $kriteria_id)
-						->update(["bobot" => $array_BobotPrioritas[$i]["bobot"]]);
+						->update(["bobot" => round($array_BobotPrioritas[$i]["bobot"], 5)]);
 				}
 				$subbobotkosong = SubKriteria::where('bobot', 0.00000)->count();
 			} else {

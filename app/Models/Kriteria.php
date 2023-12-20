@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Kriteria extends Model
 {
@@ -13,13 +12,11 @@ class Kriteria extends Model
 	protected $fillable = ['name', 'type', 'desc'];
 	public static array $rules = [
 		'name' => 'required',
-		'type' => 'bail|required|in:cost,benefit',
-		'desc' => 'required'
+		'type' => 'bail|required|in:cost,benefit'
 	], $message = [
 		'name.required' => 'Nama kriteria harus diisi',
 		'type.required' => 'Tipe Kriteria harus dipilih',
-		'type.in' => 'Tipe Kriteria harus berupa Cost atau Benefit sesuai teori SAW',
-		'desc.required' => 'Keterangan kriteria harus diisi'
+		'type.in' => 'Tipe Kriteria harus berupa Cost atau Benefit sesuai teori SAW'
 	], $ratio_index = [
 		1 => 0,
 		2 => 0,
@@ -42,12 +39,15 @@ class Kriteria extends Model
 		19 => 1.62,
 		20 => 1.625
 	];
-	public function subkriteria(): HasMany
+	public function subkriteria()
 	{
-		return $this->hasMany(SubKriteria::class, 'kriteria_id');
+		return $this->hasOne(SubKriteria::class, 'kriteria_id');
 	}
-	public function nilai(): HasMany
+	public function nilai()
 	{
-		return $this->hasMany(Nilai::class, 'kriteria_id');
+		return $this->hasOne(Nilai::class, 'kriteria_id');
+	}
+	public function kriteriacomp(){
+		return $this->hasMany(kriteriaComp::class);
 	}
 }

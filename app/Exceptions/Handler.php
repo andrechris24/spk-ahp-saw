@@ -53,8 +53,9 @@ class Handler extends ExceptionHandler
 						'message' => 'Token CSRF tidak valid. Silahkan muat ulang halaman.'
 					], 419);
 				}
-				return to_route('login')
-					->withWarning('Sesi Sistem Pendukung Keputusan sudah habis. Silahkan login ulang untuk melanjutkan.');
+				return to_route('login')->withWarning(
+					'Sesi Sistem Pendukung Keputusan sudah habis. Silahkan login ulang untuk melanjutkan.'
+				);
 			};
 		});
 	}

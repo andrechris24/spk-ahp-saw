@@ -79,18 +79,8 @@ class SubKriteriaController extends Controller
 		$request->validate(SubKriteria::$rules, SubKriteria::$message);
 		$req = $request->all();
 		try {
-			if ($request->has('reset')) {
-				SubKriteria::updateOrCreate(['id' => $req['id']], [
-					'name' => $req['name'],
-					'kriteria_id' => $req['kriteria_id'],
-					'bobot' => 0.00000
-				]);
-			} else {
-				SubKriteria::updateOrCreate(
-					['id' => $req['id']],
-					['name' => $req['name'], 'kriteria_id' => $req['kriteria_id']]
-				);
-			}
+			SubKriteria::updateOrCreate(['id' => $req['id']],
+				['name' => $req['name'], 'kriteria_id' => $req['kriteria_id']]);
 			return response()->json(['message' => "Sub Kriteria sudah diupdate"]);
 		} catch (QueryException $e) {
 			Log::error($e);

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Alternatif extends Model
 {
@@ -16,12 +15,12 @@ class Alternatif extends Model
 		'name.required' => 'Nama alternatif diperlukan',
 		'name.regex' => 'Nama alternatif tidak boleh mengandung simbol'
 	];
-	public function nilai(): HasMany
+	public function nilai()
 	{
-		return $this->hasMany(Nilai::class, 'alternatif_id');
+		return $this->hasOne(Nilai::class, 'alternatif_id');
 	}
-	public function hasil(): HasMany
+	public function hasil()
 	{
-		return $this->hasMany(Hasil::class, 'alternatif_id');
+		return $this->hasOne(Hasil::class, 'alternatif_id');
 	}
 }

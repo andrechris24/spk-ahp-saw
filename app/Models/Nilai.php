@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Nilai extends Model
 {
@@ -25,15 +24,15 @@ class Nilai extends Model
 		'subkriteria_id.*.required' => 'Sub kriteria :attr harus dipilih',
 		'subkriteria_id.*.integer' => 'Sub kriteria :attr tidak valid'
 	];
-	public function alternatif(): BelongsTo
+	public function alternatif()
 	{
 		return $this->belongsTo(Alternatif::class, 'alternatif_id');
 	}
-	public function kriteria(): BelongsTo
+	public function kriteria()
 	{
 		return $this->belongsTo(Kriteria::class, 'kriteria_id');
 	}
-	public function subkriteria(): BelongsTo
+	public function subkriteria()
 	{
 		return $this->belongsTo(SubKriteria::class, 'subkriteria_id');
 	}

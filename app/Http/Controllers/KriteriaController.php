@@ -21,11 +21,9 @@ class KriteriaController extends Controller
 			if (SubKriteria::where('kriteria_id', $kr->id)->count() === 0)
 				$unused++;
 		}
-		return response()->json([
-			'total' => $criterias->count(),
+		return response()->json(['total' => $criterias->count(),
 			'unused' => $unused,
-			'duplicates' => $criterias->diff($critUnique)->count()
-		]);
+			'duplicates' => $criterias->diff($critUnique)->count()]);
 	}
 	public function index()
 	{
@@ -59,19 +57,9 @@ class KriteriaController extends Controller
 		$request->validate(Kriteria::$rules, Kriteria::$message);
 		$req = $request->all();
 		try {
-			if ($request->has('reset')) {
-				Kriteria::updateOrCreate(['id' => $req['id']], [
-					'name' => $req['name'],
-					'type' => $req['type'],
-					'desc' => $req['desc'],
-					'bobot' => 0.00000
-				]);
-			} else {
-				Kriteria::updateOrCreate(
-					['id' => $req['id']],
-					['name' => $req['name'], 'type' => $req['type'], 'desc' => $req['desc']]
-				);
-			}
+			Kriteria::updateOrCreate(['id' => $req['id']], [
+				'name' => $req['name'], 'type' => $req['type'], 'desc' => $req['desc']
+			]);
 			return response()->json(['message' => 'Kriteria sudah diupdate']);
 		} catch (QueryException $e) {
 			Log::error($e);

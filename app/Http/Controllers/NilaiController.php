@@ -61,29 +61,75 @@ class NilaiController extends Controller
 			->addColumn('subkriteria', function (Alternatif $alt) {
 				$kriteria = Kriteria::get();
 				foreach ($kriteria as $kr) {
-					$subkriteria[Str::slug($kr->name, '-')] = '';
+					$subkriteria[Str::slug($kr->name, '_')] = '';
 				}
 				$nilaialt = Nilai::select(
 					'nilai.*',
 					'alternatif.name',
 					'kriteria.name',
 					'subkriteria.name'
-				)->leftJoin(
-						'alternatif',
-						'alternatif.id',
-						'nilai.alternatif_id'
-					)->leftJoin('kriteria', 'kriteria.id', 'nilai.kriteria_id')
+				)->leftJoin('alternatif','alternatif.id','nilai.alternatif_id')
+				->leftJoin('kriteria', 'kriteria.id', 'nilai.kriteria_id')
 					->leftJoin('subkriteria', 'subkriteria.id', 'nilai.subkriteria_id')
 					->where('alternatif_id', $alt->id)->get();
 				if (count($nilaialt) > 0) {
 					foreach ($nilaialt as $skor) {
-						$subkriteria[Str::slug($skor->kriteria->name, '-')] =
+						$subkriteria[Str::slug($skor->kriteria->name, '_')] =
 							$skor->subkriteria->name;
 					}
 					return $subkriteria;
 				}
 			})->toJson();
 	}
+	// public function test(Request $request)
+	// {
+	// 	$columns = [
+	// 		0 => 'id',
+	// 		1 => 'name'
+	// 	];
+	// 	$kriterias=Kriteria::get();
+	// 	foreach($kriterias as $key=>$kr){
+	// 		$columns[$key+2]=Str::slug($kr->name,'_');
+	// 	}
+	// 	$totalData = Alternatif::count();
+	// 	$totalFiltered = $totalData;
+	// 	$limit = $request->input('length');
+	// 	$start = $request->input('start');
+	// 	$order = $columns[$request->input('order.0.column')];
+	// 	$dir = $request->input('order.0.dir');
+	// 	if($request->input('order.0.column')>1){
+	// 		$alts=Alternatif::join('nilai','nilai.alternatif_id','alternatif.id')
+	// 			->offset($start)->limit($limit)
+	// 			->orderBy('nilai.kriteria_id',$dir)->get();
+	// 	}else{
+	// 		$alts = Alternatif::offset($start)->limit($limit)->orderBy($order, $dir)
+	// 			->get();
+	// 	}
+	// 	$data = [];
+		
+	// 	if (!empty($alts)) {
+	// 		// providing a dummy id instead of database ids
+	// 		$ids = $start;
+	// 		foreach ($alts as $alt) {
+	// 			$nestedData['id'] = $alt->id;
+	// 			$nestedData['name'] = $alt->name;
+	// 			$nilaialt = Nilai::select('nilai.*', 'subkriteria.name')
+	// 				->leftJoin('subkriteria', 'subkriteria.id', 'nilai.subkriteria_id')
+	// 				->where('alternatif_id', $alt->id)->get();
+	// 			foreach ($nilaialt as $skor) {
+	// 				$nestedData['subkriteria.'.Str::slug($skor->kriteria->name, '_')] =
+	// 					$skor->subkriteria->name;
+	// 			}
+	// 			$data[] = $nestedData;
+	// 		}
+	// 	}
+	// 	return response()->json([
+	// 		'draw' => intval($request->input('draw')),
+	// 		'recordsTotal' => intval($totalData),
+	// 		'recordsFiltered' => intval($totalFiltered),
+	// 		'data' => $data
+	// 	]);
+	// }
 	public function getCount()
 	{
 		$alternatives = Alternatif::count();
@@ -98,14 +144,12 @@ class NilaiController extends Controller
 		if ($kriteria->isEmpty()) {
 			return to_route('kriteria.index')->withWarning(
 				'Tambahkan kriteria dan sub kriteria dulu ' .
-				'sebelum melakukan penilaian alternatif.'
-			);
+				'sebelum melakukan penilaian alternatif.');
 		}
 		$subkriteria = SubKriteria::get();
 		if ($subkriteria->isEmpty()) {
 			return to_route('subkriteria.index')->withWarning(
-				'Tambahkan sub kriteria dulu sebelum melakukan penilaian alternatif.'
-			);
+				'Tambahkan sub kriteria dulu sebelum melakukan penilaian alternatif.');
 		}
 		$alternatif = Alternatif::get();
 		if ($alternatif->isEmpty()) {
@@ -129,18 +173,14 @@ class NilaiController extends Controller
 			if ($cek >= $jmlkr) {
 				return response()->json([
 					'message' => 'Alternatif sudah digunakan dalam penilaian',
-					'errors' => [
-						'alternatif_id' => 'Alternatif sudah digunakan'
-					]
+					'errors' => ['alternatif_id' => 'Alternatif sudah digunakan']
 				], 422);
 			}
 			for ($a = 0; $a < count($scores['kriteria_id']); $a++) {
 				Nilai::updateOrCreate([
 					'alternatif_id' => $scores['alternatif_id'],
 					'kriteria_id' => $scores['kriteria_id'][$a]
-				], [
-					'subkriteria_id' => $scores['subkriteria_id'][$a]
-				]);
+				], ['subkriteria_id' => $scores['subkriteria_id'][$a]]);
 			}
 			$hasil['message'] = 'Nilai Alternatif sudah diinput';
 			return response()->json($hasil);
@@ -168,8 +208,7 @@ class NilaiController extends Controller
 				return to_route('bobotkriteria.index')->withWarning(
 					'Lakukan perbandingan kriteria dulu sebelum ' .
 					'melihat hasil penilaian alternatif. Jika sudah dilakukan, ' .
-					'pastikan hasil perbandingannya konsisten.'
-				);
+					'pastikan hasil perbandingannya konsisten.');
 			}
 			if ($cekbobotskr > 0) {
 				return to_route('bobotsubkriteria.pick')->withWarning(
@@ -218,9 +257,7 @@ class NilaiController extends Controller
 				Nilai::updateOrCreate([
 					'alternatif_id' => $scores['alternatif_id'],
 					'kriteria_id' => $scores['kriteria_id'][$a]
-				], [
-					'subkriteria_id' => $scores['subkriteria_id'][$a]
-				]);
+				], ['subkriteria_id' => $scores['subkriteria_id'][$a]]);
 			}
 			return response()->json(['message' => "Nilai Alternatif sudah diupdate"]);
 		} catch (QueryException $e) {
