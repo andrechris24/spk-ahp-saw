@@ -101,7 +101,7 @@
 @endsection
 @section('js')
 <script type="text/javascript">
-	var dt_alternatif;
+	var dt_alternatif,error;
 	$(document).ready(function() {
 		try {
 			$.fn.dataTable.ext.errMode = "none";
@@ -149,7 +149,7 @@
 				language: {
 					url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
 				}
-					// dom: "Bfrtip",
+				// dom: "Bfrtip",
 					// buttons: [{
 					// 	text: '<i class="bi bi-plus-lg me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Tambah Alternatif</span>',
 					// 	className: "add-new btn",
@@ -185,16 +185,8 @@
 					// 		exportOptions: {
 					// 			columns: [1, 2],
 					// 		}
-					// 	}, {
-					// 		extend: "copy",
-					// 		title: "Alternatif",
-					// 		text: '<i class="bi bi-clipboard me-2"></i> Copy',
-					// 		className: "dropdown-item",
-					// 		exportOptions: {
-					// 			columns: [1, 2]
-					// 		}
 					// 	}],
-					// }]
+				// }]
 			}).on("error.dt", function(e, settings, techNote, message) {
 				errorDT(message, techNote);
 			}).on("preXhr", function() {
@@ -253,12 +245,17 @@
 						});
 					},
 					error: function(xhr, stat, err) {
-						if (xhr.status === 404) dt_alternatif.draw();
+						if (xhr.status === 404) {
+							dt_alternatif.draw();
+							error="Alternatif " + alt_name + " tidak ditemukan.";
+						}else{
+							error="Kesalahan HTTP " + xhr.status + "." + 
+								(xhr.responseJSON.message ?? err);
+						}
 						Swal.fire({
 							icon: "error",
 							title: "Gagal hapus",
-							text: "Kesalahan HTTP " + xhr.status + "." + 
-								(xhr.responseJSON.message ?? err),
+							text: error,
 							customClass: {
 								confirmButton: "btn btn-success",
 							},
@@ -268,7 +265,7 @@
 			} else if (result.dismiss === Swal.DismissReason.cancel) {
 				Swal.fire({
 					title: "Dibatalkan",
-					text: "Alternatif tidak dihapus.",
+					text: "Alternatif "+alt_name+" tidak dihapus.",
 					icon: "warning",
 					customClass: {
 						confirmButton: "btn btn-success"
@@ -289,12 +286,18 @@
 			$("#alter-id").val(data.id);
 			$("#alter-name").val(data.name);
 		}).fail(function(xhr, st, err) {
-			if (xhr.status === 404) dt_alternatif.draw();
+			if (xhr.status === 404) {
+				$("#AlterModal").modal("hide");
+				dt_alternatif.draw();
+				error="Alternatif tidak ditemukan.";
+			}else{
+				error="Kesalahan HTTP " + xhr.status + ". " +
+					(xhr.responseJSON.message ?? err);
+			}
 			Swal.fire({
 				icon: "error",
 				title: "Gagal memuat data",
-				text: "Kesalahan HTTP " + xhr.status + ". " +
-					(xhr.responseJSON.message ?? err),
+				text: error,
 				customClass: {
 					confirmButton: "btn btn-success"
 				}
@@ -308,8 +311,7 @@
 
 	function submitform(event) {
 		var errmsg, actionurl = $("#alter-id").val() == "" ?
-			"{{ route('alternatif.store') }}" :
-			"{{ route('alternatif.update') }}";
+			"{{ route('alternatif.store') }}" : "{{ route('alternatif.update') }}";
 		event.preventDefault();
 		$.ajax({
 			data: $("#AlterForm").serialize(),

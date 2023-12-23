@@ -48,18 +48,18 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 				Route::post('data', 'show')->name('kriteria.data')->block();
 				Route::post('store', 'store')->name('kriteria.store');
 				Route::post('update', 'update')->name('kriteria.update');
-				Route::get('edit/{id}', 'edit')->name('kriteria.edit');
-				Route::delete('del/{id}', 'hapus')->name('kriteria.delete');
+				Route::get('edit/{kr}', 'edit')->name('kriteria.edit');
+				Route::delete('del/{kr}', 'hapus')->name('kriteria.delete');
 			});
 			Route::controller('SubKriteriaController')->prefix('sub')
 				->group(function () {
 					Route::get('/', 'index')->name('subkriteria.index')->block();
 					Route::get('count', 'getCount')->name('subkriteria.count')->block();
 					Route::post('data', 'show')->name('subkriteria.data')->block();
-					Route::get('edit/{id}', 'edit')->name('subkriteria.edit');
+					Route::get('edit/{skr}', 'edit')->name('subkriteria.edit');
 					Route::post('store', 'store')->name('subkriteria.store');
 					Route::post('update', 'update')->name('subkriteria.update');
-					Route::delete('del/{id}', 'destroy')->name('subkriteria.delete');
+					Route::delete('del/{skr}', 'destroy')->name('subkriteria.delete');
 					// Route::resource('sub', 'SubSubKriteriaController')
 					// ->missing(function(Request $req){
 					// 	if($req->wantsJson()) {
@@ -110,10 +110,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 				Route::get('/', 'index')->name('alternatif.index')->block();
 				Route::get('count', 'getCount')->name('alternatif.count')->block();
 				Route::post('data', 'show')->name('alternatif.data')->block();
-				Route::get('edit/{id}', 'edit')->name('alternatif.edit');
+				Route::get('edit/{alt}', 'edit')->name('alternatif.edit');
 				Route::post('store', 'store')->name('alternatif.store');
 				Route::post('update', 'update')->name('alternatif.update');
-				Route::delete('del/{id}', 'hapus')->name('alternatif.delete');
+				Route::delete('del/{alt}', 'hapus')->name('alternatif.delete');
 			});
 		Route::controller('NilaiController')->group(function () {
 			Route::prefix('nilai')->group(function () {

@@ -10,15 +10,12 @@ class Kriteria extends Model
 	use HasFactory;
 	protected $table = 'kriteria';
 	protected $fillable = ['name', 'type', 'desc'];
-	public static array $rules = [
-		'name' => 'required',
-		'type' => 'bail|required|in:cost,benefit'
-	], $message = [
-		'name.required' => 'Nama kriteria harus diisi',
+	public static array $rules = ['name' => 'required',
+		'type' => ['bail','required','in:cost,benefit']], 
+	$message = ['name.required' => 'Nama kriteria harus diisi',
 		'type.required' => 'Tipe Kriteria harus dipilih',
 		'type.in' => 'Tipe Kriteria harus berupa Cost atau Benefit sesuai teori SAW'
-	], $ratio_index = [
-		1 => 0,
+	], $ratio_index = [1 => 0,
 		2 => 0,
 		3 => 0.58,
 		4 => 0.9,
@@ -37,8 +34,7 @@ class Kriteria extends Model
 		17 => 1.61,
 		18 => 1.615,
 		19 => 1.62,
-		20 => 1.625
-	];
+		20 => 1.625];
 	public function subkriteria()
 	{
 		return $this->hasOne(SubKriteria::class, 'kriteria_id');
@@ -47,7 +43,8 @@ class Kriteria extends Model
 	{
 		return $this->hasOne(Nilai::class, 'kriteria_id');
 	}
-	public function kriteriacomp(){
+	public function kriteriacomp()
+	{
 		return $this->hasMany(kriteriaComp::class);
 	}
 }

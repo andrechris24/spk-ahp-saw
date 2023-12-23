@@ -120,7 +120,7 @@
 @endsection
 @section('js')
 <script type="text/javascript">
-	var dt_subkriteria;
+	var dt_subkriteria,error;
 	$(document).ready(function() {
 		try {
 			$.fn.dataTable.ext.errMode = 'none';
@@ -136,14 +136,14 @@
 					type: 'POST'
 				},
 				order: [
-					[3, 'asc']
+					[2, 'asc']
 				],
 				columns: [{
 					data: 'kr_name'
 				}, 
-					// {
-					// 	data: 'id'
-					// }, 
+				// {
+				// 	data: 'id'
+				// }, 
 				{
 					data: 'name'
 				}, {
@@ -165,7 +165,7 @@
 					// 	render: function(data) {
 					// 		return 'S' + data;
 					// 	}
-					// }, 
+				// }, 
 				{
 					targets: 2,
 					render: function(data, type, full) {
@@ -177,7 +177,7 @@
 					render: function(data, type, full) {
 						return ('<div class="btn-group" role="group">' +
 							`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#SubCritModal" title="Edit"><i class="bi bi-pencil-square"></i></button>` +
-							`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}" title="Hapus"><i class="bi bi-trash3-fill"></i></button>` +
+							`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}" data-kr="${full['kr_name']}" title="Hapus"><i class="bi bi-trash3-fill"></i></button>` +
 							'</div>');
 					}
 				}],
@@ -220,16 +220,8 @@
 					// 		exportOptions: {
 					// 			columns: [1, 2, 3, 4]
 					// 		}
-					// 	}, {
-					// 		extend: 'copy',
-					// 		title: 'Sub Kriteria',
-					// 		text: '<i class="bi bi-clipboard me-2"></i> Copy',
-					// 		className: 'dropdown-item',
-					// 		exportOptions: {
-					// 			columns: [1, 2, 3, 4]
-					// 		}
 					// 	}]
-					// }]
+				// }]
 			}).on('error.dt', function(e, settings, techNote, message) {
 				errorDT(message, techNote);
 			}).on('preXhr', function() {
@@ -251,11 +243,12 @@
 			initError(dterr.message);
 		}
 	}).on('click', '.delete-record', function() {
-		var sub_id = $(this).data('id'), sub_name = $(this).data('name');
+		var sub_id = $(this).data('id'), sub_name = $(this).data('name'),
+			sub_kr=$(this).data('kr');
 
 		Swal.fire({
 			title: 'Hapus sub kriteria?',
-			text: "Anda akan menghapus sub kriteria " + sub_name + ".",
+			text: "Anda akan menghapus sub kriteria " + sub_name + " ("+sub_kr+").",
 			icon: 'question',
 			showCancelButton: true,
 			confirmButtonText: 'Ya',
@@ -281,19 +274,24 @@
 						Swal.fire({
 							icon: 'success',
 							title: 'Dihapus',
-							text: data.message,
+							text: 'Sub Kriteria '+sub_name+' ('+sub_kr+') sudah dihapus.',
 							customClass: {
 								confirmButton: 'btn btn-success'
 							}
 						});
 					},
 					error: function(xhr, stat, err) {
-						if (xhr.status === 404) dt_subkriteria.draw();
+						if (xhr.status === 404) {
+							dt_subkriteria.draw();
+							error='Sub Kriteria '+sub_name+' ('+sub_kr+') tidak ditemukan.';
+						}else{
+							error='Kesalahan HTTP ' + xhr.status + '. ' + 
+								(xhr.responseJSON.message ?? err);
+						}
 						Swal.fire({
 							icon: 'error',
 							title: 'Gagal hapus',
-							text: 'Kesalahan HTTP ' + xhr.status + '. ' + 
-								(xhr.responseJSON.message ?? err),
+							text: error,
 							customClass: {
 								confirmButton: 'btn btn-success'
 							}
@@ -303,7 +301,7 @@
 			} else if (result.dismiss === Swal.DismissReason.cancel) {
 				Swal.fire({
 					title: 'Dibatalkan',
-					text: 'Sub Kriteria tidak dihapus.',
+					text: 'Sub Kriteria '+sub_name+' ('+sub_kr+') tidak dihapus.',
 					icon: 'warning',
 					customClass: {
 						confirmButton: 'btn btn-success'
@@ -325,12 +323,18 @@
 			$('#nama-sub').val(data.name);
 			$('#kriteria-select').val(data.kriteria_id);
 		}).fail(function(xhr, stat, err) {
-			if (xhr.status === 404) dt_subkriteria.draw();
+			if (xhr.status === 404) {
+				$('#SubCritModal').modal('hide');
+				dt_subkriteria.draw();
+				error="Sub Kriteria tidak ditemukan.";
+			}else{
+				error='Kesalahan HTTP ' + xhr.status + '. ' +
+					(xhr.responseJSON.message ?? err);
+			}
 			Swal.fire({
 				icon: 'error',
 				title: 'Kesalahan',
-				text: 'Kesalahan HTTP ' + xhr.status + '. ' +
-					(xhr.responseJSON.message ?? err),
+				text: error,
 				customClass: {
 					confirmButton: 'btn btn-success'
 				}

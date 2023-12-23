@@ -32,9 +32,9 @@
 		</div>
 	</div>
 	<div class="form-group position-relative has-icon-left mb-4">
-		<input type="password" name="password_confirmation" id="confirm-password" placeholder="Konfirmasi Password"
-			maxlength="20" oninput="checkpassword()" class="form-control form-control-xl 
-				@error('password_confirmation') is-invalid @enderror " required />
+		<input type="password" name="password_confirmation" id="confirm-password" maxlength="20"
+		placeholder="Konfirmasi Password" oninput="checkpassword()" class="form-control 
+		form-control-xl  @error('password_confirmation') is-invalid @enderror " required />
 		<div class="form-control-icon"><i class="bi bi-shield-lock"></i></div>
 		<div class="invalid-feedback">
 			@error('password_confirmation') {{ $message }}

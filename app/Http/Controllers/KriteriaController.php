@@ -21,7 +21,7 @@ class KriteriaController extends Controller
 			if (SubKriteria::where('kriteria_id', $kr->id)->count() === 0)
 				$unused++;
 		}
-		return response()->json(['total' => $criterias->count(),
+		return response()->json(['total' => $criterias->count(), 
 			'unused' => $unused,
 			'duplicates' => $criterias->diff($critUnique)->count()]);
 	}
@@ -57,41 +57,23 @@ class KriteriaController extends Controller
 		$request->validate(Kriteria::$rules, Kriteria::$message);
 		$req = $request->all();
 		try {
-			Kriteria::updateOrCreate(['id' => $req['id']], [
-				'name' => $req['name'], 'type' => $req['type'], 'desc' => $req['desc']
-			]);
+			Kriteria::updateOrCreate(['id' => $req['id']], 
+				['name' => $req['name'], 'type' => $req['type'], 'desc' => $req['desc']]);
 			return response()->json(['message' => 'Kriteria sudah diupdate']);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->errorInfo[2]], 500);
 		}
 	}
-	public function edit($id)
+	public function edit(Kriteria $kr)
 	{
-		try {
-			$kriteria = Kriteria::findOrFail($id);
-			return response()->json($kriteria);
-		} catch (QueryException $e) {
-			Log::error($e);
-			return response()->json(["message" => $e->errorInfo[2]], 500);
-		} catch (ModelNotFoundException) {
-			return response()->json([
-				'message' => 'Kriteria yang Anda cari tidak ditemukan.'
-			], 404);
-		}
+		return response()->json($kr);
 	}
-	public function hapus($id)
+	public function hapus(Kriteria $kr)
 	{
-		try {
-			Kriteria::findOrFail($id)->delete();
-			$model = new Kriteria;
-			HomeController::refreshDB($model);
-			return response()->json(['message' => 'Kriteria sudah dihapus.']);
-		} catch (ModelNotFoundException) {
-			return response()->json(['message' => 'Kriteria tidak ditemukan.'], 404);
-		} catch (QueryException $e) {
-			Log::error($e);
-			return response()->json(['message' => $e->errorInfo[2]], 500);
-		}
+		$kr->delete();
+		$model = new Kriteria;
+		HomeController::refreshDB($model);
+		return response()->json(['message' => 'Kriteria sudah dihapus.']);
 	}
 }

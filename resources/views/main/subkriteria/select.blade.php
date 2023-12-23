@@ -56,9 +56,8 @@
 				}, {
 					targets: 2,
 					render: function(data) {
-						if (data) {
+						if (data)
 							return '<small><span class="badge bg-success">Perbandingan sudah dilakukan</span></small>';
-						}
 						return '<small><span class="badge bg-danger">Perbandingan belum dilakukan atau tidak lengkap</span></small>';
 					}
 				}, { //Aksi

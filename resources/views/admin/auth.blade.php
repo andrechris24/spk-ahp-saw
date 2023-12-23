@@ -4,9 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>
-		@yield('title') | Sistem Pendukung Keputusan metode AHP & SAW
-	</title>
+	<title>@yield('title') | Sistem Pendukung Keputusan metode AHP & SAW</title>
 	<link rel="stylesheet" href="@yield('auth-css')" />
 	<link rel="stylesheet" href="{{ asset('assets/compiled/css/app.css') }}" />
 	<link rel="stylesheet" href="{{ asset('assets/compiled/css/app-dark.css') }}" />

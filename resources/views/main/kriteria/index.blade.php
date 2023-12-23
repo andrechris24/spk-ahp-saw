@@ -141,7 +141,7 @@
 @endsection
 @section('js')
 <script type="text/javascript">
-	var dt_kriteria;
+	var dt_kriteria,error;
 	$(document).ready(function() {
 		try {
 			$.fn.dataTable.ext.errMode = 'none';
@@ -238,16 +238,8 @@
 					// 		exportOptions: {
 					// 			columns: [1, 2, 3, 4, 5]
 					// 		}
-					// 	}, {
-					// 		extend: 'copy',
-					// 		title: 'Kriteria',
-					// 		text: '<i class="bi bi-clipboard me-2"></i> Copy',
-					// 		className: 'dropdown-item',
-					// 		exportOptions: {
-					// 			columns: [1, 2, 3, 4, 5]
-					// 		}
 					// 	}]
-					// }]
+				// }]
 			}).on('error.dt', function(e, settings, techNote, message) {
 				errorDT(message, techNote);
 			}).on('draw', setTableColor).on('preXhr', function() {
@@ -299,19 +291,24 @@
 						Swal.fire({
 							icon: 'success',
 							title: 'Dihapus',
-							text: data.message,
+							text: 'Kriteria '+kr_name+' sudah dihapus.',
 							customClass: {
 								confirmButton: 'btn btn-success'
 							}
 						});
 					},
 					error: function(xhr, stat, err) {
-						if (xhr.status === 404) dt_kriteria.draw();
+						if (xhr.status === 404) {
+							dt_kriteria.draw();
+							error='Kriteria '+kr_name+' tidak ditemukan.';
+						}else{
+							error='Kesalahan HTTP ' + xhr.status + '. ' + 
+								(xhr.responseJSON.message ?? err);
+						}
 						Swal.fire({
 							icon: 'error',
 							title: 'Gagal hapus',
-							text: 'Kesalahan HTTP ' + xhr.status + '. ' + 
-								(xhr.responseJSON.message ?? err),
+							text: error,
 							customClass: {
 								confirmButton: 'btn btn-success'
 							}
@@ -321,7 +318,7 @@
 			} else if (result.dismiss === Swal.DismissReason.cancel) {
 				Swal.fire({
 					title: 'Dibatalkan',
-					text: 'Kriteria tidak dihapus.',
+					text: 'Kriteria '+kr_name+' tidak dihapus.',
 					icon: 'warning',
 					customClass: {
 						confirmButton: 'btn btn-success'
@@ -344,12 +341,18 @@
 			$('#tipe-kriteria').val(data.type);
 			$('#deskripsi').val(data.desc);
 		}).fail(function(xhr, stat, err) {
-			if (xhr.status === 404) dt_kriteria.draw();
+			if (xhr.status === 404) {
+				$('#CritModal').modal('hide');
+				dt_kriteria.draw();
+				error="Kriteria tidak ditemukan.";
+			}else{
+				error='Kesalahan HTTP ' + xhr.status + '. ' +
+					(xhr.responseJSON.message ?? err);
+			}
 			Swal.fire({
 				icon: 'error',
 				title: 'Kesalahan',
-				text: 'Kesalahan HTTP ' + xhr.status + '. ' +
-					(xhr.responseJSON.message ?? err),
+				text: error,
 				customClass: {
 					confirmButton: 'btn btn-success'
 				}

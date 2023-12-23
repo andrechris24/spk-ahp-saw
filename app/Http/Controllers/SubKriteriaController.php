@@ -31,10 +31,8 @@ class SubKriteriaController extends Controller
 		foreach ($criterias as $kr) {
 			$totalsub[] = SubKriteria::where('kriteria_id', $kr->id)->count();
 		}
-		return response()->json([
-			'total' => $subcriterias->count(),
-			'max' => collect($totalsub)->max()
-		]);
+		return response()->json(['total' => $subcriterias->count(),
+			'max' => collect($totalsub)->max()]);
 	}
 	public function index()
 	{
@@ -87,40 +85,17 @@ class SubKriteriaController extends Controller
 			return response()->json(['message' => $e->errorInfo[2]], 500);
 		}
 	}
-	public function edit($id)
+	public function edit(SubKriteria $skr)
 	{
-		try {
-			$sub = SubKriteria::findOrFail($id);
-			return response()->json($sub);
-		} catch (QueryException $e) {
-			Log::error($e);
-			return response()->json(['message' => $e->errorInfo[2]], 500);
-		} catch (ModelNotFoundException) {
-			return response()->json([
-				"message" => 'Sub Kriteria yang Anda cari tidak ditemukan.'
-			], 404);
-		}
+		return response()->json($skr);
 	}
-	public function destroy($id)
+	public function destroy(SubKriteria $skr)
 	{
-		try {
-			$cek = SubKriteria::findOrFail($id);
-			$namakriteria = $cek->kriteria->name;
-			$cek->delete();
-			if (!SubKriteriaComp::exists())
-				SubKriteriaComp::truncate();
-			$model = new SubKriteria;
-			HomeController::refreshDB($model);
-			return response()->json([
-				'message' => "Sub Kriteria $namakriteria sudah dihapus."
-			]);
-		} catch (ModelNotFoundException) {
-			return response()->json([
-				'message' => 'Sub Kriteria tidak ditemukan.'
-			], 404);
-		} catch (QueryException $sql) {
-			Log::error($sql);
-			return response()->json(['message' => $sql->errorInfo[2]], 500);
-		}
+		$skr->delete();
+		if (!SubKriteriaComp::exists())
+			SubKriteriaComp::truncate();
+		$model = new SubKriteria;
+		HomeController::refreshDB($model);
+		return response()->json(['message' => "Sub Kriteria sudah dihapus."]);
 	}
 }

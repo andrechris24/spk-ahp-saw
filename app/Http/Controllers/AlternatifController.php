@@ -49,32 +49,15 @@ class AlternatifController extends Controller
 			return response()->json(['message' => $e->errorInfo[2]], 500);
 		}
 	}
-	public function edit($id)
+	public function edit(Alternatif $alt)
 	{
-		try {
-			$alter = Alternatif::findOrFail($id);
-			return response()->json($alter);
-		} catch (QueryException $e) {
-			Log::error($e);
-			return response()->json(["message" => $e->errorInfo[2]], 500);
-		} catch (ModelNotFoundException) {
-			return response()->json([
-				'message' => 'Alternatif yang Anda cari tidak ditemukan.'
-			], 404);
-		}
+		return response()->json($alt);
 	}
-	public function hapus($id)
+	public function hapus(Alternatif $alt)
 	{
-		try {
-			Alternatif::findOrFail($id)->delete();
-			$model = new Alternatif;
-			HomeController::refreshDB($model);
-			return response()->json(['message' => 'Alternatif sudah dihapus']);
-		} catch (ModelNotFoundException) {
-			return response()->json(['message' => 'Alternatif tidak ditemukan.'], 404);
-		} catch (QueryException $sql) {
-			Log::error($sql);
-			return response()->json(['message' => $sql->errorInfo[2]], 500);
-		}
+		$alt->delete();
+		$model = new Alternatif;
+		HomeController::refreshDB($model);
+		return response()->json(['message' => 'Alternatif sudah dihapus']);
 	}
 }

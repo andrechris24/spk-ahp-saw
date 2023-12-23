@@ -10,15 +10,12 @@ class SubKriteria extends Model
 	use HasFactory;
 	protected $table = 'subkriteria';
 	protected $fillable = ['name', 'kriteria_id'];
-	public static array $rules = [
-		'name' => 'required',
-		'kriteria_id' => 'bail|required|integer|exists:kriteria,id'
-	], $message = [
-		'name.required' => 'Nama sub kriteria harus diisi',
+	public static array $rules = ['name' => 'required',
+		'kriteria_id' => ['bail','required','integer','exists:kriteria,id']], 
+	$message = ['name.required' => 'Nama sub kriteria harus diisi',
 		'kriteria_id.required' => 'Kriteria harus dipilih',
 		'kriteria_id.integer' => 'Kriteria tidak valid',
-		'kriteria_id.exists' => 'Kriteria tidak ditemukan'
-	];
+		'kriteria_id.exists' => 'Kriteria tidak ditemukan'];
 	public function kriteria()
 	{
 		return $this->belongsTo(Kriteria::class, 'kriteria_id');
@@ -27,7 +24,8 @@ class SubKriteria extends Model
 	{
 		return $this->hasOne(Nilai::class, 'subkriteria_id');
 	}
-	public function subkriteriacomp(){
+	public function subkriteriacomp()
+	{
 		return $this->hasMany(SubKriteriaComp::class);
 	}
 }

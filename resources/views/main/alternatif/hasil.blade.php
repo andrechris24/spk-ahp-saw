@@ -126,9 +126,7 @@ $totalalts = count($data['alternatif']);
 	</div>
 </div>
 <div class="card">
-	<div class="card-header">
-		<h4 class="card-title">Ranking</h4>
-	</div>
+	<div class="card-header"><h4 class="card-title">Ranking</h4></div>
 	<div class="card-body">
 		<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#RankModal"
 			id="spare-button">

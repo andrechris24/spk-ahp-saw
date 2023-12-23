@@ -14,9 +14,8 @@ class KriteriaCompController extends Controller
 	{
 		try {
 			return KriteriaComp::join("kriteria", "kriteria_banding.kriteria1",
-				"kriteria.id"
-			)->select("kriteria_banding.kriteria1 as idkriteria", "kriteria.id",
-					"kriteria.name")->groupBy("kriteria1", 'name')->get();
+				"kriteria.id")->select("kriteria_banding.kriteria1 as idkriteria", 
+				"kriteria.id", "kriteria.name")->groupBy("kriteria1", 'name')->get();
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil perbandingan:')
@@ -58,8 +57,8 @@ class KriteriaCompController extends Controller
 				$array[$counter]["idkolom"] = $crit[$b]->id;
 				$array[$counter]["namakolom"] = $crit[$b]->name;
 				$value[$counter] = KriteriaComp::select('nilai')
-					->where('kriteria1', $crit[$a]->id)
-					->where('kriteria2', $crit[$b]->id)->firstOr(function () {
+					->where('kriteria1', $crit[$a]->id)->where('kriteria2', $crit[$b]->id)
+					->firstOr(function () {
 						return ['nilai' => 0]; //jika tidak ada
 					});
 				$counter++;
@@ -159,8 +158,7 @@ class KriteriaCompController extends Controller
 				for ($m = 0; $m < count($array_filter); $m++) {
 					$array_normalisasi[$a] = [
 						"nilai" => $matriks_perbandingan[$a]['nilai'] / $array_jumlah[$m],
-						"kode_kriteria" => $kriteria[$i]->idkriteria
-					];
+						"kode_kriteria" => $kriteria[$i]->idkriteria];
 					$a++;
 				}
 				$array_filter = [];
@@ -213,18 +211,16 @@ class KriteriaCompController extends Controller
 				}
 			} else
 				Kriteria::where('bobot', '<>', 0.00000)->update(['bobot' => 0.00000]);
-			$data = [
-				"kriteria" => $kriteria,
+			$data = ["kriteria" => $kriteria,
 				"matriks_perbandingan" => $matriks_perbandingan,
-				"matriks_awal" => $matriks_awal,
+				"matriks_awal" => $matriks_awal, 
 				"average_cm" => $average_cm,
 				"bobot_prioritas" => $array_BobotPrioritas,
-				"matriks_normalisasi" => $array_normalisasi,
+				"matriks_normalisasi" => $array_normalisasi, 
 				"jumlah" => $array_jumlah,
-				"cm" => $array_CM,
-				"ci" => $total_ci,
-				"result" => $result
-			];
+				"cm" => $array_CM, 
+				"ci" => $total_ci, 
+				"result" => $result];
 			return view('main.kriteria.hasil', compact('data'));
 		} catch (QueryException $e) {
 			Log::error($e);

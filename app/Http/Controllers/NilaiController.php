@@ -63,15 +63,11 @@ class NilaiController extends Controller
 				foreach ($kriteria as $kr) {
 					$subkriteria[Str::slug($kr->name, '_')] = '';
 				}
-				$nilaialt = Nilai::select(
-					'nilai.*',
-					'alternatif.name',
-					'kriteria.name',
-					'subkriteria.name'
-				)->leftJoin('alternatif','alternatif.id','nilai.alternatif_id')
-				->leftJoin('kriteria', 'kriteria.id', 'nilai.kriteria_id')
-					->leftJoin('subkriteria', 'subkriteria.id', 'nilai.subkriteria_id')
-					->where('alternatif_id', $alt->id)->get();
+				$nilaialt = Nilai::select('nilai.*', 'alternatif.name', 'kriteria.name',
+					'subkriteria.name')->leftJoin('alternatif', 'alternatif.id', 
+					'nilai.alternatif_id')->leftJoin('kriteria', 'kriteria.id', 
+					'nilai.kriteria_id')->leftJoin('subkriteria', 'subkriteria.id', 
+					'nilai.subkriteria_id')->where('alternatif_id', $alt->id)->get();
 				if (count($nilaialt) > 0) {
 					foreach ($nilaialt as $skor) {
 						$subkriteria[Str::slug($skor->kriteria->name, '_')] =
@@ -81,12 +77,8 @@ class NilaiController extends Controller
 				}
 			})->toJson();
 	}
-	// public function test(Request $request)
-	// {
-	// 	$columns = [
-	// 		0 => 'id',
-	// 		1 => 'name'
-	// 	];
+	// public function test(Request $request) {
+	// 	$columns = [0 => 'id',1 => 'name'];
 	// 	$kriterias=Kriteria::get();
 	// 	foreach($kriterias as $key=>$kr){
 	// 		$columns[$key+2]=Str::slug($kr->name,'_');
@@ -99,14 +91,12 @@ class NilaiController extends Controller
 	// 	$dir = $request->input('order.0.dir');
 	// 	if($request->input('order.0.column')>1){
 	// 		$alts=Alternatif::join('nilai','nilai.alternatif_id','alternatif.id')
-	// 			->offset($start)->limit($limit)
-	// 			->orderBy('nilai.kriteria_id',$dir)->get();
+	// 		->offset($start)->limit($limit)->orderBy('nilai.kriteria_id',$dir)->get();
 	// 	}else{
 	// 		$alts = Alternatif::offset($start)->limit($limit)->orderBy($order, $dir)
 	// 			->get();
 	// 	}
 	// 	$data = [];
-		
 	// 	if (!empty($alts)) {
 	// 		// providing a dummy id instead of database ids
 	// 		$ids = $start;
@@ -123,12 +113,9 @@ class NilaiController extends Controller
 	// 			$data[] = $nestedData;
 	// 		}
 	// 	}
-	// 	return response()->json([
-	// 		'draw' => intval($request->input('draw')),
+	// 	return response()->json(['draw' => intval($request->input('draw')),
 	// 		'recordsTotal' => intval($totalData),
-	// 		'recordsFiltered' => intval($totalFiltered),
-	// 		'data' => $data
-	// 	]);
+	// 		'recordsFiltered' => intval($totalFiltered), 'data' => $data]);
 	// }
 	public function getCount()
 	{
@@ -156,11 +143,9 @@ class NilaiController extends Controller
 			return to_route('alternatif.index')
 				->withWarning('Tambahkan alternatif dulu sebelum melakukan penilaian.');
 		}
-		$data = [
-			'kriteria' => $kriteria,
+		$data = ['kriteria' => $kriteria,
 			'subkriteria' => $subkriteria,
-			'alternatif' => $alternatif
-		];
+			'alternatif' => $alternatif];
 		return view('main.alternatif.nilai', compact('data'));
 	}
 	public function store(Request $request)
@@ -195,13 +180,10 @@ class NilaiController extends Controller
 			$alt = Alternatif::get();
 			$kr = Kriteria::get();
 			$skr = SubKriteria::get();
-			$hasil = Nilai::leftJoin(
-				'alternatif',
-				'alternatif.id',
-				'nilai.alternatif_id'
-			)->leftJoin('kriteria', 'kriteria.id', 'nilai.kriteria_id')
-				->leftJoin('subkriteria', 'subkriteria.id', 'nilai.subkriteria_id')
-				->get();
+			$hasil = Nilai::leftJoin('alternatif', 'alternatif.id',
+				'nilai.alternatif_id')->leftJoin('kriteria', 'kriteria.id', 
+				'nilai.kriteria_id')->leftJoin('subkriteria', 'subkriteria.id', 
+				'nilai.subkriteria_id')->get();
 			$cekbobotkr = Kriteria::where('bobot', 0.00000)->count();
 			$cekbobotskr = SubKriteria::where('bobot', 0.00000)->count();
 			if ($cekbobotkr > 0) {
@@ -299,11 +281,9 @@ class NilaiController extends Controller
 				$data['skor'][$index] = $hasil->skor;
 			}
 			$highest = Hasil::orderBy('skor', 'desc')->first();
-			return response()->json([
-				'result' => $data,
+			return response()->json(['result' => $data,
 				'score' => $highest->skor,
-				'nama' => $highest->alternatif->name
-			]);
+				'nama' => $highest->alternatif->name]);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(["message" => $e->errorInfo[2]], 500);

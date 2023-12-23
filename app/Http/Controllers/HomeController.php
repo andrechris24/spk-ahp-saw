@@ -50,10 +50,10 @@ class HomeController extends Controller
 	{
 		try {
 			$req = $request->validate([
-				'name' => 'bail|required|min:5|regex:/^[\pL\s\-]+$/u',
-				'email' => 'bail|required|email|unique:users,email,' . Auth::id(),
-				'current_password' => 'bail|required|current_password',
-				'password' => 'nullable|bail|confirmed|between:8,20',
+				'name' => ['bail','required','min:5','regex:/^[\pL\s\-]+$/u'],
+				'email' => ['bail','required','email','unique:users,email,' . Auth::id()],
+				'current_password' => ['bail','required','current_password'],
+				'password' => ['nullable','bail','confirmed','between:8,20'],
 				'password_confirmation' => 'required_with:password'
 			], User::$message);
 			if (empty($req['password'])) {
@@ -73,13 +73,13 @@ class HomeController extends Controller
 	public function delAkun(Request $request)
 	{
 		try {
-			$req = $request->validate(User::$delakunrule);
+			$request->validate(User::$delakunrule);
 			User::findOrFail(Auth::id())->delete();
 			Auth::logout();
 			Session::invalidate();
 			Session::regenerateToken();
 			return response()->json([
-				'message' => 'Terima kasih Anda telah menggunakan Aplikasi Sistem Pendukung Keputusan.'
+				'message' => 'Terima kasih Anda telah menggunakan Aplikasi Sistem Pendukung Keputusan. Mengalihkan ke Halaman Login.'
 			]);
 		} catch (ModelNotFoundException) {
 			return response()->json(['message' => 'Akun tidak ditemukan.'], 404);

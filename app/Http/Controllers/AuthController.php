@@ -93,16 +93,15 @@ class AuthController extends Controller
 		} catch (TransportException $err) {
 			Log::error($err);
 			DB::table('password_resets')->where('email', $request->email)->delete();
-			return back()->withInput()
-				->withError("Gagal mengirim link reset password: " . $err->getMessage());
+			return back()->withInput()->withError(
+				"Gagal mengirim link reset password: " . $err->getMessage());
 		} catch (QueryException $sql) {
 			Log::error($sql);
-			return back()->withInput()
-				->withError("Gagal membuat token reset password: " .
-					"Kesalahan SQLState #" . $sql->errorInfo[0]);
+			return back()->withInput()->withError("Gagal membuat token reset password: " .
+				"Kesalahan SQLState #" . $sql->errorInfo[0]);
 		}
-		return back()
-			->withError('Gagal mengirim link reset password: Kesalahan tidak diketahui');
+		return back()->withError(
+			'Gagal mengirim link reset password: Kesalahan tidak diketahui');
 	}
 	public function showResetPasswordForm($token)
 	{
@@ -113,10 +112,8 @@ class AuthController extends Controller
 				->firstOrFail();
 			if (!Hash::check($token, $enctoken->token))
 				return to_route('login')->withError(__('passwords.token'));
-			return view(
-				'admin.reset-password',
-				['token' => $token, 'email' => $_GET['email']]
-			);
+			return view('admin.reset-password',
+				['token' => $token, 'email' => $_GET['email']]);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return to_route('password.request')
@@ -124,8 +121,7 @@ class AuthController extends Controller
 		} catch (ModelNotFoundException) {
 			return to_route('password.request')->withError(
 				'Token tidak valid atau Link sudah kedaluarsa. ' .
-				'Silahkan minta reset password lagi.'
-			);
+				'Silahkan minta reset password lagi.');
 		}
 	}
 	public function submitResetPasswordForm(Request $request)

@@ -128,8 +128,7 @@
 <div class="card">
 	<div class="card-header">Daftar Nilai Alternatif</div>
 	<div class="card-body">
-		{{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#NilaiAlterModal"
-			id="spare-button">
+		{{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#NilaiAlterModal">
 			<i class="bi bi-plus-lg"></i> Tambah Nilai Alternatif
 		</button> --}}
 		<div class="spinner-grow text-danger d-none" role="status">
@@ -186,11 +185,8 @@
 					orderable: false,
 					targets: -1,
 					render: function(data, type, full) {
-						if (full['subkriteria'] === null) {
-							return (
-								`<button class="btn btn-sm btn-info" onclick="setName(${data})" data-bs-toggle="modal" data-bs-target="#NilaiAlterModal" title="Tambah"><i class="bi bi-plus-lg"></i></button>`
-							);
-						}
+						if (full['subkriteria'] === null)
+							return `<button class="btn btn-sm btn-info" onclick="setName(${data})" data-bs-toggle="modal" data-bs-target="#NilaiAlterModal" title="Tambah"><i class="bi bi-plus-lg"></i></button>`;
 						return ('<div class="btn-group" role="group">' +
 							`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#NilaiAlterModal" title="Edit"><i class="bi bi-pencil-square"></i></button>` +
 							`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}" title="Hapus"><i class="bi bi-trash3-fill"></i></button>` +
@@ -210,7 +206,7 @@
 				language: {
 					url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
 				}
-					// dom: 'Bfrtip',
+				// dom: 'Bfrtip',
 					// buttons: [{
 					// 	text: '<i class="bi bi-plus-lg me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Tambah Nilai Alternatif</span>',
 					// 	className: 'add-new btn',
@@ -246,16 +242,8 @@
 					// 		exportOptions: {
 					// 			columns: 'th:not(:last-child)'
 					// 		}
-					// 	}, {
-					// 		extend: 'copy',
-					// 		title: 'Nilai Alternatif',
-					// 		text: '<i class="bi bi-clipboard me-2"></i> Copy',
-					// 		className: 'dropdown-item',
-					// 		exportOptions: {
-					// 			columns: 'th:not(:last-child)'
-					// 		}
 					// 	}]
-					// }]
+				// }]
 			}).on('error.dt', function(e, settings, techNote, message) {
 				errorDT(message, techNote);
 			}).on("preXhr", function() {
@@ -312,12 +300,17 @@
 						});
 					},
 					error: function(xhr, stat, err) {
-						if (xhr.status === 404) nilaialtdt.draw();
+						if (xhr.status === 404) {
+							nilaialtdt.draw();
+							errmsg='Nilai Alternatif ' + score_name + ' tidak ditemukan';
+						}else{
+							errmsg='Kesalahan HTTP ' + xhr.status + '. ' + 
+								(xhr.responseJSON.message ?? err);
+						}
 						Swal.fire({
 							icon: 'error',
 							title: 'Gagal hapus',
-							text: 'Kesalahan HTTP ' + xhr.status + '. ' + 
-								(xhr.responseJSON.message ?? err),
+							text: errmsg,
 							customClass: {
 								confirmButton: 'btn btn-success'
 							}
@@ -327,7 +320,7 @@
 			} else if (result.dismiss === Swal.DismissReason.cancel) {
 				Swal.fire({
 					title: 'Dibatalkan',
-					text: 'Nilai Alternatif tidak dihapus.',
+					text: 'Nilai Alternatif '+score_name+' tidak dihapus.',
 					icon: 'warning',
 					customClass: {
 						confirmButton: 'btn btn-success'
@@ -352,7 +345,10 @@
 					data.subkriteria.{{ Str::of($kr->name)->slug('_') }});
 			@endforeach
 		}).fail(function(xhr, st, err) {
-			if (xhr.status === 404) nilaialtdt.draw();
+			if (xhr.status === 404) {
+				nilaialtdt.draw();
+				$('#NilaiAlterModal').modal('hide');
+			}
 			Swal.fire({
 				icon: 'error',
 				title: 'Kesalahan',
@@ -408,9 +404,8 @@
 						$('#alternatif-value').addClass('is-invalid');
 						$('#alternatif-error').text(xhr.responseJSON.errors.alternatif_id);
 					}
-					if (typeof xhr.responseJSON.errors.subkriteria_id !== "undefined") {
+					if (typeof xhr.responseJSON.errors.subkriteria_id !== "undefined")
 						console.warn(xhr.responseJSON.errors.subkriteria_id);
-					}
 					errmsg = xhr.responseJSON.message;
 				} else {
 					errmsg = 'Kesalahan HTTP ' + xhr.status + '. ' +

@@ -10,20 +10,16 @@ class Nilai extends Model
 	use HasFactory;
 	protected $table = "nilai";
 	protected $fillable = ['alternatif_id', 'kriteria_id', 'subkriteria_id'];
-	public static array $rules = [
-		'alternatif_id' => 'bail|required|integer',
-		'kriteria_id' => 'required',
-		'kriteria_id.*' => 'bail|required|integer',
+	public static array $rules = ['alternatif_id' => ['bail','required','integer'],
+		'kriteria_id' => 'required', 'kriteria_id.*' => ['bail','required','integer'],
 		'subkriteria_id' => 'required',
-		'subkriteria_id.*' => 'bail|required|integer'
-	], $message = [
-		'alternatif_id.required' => 'Alternatif harus dipilih',
+		'subkriteria_id.*' => ['bail','required','integer']], 
+	$message = ['alternatif_id.required' => 'Alternatif harus dipilih',
 		'alternatif_id.integer' => 'Alternatif tidak valid',
 		'kriteria_id.*.required' => 'Kriteria tidak ditemukan',
 		'kriteria_id.*.integer' => 'Kriteria tidak valid',
 		'subkriteria_id.*.required' => 'Sub kriteria :attr harus dipilih',
-		'subkriteria_id.*.integer' => 'Sub kriteria :attr tidak valid'
-	];
+		'subkriteria_id.*.integer' => 'Sub kriteria :attr tidak valid'];
 	public function alternatif()
 	{
 		return $this->belongsTo(Alternatif::class, 'alternatif_id');

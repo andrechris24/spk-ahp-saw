@@ -165,11 +165,11 @@ $title = $subkriteriacomp->nama_kriteria($kriteria_id);
 						<span @class([ 'text-warning'=> !is_numeric($data['result']),
 							'text-danger' => !$consistent,
 							'text-success' => is_numeric($data['result']) && $data['result'] <= 0.1])>
-								@if (!is_numeric($data['result'])) <b>Tidak bisa dievaluasi</b>
-								@elseif ($consistent) <b>Konsisten</b>
-								@else
-								<b>Tidak Konsisten</b>, mohon untuk menginput ulang perbandingan!
-								@endif
+							@if (!is_numeric($data['result'])) <b>Tidak bisa dievaluasi</b>
+							@elseif ($consistent) <b>Konsisten</b>
+							@else
+							<b>Tidak Konsisten</b>, mohon untuk menginput ulang perbandingan!
+							@endif
 						</span>
 					</td>
 				</tr>
