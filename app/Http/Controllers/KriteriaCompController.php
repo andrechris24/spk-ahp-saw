@@ -14,8 +14,8 @@ class KriteriaCompController extends Controller
 	{
 		try {
 			return KriteriaComp::join("kriteria", "kriteria_banding.kriteria1",
-				"kriteria.id")->select("kriteria_banding.kriteria1 as idkriteria", 
-				"kriteria.id", "kriteria.name")->groupBy("kriteria1", 'name')->get();
+				"kriteria.id")->select("kriteria_banding.kriteria1 as idkriteria",
+					"kriteria.id", "kriteria.name")->groupBy("kriteria1", 'name')->get();
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil perbandingan:')
@@ -213,13 +213,13 @@ class KriteriaCompController extends Controller
 				Kriteria::where('bobot', '<>', 0.00000)->update(['bobot' => 0.00000]);
 			$data = ["kriteria" => $kriteria,
 				"matriks_perbandingan" => $matriks_perbandingan,
-				"matriks_awal" => $matriks_awal, 
+				"matriks_awal" => $matriks_awal,
 				"average_cm" => $average_cm,
 				"bobot_prioritas" => $array_BobotPrioritas,
-				"matriks_normalisasi" => $array_normalisasi, 
+				"matriks_normalisasi" => $array_normalisasi,
 				"jumlah" => $array_jumlah,
-				"cm" => $array_CM, 
-				"ci" => $total_ci, 
+				"cm" => $array_CM,
+				"ci" => $total_ci,
 				"result" => $result];
 			return view('main.kriteria.hasil', compact('data'));
 		} catch (QueryException $e) {

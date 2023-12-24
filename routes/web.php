@@ -60,19 +60,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 					Route::post('store', 'store')->name('subkriteria.store');
 					Route::post('update', 'update')->name('subkriteria.update');
 					Route::delete('del/{skr}', 'destroy')->name('subkriteria.delete');
-					// Route::resource('sub', 'SubSubKriteriaController')
-					// ->missing(function(Request $req){
-					// 	if($req->wantsJson()) {
-					// 		return response()->json([
-					// 			'message' => 'Sub-sub Kriteria tidak ditemukan.'
-					// 		], 404);
-					// 	}
-					// 	return back()->withError('Gagal: Sub-sub Kriteria tidak ditemukan');
-					// });
-					// Route::get('count', 'SubSubKriteriaController@getCount')
-					// ->name('subsubkriteria.count')->block();
-					// Route::post('data', 'SubSubKriteriaController@show')
-					// ->name('subsubkriteria.data')->block();
 				});
 		});
 		Route::prefix('bobot')->group(function () {
@@ -93,16 +80,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 						Route::get('hasil', 'show')->name('bobotsubkriteria.result');
 						Route::delete('del', 'destroy')->name('bobotsubkriteria.reset');
 					});
-					// Route::controller('SubSubKriteriaCompController')->prefix('sub')
-					// 	->group(function () {
-					// 		Route::get('/', 'index')->name('bobotsubsubkriteria.pick');
-					// 		Route::get('comp', 'create')->name('bobotsubsubkriteria.index');
-					// 		Route::post('comp/{subkriteria_id}', 'store')
-					// 			->name('bobotsubsubkriteria.store');
-					// 		Route::get('hasil/{id}', 'show')->name('bobotsubsubkriteria.result');
-					// 		Route::delete('reset/{id}', 'destroy')
-					// 			->name('bobotsubsubkriteria.reset');
-					// 	});
 				});
 		});
 		Route::controller('AlternatifController')->prefix('alternatif')

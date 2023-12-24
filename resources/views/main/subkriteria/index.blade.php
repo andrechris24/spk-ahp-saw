@@ -56,7 +56,7 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-sm-6">
+	<div class="col-md-4">
 		<div class="card">
 			<div class="card-body">
 				<div class="d-flex align-items-start justify-content-between">
@@ -73,7 +73,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-6">
+	<div class="col-md-4">
 		<div class="card">
 			<div class="card-body">
 				<div class="d-flex align-items-start justify-content-between" data-bs-toggle="tooltip"
@@ -86,6 +86,24 @@
 					</div>
 					<span class="badge bg-success rounded p-2">
 						<i class="bi bi-list-ol"></i>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="card">
+			<div class="card-body">
+				<div class="d-flex align-items-start justify-content-between" data-bs-toggle="tooltip"
+					title="Sub Kriteria duplikat per kriteria">
+					<div class="content-left">
+						<span>Duplikat</span>
+						<div class="d-flex align-items-end mt-2">
+							<h3 class="mb-0 me-2"><span id="total-duplicate">-</span></h3>
+						</div>
+					</div>
+					<span class="badge bg-warning rounded p-2">
+						<i class="bi bi-exclamation-circle-fill"></i>
 					</span>
 				</div>
 			</div>
@@ -228,6 +246,7 @@
 				$.get("{{ route('subkriteria.count') }}", function(data) {
 					$('#total-max').text(data.max);
 					$("#total-counter").text(data.total);
+					$('#total-duplicate').text(data.duplicate);
 				}).fail(function(xhr, stat, err) {
 					Toastify({
 						text: "Gagal memuat jumlah: Kesalahan HTTP " +

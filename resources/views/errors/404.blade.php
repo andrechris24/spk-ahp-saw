@@ -7,11 +7,8 @@
 	<title>404 Not Found | Sistem Pendukung Keputusan metode AHP & SAW</title>
 	<link rel="stylesheet" href="{{ asset('assets/compiled/css/app.css') }}" />
 	<link rel="stylesheet" href="{{ asset('assets/compiled/css/error-403.css') }}" />
-	<link rel="shortcut icon" href="{{ asset('assets/compiled/svg/favicon.svg') }}"
-		type="image/x-icon" />
-	<link rel="shortcut icon"
-		href="{{ asset('assets/static/images/logo/favicon.png') }}"
-		type="image/png" />
+	<link rel="shortcut icon" href="{{ asset('assets/compiled/svg/favicon.svg') }}" type="image/x-icon" />
+	<link rel="shortcut icon" href="{{ asset('assets/static/images/logo/favicon.png') }}" type="image/png" />
 	<script src="{{ asset('assets/static/js/initTheme.js') }}"></script>
 </head>
 
@@ -24,8 +21,7 @@
 					<p class="fs-5 text-gray-600">
 						Halaman atau Data yang Anda cari tidak ditemukan.
 					</p>
-					<a href="{{ route('home.index') }}"
-						class="btn btn-lg btn-outline-primary mt-3">
+					<a href="{{ route('home.index') }}" class="btn btn-lg btn-outline-primary mt-3">
 						<i class="bi bi-arrow-left-circle-fill"></i> Kembali ke Beranda
 					</a>
 				</div>

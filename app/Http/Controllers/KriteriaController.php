@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Kriteria;
 use App\Models\SubKriteria;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -21,7 +20,7 @@ class KriteriaController extends Controller
 			if (SubKriteria::where('kriteria_id', $kr->id)->count() === 0)
 				$unused++;
 		}
-		return response()->json(['total' => $criterias->count(), 
+		return response()->json(['total' => $criterias->count(),
 			'unused' => $unused,
 			'duplicates' => $criterias->diff($critUnique)->count()]);
 	}
@@ -57,7 +56,7 @@ class KriteriaController extends Controller
 		$request->validate(Kriteria::$rules, Kriteria::$message);
 		$req = $request->all();
 		try {
-			Kriteria::updateOrCreate(['id' => $req['id']], 
+			Kriteria::updateOrCreate(['id' => $req['id']],
 				['name' => $req['name'], 'type' => $req['type'], 'desc' => $req['desc']]);
 			return response()->json(['message' => 'Kriteria sudah diupdate']);
 		} catch (QueryException $e) {

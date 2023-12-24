@@ -64,10 +64,10 @@ class NilaiController extends Controller
 					$subkriteria[Str::slug($kr->name, '_')] = '';
 				}
 				$nilaialt = Nilai::select('nilai.*', 'alternatif.name', 'kriteria.name',
-					'subkriteria.name')->leftJoin('alternatif', 'alternatif.id', 
-					'nilai.alternatif_id')->leftJoin('kriteria', 'kriteria.id', 
-					'nilai.kriteria_id')->leftJoin('subkriteria', 'subkriteria.id', 
-					'nilai.subkriteria_id')->where('alternatif_id', $alt->id)->get();
+					'subkriteria.name')->leftJoin('alternatif', 'alternatif.id',
+						'nilai.alternatif_id')->leftJoin('kriteria', 'kriteria.id',
+						'nilai.kriteria_id')->leftJoin('subkriteria', 'subkriteria.id',
+						'nilai.subkriteria_id')->where('alternatif_id', $alt->id)->get();
 				if (count($nilaialt) > 0) {
 					foreach ($nilaialt as $skor) {
 						$subkriteria[Str::slug($skor->kriteria->name, '_')] =
@@ -181,9 +181,9 @@ class NilaiController extends Controller
 			$kr = Kriteria::get();
 			$skr = SubKriteria::get();
 			$hasil = Nilai::leftJoin('alternatif', 'alternatif.id',
-				'nilai.alternatif_id')->leftJoin('kriteria', 'kriteria.id', 
-				'nilai.kriteria_id')->leftJoin('subkriteria', 'subkriteria.id', 
-				'nilai.subkriteria_id')->get();
+				'nilai.alternatif_id')->leftJoin('kriteria', 'kriteria.id',
+					'nilai.kriteria_id')->leftJoin('subkriteria', 'subkriteria.id',
+					'nilai.subkriteria_id')->get();
 			$cekbobotkr = Kriteria::where('bobot', 0.00000)->count();
 			$cekbobotskr = SubKriteria::where('bobot', 0.00000)->count();
 			if ($cekbobotkr > 0) {

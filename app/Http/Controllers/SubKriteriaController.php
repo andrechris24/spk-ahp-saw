@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Kriteria;
 use App\Models\SubKriteria;
 use App\Models\SubKriteriaComp;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -28,11 +27,16 @@ class SubKriteriaController extends Controller
 		$criterias = Kriteria::get();
 		$subcriterias = SubKriteria::get();
 		$totalsub = [];
+		$duplicate = 0;
 		foreach ($criterias as $kr) {
 			$totalsub[] = SubKriteria::where('kriteria_id', $kr->id)->count();
+			$subs = SubKriteria::where('kriteria_id', $kr->id)->get();
+			$subUnique = $subs->unique(['name']);
+			$duplicate += $subs->diff($subUnique)->count();
 		}
 		return response()->json(['total' => $subcriterias->count(),
-			'max' => collect($totalsub)->max()]);
+			'max' => collect($totalsub)->max(),
+			'duplicate' => $duplicate]);
 	}
 	public function index()
 	{

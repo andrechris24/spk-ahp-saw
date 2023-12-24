@@ -132,7 +132,7 @@ class SubKriteriaCompController extends Controller
 			Log::error($e);
 			return back()->withError('Gagal menyimpan nilai perbandingan sub kriteria ' .
 				SubKriteriaController::nama_kriteria($kriteria_id))
-			->withErrors("Kesalahan SQLState #" . $e->errorInfo[0])->withInput();
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[0])->withInput();
 		}
 	}
 	public function show($kriteria_id)
@@ -144,7 +144,7 @@ class SubKriteriaCompController extends Controller
 		$matriks_perbandingan = $matriks_awal = [];
 		foreach ($subkriteria as $k) {
 			$kode_kriteria = $k->idsubkriteria;
-			$perbandingan = $this->getPerbandinganBySubKriteria1($kode_kriteria, 
+			$perbandingan = $this->getPerbandinganBySubKriteria1($kode_kriteria,
 				$kriteria_id);
 			if ($perbandingan) {
 				foreach ($perbandingan as $hk) {
@@ -163,7 +163,7 @@ class SubKriteriaCompController extends Controller
 						$a++;
 					}
 				}
-				$nilaiPerbandingan = $this->getNilaiPerbandingan($kode_kriteria, 
+				$nilaiPerbandingan = $this->getNilaiPerbandingan($kode_kriteria,
 					$kriteria_id);
 				foreach ($nilaiPerbandingan as $hb) {
 					if ($hb->nilai < 0) {
@@ -260,13 +260,13 @@ class SubKriteriaCompController extends Controller
 			}
 			$data = ["subkriteria" => $subkriteria,
 				"matriks_perbandingan" => $matriks_perbandingan,
-				"matriks_awal" => $matriks_awal, 
+				"matriks_awal" => $matriks_awal,
 				"average_cm" => $average_cm,
 				"bobot_prioritas" => $array_BobotPrioritas,
-				"matriks_normalisasi" => $array_normalisasi, 
+				"matriks_normalisasi" => $array_normalisasi,
 				"jumlah" => $array_jumlah,
-				"cm" => $array_CM, 
-				"ci" => $total_ci, 
+				"cm" => $array_CM,
+				"ci" => $total_ci,
 				"result" => $result,
 				"bobot_sub_kosong" => $subbobotkosong];
 			return view('main.subkriteria.hasil', compact('data', 'kriteria_id'));

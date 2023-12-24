@@ -94,11 +94,6 @@
 										Sub Kriteria
 									</a>
 								</li>
-								{{-- <li class="submenu-item">
-									<a href="{{ route('subsubkriteria.index') }}" class="submenu-link">
-										Sub-sub Kriteria
-									</a>
-								</li> --}}
 								<li class="submenu-item">
 									<a href="{{ route('alternatif.index') }}" class="submenu-link">
 										Alternatif
@@ -125,12 +120,6 @@
 										Sub Kriteria
 									</a>
 								</li>
-								{{-- <li class="submenu-item
-									{{ request()->is('bobot/sub/sub/*') ? 'active' : '' }}">
-									<a href="{{ route('bobotsubsubkriteria.pick') }}" class="submenu-link">
-										Sub-sub Kriteria
-									</a>
-								</li> --}}
 							</ul>
 						</li>
 						<li class="sidebar-item">

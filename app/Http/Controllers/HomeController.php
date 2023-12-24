@@ -50,10 +50,13 @@ class HomeController extends Controller
 	{
 		try {
 			$req = $request->validate([
-				'name' => ['bail','required','min:5','regex:/^[\pL\s\-]+$/u'],
-				'email' => ['bail','required','email','unique:users,email,' . Auth::id()],
-				'current_password' => ['bail','required','current_password'],
-				'password' => ['nullable','bail','confirmed','between:8,20'],
+				'name' => ['bail', 'required', 'min:5', 'regex:/^[\pL\s\-]+$/u'],
+				'email' => ['bail',
+					'required',
+					'email',
+					'unique:users,email,' . Auth::id()],
+				'current_password' => ['bail', 'required', 'current_password'],
+				'password' => ['nullable', 'bail', 'confirmed', 'between:8,20'],
 				'password_confirmation' => 'required_with:password'
 			], User::$message);
 			if (empty($req['password'])) {
