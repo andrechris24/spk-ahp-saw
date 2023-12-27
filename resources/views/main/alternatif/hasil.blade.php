@@ -98,35 +98,38 @@ $totalalts = count($data['alternatif']);
 </div>
 <div class="modal fade text-left" id="RankModal" tabindex="-1" role="dialog" aria-labelledby="RankLabel"
 	aria-hidden="true">
-	<div role="document" @class(['modal-dialog', 'modal-dialog-centered', 
+	<div role="document" @class([
+		'modal-dialog',  'modal-dialog-centered', 
 		'modal-dialog-scrollable', 'modal-fullscreen-md-down'=> $totalalts <= 5, 
-		'modal-fullscreen-lg-down'=> $totalalts > 5 && $totalalts <=10, 
+		'modal-fullscreen-lg-down'=> $totalalts > 5 && $totalalts<=10, 
 		'modal-lg'=> $totalalts > 5 && $totalalts <= 10, 
 		'modal-fullscreen-xl-down'=> $totalalts > 10 && $totalalts <= 20, 
 		'modal-xl'=> $totalalts > 10 && $totalalts <= 20, 
-		'modal-fullscreen'=> $totalalts > 20])>
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title" id="RankLabel">Grafik hasil penilaian</h4>
-				<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-					<i data-feather="x"></i>
-				</button>
-			</div>
-			<div class="modal-body">
-				<div id="chart-ranking"></div>
-				<p>Jadi, nilai tertingginya diraih oleh <span id="SkorTertinggi">...</span>
-					dengan nilai <span id="SkorHasil">...</span></p>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-					Tutup
-				</button>
-			</div>
-		</div>
+		'modal-fullscreen'=> $totalalts >20])>
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title" id="RankLabel">Grafik hasil penilaian</h4>
+									<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+										<i data-feather="x"></i>
+									</button>
+								</div>
+								<div class="modal-body">
+									<div id="chart-ranking"></div>
+									<p>Jadi, nilai tertingginya diraih oleh <span id="SkorTertinggi">...</span>
+										dengan nilai <span id="SkorHasil">...</span></p>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+										Tutup
+									</button>
+								</div>
+							</div>
 	</div>
 </div>
 <div class="card">
-	<div class="card-header"><h4 class="card-title">Ranking</h4></div>
+	<div class="card-header">
+		<h4 class="card-title">Ranking</h4>
+	</div>
 	<div class="card-body">
 		<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#RankModal"
 			id="spare-button">
@@ -185,9 +188,7 @@ $totalalts = count($data['alternatif']);
 				lengthChange: false,
 				searching: false,
 				responsive: true,
-				order: [
-					[1 + {{ count($data['kriteria']) }}, 'desc']
-				],
+				order: [[1 + {{ count($data['kriteria']) }}, 'desc']],
 				language: {
 					url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
 				},
@@ -206,7 +207,7 @@ $totalalts = count($data['alternatif']);
 					buttons: [{
 						extend: 'print',
 						title: 'Penerima',
-						text: 'Penerima saja',
+						text: '<i class="bi bi-person me-2"></i> Penerima saja',
 						className: 'dropdown-item',
 						exportOptions: {
 							columns: [0],
@@ -224,7 +225,7 @@ $totalalts = count($data['alternatif']);
 					}, {
 						extend: 'print',
 						title: 'Hasil Penilaian',
-						text: 'Semua data',
+						text: '<i class="bi bi-clipboard-data me-2"></i> Semua data',
 						className: 'dropdown-item',
 						exportOptions: {
 							format: {

@@ -235,9 +235,6 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 				data: {
 					del_password: password
 				},
-				// headers: {
-				// 	'X-CSRF-TOKEN': "{{ csrf_token() }}"
-				// },
 				beforeSend: function() {
 					$('#form-edit-account :input').removeClass(
 						'is-invalid').prop('disabled', true);

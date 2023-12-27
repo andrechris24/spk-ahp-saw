@@ -138,7 +138,7 @@
 @endsection
 @section('js')
 <script type="text/javascript">
-	var dt_subkriteria,error;
+	var dt_subkriteria, error;
 	$(document).ready(function() {
 		try {
 			$.fn.dataTable.ext.errMode = 'none';
@@ -153,9 +153,7 @@
 					url: "{{ route('subkriteria.data') }}",
 					type: 'POST'
 				},
-				order: [
-					[2, 'asc']
-				],
+				order: [[2, 'asc']],
 				columns: [{
 					data: 'kr_name'
 				}, 
@@ -263,11 +261,11 @@
 		}
 	}).on('click', '.delete-record', function() {
 		var sub_id = $(this).data('id'), sub_name = $(this).data('name'),
-			sub_kr=$(this).data('kr');
+			sub_kr = $(this).data('kr');
 
 		Swal.fire({
 			title: 'Hapus sub kriteria?',
-			text: "Anda akan menghapus sub kriteria " + sub_name + " ("+sub_kr+").",
+			text: "Anda akan menghapus sub kriteria " + sub_name + " (" + sub_kr + ").",
 			icon: 'question',
 			showCancelButton: true,
 			confirmButtonText: 'Ya',
@@ -293,7 +291,8 @@
 						Swal.fire({
 							icon: 'success',
 							title: 'Dihapus',
-							text: 'Sub Kriteria '+sub_name+' ('+sub_kr+') sudah dihapus.',
+							text: 'Sub Kriteria ' + sub_name + ' (' + sub_kr + 
+								') sudah dihapus.',
 							customClass: {
 								confirmButton: 'btn btn-success'
 							}
@@ -302,9 +301,10 @@
 					error: function(xhr, stat, err) {
 						if (xhr.status === 404) {
 							dt_subkriteria.draw();
-							error='Sub Kriteria '+sub_name+' ('+sub_kr+') tidak ditemukan.';
-						}else{
-							error='Kesalahan HTTP ' + xhr.status + '. ' + 
+							error = 'Sub Kriteria ' + sub_name + ' (' + sub_kr + 
+								') tidak ditemukan.';
+						} else {
+							error = 'Kesalahan HTTP ' + xhr.status + '. ' + 
 								(xhr.responseJSON.message ?? err);
 						}
 						Swal.fire({
@@ -320,7 +320,7 @@
 			} else if (result.dismiss === Swal.DismissReason.cancel) {
 				Swal.fire({
 					title: 'Dibatalkan',
-					text: 'Sub Kriteria '+sub_name+' ('+sub_kr+') tidak dihapus.',
+					text: 'Sub Kriteria ' + sub_name + ' (' + sub_kr + ') tidak dihapus.',
 					icon: 'warning',
 					customClass: {
 						confirmButton: 'btn btn-success'
@@ -345,9 +345,9 @@
 			if (xhr.status === 404) {
 				$('#SubCritModal').modal('hide');
 				dt_subkriteria.draw();
-				error="Sub Kriteria tidak ditemukan.";
-			}else{
-				error='Kesalahan HTTP ' + xhr.status + '. ' +
+				error = "Sub Kriteria tidak ditemukan.";
+			} else {
+				error = 'Kesalahan HTTP ' + xhr.status + '. ' +
 					(xhr.responseJSON.message ?? err);
 			}
 			Swal.fire({
@@ -400,7 +400,7 @@
 					if (typeof xhr.responseJSON.errors.name !== "undefined") {
 						$('#nama-sub').addClass('is-invalid');
 						$('#nama-error').text(xhr.responseJSON.errors.name);
-				}
+					}
 					if (typeof xhr.responseJSON.errors.kriteria_id !== "undefined") {
 						$('#kriteria-select').addClass('is-invalid');
 						$('#kriteria-error').text(xhr.responseJSON.errors.kriteria_id);

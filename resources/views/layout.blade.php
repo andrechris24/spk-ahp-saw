@@ -191,12 +191,9 @@
 											<i class="icon-mid bi bi-person me-2"></i> Edit Akun
 										</a>
 									</li>
+									<li><hr class="dropdown-divider" /></li>
 									<li>
-										<hr class="dropdown-divider" />
-									</li>
-									<li>
-										<a class="dropdown-item" href="{{ route('logout') }}"
-											onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+										<a class="dropdown-item" href="{{ route('logout') }}" id="logout-btn">
 											<i class="icon-mid bi bi-box-arrow-left me-2"></i>
 											Logout
 										</a>
@@ -234,8 +231,7 @@
 							<p>{{ date('Y') }} &copy; Sistem Pendukung Keputusan</p>
 						</div>
 						<div class="float-end">
-							<p>
-								Template dibuat oleh
+							<p>Template dibuat oleh
 								<a href="https://ahmadsaugi.com">Saugi Zuramai</a>
 							</p>
 						</div>
@@ -265,6 +261,10 @@
 			headers: {
 				'X-CSRF-TOKEN': "{{ csrf_token() }}"
 			}
+		});
+		$(document).on('click', '#logout-btn', function(e){
+			e.preventDefault();
+			document.getElementById('logout-form').submit();
 		});
 	</script>
 	@yield('js')

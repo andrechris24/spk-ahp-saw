@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Alternatif extends Model
 {
 	use HasFactory;
-	protected $table = 'alternatif';
-	protected $fillable = ['name'];
+	protected $table = 'alternatif', $fillable = ['name'];
 	public static array $rules = [
-		'name' => ['bail','required','regex:/^[\s\w-]*$/']
-	], $message = ['name.required' => 'Nama alternatif diperlukan',
+		'name' => ['bail', 'required', 'regex:/^[\s\w-]*$/']
+	], $message = [
+		'name.required' => 'Nama alternatif diperlukan',
 		'name.regex' => 'Nama alternatif tidak boleh mengandung simbol'];
 	public function nilai()
 	{

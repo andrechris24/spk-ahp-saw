@@ -15,9 +15,11 @@ class SubKriteriaCompController extends Controller
 	private function getSubKriteriaPerbandingan($id)
 	{
 		try {
-			return SubKriteriaComp::join("subkriteria",
-				"subkriteria_banding.subkriteria1", "subkriteria.id")
-				->select("subkriteria_banding.subkriteria1 as idsubkriteria",
+			return SubKriteriaComp::join(
+				"subkriteria",
+				"subkriteria_banding.subkriteria1",
+				"subkriteria.id"
+			)->select("subkriteria_banding.subkriteria1 as idsubkriteria",
 					"subkriteria.name")->groupBy("subkriteria1", 'name')
 				->where('kriteria_id', $id)->get();
 		} catch (QueryException $e) {
@@ -144,7 +146,8 @@ class SubKriteriaCompController extends Controller
 		$matriks_perbandingan = $matriks_awal = [];
 		foreach ($subkriteria as $k) {
 			$kode_kriteria = $k->idsubkriteria;
-			$perbandingan = $this->getPerbandinganBySubKriteria1($kode_kriteria,
+			$perbandingan = $this->getPerbandinganBySubKriteria1(
+				$kode_kriteria,
 				$kriteria_id);
 			if ($perbandingan) {
 				foreach ($perbandingan as $hk) {
@@ -156,14 +159,17 @@ class SubKriteriaCompController extends Controller
 							$nilai = abs(1 / $hk->nilai);
 							$nilai2 = "<sup>1</sup>/<sub>" . abs($hk->nilai) . "</sub>";
 						}
-						$matriks_perbandingan[$a] = ["nilai" => $nilai,
+						$matriks_perbandingan[$a] = [
+							"nilai" => $nilai,
 							"kode_kriteria" => $kode_kriteria];
-						$matriks_awal[$a] = ["nilai" => $nilai2,
+						$matriks_awal[$a] = [
+							"nilai" => $nilai2,
 							"kode_kriteria" => $kode_kriteria];
 						$a++;
 					}
 				}
-				$nilaiPerbandingan = $this->getNilaiPerbandingan($kode_kriteria,
+				$nilaiPerbandingan = $this->getNilaiPerbandingan(
+					$kode_kriteria,
 					$kriteria_id);
 				foreach ($nilaiPerbandingan as $hb) {
 					if ($hb->nilai < 0) {
@@ -173,9 +179,11 @@ class SubKriteriaCompController extends Controller
 						$nilai = abs(($hb->nilai > 1) ? $hb->nilai / 1 : $hb->nilai);
 						$nilai2 = "<sup>" . abs($hb->nilai) . "</sup>/<sub>1</sub>";
 					}
-					$matriks_perbandingan[$a] = ["nilai" => $nilai,
+					$matriks_perbandingan[$a] = [
+						"nilai" => $nilai,
 						"kode_kriteria" => $kode_kriteria];
-					$matriks_awal[$a] = ["nilai" => $nilai2,
+					$matriks_awal[$a] = [
+						"nilai" => $nilai2,
 						"kode_kriteria" => $kode_kriteria];
 					$a++;
 				}
@@ -215,7 +223,8 @@ class SubKriteriaCompController extends Controller
 		for ($i = 0; $i < count($array_normalisasi); $i++) {
 			$jumlah_baris += $array_normalisasi[$i]["nilai"];
 			if ($index_kriteria === count($subkriteria) - 1) {
-				$array_BobotPrioritas[$j] = ["jumlah_baris" => $jumlah_baris,
+				$array_BobotPrioritas[$j] = [
+					"jumlah_baris" => $jumlah_baris,
 					"bobot" => $jumlah_baris / $total_jumlah_baris,
 					"kode_kriteria" => $subkriteria[$j]->idsubkriteria];
 				$j++;
@@ -229,7 +238,8 @@ class SubKriteriaCompController extends Controller
 			$cm += ($matriks_perbandingan[$i]["nilai"] *
 				$array_BobotPrioritas[$indexbobot]["bobot"]);
 			if ($indexbobot === count($subkriteria) - 1) {
-				$array_CM[$j] = ["cm" => $cm / $array_BobotPrioritas[$j]["bobot"],
+				$array_CM[$j] = [
+					"cm" => $cm / $array_BobotPrioritas[$j]["bobot"],
 					"kode_kriteria" => $subkriteria[$j]->idsubkriteria,
 					"kali_matriks" => $cm];
 				$j++;
@@ -258,7 +268,8 @@ class SubKriteriaCompController extends Controller
 					->update(['bobot' => 0.00000]);
 				$subbobotkosong = -1;
 			}
-			$data = ["subkriteria" => $subkriteria,
+			$data = [
+				"subkriteria" => $subkriteria,
 				"matriks_perbandingan" => $matriks_perbandingan,
 				"matriks_awal" => $matriks_awal,
 				"average_cm" => $average_cm,
@@ -289,8 +300,7 @@ class SubKriteriaCompController extends Controller
 				->update(['bobot' => 0.00000]);
 			if ($request->ajax()) {
 				return response()->json([
-					'message' => "Perbandingan Sub Kriteria $kr->name sudah direset"
-				]);
+					'message' => "Perbandingan Sub Kriteria $kr->name sudah direset"]);
 			}
 			return to_route('bobotsubkriteria.pick')
 				->withSuccess("Perbandingan Sub kriteria $kr->name sudah direset");

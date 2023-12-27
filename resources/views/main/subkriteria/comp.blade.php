@@ -62,7 +62,8 @@ $numindex = 0;
 											<input type="number" name="skala[{{ $loop->index }}]"
 											min="1" max="9" class="form-control text-center 
 												@error('skala.' . $loop->index) is-invalid @enderror "
-												value="{{ old('skala.' . $loop->index) ?? (abs($value[$loop->index]['nilai']) ?? '') }}"
+												value="{{ old('skala.' . $loop->index) ?? 
+													(abs($value[$loop->index]['nilai']) ?? '') }}"
 												required>
 											@error('skala.' . $loop->index)
 											<div class="invalid-feedback">{{ $message }}</div>

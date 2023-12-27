@@ -169,7 +169,7 @@
 					<td>
 						<span @class([ 'text-warning'=> !is_numeric($data['result']),
 							'text-danger' => !$consistent,
-							'text-success' => is_numeric($data['result']) && $data['result'] <= 0.1])>
+							'text-success' => is_numeric($data['result']) && $consistent])>
 							@if (!is_numeric($data['result']))
 							<b>Tidak bisa dievaluasi</b>
 							@elseif ($consistent)

@@ -101,7 +101,7 @@
 @endsection
 @section('js')
 <script type="text/javascript">
-	var dt_alternatif,error;
+	var dt_alternatif, error;
 	$(document).ready(function() {
 		try {
 			$.fn.dataTable.ext.errMode = "none";
@@ -183,7 +183,7 @@
 					// 		text: '<i class="bi bi-file-text me-2"></i> PDF',
 					// 		className: "dropdown-item",
 					// 		exportOptions: {
-					// 			columns: [1, 2],
+					// 			columns: [1, 2]
 					// 		}
 					// 	}],
 				// }]
@@ -221,7 +221,7 @@
 				confirmButton: "btn btn-primary me-3",
 				cancelButton: "btn btn-secondary"
 			},
-			buttonsStyling: false,
+			buttonsStyling: false
 		}).then(function(result) {
 			if (result.value) { // delete the data
 				$.ajax({
@@ -247,9 +247,9 @@
 					error: function(xhr, stat, err) {
 						if (xhr.status === 404) {
 							dt_alternatif.draw();
-							error="Alternatif " + alt_name + " tidak ditemukan.";
-						}else{
-							error="Kesalahan HTTP " + xhr.status + "." + 
+							error = "Alternatif " + alt_name + " tidak ditemukan.";
+						} else {
+							error = "Kesalahan HTTP " + xhr.status + "." + 
 								(xhr.responseJSON.message ?? err);
 						}
 						Swal.fire({
@@ -258,14 +258,14 @@
 							text: error,
 							customClass: {
 								confirmButton: "btn btn-success",
-							},
+							}
 						});
 					},
 				});
 			} else if (result.dismiss === Swal.DismissReason.cancel) {
 				Swal.fire({
 					title: "Dibatalkan",
-					text: "Alternatif "+alt_name+" tidak dihapus.",
+					text: "Alternatif " + alt_name + " tidak dihapus.",
 					icon: "warning",
 					customClass: {
 						confirmButton: "btn btn-success"
@@ -289,9 +289,9 @@
 			if (xhr.status === 404) {
 				$("#AlterModal").modal("hide");
 				dt_alternatif.draw();
-				error="Alternatif tidak ditemukan.";
-			}else{
-				error="Kesalahan HTTP " + xhr.status + ". " +
+				error = "Alternatif tidak ditemukan.";
+			} else {
+				error = "Kesalahan HTTP " + xhr.status + ". " +
 					(xhr.responseJSON.message ?? err);
 			}
 			Swal.fire({

@@ -8,14 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Kriteria extends Model
 {
 	use HasFactory;
-	protected $table = 'kriteria';
-	protected $fillable = ['name', 'type', 'desc'];
-	public static array $rules = ['name' => 'required',
-		'type' => ['bail','required','in:cost,benefit']], 
-	$message = ['name.required' => 'Nama kriteria harus diisi',
+	protected $table = 'kriteria', $fillable = ['name', 'type', 'desc'];
+	public static array $rules = [
+		'name' => 'required',
+		'type' => ['bail', 'required', 'in:cost,benefit']
+	], $message = [
+		'name.required' => 'Nama kriteria harus diisi',
 		'type.required' => 'Tipe Kriteria harus dipilih',
 		'type.in' => 'Tipe Kriteria harus berupa Cost atau Benefit sesuai teori SAW'
-	], $ratio_index = [1 => 0,
+	], $ratio_index = [
+		1 => 0,
 		2 => 0,
 		3 => 0.58,
 		4 => 0.9,

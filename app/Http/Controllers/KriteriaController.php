@@ -20,7 +20,8 @@ class KriteriaController extends Controller
 			if (SubKriteria::where('kriteria_id', $kr->id)->count() === 0)
 				$unused++;
 		}
-		return response()->json(['total' => $criterias->count(),
+		return response()->json([
+			'total' => $criterias->count(),
 			'unused' => $unused,
 			'duplicates' => $criterias->diff($critUnique)->count()]);
 	}

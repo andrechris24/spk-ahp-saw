@@ -43,10 +43,10 @@
 						<select class="form-select" id="subkriteria-{{ $kr->id }}" name="subkriteria_id[]" required>
 							<option value="">Pilih</option>
 							@foreach ($data['subkriteria'] as $subkr)
-							@if ($subkr->kriteria_id == $kr->id)
-							<option value="{{ $subkr->id }}">{{ $subkr->name }}
-							</option>
-							@endif
+								@if ($subkr->kriteria_id == $kr->id)
+								<option value="{{ $subkr->id }}">{{ $subkr->name }}
+								</option>
+								@endif
 							@endforeach
 						</select>
 						<div class="invalid-feedback" id="subkriteria-error-{{ $kr->id }}">
@@ -80,7 +80,7 @@
 					<div class="content-left">
 						<span>Jumlah Alternatif</span>
 						<div class="d-flex align-items-end mt-2">
-							<h3 class="mb-0 me-2">{{ count($data['alternatif']) }}</h3>
+							<h3 class="mb-0 me-2"><span id="total-alts">-</span></h3>
 						</div>
 					</div>
 					<span class="badge bg-primary rounded p-2">
@@ -249,6 +249,7 @@
 			}).on("preXhr", function() {
 				$.get("{{ route('nilai.count') }}", function(data) {
 					$('#total-noscore').text(data.unused);
+					$('#total-alts').text(data.alternatif);
 				}).fail(function(xhr, st, err) {
 					Toastify({
 						text: "Gagal memuat jumlah: Kesalahan HTTP " +
@@ -302,9 +303,9 @@
 					error: function(xhr, stat, err) {
 						if (xhr.status === 404) {
 							nilaialtdt.draw();
-							errmsg='Nilai Alternatif ' + score_name + ' tidak ditemukan';
-						}else{
-							errmsg='Kesalahan HTTP ' + xhr.status + '. ' + 
+							errmsg = 'Nilai Alternatif ' + score_name + ' tidak ditemukan';
+						} else {
+							errmsg = 'Kesalahan HTTP ' + xhr.status + '. ' + 
 								(xhr.responseJSON.message ?? err);
 						}
 						Swal.fire({
@@ -320,7 +321,7 @@
 			} else if (result.dismiss === Swal.DismissReason.cancel) {
 				Swal.fire({
 					title: 'Dibatalkan',
-					text: 'Nilai Alternatif '+score_name+' tidak dihapus.',
+					text: 'Nilai Alternatif ' + score_name + ' tidak dihapus.',
 					icon: 'warning',
 					customClass: {
 						confirmButton: 'btn btn-success'

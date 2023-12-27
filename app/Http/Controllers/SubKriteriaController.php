@@ -34,7 +34,8 @@ class SubKriteriaController extends Controller
 			$subUnique = $subs->unique(['name']);
 			$duplicate += $subs->diff($subUnique)->count();
 		}
-		return response()->json(['total' => $subcriterias->count(),
+		return response()->json([
+			'total' => $subcriterias->count(),
 			'max' => collect($totalsub)->max(),
 			'duplicate' => $duplicate]);
 	}
