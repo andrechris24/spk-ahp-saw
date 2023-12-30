@@ -167,7 +167,7 @@
 				<tr>
 					<td>Hasil Konsistensi</td>
 					<td>
-						<span @class([ 'text-warning'=> !is_numeric($data['result']),
+						<span @class(['text-warning'=> !is_numeric($data['result']),
 							'text-danger' => !$consistent,
 							'text-success' => is_numeric($data['result']) && $consistent])>
 							@if (!is_numeric($data['result']))
@@ -217,7 +217,7 @@
 		e.preventDefault();
 		Swal.fire({
 			title: 'Reset perbandingan?',
-			text: "Anda akan mereset perbandingan Kriteria. Bobot Kriteria akan direset!",
+			text: "Anda akan mereset perbandingan Kriteria.\nBobot Kriteria akan direset!",
 			icon: 'question',
 			showCancelButton: true,
 			confirmButtonText: 'Ya',
@@ -231,15 +231,6 @@
 			if (result.value) {
 				document.getElementById('reset-kriteria').submit();
 				$('.spinner-grow').removeClass('d-none');
-			} else if (result.dismiss === Swal.DismissReason.cancel) {
-				Swal.fire({
-					title: 'Dibatalkan',
-					text: 'Perbandingan Kriteria tidak direset.',
-					icon: 'warning',
-					customClass: {
-						confirmButton: 'btn btn-success'
-					}
-				});
 			}
 		});
 	});

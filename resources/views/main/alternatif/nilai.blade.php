@@ -131,9 +131,6 @@
 		{{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#NilaiAlterModal">
 			<i class="bi bi-plus-lg"></i> Tambah Nilai Alternatif
 		</button> --}}
-		<div class="spinner-grow text-danger d-none" role="status">
-			<span class="visually-hidden">Menghapus...</span>
-		</div>
 		<table class="table table-hover table-striped" id="table-nilaialt" style="width: 100%">
 			<thead>
 				<tr>
@@ -253,7 +250,7 @@
 				}).fail(function(xhr, st, err) {
 					Toastify({
 						text: "Gagal memuat jumlah: Kesalahan HTTP " +
-							xhr.status + '. ' + (xhr.statusText ?? err),
+							xhr.status + '.\n' + (xhr.statusText ?? err),
 						style: {
 							background: "#dc3545"
 						},
@@ -284,10 +281,10 @@
 					type: 'DELETE',
 					url: '/nilai/del/' + score_id,
 					beforeSend: function() {
-						$('.spinner-grow.text-danger').removeClass('d-none');
+						toast.showToast();
 					},
 					complete: function() {
-						$('.spinner-grow.text-danger').addClass('d-none');
+						toast.hideToast();
 					},
 					success: function(data) {
 						nilaialtdt.draw();
@@ -305,7 +302,7 @@
 							nilaialtdt.draw();
 							errmsg = 'Nilai Alternatif ' + score_name + ' tidak ditemukan';
 						} else {
-							errmsg = 'Kesalahan HTTP ' + xhr.status + '. ' + 
+							errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' + 
 								(xhr.responseJSON.message ?? err);
 						}
 						Swal.fire({
@@ -353,7 +350,7 @@
 			Swal.fire({
 				icon: 'error',
 				title: 'Kesalahan',
-				text: 'Kesalahan HTTP ' + xhr.status + '. ' +
+				text: 'Kesalahan HTTP ' + xhr.status + '.\n' +
 					(xhr.responseJSON.message ?? err),
 				customClass: {
 					confirmButton: 'btn btn-success'
@@ -409,7 +406,7 @@
 						console.warn(xhr.responseJSON.errors.subkriteria_id);
 					errmsg = xhr.responseJSON.message;
 				} else {
-					errmsg = 'Kesalahan HTTP ' + xhr.status + '. ' +
+					errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +
 						(xhr.responseJSON.message ?? err);
 				}
 				Swal.fire({

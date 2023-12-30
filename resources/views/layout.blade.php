@@ -74,8 +74,7 @@
 						<li class="sidebar-title">Menu</li>
 						<li class="sidebar-item">
 							<a href="{{ route('home.index') }}" class="sidebar-link">
-								<i class="bi bi-house-fill"></i>
-								<span>Beranda</span>
+								<i class="bi bi-house-fill"></i> <span>Beranda</span>
 							</a>
 						</li>
 						<li class="sidebar-item has-sub">
@@ -104,8 +103,7 @@
 						<li class="sidebar-item has-sub 
 							{{ request()->is('bobot/hasil') || request()->is('bobot/sub/*') ? 'active' : '' }}">
 							<a href="#" class="sidebar-link">
-								<i class="bi bi-calculator-fill"></i>
-								<span>Pembobotan</span>
+								<i class="bi bi-calculator-fill"></i> <span>Pembobotan</span>
 							</a>
 							<ul class="submenu">
 								<li class="submenu-item
@@ -124,21 +122,18 @@
 						</li>
 						<li class="sidebar-item">
 							<a href="{{ route('nilai.index') }}" class="sidebar-link">
-								<i class="bi bi-pen-fill"></i>
-								<span>Penilaian Alternatif</span>
+								<i class="bi bi-pen-fill"></i> <span>Penilaian Alternatif</span>
 							</a>
 						</li>
 						<li class="sidebar-item">
 							<a href="{{ route('nilai.show') }}" class="sidebar-link">
-								<i class="bi bi-bar-chart-line-fill"></i>
-								<span>Hasil</span>
+								<i class="bi bi-bar-chart-line-fill"></i> <span>Hasil</span>
 							</a>
 						</li>
 						@else
 						<li class="sidebar-item active">
 							<a href="{{ route('login') }}" class="sidebar-link">
-								<i class="bi bi-box-arrow-in-right me-2"></i>
-								<span>Login</span>
+								<i class="bi bi-box-arrow-in-right me-2"></i> <span>Login</span>
 							</a>
 						</li>
 						@endauth
@@ -171,8 +166,7 @@
 								<a href="#" data-bs-toggle="dropdown" aria-expanded="false">
 									<div class="user-menu d-flex">
 										<div class="user-name text-end me-3">
-											<p class="mb-0 text-gray-600">{{ auth()->user()->name }}
-											</p>
+											<p class="mb-0 text-gray-600">{{ auth()->user()->name }}</p>
 										</div>
 										<div class="user-img d-flex align-items-center">
 											<div class="avatar me-3 {{ session('avatar-bg') }}">
@@ -183,9 +177,7 @@
 								</a>
 								<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton"
 									style="min-width: 11rem">
-									<li>
-										<h6 class="dropdown-header">Akun</h6>
-									</li>
+									<li><h6 class="dropdown-header">Akun</h6></li>
 									<li>
 										<a class="dropdown-item" href="{{ route('akun.show') }}">
 											<i class="icon-mid bi bi-person me-2"></i> Edit Akun
@@ -265,6 +257,11 @@
 		$(document).on('click', '#logout-btn', function(e){
 			e.preventDefault();
 			document.getElementById('logout-form').submit();
+		});
+		var toast = Toastify({
+			text: "Menghapus...",
+			duration: -1,
+			close: false
 		});
 	</script>
 	@yield('js')

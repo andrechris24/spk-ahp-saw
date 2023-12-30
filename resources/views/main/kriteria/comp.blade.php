@@ -19,16 +19,23 @@
 					</h2>
 					<div id="flush-collapseOne" class="accordion-collapse collapse"
 						data-bs-parent="#accordionTabelPerbandingan">
-						<div class="accordion-body">
-							<x-ahp-table />
-						</div>
+						<div class="accordion-body"><x-ahp-table /></div>
 					</div>
 				</div>
 			</div>
 			@if ($cek > $jmlcrit)
-			<a href="{{ route('bobotkriteria.result') }}" class="btn btn-success">
-				<i class="bi bi-arrow-right"></i> Lihat Hasil
-			</a>
+			<div class="btn-group">
+				<a href="{{ route('bobotkriteria.result') }}" class="btn btn-success">
+					<i class="bi bi-arrow-right"></i> Lihat Hasil
+				</a>
+				<a href="{{ route('bobotkriteria.reset') }}" class="btn btn-warning" id="reset-button">
+					<i class="bi bi-arrow-counterclockwise"></i> Reset
+				</a>
+			</div>
+			<form action="{{ route('bobotkriteria.reset') }}" method="POST" id="reset-kriteria">
+				@csrf
+				@method('DELETE')
+			</form>
 			@endif
 			@if ($jmlcrit >= 2)
 			<div class="table-responsive">
@@ -42,8 +49,7 @@
 								<th>Kriteria</th>
 							</tr>
 						</thead>
-						<tbody>
-							@csrf
+						<tbody>@csrf
 							@foreach ($array as $krit)
 								@if ($krit['idbaris'] !== $krit['idkolom'])
 								<tr>
@@ -101,4 +107,27 @@
 		</div>
 	</div>
 </div>
+@endsection
+@section('js')
+<script type="text/javascript">
+	$(document).on('click', '#reset-button', function(e) {
+		e.preventDefault();
+		Swal.fire({
+			title: 'Reset perbandingan?',
+			text: "Anda akan mereset perbandingan Kriteria.\nBobot Kriteria akan direset!",
+			icon: 'question',
+			showCancelButton: true,
+			confirmButtonText: 'Ya',
+			cancelButtonText: 'Tidak',
+			customClass: {
+				confirmButton: 'btn btn-primary me-3',
+				cancelButton: 'btn btn-secondary'
+			},
+			buttonsStyling: false
+		}).then(function(result) {
+			if (result.value) 
+				document.getElementById('reset-kriteria').submit();
+		});
+	});
+</script>
 @endsection

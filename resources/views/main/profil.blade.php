@@ -70,9 +70,7 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 									<input type="password" name="password" class="form-control" id="newpassword"
 										placeholder="Kosongkan jika tidak ganti password" oninput="checkpassword()" minlength="8"
 										maxlength="20" data-bs-toggle="tooltip" data-bs-placement="top" title="8-20 karakter" />
-									<div class="form-control-icon">
-										<i class="bi bi-lock"></i>
-									</div>
+									<div class="form-control-icon"><i class="bi bi-lock"></i></div>
 									<div class="invalid-feedback" id="newpassword-error">
 										Password baru harus terdiri dari 8-20 karakter
 									</div>
@@ -93,9 +91,7 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 									<input type="password" name="password_confirmation" minlength="8" maxlength="20"
 										id="conf-password" oninput="checkpassword()" class="form-control"
 										placeholder="Ketik ulang Password baru" />
-									<div class="form-control-icon">
-										<i class="bi bi-lock"></i>
-									</div>
+									<div class="form-control-icon"><i class="bi bi-lock"></i></div>
 									<div class="invalid-feedback" id="confirm-password-error">
 										Password Konfirmasi salah
 									</div>
@@ -185,7 +181,7 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 					}
 					errmsg = xhr.responseJSON.message;
 				} else {
-					errmsg = 'Kesalahan HTTP ' + xhr.status + '. ' +
+					errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +
 						(xhr.responseJSON.message ?? err)
 				}
 				Swal.fire({
@@ -260,7 +256,7 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 					$('.spinner-grow').addClass('d-none');
 					Swal.fire({
 						title: "Gagal hapus akun",
-						text: 'Kesalahan HTTP ' + xhr.status + '. ' + 
+						text: 'Kesalahan HTTP ' + xhr.status + '.\n' + 
 							(xhr.responseJSON.message ?? err),
 						icon: 'error',
 						customClass: {

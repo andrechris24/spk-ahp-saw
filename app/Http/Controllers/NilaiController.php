@@ -293,7 +293,8 @@ class NilaiController extends Controller
 			return response()->json([
 				'result' => $data,
 				'score' => $highest->skor,
-				'nama' => $highest->alternatif->name]);
+				'nama' => $highest->alternatif->name,
+				'alt_id' => $highest->alternatif_id]);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(["message" => $e->errorInfo[2]], 500);

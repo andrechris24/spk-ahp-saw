@@ -8,9 +8,7 @@ $totalalts = count($data['alternatif']);
 @section('subtitle', 'Hasil Penilaian Alternatif')
 @section('content')
 <div class="card">
-	<div class="card-header">
-		<h4 class="card-title">Matriks Keputusan</h4>
-	</div>
+	<div class="card-header"><h4 class="card-title">Matriks Keputusan</h4></div>
 	<div class="card-body">
 		<div class="table-responsive">
 			<table class="table table-hover table-striped text-center">
@@ -50,9 +48,7 @@ $totalalts = count($data['alternatif']);
 	</div>
 </div>
 <div class="card">
-	<div class="card-header">
-		<h4 class="card-title">Matriks Normalisasi</h4>
-	</div>
+	<div class="card-header"><h4 class="card-title">Matriks Normalisasi</h4></div>
 	<div class="card-body">
 		<div class="table-responsive">
 			<table class="table table-hover table-striped text-center">
@@ -106,30 +102,28 @@ $totalalts = count($data['alternatif']);
 		'modal-fullscreen-xl-down'=> $totalalts > 10 && $totalalts <= 20, 
 		'modal-xl'=> $totalalts > 10 && $totalalts <= 20, 
 		'modal-fullscreen'=> $totalalts >20])>
-							<div class="modal-content">
-								<div class="modal-header">
-									<h4 class="modal-title" id="RankLabel">Grafik hasil penilaian</h4>
-									<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-										<i data-feather="x"></i>
-									</button>
-								</div>
-								<div class="modal-body">
-									<div id="chart-ranking"></div>
-									<p>Jadi, nilai tertingginya diraih oleh <span id="SkorTertinggi">...</span>
-										dengan nilai <span id="SkorHasil">...</span></p>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-										Tutup
-									</button>
-								</div>
-							</div>
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="RankLabel">Grafik hasil penilaian</h4>
+				<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+					<i data-feather="x"></i>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div id="chart-ranking"></div>
+				<p>Jadi, nilai tertingginya diraih oleh <span id="SkorTertinggi">...</span>
+					(A<span id="AltID">...</span>) dengan nilai <span id="SkorHasil">...</span></p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+					Tutup
+				</button>
+			</div>
+		</div>
 	</div>
 </div>
 <div class="card">
-	<div class="card-header">
-		<h4 class="card-title">Ranking</h4>
-	</div>
+	<div class="card-header"><h4 class="card-title">Ranking</h4></div>
 	<div class="card-body">
 		<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#RankModal"
 			id="spare-button">
@@ -180,7 +174,38 @@ $totalalts = count($data['alternatif']);
 @endsection
 @section('js')
 <script type="text/javascript">
-	var dt_hasil, loaded = false;
+	var dt_hasil, loaded = false, options = {
+		chart: {
+			height: 320,
+			type: 'bar'
+		},
+		dataLabels: {
+			enabled: true
+		},
+		legend: {
+			show: false
+		},
+		series: [],
+		title: {
+			text: 'Hasil Penilaian'
+		},
+		noData: {
+			text: 'Memuat grafik...'
+		},
+		xaxis: {
+			categories: [
+				@foreach ($data['alternatif'] as $alts)
+					["A{{ $alts->id }}", "{{ $alts->name }}"],
+				@endforeach
+			]
+		},
+		plotOptions: {
+			bar: {
+				distributed: true
+			}
+		}
+	},
+	chart = new ApexCharts(document.querySelector("#chart-ranking"), options);
 	$(document).ready(function() {
 		try {
 			$.fn.dataTable.ext.errMode = "none";
@@ -213,7 +238,7 @@ $totalalts = count($data['alternatif']);
 							columns: [0],
 							format: {
 								body: function(inner) {
-									return inner.substring(inner.indexOf('>')+1);
+									return inner.substring(inner.indexOf('>') + 1);
 								}
 							}
 						},
@@ -230,12 +255,12 @@ $totalalts = count($data['alternatif']);
 						exportOptions: {
 							format: {
 								header: function (data) {
-									if(data.indexOf('C')===7) 
-										return data.substring(data.indexOf('>')+1);
+									if(data.indexOf('C') === 7) 
+										return data.substring(data.indexOf('>') + 1);
 									return data;
 								},
 								body: function(inner, coldex, rowdex) {
-									if(rowdex===0) return inner.substring(inner.indexOf('>')+1);
+									if(rowdex === 0) return inner.substring(inner.indexOf('>') + 1);
 									return inner;
 								}
 							}
@@ -263,53 +288,23 @@ $totalalts = count($data['alternatif']);
 			console.error(dterr.message);
 		}
 	});
-	var options = {
-		chart: {
-			height: 320,
-			type: 'bar'
-		},
-		dataLabels: {
-			enabled: true
-		},
-		legend: {
-			show: false
-		},
-		series: [],
-		title: {
-			text: 'Hasil Penilaian'
-		},
-		noData: {
-			text: 'Memuat grafik...'
-		},
-		xaxis: {
-			categories: [
-				@foreach ($data['alternatif'] as $alts)
-					["A{{ $alts->id }}", "{{ $alts->name }}"],
-				@endforeach
-			]
-		},
-		plotOptions: {
-			bar: {
-				distributed: true
-			}
-		}
-	},
-	chart = new ApexCharts(document.querySelector("#chart-ranking"), options);
 	chart.render();
 	$('#RankModal').on('show.bs.modal', function() {
 		if (!loaded) {
 			$.getJSON("{{ route('hasil.ranking') }}", function(response) {
 				$('#SkorHasil').text(response.score);
 				$('#SkorTertinggi').text(response.nama);
+				$('#AltID').text(response.alt_id);
 				chart.updateSeries([{
 					name: 'Nilai',
 					data: response.result.skor
 				}]);
 				loaded = true;
-			}).fail(function(e, status) {
+			}).fail(function(xhr, st, err) {
 				Swal.fire({
 					title: 'Gagal memuat grafik',
-					text: 'Kesalahan HTTP ' + e.status + '. ' + status,
+					text: 'Kesalahan HTTP ' + xhr.status + '.\n' + 
+						(xhr.responseJSON.message ?? err),
 					icon: 'error',
 					customClass: {
 						confirmButton: 'btn btn-success'

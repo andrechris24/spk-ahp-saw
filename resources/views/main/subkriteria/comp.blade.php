@@ -24,9 +24,7 @@ $numindex = 0;
 					</h2>
 					<div id="flush-collapseOne" class="accordion-collapse collapse"
 						data-bs-parent="#accordionTabelPerbandingan">
-						<div class="accordion-body">
-							<x-ahp-table />
-						</div>
+						<div class="accordion-body"><x-ahp-table /></div>
 					</div>
 				</div>
 			</div>
@@ -43,8 +41,7 @@ $numindex = 0;
 								<th>Sub Kriteria</th>
 							</tr>
 						</thead>
-						<tbody>
-							@csrf
+						<tbody>@csrf
 							@foreach ($array as $krit)
 								@if ($krit['baris'] !== $krit['kolom'])
 								<tr>

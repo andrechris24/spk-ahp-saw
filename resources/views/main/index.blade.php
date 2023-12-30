@@ -3,8 +3,8 @@
 @section('subtitle', 'Beranda')
 @section('page-desc')
 	@auth Hai, {{ auth()->user()->name }}
-	@else
-	Silahkan login untuk menggunakan Aplikasi Sistem Pendukung Keputusan @endauth
+	@else Silahkan login untuk menggunakan Aplikasi Sistem Pendukung Keputusan
+	@endauth
 @endsection
 @section('content')
 <div class="card">

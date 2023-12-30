@@ -118,9 +118,6 @@
 		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#CritModal">
 			<i class="bi bi-plus-lg"></i> Tambah Kriteria
 		</button>
-		<div class="spinner-grow text-danger d-none" role="status">
-			<span class="visually-hidden">Menghapus...</span>
-		</div>
 		<table class="table table-hover table-striped" id="table-crit" style="width: 100%">
 			<thead>
 				<tr>
@@ -281,10 +278,10 @@
 					type: 'DELETE',
 					url: '/kriteria/del/' + kr_id,
 					beforeSend: function() {
-						$('.spinner-grow.text-danger').removeClass('d-none');
+						toast.showToast();
 					},
 					complete: function() {
-						$('.spinner-grow.text-danger').addClass('d-none');
+						toast.hideToast();
 					},
 					success: function() {
 						dt_kriteria.draw();
@@ -302,7 +299,7 @@
 							dt_kriteria.draw();
 							error = 'Kriteria ' + kr_name + ' tidak ditemukan.';
 						} else {
-							error = 'Kesalahan HTTP ' + xhr.status + '. ' + 
+							error = 'Kesalahan HTTP ' + xhr.status + '.\n' + 
 								(xhr.responseJSON.message ?? err);
 						}
 						Swal.fire({
@@ -313,15 +310,6 @@
 								confirmButton: 'btn btn-success'
 							}
 						});
-					}
-				});
-			} else if (result.dismiss === Swal.DismissReason.cancel) {
-				Swal.fire({
-					title: 'Dibatalkan',
-					text: 'Kriteria ' + kr_name + ' tidak dihapus.',
-					icon: 'warning',
-					customClass: {
-						confirmButton: 'btn btn-success'
 					}
 				});
 			}
@@ -346,7 +334,7 @@
 				dt_kriteria.draw();
 				error = "Kriteria tidak ditemukan.";
 			} else {
-				error = 'Kesalahan HTTP ' + xhr.status + '. ' +
+				error = 'Kesalahan HTTP ' + xhr.status + '.\n' +
 					(xhr.responseJSON.message ?? err);
 			}
 			Swal.fire({
@@ -411,7 +399,7 @@
 					}
 					errmsg = xhr.responseJSON.message;
 				} else {
-					errmsg = 'Kesalahan HTTP ' + xhr.status + '. ' +
+					errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +
 						(xhr.responseJSON.message ?? err);
 				}
 				Swal.fire({

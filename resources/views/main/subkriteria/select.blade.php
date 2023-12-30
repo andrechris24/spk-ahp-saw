@@ -5,9 +5,6 @@
 <div class="card">
 	<div class="card-header">Daftar Perbandingan Sub Kriteria</div>
 	<div class="card-body">
-		<div class="spinner-grow text-danger d-none" role="status">
-			<span class="visually-hidden">Menghapus...</span>
-		</div>
 		<table class="table table-hover table-striped" id="table-subcritcomp" style="width: 100%">
 			<thead>
 				<tr>
@@ -71,9 +68,7 @@
 								`<button class="btn btn-sm btn-danger delete-comp" data-id="${data}" data-name="${full['name']}" title="Reset perbandingan"><i class="bi bi-arrow-counterclockwise"></i></button>` +
 								'</div>');
 						}
-						return (
-							`<a class="btn btn-sm btn-primary" href="/bobot/sub/${data}" title="Input perbandingan"><i class="bi bi-plus-lg"></i></a>`
-						);
+						return `<a class="btn btn-sm btn-primary" href="/bobot/sub/${data}" title="Input perbandingan"><i class="bi bi-plus-lg"></i></a>`;
 					}
 				}],
 				language: {
@@ -90,7 +85,7 @@
 		Swal.fire({
 			title: 'Reset perbandingan?',
 			text: "Anda akan mereset perbandingan Sub Kriteria " + kriteria +
-				". Bobot Sub Kriteria " + kriteria + " akan direset!",
+				".\nBobot Sub Kriteria " + kriteria + " akan direset!",
 			icon: 'question',
 			showCancelButton: true,
 			confirmButtonText: 'Ya',
@@ -106,10 +101,10 @@
 					type: 'DELETE',
 					url: '/bobot/sub/' + id + '/del',
 					beforeSend: function() {
-						$('.spinner-grow').removeClass('d-none');
+						toast.showToast();
 					},
 					complete: function() {
-						$('.spinner-grow').addClass('d-none');
+						toast.hidetoast();
 					},
 					success: function(data) {
 						dt_subkriteriacomp.draw();
@@ -127,21 +122,12 @@
 						Swal.fire({
 							icon: 'error',
 							title: 'Gagal reset',
-							text: 'Kesalahan HTTP ' + xhr.status + '. ' + 
+							text: 'Kesalahan HTTP ' + xhr.status + '.\n' + 
 								(xhr.responseJSON.message ?? err),
 							customClass: {
 								confirmButton: 'btn btn-success'
 							}
 						});
-					}
-				});
-			} else if (result.dismiss === Swal.DismissReason.cancel) {
-				Swal.fire({
-					title: 'Dibatalkan',
-					text: "Perbandingan Sub Kriteria " + kriteria + " tidak direset.",
-					icon: 'warning',
-					customClass: {
-						confirmButton: 'btn btn-success'
 					}
 				});
 			}

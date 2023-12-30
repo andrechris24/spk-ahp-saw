@@ -4,7 +4,7 @@ use App\Http\Controllers\SubKriteriaController;
 $subkriteriacomp = new SubKriteriaController();
 $title = $subkriteriacomp->nama_kriteria($kriteria_id);
 @endphp
-@section('title', 'Hasil Perbandingan Sub Kriteria' . $title)
+@section('title', 'Hasil Perbandingan Sub Kriteria ' . $title)
 @section('subtitle', 'Hasil Perbandingan Sub Kriteria ' . $title)
 @section('content')
 <x-inconsistent-reason />
@@ -90,9 +90,7 @@ $title = $subkriteriacomp->nama_kriteria($kriteria_id);
 						<th>{{ $kr->name }}</th>
 						@endforeach
 						<th>Jumlah Baris</th>
-						<th data-bs-toggle="tooltip" title="Bobot Prioritas">
-							Eigen
-						</th>
+						<th data-bs-toggle="tooltip" title="Bobot Prioritas">Eigen</th>
 						<th>Consistency Measure</th>
 					</tr>
 				</thead>
@@ -162,7 +160,7 @@ $title = $subkriteriacomp->nama_kriteria($kriteria_id);
 				<tr>
 					<td>Hasil Konsistensi</td>
 					<td>
-						<span @class([ 'text-warning'=> !is_numeric($data['result']),
+						<span @class(['text-warning'=> !is_numeric($data['result']),
 							'text-danger' => !$consistent,
 							'text-success' => is_numeric($data['result']) && $consistent])>
 							@if (!is_numeric($data['result'])) <b>Tidak bisa dievaluasi</b>
@@ -189,7 +187,7 @@ $title = $subkriteriacomp->nama_kriteria($kriteria_id);
 						id="reset-button">
 						<i class="bi bi-arrow-counterclockwise"></i> Reset
 					</a>
-					@if ($data['bobot_sub_kosong'] == 0)
+					@if ($data['bobot_sub_kosong'] === 0)
 					<a href="{{ route('nilai.index') }}" class="btn btn-success">
 						<i class="bi bi-arrow-right"></i> Lanjut
 					</a>
@@ -214,7 +212,7 @@ $title = $subkriteriacomp->nama_kriteria($kriteria_id);
 		e.preventDefault();
 		Swal.fire({
 			title: 'Reset perbandingan?',
-			text: "Anda akan mereset perbandingan Sub Kriteria {{ $title }}. " +
+			text: "Anda akan mereset perbandingan Sub Kriteria {{ $title }}.\n" +
 				"Bobot Sub Kriteria {{ $title }} akan direset!",
 			icon: 'question',
 			showCancelButton: true,
@@ -229,15 +227,6 @@ $title = $subkriteriacomp->nama_kriteria($kriteria_id);
 			if (result.value) {
 				document.getElementById('reset-subkriteria').submit();
 				$('.spinner-grow').removeClass('d-none');
-			} else if (result.dismiss === Swal.DismissReason.cancel) {
-				Swal.fire({
-					title: 'Dibatalkan',
-					text: "Perbandingan Sub Kriteria {{ $title }} tidak direset.",
-					icon: 'warning',
-					customClass: {
-						confirmButton: 'btn btn-success'
-					}
-				});
 			}
 		});
 	});

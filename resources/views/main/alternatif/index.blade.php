@@ -83,9 +83,6 @@
 		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AlterModal">
 			<i class="bi bi-plus-lg"></i> Tambah Alternatif
 		</button>
-		<div class="spinner-grow text-danger d-none" role="status">
-			<span class="visually-hidden">Menghapus...</span>
-		</div>
 		<table class="table table-hover table-striped" id="table-alter" style="width: 100%">
 			<thead>
 				<tr>
@@ -196,7 +193,7 @@
 				}).fail(function(xhr, st, err) {
 					Toastify({
 						text: "Gagal memuat jumlah: Kesalahan HTTP " +
-							xhr.status + '. ' + (xhr.statusText ?? err),
+							xhr.status + '.\n' + (xhr.statusText ?? err),
 						style: {
 							background: "#dc3545"
 						},
@@ -212,7 +209,7 @@
 		Swal.fire({
 			title: "Hapus alternatif?",
 			text: "Anda akan menghapus alternatif " + alt_name +
-				". Jika sudah dilakukan penilaian, penilaian terkait akan dihapus!",
+				".\nJika sudah dilakukan penilaian, penilaian terkait akan dihapus!",
 			icon: "question",
 			showCancelButton: true,
 			confirmButtonText: "Ya",
@@ -228,10 +225,10 @@
 					type: "DELETE",
 					url: "/alternatif/del/" + alt_id,
 					beforeSend: function() {
-						$('.spinner-grow.text-danger').removeClass('d-none');
+						toast.showToast();
 					},
 					complete: function() {
-						$('.spinner-grow.text-danger').addClass('d-none');
+						toast.hideToast();
 					},
 					success: function() {
 						dt_alternatif.draw();
@@ -262,15 +259,6 @@
 						});
 					},
 				});
-			} else if (result.dismiss === Swal.DismissReason.cancel) {
-				Swal.fire({
-					title: "Dibatalkan",
-					text: "Alternatif " + alt_name + " tidak dihapus.",
-					icon: "warning",
-					customClass: {
-						confirmButton: "btn btn-success"
-					}
-				});
 			}
 		});
 	}).on("click", ".edit-record", function() {
@@ -291,7 +279,7 @@
 				dt_alternatif.draw();
 				error = "Alternatif tidak ditemukan.";
 			} else {
-				error = "Kesalahan HTTP " + xhr.status + ". " +
+				error = "Kesalahan HTTP " + xhr.status + ".\n" +
 					(xhr.responseJSON.message ?? err);
 			}
 			Swal.fire({
@@ -348,7 +336,7 @@
 					}
 					errmsg = xhr.responseJSON.message;
 				} else {
-					errmsg = "Kesalahan HTTP " + xhr.status + ". " +
+					errmsg = "Kesalahan HTTP " + xhr.status + ".\n" +
 						(xhr.responseJSON.message ?? err);
 				}
 				Swal.fire({
