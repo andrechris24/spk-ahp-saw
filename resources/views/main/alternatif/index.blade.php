@@ -2,8 +2,8 @@
 @section('title', 'Alternatif')
 @section('subtitle', 'Alternatif')
 @section('content')
-<div class="modal fade text-left" id="AlterModal" tabindex="-1" role="dialog" aria-labelledby="AlterLabel"
-	aria-hidden="true">
+<div class="modal fade text-left" id="AlterModal" tabindex="-1" role="dialog"
+aria-labelledby="AlterLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -21,6 +21,11 @@
 						<div class="invalid-feedback" id="alter-error">
 							Masukkan Nama Alternatif
 						</div>
+					</div>
+					<label for="alter-desc">Keterangan</label>
+					<div class="form-group">
+						<input type="text" class="form-control" name="desc" id="alter-desc" />
+						<div class="invalid-feedback" id="desc-error"></div>
 					</div>
 				</form>
 			</div>
@@ -80,15 +85,16 @@
 <div class="card">
 	<div class="card-header">Daftar Alternatif</div>
 	<div class="card-body">
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AlterModal">
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+		data-bs-target="#AlterModal">
 			<i class="bi bi-plus-lg"></i> Tambah Alternatif
 		</button>
 		<table class="table table-hover table-striped" id="table-alter" style="width: 100%">
 			<thead>
 				<tr>
-					<th>No</th>
 					<th>Kode</th>
 					<th>Nama Alternatif</th>
+					<th>Keterangan</th>
 					<th>Aksi</th>
 				</tr>
 			</thead>
@@ -98,8 +104,8 @@
 @endsection
 @section('js')
 <script type="text/javascript">
-	var dt_alternatif, error;
-	$(document).ready(function() {
+	var dt_alternatif, errmsg;
+	$(document).ready(function () {
 		try {
 			$.fn.dataTable.ext.errMode = "none";
 			dt_alternatif = $("#table-alter").DataTable({
@@ -113,33 +119,32 @@
 					url: "{{ route('alternatif.data') }}",
 					type: "POST"
 				},
-				columns: [{
-					data: "id"
-				}, {
-					data: "id"
-				}, {
-					data: "name"
-				}, {
-					data: "id"
-				}],
+				columns: [
+					{ data: "id" },
+					{ data: "name" },
+					{ data: "desc" },
+					{ data: "id" }
+				],
 				columnDefs: [{
 					targets: 0,
-					orderable: false,
-					render: function(data, type, full, meta) {
-						return meta.row + meta.settings._iDisplayStart + 1;
-					}
+					render: function (data) { return 'A' + data; }
 				}, {
-					targets: 1,
-					render: function(data) {
-						return 'A' + data;
+					targets: 2,
+					render: function (data) {
+						if(data === null) return "-";
+						return data;
 					}
 				}, { //Aksi
 					orderable: false,
 					targets: -1,
-					render: function(data, type, full) {
+					render: function (data, type, full) {
 						return ('<div class="btn-group" role="group">' +
-							`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#AlterModal" title="Edit"><i class="bi bi-pencil-square"></i></button>` +
-							`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full["name"]}" title="Hapus"><i class="bi bi-trash3-fill"></i></button>` +
+							`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#AlterModal" title="Edit">` +
+							'<i class="bi bi-pencil-square"></i>' +
+							'</button>' +
+							`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full["name"]}" title="Hapus">` +
+							'<i class="bi bi-trash3-fill"></i>' +
+							'</button>' +
 							"</div>");
 					}
 				}],
@@ -147,211 +152,182 @@
 					url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
 				}
 				// dom: "Bfrtip",
-					// buttons: [{
-					// 	text: '<i class="bi bi-plus-lg me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Tambah Alternatif</span>',
-					// 	className: "add-new btn",
-					// 	attr: {
-					// 		"data-bs-toggle": "modal",
-					// 		"data-bs-target": "#AlterModal"
-					// 	}
-					// }, {
-					// 	extend: "collection",
-					// 	text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
-					// 	className: "btn dropdown-toggle",
-					// 	buttons: [{
-					// 		extend: "print",
-					// 		title: "Alternatif",
-					// 		text: '<i class="bi bi-printer me-2"></i> Print',
-					// 		className: "dropdown-item",
-					// 		exportOptions: {
-					// 			columns: [1, 2]
-					// 		}
-					// 	}, {
-					// 		extend: "excel",
-					// 		title: "Alternatif",
-					// 		text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
-					// 		className: "dropdown-item",
-					// 		exportOptions: {
-					// 			columns: [1, 2]
-					// 		}
-					// 	}, {
-					// 		extend: "pdf",
-					// 		title: "Alternatif",
-					// 		text: '<i class="bi bi-file-text me-2"></i> PDF',
-					// 		className: "dropdown-item",
-					// 		exportOptions: {
-					// 			columns: [1, 2]
-					// 		}
-					// 	}],
+				// buttons: [{
+				// 	extend: "collection",
+				// 	text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
+				// 	className: "btn dropdown-toggle",
+				// 	buttons: [{
+				// 		extend: "print",
+				// 		title: "Alternatif",
+				// 		text: '<i class="bi bi-printer me-2"></i> Print',
+				// 		className: "dropdown-item",
+				// 		exportOptions: {
+				// 			columns: [1, 2]
+				// 		}
+				// 	}, {
+				// 		extend: "excel",
+				// 		title: "Alternatif",
+				// 		text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
+				// 		className: "dropdown-item",
+				// 		exportOptions: {
+				// 			columns: [1, 2]
+				// 		}
+				// 	}, {
+				// 		extend: "pdf",
+				// 		title: "Alternatif",
+				// 		text: '<i class="bi bi-file-text me-2"></i> PDF',
+				// 		className: "dropdown-item",
+				// 		exportOptions: {
+				// 			columns: [1, 2]
+				// 		}
+				// 	}],
 				// }]
-			}).on("error.dt", function(e, settings, techNote, message) {
+			}).on("error.dt", function (e, settings, techNote, message) {
 				errorDT(message, techNote);
-			}).on("preXhr", function() {
-				$.get("{{ route('alternatif.count') }}", function(data) {
+			}).on("preXhr", function () {
+				$.get("{{ route('alternatif.count') }}", function (data) {
 					$("#total-duplicate").text(data.duplicates);
 					$("#total-counter").text(data.total);
-				}).fail(function(xhr, st, err) {
-					Toastify({
-						text: "Gagal memuat jumlah: Kesalahan HTTP " +
-							xhr.status + '.\n' + (xhr.statusText ?? err),
-						style: {
-							background: "#dc3545"
-						},
-						duration: 9000
-					}).showToast();
+				}).fail(function (xhr, st, err) {
+					console.warn(xhr.responseJSON.message ?? st);
+					swal.fire({
+						icon: 'error',
+						title: 'Gagal memuat jumlah',
+						text: "Kesalahan HTTP " + xhr.status + '. ' + (xhr.statusText ?? err)
+					});
 				});
 			}).on("draw", setTableColor);
 		} catch (dterr) {
 			initError(dterr.message);
 		}
-	}).on("click", ".delete-record", function() {
+	}).on("click", ".delete-record", function () {
 		var alt_id = $(this).data("id"), alt_name = $(this).data("name");
-		Swal.fire({
+		confirm.fire({
 			title: "Hapus alternatif?",
 			text: "Anda akan menghapus alternatif " + alt_name +
 				".\nJika sudah dilakukan penilaian, penilaian terkait akan dihapus!",
-			icon: "question",
-			showCancelButton: true,
-			confirmButtonText: "Ya",
-			cancelButtonText: "Tidak",
-			customClass: {
-				confirmButton: "btn btn-primary me-3",
-				cancelButton: "btn btn-secondary"
-			},
-			buttonsStyling: false
-		}).then(function(result) {
-			if (result.value) { // delete the data
-				$.ajax({
-					type: "DELETE",
-					url: "/alternatif/del/" + alt_id,
-					beforeSend: function() {
-						toast.showToast();
-					},
-					complete: function() {
-						toast.hideToast();
-					},
-					success: function() {
-						dt_alternatif.draw();
-						Swal.fire({
-							icon: "success",
-							title: "Dihapus",
-							text: "Alternatif " + alt_name + " sudah dihapus.",
-							customClass: {
-								confirmButton: "btn btn-success"
-							}
-						});
-					},
-					error: function(xhr, stat, err) {
-						if (xhr.status === 404) {
+			preConfirm: async () => {
+				try {
+					await $.ajax({
+						type: "DELETE",
+						url: "/alternatif/del/" + alt_id,
+						success: function () {
 							dt_alternatif.draw();
-							error = "Alternatif " + alt_name + " tidak ditemukan.";
-						} else {
-							error = "Kesalahan HTTP " + xhr.status + "." + 
-								(xhr.responseJSON.message ?? err);
-						}
-						Swal.fire({
-							icon: "error",
-							title: "Gagal hapus",
-							text: error,
-							customClass: {
-								confirmButton: "btn btn-success",
+							return "Dihapus";
+						},
+						error: function (xhr, st, err) {
+							if (xhr.status === 404) {
+								dt_alternatif.draw();
+								errmsg = "Alternatif " + alt_name + " tidak ditemukan.";
+							} else {
+								console.warn(xhr.responseJSON.message ?? st);
+								errmsg = "Kesalahan HTTP " + xhr.status + "." +
+									(xhr.statusText ?? err);
 							}
-						});
-					},
+							Swal.showValidationMessage("Gagal hapus: " + errmsg);
+						},
+					});
+				} catch (error) {
+					console.error(error);
+					Swal.showValidationMessage(`Gagal hapus: ${error}`);
+				}
+
+			}
+		}).then(function (result) {
+			if (result.isConfirmed) { // delete the data
+				swal.fire({
+					icon: "success",
+					title: "Berhasil dihapus"
 				});
 			}
 		});
-	}).on("click", ".edit-record", function() {
+	}).on("click", ".edit-record", function () {
 		var alt_id = $(this).data("id");
 
-			// changing the title of offcanvas
+		// changing the title of offcanvas
 		$("#AlterLabel").html("Edit Alternatif");
 		$("#AlterForm :input").prop("disabled", true);
 		$(".data-submit").prop("disabled", true);
-		$(".spinner-grow.text-primary").removeClass("d-none");
-			// get data
-		$.get("/alternatif/edit/" + alt_id, function(data) {
+		$(".spinner-grow").removeClass("d-none");
+		// get data
+		$.get("/alternatif/edit/" + alt_id, function (data) {
 			$("#alter-id").val(data.id);
 			$("#alter-name").val(data.name);
-		}).fail(function(xhr, st, err) {
+		}).fail(function (xhr, st, err) {
 			if (xhr.status === 404) {
 				$("#AlterModal").modal("hide");
 				dt_alternatif.draw();
-				error = "Alternatif tidak ditemukan.";
+				errmsg = "Alternatif tidak ditemukan";
 			} else {
-				error = "Kesalahan HTTP " + xhr.status + ".\n" +
-					(xhr.responseJSON.message ?? err);
+				console.warn(xhr.responseJSON.message ?? st);
+				errmsg = "Kesalahan HTTP " + xhr.status + ".\n" +
+					(xhr.statusText ?? err);
 			}
-			Swal.fire({
+			swal.fire({
 				icon: "error",
 				title: "Gagal memuat data",
-				text: error,
-				customClass: {
-					confirmButton: "btn btn-success"
-				}
+				text: errmsg
 			});
-		}).always(function() {
+		}).always(function () {
 			$("#AlterForm :input").prop("disabled", false);
 			$(".data-submit").prop("disabled", false);
-			$(".spinner-grow.text-primary").addClass("d-none");
+			$(".spinner-grow").addClass("d-none");
 		});
 	});
 
 	function submitform(event) {
-		var errmsg, actionurl = $("#alter-id").val() == "" ?
+		var actionurl = $("#alter-id").val() == "" ?
 			"{{ route('alternatif.store') }}" : "{{ route('alternatif.update') }}";
 		event.preventDefault();
 		$.ajax({
 			data: $("#AlterForm").serialize(),
 			url: actionurl,
 			type: "POST",
-			beforeSend: function() {
+			beforeSend: function () {
 				$("#AlterForm :input").prop("disabled", true).removeClass("is-invalid");
 				$(".data-submit").prop("disabled", true);
-				$(".spinner-grow.text-primary").removeClass("d-none");
+				$(".spinner-grow").removeClass("d-none");
 			},
-			complete: function() {
+			complete: function () {
 				$("#AlterForm :input").prop("disabled", false);
 				$(".data-submit").prop("disabled", false);
-				$(".spinner-grow.text-primary").addClass("d-none");
+				$(".spinner-grow").addClass("d-none");
 			},
-			success: function(status) {
+			success: function (status) {
 				if ($.fn.DataTable.isDataTable("#table-alter")) dt_alternatif.draw();
 				$("#AlterModal").modal("hide");
-				Swal.fire({
+				swal.fire({
 					icon: "success",
-					title: "Sukses",
-					text: status.message,
-					customClass: {
-						confirmButton: "btn btn-success"
-					}
+					title: status.message
 				});
 			},
-			error: function(xhr, stat, err) {
+			error: function (xhr, stat, err) {
 				if (xhr.status === 422) {
 					resetvalidation();
 					if (typeof xhr.responseJSON.errors.name !== "undefined") {
 						$("#alter-name").addClass("is-invalid");
 						$("#alter-error").text(xhr.responseJSON.errors.name);
 					}
+					if(typeof xhr.responseJSON.errors.desc !== "undefined") {
+						$("#alter-desc").addClass("is-invalid");
+						$("#desc-error").text(xhr.responseJSON.errors.desc);
+					}
 					errmsg = xhr.responseJSON.message;
 				} else {
+					console.warn(xhr.responseJSON.message ?? st);
 					errmsg = "Kesalahan HTTP " + xhr.status + ".\n" +
-						(xhr.responseJSON.message ?? err);
+						(xhr.statusText ?? err);
 				}
-				Swal.fire({
+				swal.fire({
 					title: "Gagal",
 					text: errmsg,
-					icon: "error",
-					customClass: {
-						confirmButton: "btn btn-success"
-					}
+					icon: "error"
 				});
 			}
 		});
 	};
 	// clearing form data when modal hidden
-	$("#AlterModal").on("hidden.bs.modal", function() {
+	$("#AlterModal").on("hidden.bs.modal", function () {
 		resetvalidation();
 		$("#AlterForm")[0].reset();
 		$("#alter-id").val("");

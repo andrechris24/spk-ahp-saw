@@ -64,5 +64,6 @@ class User extends Authenticatable
 		5 => 'text-bg-info',
 		6 => 'text-bg-light',
 		7 => 'text-bg-dark',
-		8 => 'bg-black'];
+		8 => 'bg-black'
+	];
 }

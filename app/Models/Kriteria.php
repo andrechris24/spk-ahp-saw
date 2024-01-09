@@ -36,7 +36,8 @@ class Kriteria extends Model
 		17 => 1.61,
 		18 => 1.615,
 		19 => 1.62,
-		20 => 1.625];
+		20 => 1.625
+	];
 	public function subkriteria()
 	{
 		return $this->hasOne(SubKriteria::class, 'kriteria_id');

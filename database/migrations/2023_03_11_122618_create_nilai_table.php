@@ -15,11 +15,11 @@ return new class extends Migration {
 		Schema::create('nilai', function (Blueprint $table) {
 			$table->id();
 			$table->foreignId('alternatif_id')->constrained('alternatif')
-				->cascadeOnDelete()->cascadeOnUpdate();
+				->cascadeOnDelete()->comment('Alternatif');
 			$table->foreignId('kriteria_id')->constrained('kriteria')
-				->cascadeOnDelete()->cascadeOnUpdate();
-			$table->foreignId('subkriteria_id')->nullable()->constrained('subkriteria')
-				->nullOnDelete()->cascadeOnUpdate();
+				->cascadeOnDelete()->comment('Kriteria');
+			$table->foreignId('subkriteria_id')->constrained('subkriteria')
+				->cascadeOnDelete()->comment('Sub Kriteria');
 			$table->timestamps();
 		});
 	}

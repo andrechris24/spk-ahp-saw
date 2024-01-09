@@ -4,8 +4,8 @@
 @section('auth-subtitle', 'Selamat datang! Silahkan masukkan data Anda.')
 @section('auth-css', asset('assets/compiled/css/auth.css'))
 @section('content')
-<form action="{{ route('register.perform') }}" method="post" enctype="multipart/form-data"
-	class="needs-validation">@csrf
+<form action="{{ route('register.perform') }}" method="post"
+enctype="multipart/form-data" class="needs-validation">@csrf
 	<div class="form-group position-relative has-icon-left mb-4">
 		<input type="text" name="email" placeholder="Email" value="{{ old('email') }}" required
 			class="form-control form-control-xl @error('email') is-invalid @enderror " />
@@ -30,7 +30,7 @@
 	<div class="form-group position-relative has-icon-left mb-4">
 		<input type="password" placeholder="Password" name="password" minlength="8"
 			maxlength="20" id="password" class="form-control form-control-xl 
-			@error('password') is-invalid @enderror " oninput="checkpassword()" 
+			@error('password') is-invalid @enderror " oninput="checkpassword()"
 			data-bs-toggle="tooltip" data-bs-placement="top" required
 			title="8-20 karakter (Saran: terdiri dari huruf besar, huruf kecil, angka, dan simbol)" />
 		<div class="form-control-icon"><i class="bi bi-shield-lock"></i></div>
@@ -41,9 +41,8 @@
 		</div>
 	</div>
 	<div class="form-group position-relative has-icon-left mb-4">
-		<input type="password" placeholder="Konfirmasi Password" maxlength="20"
-			id="confirm-password" name="password_confirmation" oninput="checkpassword()"
-			class="form-control form-control-xl 
+		<input type="password" placeholder="Konfirmasi Password" maxlength="20" id="confirm-password"
+			name="password_confirmation" oninput="checkpassword()" class="form-control form-control-xl 
 			@error('password_confirmation') is-invalid @enderror " required />
 		<div class="form-control-icon"><i class="bi bi-shield-lock"></i></div>
 		<div class="invalid-feedback">

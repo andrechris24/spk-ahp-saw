@@ -21,7 +21,7 @@
     });
 })();
 function switchvalidation() {
-    var forms = document.querySelectorAll(".needs-validation");
+    let forms = document.querySelectorAll(".needs-validation");
     for (let a = 0; a < forms.length; a++) {
         forms[a].noValidate = true;
     }

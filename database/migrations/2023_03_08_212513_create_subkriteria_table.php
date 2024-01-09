@@ -15,8 +15,8 @@ return new class extends Migration {
 		Schema::create('subkriteria', function (Blueprint $table) {
 			$table->id();
 			$table->foreignId('kriteria_id')->constrained('kriteria')
-				->cascadeOnDelete()->cascadeOnUpdate();
-			$table->string('name', 99);
+				->cascadeOnDelete()->comment('Kriteria');
+			$table->string('name', 99)->comment('Nama sub kriteria');
 			$table->float('bobot', 8, 5)->default(0.00000);
 			$table->timestamps();
 		});

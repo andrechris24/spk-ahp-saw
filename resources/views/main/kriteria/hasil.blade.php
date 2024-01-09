@@ -27,9 +27,9 @@
 							C{{ $kr->id }}
 						</th>
 						@foreach ($data['matriks_awal'] as $ma)
-							@if ($ma['kode_kriteria'] === $kr->idkriteria)
-							<td>{!! $ma['nilai'] !!}</td>
-							@endif
+						@if ($ma['kode_kriteria'] === $kr->idkriteria)
+						<td>{!! $ma['nilai'] !!}</td>
+						@endif
 						@endforeach
 					</tr>
 					@endforeach
@@ -62,9 +62,9 @@
 							C{{ $kr->id }}
 						</th>
 						@foreach ($data['matriks_perbandingan'] as $mp)
-							@if ($mp['kode_kriteria'] === $kr->idkriteria)
-							<td>{{ round($mp['nilai'], 5) }}</td>
-							@endif
+						@if ($mp['kode_kriteria'] === $kr->idkriteria)
+						<td>{{ round($mp['nilai'], 5) }}</td>
+						@endif
 						@endforeach
 					</tr>
 					@endforeach
@@ -106,9 +106,9 @@
 							C{{ $kr->id }}
 						</th>
 						@foreach ($data['matriks_normalisasi'] as $mn)
-							@if ($mn['kode_kriteria'] === $kr->idkriteria)
-							<td>{{ round($mn['nilai'], 5) }}</td>
-							@endif
+						@if ($mn['kode_kriteria'] === $kr->idkriteria)
+						<td>{{ round($mn['nilai'], 5) }}</td>
+						@endif
 						@endforeach
 						@if ($data['bobot_prioritas'][$loop->index]['kode_kriteria'] === $kr->idkriteria)
 						<td class="text-info">
@@ -131,9 +131,7 @@
 	</div>
 </div>
 <div class="card">
-	<div class="card-header">
-		<div class="card-title">Nilai Konsistensi</div>
-	</div>
+	<div class="card-header"><div class="card-title">Nilai Konsistensi</div></div>
 	<div class="card-body">
 		<div class="table-responsive">
 			<table class="table table-hover">
@@ -150,11 +148,11 @@
 					<td>
 						@if (is_numeric($data['result']))
 							@php
-							$consistent = $data['result'] <= 0.1; 
-							echo round($data['result'], 5); 
-							@endphp 
+							$consistent = $data['result'] <= 0.1;
+							echo round($data['result'], 5);
+							@endphp
 							<span @class(['text-danger'=> $data['result'] > 0.1])>
-								({{ round($data['result'] * 100, 2) }}%)
+							({{ round($data['result'] * 100, 2) }}%)
 							</span>
 						@else
 							@php
@@ -167,13 +165,12 @@
 				<tr>
 					<td>Hasil Konsistensi</td>
 					<td>
-						<span @class(['text-warning'=> !is_numeric($data['result']),
+						<span @class([
+							'text-warning'=> !is_numeric($data['result']),
 							'text-danger' => !$consistent,
 							'text-success' => is_numeric($data['result']) && $consistent])>
-							@if (!is_numeric($data['result']))
-							<b>Tidak bisa dievaluasi</b>
-							@elseif ($consistent)
-							<b>Konsisten</b>
+							@if (!is_numeric($data['result'])) <b>Tidak bisa dievaluasi</b>
+							@elseif ($consistent) <b>Konsisten</b>
 							@else
 							<b>Tidak Konsisten</b>, mohon untuk menginput ulang perbandingan!
 							@endif
@@ -197,7 +194,8 @@
 						<i class="bi bi-arrow-right"></i> Lanjut
 					</a>
 					@else
-					<button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#inconsistentModal">
+					<button type="button" class="btn btn-info" data-bs-toggle="modal"
+					data-bs-target="#inconsistentModal">
 						?
 					</button>
 					@endif
@@ -213,22 +211,13 @@
 @endsection
 @section('js')
 <script type="text/javascript">
-	$(document).on('click', '#reset-button', function(e) {
+	$(document).on('click', '#reset-button', function (e) {
 		e.preventDefault();
 		Swal.fire({
 			title: 'Reset perbandingan?',
-			text: "Anda akan mereset perbandingan Kriteria.\nBobot Kriteria akan direset!",
-			icon: 'question',
-			showCancelButton: true,
-			confirmButtonText: 'Ya',
-			cancelButtonText: 'Tidak',
-			customClass: {
-				confirmButton: 'btn btn-primary me-3',
-				cancelButton: 'btn btn-secondary'
-			},
-			buttonsStyling: false
-		}).then(function(result) {
-			if (result.value) {
+			text: "Anda akan mereset perbandingan Kriteria.\nBobot Kriteria akan direset!"
+		}).then(function (result) {
+			if (result.isConfirmed) {
 				document.getElementById('reset-kriteria').submit();
 				$('.spinner-grow').removeClass('d-none');
 			}

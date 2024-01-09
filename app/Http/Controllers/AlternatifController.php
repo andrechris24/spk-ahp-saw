@@ -16,7 +16,8 @@ class AlternatifController extends Controller
 		$altUnique = $alternatives->unique(['name']);
 		return response()->json([
 			'total' => $alternatives->count(),
-			'duplicates' => $alternatives->diff($altUnique)->count()]);
+			'duplicates' => $alternatives->diff($altUnique)->count()
+		]);
 	}
 	public function index()
 	{
@@ -31,7 +32,7 @@ class AlternatifController extends Controller
 		$request->validate(Alternatif::$rules, Alternatif::$message);
 		try {
 			Alternatif::create($request->all());
-			return response()->json(['message' => 'Alternatif sudah diinput']);
+			return response()->json(['message' => 'Berhasil diinput']);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->errorInfo[2]], 500);
@@ -42,8 +43,9 @@ class AlternatifController extends Controller
 		$request->validate(Alternatif::$rules, Alternatif::$message);
 		$req = $request->all();
 		try {
-			Alternatif::updateOrCreate(['id' => $req['id']], ['name' => $req['name']]);
-			return response()->json(['message' => 'Alternatif sudah diupdate']);
+			Alternatif::updateOrCreate(['id' => $req['id']], 
+				['name' => $req['name'], 'desc' => $req['desc']]);
+			return response()->json(['message' => 'Berhasil diupdate']);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->errorInfo[2]], 500);
@@ -58,6 +60,6 @@ class AlternatifController extends Controller
 		$alt->delete();
 		$model = new Alternatif;
 		HomeController::refreshDB($model);
-		return response()->json(['message' => 'Alternatif sudah dihapus']);
+		return response()->json(['message' => 'Dihapus']);
 	}
 }

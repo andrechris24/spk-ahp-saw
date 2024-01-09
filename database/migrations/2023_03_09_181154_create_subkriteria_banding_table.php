@@ -15,11 +15,11 @@ return new class extends Migration {
 		Schema::create('subkriteria_banding', function (Blueprint $table) {
 			$table->id();
 			$table->foreignId('idkriteria')->constrained('kriteria')
-				->cascadeOnDelete()->cascadeOnUpdate();
+				->cascadeOnDelete()->comment('Kriteria');
 			$table->foreignId('subkriteria1')->constrained('subkriteria')
-				->cascadeOnDelete()->cascadeOnUpdate();
+				->cascadeOnDelete();
 			$table->foreignId('subkriteria2')->constrained('subkriteria')
-				->cascadeOnDelete()->cascadeOnUpdate();
+				->cascadeOnDelete();
 			$table->integer('nilai')->default(1);
 			$table->timestamps();
 		});

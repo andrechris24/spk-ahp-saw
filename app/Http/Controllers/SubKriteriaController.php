@@ -37,7 +37,8 @@ class SubKriteriaController extends Controller
 		return response()->json([
 			'total' => $subcriterias->count(),
 			'max' => collect($totalsub)->max(),
-			'duplicate' => $duplicate]);
+			'duplicate' => $duplicate
+		]);
 	}
 	public function index()
 	{
@@ -65,13 +66,11 @@ class SubKriteriaController extends Controller
 			$namakriteria = $this->nama_kriteria($req['kriteria_id']);
 			if (SubKriteria::where('kriteria_id', $req['kriteria_id'])->count() >= 20) {
 				return response()->json([
-					'message' => "Batas jumlah sub kriteria $namakriteria sudah tercapai."
+					'message' => "Batas jumlah sub kriteria $namakriteria sudah tercapai"
 				], 400);
 			}
 			SubKriteria::create($req);
-			return response()->json([
-				'message' => "Sub Kriteria $namakriteria sudah diinput."
-			]);
+			return response()->json(['message' => "Berhasil diinput"]);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->errorInfo[2]], 500);
@@ -82,9 +81,11 @@ class SubKriteriaController extends Controller
 		$request->validate(SubKriteria::$rules, SubKriteria::$message);
 		$req = $request->all();
 		try {
-			SubKriteria::updateOrCreate(['id' => $req['id']],
-				['name' => $req['name'], 'kriteria_id' => $req['kriteria_id']]);
-			return response()->json(['message' => "Sub Kriteria sudah diupdate"]);
+			SubKriteria::updateOrCreate(
+				['id' => $req['id']],
+				['name' => $req['name'], 'kriteria_id' => $req['kriteria_id']]
+			);
+			return response()->json(['message' => "Berhasil diupdate"]);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->errorInfo[2]], 500);
@@ -101,6 +102,6 @@ class SubKriteriaController extends Controller
 			SubKriteriaComp::truncate();
 		$model = new SubKriteria;
 		HomeController::refreshDB($model);
-		return response()->json(['message' => "Sub Kriteria sudah dihapus."]);
+		return response()->json(['message' => "Dihapus"]);
 	}
 }

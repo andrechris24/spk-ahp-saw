@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
@@ -21,10 +22,16 @@ class HomeController extends Controller
 	{
 		try {
 			$max = $model->max('id') + 1;
-			DB::statement("ALTER TABLE users AUTO_INCREMENT =  $max");
+			DB::statement("ALTER TABLE users AUTO_INCREMENT = $max");
 		} catch (QueryException $e) {
 			Log::error($e);
 		}
+	}
+	public function dbWarnings(): void
+	{
+		$warning_messages = DB::select('SHOW WARNINGS');
+		if (count($warning_messages) > 0)
+			Log::warning($warning_messages);
 	}
 	public function index()
 	{
@@ -34,7 +41,8 @@ class HomeController extends Controller
 				$jml = [
 					'kriteria' => Kriteria::count(),
 					'subkriteria' => SubKriteria::count(),
-					'alternatif' => Alternatif::count()];
+					'alternatif' => Alternatif::count()
+				];
 			} catch (QueryException $e) {
 				Log::error($e);
 				$jml['error'] = "Kesalahan SQLState #" . $e->errorInfo[0] . '/' .
@@ -57,10 +65,12 @@ class HomeController extends Controller
 					'required',
 					'email',
 					'unique:users,email,' . Auth::id()
-				], 'current_password' => ['bail', 'required', 'current_password'],
+				],
+				'current_password' => ['bail', 'required', 'current_password'],
 				'password' => ['nullable', 'bail', 'confirmed', 'between:8,20'],
 				'password_confirmation' => 'required_with:password'
 			], User::$message);
+			$req['email'] = Str::lower($req['email']);
 			if (empty($req['password'])) {
 				unset($req['password']);
 				unset($req['password_confirmation']);
@@ -69,7 +79,7 @@ class HomeController extends Controller
 			User::findOrFail(Auth::id())->update($req);
 			return response()->json(['message' => 'Akun sudah diupdate']);
 		} catch (ModelNotFoundException $e) {
-			return response()->json(['message' => 'Akun tidak ditemukan.'], 404);
+			return response()->json(['message' => 'Akun tidak ditemukan'], 404);
 		} catch (QueryException $db) {
 			Log::error($db);
 			return response()->json(['message' => $db->errorInfo[2]], 500);
@@ -83,11 +93,9 @@ class HomeController extends Controller
 			Auth::logout();
 			Session::invalidate();
 			Session::regenerateToken();
-			return response()->json([
-				'message' => 'Terima kasih Anda telah menggunakan Aplikasi Sistem Pendukung Keputusan. Mengalihkan ke Halaman Login.'
-			]);
+			return response()->json(['message' => 'Akun sudah dihapus']);
 		} catch (ModelNotFoundException) {
-			return response()->json(['message' => 'Akun tidak ditemukan.'], 404);
+			return response()->json(['message' => 'Akun tidak ditemukan'], 404);
 		} catch (QueryException $db) {
 			Log::error($db);
 			return response()->json(['message' => $db->errorInfo[2]], 500);

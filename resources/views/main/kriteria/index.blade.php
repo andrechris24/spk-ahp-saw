@@ -2,8 +2,8 @@
 @section('title', 'Kriteria')
 @section('subtitle', 'Kriteria')
 @section('content')
-<div class="modal fade text-left" id="CritModal" tabindex="-1" role="dialog" aria-labelledby="CritLabel"
-	aria-hidden="true">
+<div class="modal fade text-left" id="CritModal" tabindex="-1" role="dialog"
+aria-labelledby="CritLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -115,18 +115,19 @@
 <div class="card">
 	<div class="card-header">Daftar Kriteria</div>
 	<div class="card-body">
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#CritModal">
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+		data-bs-target="#CritModal">
 			<i class="bi bi-plus-lg"></i> Tambah Kriteria
 		</button>
 		<table class="table table-hover table-striped" id="table-crit" style="width: 100%">
 			<thead>
 				<tr>
-					<th>No</th>
 					<th>Kode</th>
 					<th>Nama Kriteria</th>
 					<th>Atribut</th>
 					<th>Keterangan</th>
-					<th data-bs-toggle="tooltip" title="Bobot didapat melalui pembobotan Kriteria secara konsisten">
+					<th data-bs-toggle="tooltip"
+						title="Bobot didapat melalui pembobotan Kriteria secara konsisten">
 						Bobot
 					</th>
 					<th>Aksi</th>
@@ -138,8 +139,8 @@
 @endsection
 @section('js')
 <script type="text/javascript">
-	var dt_kriteria, error;
-	$(document).ready(function() {
+	var dt_kriteria, errmsg;
+	$(document).ready(function () {
 		try {
 			$.fn.dataTable.ext.errMode = 'none';
 			dt_kriteria = $('#table-crit').DataTable({
@@ -153,46 +154,36 @@
 					url: "{{ route('kriteria.data') }}",
 					type: 'POST'
 				},
-				columns: [{
-					data: 'id'
-				}, {
-					data: "id"
-				}, {
-					data: 'name'
-				}, {
-					data: 'type'
-				}, {
-					data: 'desc'
-				}, {
-					data: 'bobot'
-				}, {
-					data: 'id'
-				}],
+				columns: [
+					{ data: "id" },
+					{ data: 'name' },
+					{ data: 'type' },
+					{ data: 'desc' },
+					{ data: 'bobot' },
+					{ data: 'id' }
+				],
 				columnDefs: [{
 					targets: 0,
-					orderable: false,
-					render: function(data, type, full, meta) {
-						return meta.row + meta.settings._iDisplayStart + 1;
-					}
-				}, {
-					targets: 1,
-					render: function(data) {
-						return 'C' + data;
-					}
+					render: function (data) { return 'C' + data; }
 				}, { //Keterangan
-					targets: 4,
-					render: function(data, type) {
+					targets: 3,
+					render: function (data, type) {
+						if(data === null) return '-';
 						return type === 'display' && data.length > 50 ?
-							'<span title="' + data + '">' + data.substr(0, 48) + '...</span>' :
+							`<span title="${data}">` + data.substr(0, 48) + '...</span>' :
 							data;
 					}
 				}, { //Aksi
 					orderable: false,
 					targets: -1,
-					render: function(data, type, full) {
+					render: function (data, type, full) {
 						return ('<div class="btn-group" role="group">' +
-							`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#CritModal" title="Edit"><i class="bi bi-pencil-square"></i></button>` +
-							`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}" title="Hapus"><i class="bi bi-trash3-fill"></i></button>` +
+							`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#CritModal" title="Edit">` +
+							'<i class="bi bi-pencil-square"></i>' +
+							'</button>' +
+							`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}" title="Hapus">` +
+							'<i class="bi bi-trash3-fill"></i>' +
+							'</button>' +
 							'</div>');
 					}
 				}],
@@ -201,188 +192,155 @@
 				}
 				// dom: 'Bfrtip',
 				// buttons: [{
-					// 	text: '<i class="bi bi-plus-lg me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Tambah Kriteria</span>',
-					// 	className: 'add-new btn',
-					// 	attr: {
-					// 		'data-bs-toggle': 'modal',
-					// 		'data-bs-target': '#CritModal'
-					// 	}
-					// }, {
-					// 	extend: 'collection',
-					// 	text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
-					// 	className: 'btn dropdown-toggle',
-					// 	buttons: [{
-					// 		extend: 'print',
-					// 		title: 'Kriteria',
-					// 		text: '<i class="bi bi-printer me-2"></i> Print',
-					// 		className: 'dropdown-item',
-					// 		exportOptions: {
-					// 			columns: [1, 2, 3, 4, 5]
-					// 		}
-					// 	}, {
-					// 		extend: 'excel',
-					// 		title: 'Kriteria',
-					// 		text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
-					// 		className: 'dropdown-item',
-					// 		exportOptions: {
-					// 			columns: [1, 2, 3, 4, 5]
-					// 		}
-					// 	}, {
-					// 		extend: 'pdf',
-					// 		title: 'Kriteria',
-					// 		text: '<i class="bi bi-file-text me-2"></i> PDF',
-					// 		className: 'dropdown-item',
-					// 		exportOptions: {
-					// 			columns: [1, 2, 3, 4, 5]
-					// 		}
-					// 	}]
+				// 	extend: 'collection',
+				// 	text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
+				// 	className: 'btn dropdown-toggle',
+				// 	buttons: [{
+				// 		extend: 'print',
+				// 		title: 'Kriteria',
+				// 		text: '<i class="bi bi-printer me-2"></i> Print',
+				// 		className: 'dropdown-item',
+				// 		exportOptions: {
+				// 			columns: [0, 1, 2, 3, 4]
+				// 		}
+				// 	}, {
+				// 		extend: 'excel',
+				// 		title: 'Kriteria',
+				// 		text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
+				// 		className: 'dropdown-item',
+				// 		exportOptions: {
+				// 			columns: [0, 1, 2, 3, 4]
+				// 		}
+				// 	}, {
+				// 		extend: 'pdf',
+				// 		title: 'Kriteria',
+				// 		text: '<i class="bi bi-file-text me-2"></i> PDF',
+				// 		className: 'dropdown-item',
+				// 		exportOptions: {
+				// 			columns: [0, 1, 2, 3, 4]
+				// 		}
+				// 	}]
 				// }]
-			}).on('error.dt', function(e, settings, techNote, message) {
+			}).on('error.dt', function (e, settings, techNote, message) {
 				errorDT(message, techNote);
-			}).on('draw', setTableColor).on('preXhr', function() {
-				$.get("{{ route('kriteria.count') }}", function(data) {
+			}).on('draw', setTableColor).on('preXhr', function () {
+				$.get("{{ route('kriteria.count') }}", function (data) {
 					$("#total-duplicate").text(data.duplicates);
 					$("#total-counter").text(data.total);
 					$('#total-unused').text(data.unused);
-				}).fail(function(xhr, stat, err) {
-					Toastify({
-						text: "Gagal memuat jumlah: Kesalahan HTTP " +
-							xhr.status + '. ' + (xhr.statusText ?? err),
-						style: {
-							background: "#dc3545"
-						},
-						duration: 9000
-					}).showToast();
+				}).fail(function (xhr, st, err) {
+					console.warn(xhr.responseJSON.message ?? st);
+					swal.fire({
+						icon: 'error',
+						title: 'Gagal memuat jumlah',
+						text: "Kesalahan HTTP " + xhr.status + '. ' + (xhr.statusText ?? err)
+					});
 				});
 			});
 		} catch (dterr) {
 			initError(dterr.message);
 		}
-	}).on('click', '.delete-record', function() {
+	}).on('click', '.delete-record', function () {
 		var kr_id = $(this).data('id'), kr_name = $(this).data('name');
-		Swal.fire({
+		confirm.fire({
 			title: 'Hapus kriteria?',
 			text: "Anda akan menghapus kriteria " + kr_name + ".",
-			icon: 'question',
-			showCancelButton: true,
-			confirmButtonText: 'Ya',
-			cancelButtonText: 'Tidak',
-			customClass: {
-				confirmButton: 'btn btn-primary me-3',
-				cancelButton: 'btn btn-secondary'
-			},
-			buttonsStyling: false
-		}).then(function(result) {
-			if (result.value) { // delete the data
-				$.ajax({
-					type: 'DELETE',
-					url: '/kriteria/del/' + kr_id,
-					beforeSend: function() {
-						toast.showToast();
-					},
-					complete: function() {
-						toast.hideToast();
-					},
-					success: function() {
-						dt_kriteria.draw();
-						Swal.fire({
-							icon: 'success',
-							title: 'Dihapus',
-							text: 'Kriteria ' + kr_name + ' sudah dihapus.',
-							customClass: {
-								confirmButton: 'btn btn-success'
-							}
-						});
-					},
-					error: function(xhr, stat, err) {
-						if (xhr.status === 404) {
+			preConfirm: async () => {
+				try {
+					await $.ajax({
+						type: 'DELETE',
+						url: '/kriteria/del/' + kr_id,
+						success: function () {
 							dt_kriteria.draw();
-							error = 'Kriteria ' + kr_name + ' tidak ditemukan.';
-						} else {
-							error = 'Kesalahan HTTP ' + xhr.status + '.\n' + 
-								(xhr.responseJSON.message ?? err);
-						}
-						Swal.fire({
-							icon: 'error',
-							title: 'Gagal hapus',
-							text: error,
-							customClass: {
-								confirmButton: 'btn btn-success'
+							return "Dihapus";
+						},
+						error: function (xhr, st, err) {
+							if (xhr.status === 404) {
+								dt_kriteria.draw();
+								errmsg = 'Kriteria ' + kr_name + ' tidak ditemukan';
+							} else {
+								console.warn(xhr.responseJSON.message ?? st);
+								errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +
+									(xhr.statusText ?? err);
 							}
-						});
-					}
+							Swal.showValidationMessage("Gagal hapus: " + errmsg);
+						}
+					});
+				} catch (error) {
+					console.error(error);
+					Swal.showValidationMessage(`Gagal hapus: ${error}`);
+				}
+			}
+		}).then(function (result) {
+			if (result.isConfirmed) { // delete the data
+				swal.fire({
+					icon: "success",
+					title: "Berhasil dihapus"
 				});
 			}
 		});
-	}).on('click', '.edit-record', function() {
+	}).on('click', '.edit-record', function () {
 		var kr_id = $(this).data('id');
 		// changing the title of offcanvas
 		$('#CritForm :input').prop('disabled', true);
 		$('#CritLabel').html('Edit Kriteria');
 		$('.data-submit').prop('disabled', true);
-		$('.spinner-grow.text-primary').removeClass('d-none');
+		$('.spinner-grow').removeClass('d-none');
 
-			// get data
-		$.get('/kriteria/edit/' + kr_id, function(data) {
+		// get data
+		$.get('/kriteria/edit/' + kr_id, function (data) {
 			$('#kriteria-id').val(data.id);
 			$('#nama-krit').val(data.name);
 			$('#tipe-kriteria').val(data.type);
 			$('#deskripsi').val(data.desc);
-		}).fail(function(xhr, stat, err) {
+		}).fail(function (xhr, st, err) {
 			if (xhr.status === 404) {
 				$('#CritModal').modal('hide');
 				dt_kriteria.draw();
-				error = "Kriteria tidak ditemukan.";
+				errmsg = "Kriteria tidak ditemukan";
 			} else {
-				error = 'Kesalahan HTTP ' + xhr.status + '.\n' +
-					(xhr.responseJSON.message ?? err);
+				console.warn(xhr.responseJSON.message ?? st);
+				errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +
+					(xhr.statusText ?? err);
 			}
-			Swal.fire({
+			swal.fire({
 				icon: 'error',
-				title: 'Kesalahan',
-				text: error,
-				customClass: {
-					confirmButton: 'btn btn-success'
-				}
+				title: 'Gagal memuat data',
+				text: errmsg
 			});
-		}).always(function() {
+		}).always(function () {
 			$('#CritForm :input').prop('disabled', false);
 			$('.data-submit').prop('disabled', false);
-			$('.spinner-grow.text-primary').addClass('d-none');
+			$('.spinner-grow').addClass('d-none');
 		});
 	});
-
 	function submitform(event) {
-		var errmsg, actionurl = $('#kriteria-id').val() == '' ?
+		var actionurl = $('#kriteria-id').val() == '' ?
 			"{{ route('kriteria.store') }}" : "{{ route('kriteria.update') }}";
 		event.preventDefault();
 		$.ajax({
 			data: $('#CritForm').serialize(),
 			url: actionurl,
 			type: 'POST',
-			beforeSend: function() {
+			beforeSend: function () {
 				$('#CritForm :input').prop('disabled', true).removeClass('is-invalid');
 				$('.data-submit').prop('disabled', true);
-				$('.spinner-grow.text-primary').removeClass('d-none');
+				$('.spinner-grow').removeClass('d-none');
 			},
-			complete: function() {
+			complete: function () {
 				$('#CritForm :input').prop('disabled', false);
 				$('.data-submit').prop('disabled', false);
-				$('.spinner-grow.text-primary').addClass('d-none');
+				$('.spinner-grow').addClass('d-none');
 			},
-			success: function(status) {
+			success: function (status) {
 				if ($.fn.DataTable.isDataTable("#table-crit")) dt_kriteria.draw();
 				$('#CritModal').modal('hide');
-				Swal.fire({
-					icon: 'success',
-					title: 'Sukses',
-					text: status.message,
-					customClass: {
-						confirmButton: 'btn btn-success'
-					}
+				swal.fire({
+					icon: "success",
+					title: status.message
 				});
 			},
-			error: function(xhr, stat, err) {
+			error: function (xhr, st, err) {
 				if (xhr.status === 422) {
 					resetvalidation();
 					if (typeof xhr.responseJSON.errors.name !== "undefined") {
@@ -398,23 +356,22 @@
 						$('#desc-error').text(xhr.responseJSON.errors.desc);
 					}
 					errmsg = xhr.responseJSON.message;
-				} else {
+				} else if (xhr.status === 400) errmsg = xhr.responseJSON.message;
+				else {
+					console.warn(xhr.responseJSON.message ?? st);
 					errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +
-						(xhr.responseJSON.message ?? err);
+						(xhr.statusText ?? err);
 				}
-				Swal.fire({
+				swal.fire({
 					title: 'Gagal',
 					text: errmsg,
-					icon: 'error',
-					customClass: {
-						confirmButton: 'btn btn-success'
-					}
+					icon: 'error'
 				});
 			}
 		});
 	};
-		// clearing form data when modal hidden
-	$('#CritModal').on('hidden.bs.modal', function() {
+	// clearing form data when modal hidden
+	$('#CritModal').on('hidden.bs.modal', function () {
 		resetvalidation();
 		$('#kriteria-id').val('');
 		$('#CritForm')[0].reset();

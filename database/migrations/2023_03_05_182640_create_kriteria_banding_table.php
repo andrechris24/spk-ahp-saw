@@ -14,10 +14,8 @@ return new class extends Migration {
 	{
 		Schema::create('kriteria_banding', function (Blueprint $table) {
 			$table->id();
-			$table->foreignId('kriteria1')->constrained('kriteria')->cascadeOnDelete()
-				->cascadeOnUpdate();
-			$table->foreignId('kriteria2')->constrained('kriteria')->cascadeOnDelete()
-				->cascadeOnUpdate();
+			$table->foreignId('kriteria1')->constrained('kriteria')->cascadeOnDelete();
+			$table->foreignId('kriteria2')->constrained('kriteria')->cascadeOnDelete();
 			$table->integer('nilai')->default(1);
 			$table->timestamps();
 		});

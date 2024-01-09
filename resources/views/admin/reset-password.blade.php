@@ -10,7 +10,8 @@
 	<input type="hidden" name="token" value="{{ $token }}">
 	<div class="form-group position-relative has-icon-left mb-4">
 		<input type="email" placeholder="Email" name="email" value="{{ $email }}"
-			class="form-control form-control-xl @error('email') is-invalid @enderror " readonly required />
+			class="form-control form-control-xl @error('email') is-invalid @enderror "
+			readonly required />
 		<div class="form-control-icon"><i class="bi bi-envelope"></i></div>
 		<div class="invalid-feedback">
 			@error('email') {{ $message }}
@@ -20,8 +21,8 @@
 	</div>
 	<div class="form-group position-relative has-icon-left mb-4">
 		<input type="password" name="password" placeholder="Password" minlength="8"
-			class="form-control form-control-xl @error('password') is-invalid @enderror " maxlength="20" id="password"
-			oninput="checkpassword()" data-bs-toggle="tooltip"
+			class="form-control form-control-xl @error('password') is-invalid @enderror "
+			maxlength="20" id="password" oninput="checkpassword()" data-bs-toggle="tooltip"
 			title="8-20 karakter (Saran: terdiri dari huruf besar, huruf kecil, angka, dan simbol)"
 			data-bs-placement="top" required />
 		<div class="form-control-icon"><i class="bi bi-shield-lock"></i></div>
@@ -34,7 +35,7 @@
 	<div class="form-group position-relative has-icon-left mb-4">
 		<input type="password" name="password_confirmation" id="confirm-password" maxlength="20"
 		placeholder="Konfirmasi Password" oninput="checkpassword()" class="form-control 
-		form-control-xl  @error('password_confirmation') is-invalid @enderror " required />
+		form-control-xl @error('password_confirmation') is-invalid @enderror " required />
 		<div class="form-control-icon"><i class="bi bi-shield-lock"></i></div>
 		<div class="invalid-feedback">
 			@error('password_confirmation') {{ $message }}

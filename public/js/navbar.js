@@ -1,6 +1,6 @@
 const currentRoute = location.href,
     links = document.querySelectorAll(".sidebar-link, .submenu-link");
-var list, sublist;
+let list, sublist;
 links.forEach((link) => {
     list = link.closest("li.sidebar-item");
     if (link.href === currentRoute) {

@@ -12,14 +12,17 @@
 			<div class="accordion mb-3" id="accordionTabelPerbandingan">
 				<div class="accordion-item">
 					<h2 class="accordion-header">
-						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-							data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+						<button class="accordion-button collapsed" type="button"
+						data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
+						aria-expanded="false" aria-controls="flush-collapseOne">
 							Tabel Nilai Perbandingan
 						</button>
 					</h2>
 					<div id="flush-collapseOne" class="accordion-collapse collapse"
 						data-bs-parent="#accordionTabelPerbandingan">
-						<div class="accordion-body"><x-ahp-table /></div>
+						<div class="accordion-body">
+							<x-ahp-table />
+						</div>
 					</div>
 				</div>
 			</div>
@@ -39,7 +42,8 @@
 			@endif
 			@if ($jmlcrit >= 2)
 			<div class="table-responsive">
-				<form method="POST" enctype="multipart/form-data" action="{{ route('bobotkriteria.store') }}">
+				<form method="POST" enctype="multipart/form-data"
+				action="{{ route('bobotkriteria.store') }}">
 					<table class="table table-lg table-hover table-striped text-center">
 						<thead>
 							<tr>
@@ -51,42 +55,43 @@
 						</thead>
 						<tbody>@csrf
 							@foreach ($array as $krit)
-								@if ($krit['idbaris'] !== $krit['idkolom'])
-								<tr>
-									<td>{{ ++$numindex }}</td>
-									<th>
-										<input type="radio" class="btn-check" name="kriteria[{{ $loop->index }}]"
-											id="left-{{ $loop->index }}" value="left" autocomplete="off" required 
-											{{ $value[$loop->index]['nilai'] > 0 || old('kriteria.' . $loop->index) == 'left' ? 'checked' : '' }}>
-										<label class="btn btn-outline-info" for="left-{{ $loop->index }}">
-											C{{ $krit['idbaris'] }}
-											<small>{{ $krit['namabaris'] }}</small>
-										</label>
-									</th>
-									<td>
-										<div class="input-group mb-3">
-											<input type="number" name="skala[{{ $loop->index }}]" min="1"
-											max="9" class="form-control text-center 
+							@if ($krit['idbaris'] !== $krit['idkolom'])
+							<tr>
+								<td>{{ ++$numindex }}</td>
+								<th>
+									<input type="radio" class="btn-check" name="kriteria[{{ $loop->index }}]"
+										id="left-{{ $loop->index }}" value="left" autocomplete="off" 
+										{{$value[$loop->index]['nilai'] > 0 ||
+										old('kriteria.' . $loop->index) == 'left' ? 'checked' : '' }} required>
+									<label class="btn btn-outline-info" for="left-{{ $loop->index }}">
+										C{{ $krit['idbaris'] }}
+										<small>{{ $krit['namabaris'] }}</small>
+									</label>
+								</th>
+								<td>
+									<div class="input-group mb-3">
+										<input type="number" name="skala[{{ $loop->index }}]" min="1"
+										max="9" class="form-control text-center 
 											@error('skala.' . $loop->index) is-invalid @enderror "
-												value="{{ old('skala.' . $loop->index) ?? 
-													(abs($value[$loop->index]['nilai']) ?? '') }}"
-												required>
-											@error('skala.' . $loop->index)
-											<div class="invalid-feedback">{{ $message }}</div>
-											@enderror
-										</div>
-									</td>
-									<th>
-										<input type="radio" name="kriteria[{{ $loop->index }}]" class="btn-check" 
-										value="right" id="right-{{ $loop->index }}" autocomplete="off" 
-										{{ $value[$loop->index]['nilai'] < 0 || old('kriteria.' . $loop->index) == 'right' ? 'checked' : '' }}>
+											value="{{ old('skala.' . $loop->index) ?? 
+												(abs($value[$loop->index]['nilai']) ?? '') }}" required>
+										@error('skala.' . $loop->index)
+										<div class="invalid-feedback">{{ $message }}</div>
+										@enderror
+									</div>
+								</td>
+								<th>
+									<input type="radio" name="kriteria[{{ $loop->index }}]" class="btn-check"
+									value="right" id="right-{{ $loop->index }}" autocomplete="off"
+									{{ $value[$loop->index]['nilai'] < 0 ||
+										old('kriteria.' . $loop->index) == 'right' ? 'checked' : '' }}>
 										<label class="btn btn-outline-warning" for="right-{{ $loop->index }}">
 											C{{ $krit['idkolom'] }}
 											<small>{{ $krit['namakolom'] }}</small>
 										</label>
-									</th>
-								</tr>
-								@endif
+								</th>
+							</tr>
+							@endif
 							@endforeach
 						</tbody>
 					</table>
@@ -110,23 +115,13 @@
 @endsection
 @section('js')
 <script type="text/javascript">
-	$(document).on('click', '#reset-button', function(e) {
+	$(document).on('click', '#reset-button', function (e) {
 		e.preventDefault();
 		Swal.fire({
 			title: 'Reset perbandingan?',
-			text: "Anda akan mereset perbandingan Kriteria.\nBobot Kriteria akan direset!",
-			icon: 'question',
-			showCancelButton: true,
-			confirmButtonText: 'Ya',
-			cancelButtonText: 'Tidak',
-			customClass: {
-				confirmButton: 'btn btn-primary me-3',
-				cancelButton: 'btn btn-secondary'
-			},
-			buttonsStyling: false
-		}).then(function(result) {
-			if (result.value) 
-				document.getElementById('reset-kriteria').submit();
+			text: "Anda akan mereset perbandingan Kriteria.\nBobot Kriteria akan direset!"
+		}).then(function (result) {
+			if (result.isConfirmed) document.getElementById('reset-kriteria').submit();
 		});
 	});
 </script>

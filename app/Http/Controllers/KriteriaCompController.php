@@ -16,11 +16,12 @@ class KriteriaCompController extends Controller
 			return KriteriaComp::join(
 				"kriteria",
 				"kriteria_banding.kriteria1",
-				"kriteria.id")
-				->select(
+				"kriteria.id"
+			)->select(
 					"kriteria_banding.kriteria1 as idkriteria",
 					"kriteria.id",
-					"kriteria.name")->groupBy("kriteria1", 'name')->get();
+					"kriteria.name"
+				)->groupBy("kriteria1", 'name')->get();
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil perbandingan:')
@@ -30,7 +31,7 @@ class KriteriaCompController extends Controller
 	private function getPerbandinganByKriteria1($kriteria1)
 	{
 		try {
-			return KriteriaComp::select('nilai', 'kriteria2', 'kriteria1')
+			return KriteriaComp::select('nilai', 'kriteria1', 'kriteria2')
 				->where("kriteria2", $kriteria1)->get();
 		} catch (QueryException $e) {
 			Log::error($e);
@@ -88,7 +89,8 @@ class KriteriaCompController extends Controller
 							$nilai = 0 - $request->skala[$a];
 					}
 					KriteriaComp::updateOrCreate([
-						'kriteria1' => $kriteria[$i]->id, 'kriteria2' => $kriteria[$j]->id
+						'kriteria1' => $kriteria[$i]->id,
+						'kriteria2' => $kriteria[$j]->id
 					], ['nilai' => $nilai]);
 					$a++;
 				}
@@ -102,8 +104,10 @@ class KriteriaCompController extends Controller
 	}
 	public function hasil()
 	{
-		if (KriteriaComp::count() === 0)
-			return back()->withWarning('Perbandingan kriteria belum dilakukan');
+		if (KriteriaComp::count() <= Kriteria::count()) {
+			return to_route('bobotkriteria.index')
+				->withWarning('Perbandingan kriteria belum dilakukan atau tidak lengkap');
+		}
 		$kriteria = $this->getKriteriaPerbandingan();
 		$a = 0;
 		$matriks_perbandingan = $matriks_awal = [];
@@ -122,10 +126,12 @@ class KriteriaCompController extends Controller
 						}
 						$matriks_perbandingan[$a] = [
 							"nilai" => $nilai,
-							"kode_kriteria" => $kode_kriteria];
+							"kode_kriteria" => $kode_kriteria
+						];
 						$matriks_awal[$a] = [
 							"nilai" => $nilai2,
-							"kode_kriteria" => $kode_kriteria];
+							"kode_kriteria" => $kode_kriteria
+						];
 						$a++;
 					}
 				}
@@ -140,10 +146,12 @@ class KriteriaCompController extends Controller
 					}
 					$matriks_perbandingan[$a] = [
 						"nilai" => $nilai,
-						"kode_kriteria" => $kode_kriteria];
+						"kode_kriteria" => $kode_kriteria
+					];
 					$matriks_awal[$a] = [
 						"nilai" => $nilai2,
-						"kode_kriteria" => $kode_kriteria];
+						"kode_kriteria" => $kode_kriteria
+					];
 					$a++;
 				}
 			}
@@ -167,7 +175,8 @@ class KriteriaCompController extends Controller
 				for ($m = 0; $m < count($array_filter); $m++) {
 					$array_normalisasi[$a] = [
 						"nilai" => $matriks_perbandingan[$a]['nilai'] / $array_jumlah[$m],
-						"kode_kriteria" => $kriteria[$i]->idkriteria];
+						"kode_kriteria" => $kriteria[$i]->idkriteria
+					];
 					$a++;
 				}
 				$array_filter = [];
@@ -185,7 +194,8 @@ class KriteriaCompController extends Controller
 				$array_BobotPrioritas[$j] = [
 					"jumlah_baris" => $jumlah_baris,
 					"bobot" => $jumlah_baris / $total_jumlah_baris,
-					"kode_kriteria" => $kriteria[$j]->idkriteria];
+					"kode_kriteria" => $kriteria[$j]->idkriteria
+				];
 				$j++;
 				$jumlah_baris = $index_kriteria = 0;
 			} else
@@ -200,7 +210,8 @@ class KriteriaCompController extends Controller
 				$array_CM[$j] = [
 					"cm" => $cm / $array_BobotPrioritas[$j]["bobot"],
 					"kode_kriteria" => $kriteria[$j]->idkriteria,
-					"kali_matriks" => $cm];
+					"kali_matriks" => $cm
+				];
 				$j++;
 				$cm = $indexbobot = 0;
 			} else
@@ -232,7 +243,8 @@ class KriteriaCompController extends Controller
 				"jumlah" => $array_jumlah,
 				"cm" => $array_CM,
 				"ci" => $total_ci,
-				"result" => $result];
+				"result" => $result
+			];
 			return view('main.kriteria.hasil', compact('data'));
 		} catch (QueryException $e) {
 			Log::error($e);

@@ -28,9 +28,9 @@ $title = $subkriteriacomp->nama_kriteria($kriteria_id);
 					<tr>
 						<th>{{ $kr->name }}</th>
 						@foreach ($data['matriks_awal'] as $ma)
-							@if ($ma['kode_kriteria'] === $kr->idsubkriteria)
-							<td>{!! $ma['nilai'] !!}</td>
-							@endif
+						@if ($ma['kode_kriteria'] === $kr->idsubkriteria)
+						<td>{!! $ma['nilai'] !!}</td>
+						@endif
 						@endforeach
 					</tr>
 					@endforeach
@@ -59,9 +59,9 @@ $title = $subkriteriacomp->nama_kriteria($kriteria_id);
 					<tr>
 						<th>{{ $kr->name }}</th>
 						@foreach ($data['matriks_perbandingan'] as $mp)
-							@if ($mp['kode_kriteria'] === $kr->idsubkriteria)
-							<td>{{ round($mp['nilai'], 5) }}</td>
-							@endif
+						@if ($mp['kode_kriteria'] === $kr->idsubkriteria)
+						<td>{{ round($mp['nilai'], 5) }}</td>
+						@endif
 						@endforeach
 					</tr>
 					@endforeach
@@ -99,9 +99,9 @@ $title = $subkriteriacomp->nama_kriteria($kriteria_id);
 					<tr>
 						<th>{{ $kr->name }}</th>
 						@foreach ($data['matriks_normalisasi'] as $mn)
-							@if ($mn['kode_kriteria'] === $kr->idsubkriteria)
-							<td>{{ round($mn['nilai'], 5) }}</td>
-							@endif
+						@if ($mn['kode_kriteria'] === $kr->idsubkriteria)
+						<td>{{ round($mn['nilai'], 5) }}</td>
+						@endif
 						@endforeach
 						@if ($data['bobot_prioritas'][$loop->index]['kode_kriteria'] === $kr->idsubkriteria)
 						<td class="text-info">
@@ -124,9 +124,7 @@ $title = $subkriteriacomp->nama_kriteria($kriteria_id);
 	</div>
 </div>
 <div class="card">
-	<div class="card-header">
-		<div class="card-title">Nilai Konsistensi</div>
-	</div>
+	<div class="card-header"><div class="card-title">Nilai Konsistensi</div></div>
 	<div class="card-body">
 		<div class="table-responsive">
 			<table class="table table-hover">
@@ -143,11 +141,11 @@ $title = $subkriteriacomp->nama_kriteria($kriteria_id);
 					<td>
 						@if (is_numeric($data['result']))
 							@php
-							$consistent = $data['result'] <= 0.1; 
-							echo round($data['result'], 5); 
-							@endphp 
+							$consistent = $data['result'] <= 0.1;
+							echo round($data['result'], 5);
+							@endphp
 							<span @class(['text-danger'=> $data['result'] > 0.1])>
-								({{ round($data['result'] * 100, 2) }}%)
+							({{ round($data['result'] * 100, 2) }}%)
 							</span>
 						@else
 							@php
@@ -160,7 +158,8 @@ $title = $subkriteriacomp->nama_kriteria($kriteria_id);
 				<tr>
 					<td>Hasil Konsistensi</td>
 					<td>
-						<span @class(['text-warning'=> !is_numeric($data['result']),
+						<span @class([
+							'text-warning'=> !is_numeric($data['result']),
 							'text-danger' => !$consistent,
 							'text-success' => is_numeric($data['result']) && $consistent])>
 							@if (!is_numeric($data['result'])) <b>Tidak bisa dievaluasi</b>
@@ -183,8 +182,8 @@ $title = $subkriteriacomp->nama_kriteria($kriteria_id);
 					<a href="{{ route('bobotsubkriteria.index', $kriteria_id) }}" class="btn btn-primary">
 						<i class="bi bi-pencil-fill"></i> Edit
 					</a>
-					<a href="{{ route('bobotsubkriteria.reset', $kriteria_id) }}" class="btn btn-warning"
-						id="reset-button">
+					<a href="{{ route('bobotsubkriteria.reset', $kriteria_id) }}"
+					class="btn btn-warning" id="reset-button">
 						<i class="bi bi-arrow-counterclockwise"></i> Reset
 					</a>
 					@if ($data['bobot_sub_kosong'] === 0)
@@ -192,12 +191,14 @@ $title = $subkriteriacomp->nama_kriteria($kriteria_id);
 						<i class="bi bi-arrow-right"></i> Lanjut
 					</a>
 					@elseif(!$consistent)
-					<button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#inconsistentModal">
+					<button type="button" class="btn btn-info" data-bs-toggle="modal"
+					data-bs-target="#inconsistentModal">
 						?
 					</button>
 					@endif
 				</div>
-				<form action="{{ route('bobotsubkriteria.reset', $kriteria_id) }}" id="reset-subkriteria" method="POST">
+				<form action="{{ route('bobotsubkriteria.reset', $kriteria_id) }}"
+				id="reset-subkriteria" method="POST">
 					@csrf
 					@method('DELETE')
 				</form>
@@ -208,23 +209,14 @@ $title = $subkriteriacomp->nama_kriteria($kriteria_id);
 @endsection
 @section('js')
 <script type="text/javascript">
-	$(document).on('click', '#reset-button', function(e) {
+	$(document).on('click', '#reset-button', function (e) {
 		e.preventDefault();
-		Swal.fire({
+		confirm.fire({
 			title: 'Reset perbandingan?',
 			text: "Anda akan mereset perbandingan Sub Kriteria {{ $title }}.\n" +
-				"Bobot Sub Kriteria {{ $title }} akan direset!",
-			icon: 'question',
-			showCancelButton: true,
-			confirmButtonText: 'Ya',
-			cancelButtonText: 'Tidak',
-			customClass: {
-				confirmButton: 'btn btn-primary me-3',
-				cancelButton: 'btn btn-secondary'
-			},
-			buttonsStyling: false
-		}).then(function(result) {
-			if (result.value) {
+				"Bobot Sub Kriteria {{ $title }} akan direset!"
+		}).then(function (result) {
+			if (result.isConfirmed) {
 				document.getElementById('reset-subkriteria').submit();
 				$('.spinner-grow').removeClass('d-none');
 			}

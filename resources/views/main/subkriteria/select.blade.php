@@ -21,7 +21,7 @@
 @section('js')
 <script type="text/javascript">
 	var dt_subkriteriacomp;
-	$(document).ready(function() {
+	$(document).ready(function () {
 		try {
 			$.fn.dataTable.ext.errMode = 'none';
 			dt_subkriteriacomp = $('#table-subcritcomp').DataTable({
@@ -35,100 +35,94 @@
 					url: "{{ route('bobotsubkriteria.data') }}",
 					type: 'POST'
 				},
-				columns: [{
-					data: 'id'
-				}, {
-					data: 'name'
-				}, {
-					data: 'result'
-				}, {
-					data: 'id'
-				}],
+				columns: [
+					{ data: 'id' },
+					{ data: 'name' },
+					{ data: 'result' },
+					{ data: 'id' }
+				],
 				columnDefs: [{
 					targets: 0,
 					orderable: false,
-					render: function(data, type, full, meta) {
+					render: function (data, type, full, meta) {
 						return meta.row + meta.settings._iDisplayStart + 1;
 					}
 				}, {
 					targets: 2,
-					render: function(data) {
-						if (data)
-							return '<small><span class="badge bg-success">Perbandingan sudah dilakukan</span></small>';
-						return '<small><span class="badge bg-danger">Perbandingan belum dilakukan atau tidak lengkap</span></small>';
+					render: function (data) {
+						if (data) {
+							return ('<small>' +
+								'<span class="badge bg-success">Perbandingan sudah dilakukan</span>' +
+								'</small>');
+						}
+						return ('<small>' +
+							'<span class="badge bg-danger">Perbandingan belum dilakukan atau tidak lengkap</span>' +
+							'</small>');
 					}
 				}, { //Aksi
 					orderable: false,
 					targets: -1,
-					render: function(data, type, full) {
+					render: function (data, type, full) {
 						if (full['result']) {
 							return ('<div class="btn-group" role="group">' +
-								`<a class="btn btn-sm btn-primary" href="/bobot/sub/${data}" title="Edit"><i class="bi bi-pencil-square"></i></a>` +
-								`<a class="btn btn-sm btn-success" href="/bobot/sub/${data}/hasil" title="Lihat hasil"><i class="bi bi-eye-fill"></i></a>` +
-								`<button class="btn btn-sm btn-danger delete-comp" data-id="${data}" data-name="${full['name']}" title="Reset perbandingan"><i class="bi bi-arrow-counterclockwise"></i></button>` +
+								`<a class="btn btn-sm btn-primary" href="/bobot/sub/${data}" title="Edit">` +
+								'<i class="bi bi-pencil-square"></i>' +
+								'</a>' +
+								`<a class="btn btn-sm btn-success" href="/bobot/sub/${data}/hasil" title="Lihat hasil">` +
+								'<i class="bi bi-eye-fill"></i>' +
+								'</a>' +
+								`<button class="btn btn-sm btn-danger delete-comp" data-id="${data}" data-name="${full['name']}" title="Reset perbandingan">` +
+								'<i class="bi bi-arrow-counterclockwise"></i>' +
+								'</button>' +
 								'</div>');
 						}
-						return `<a class="btn btn-sm btn-primary" href="/bobot/sub/${data}" title="Input perbandingan"><i class="bi bi-plus-lg"></i></a>`;
+						return (
+							`<a class="btn btn-sm btn-primary" href="/bobot/sub/${data}" title="Input perbandingan">` +
+							'<i class="bi bi-plus-lg"></i>' +
+							'</a>');
 					}
 				}],
 				language: {
 					url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
 				}
-			}).on('error.dt', function(e, settings, techNote, message) {
+			}).on('error.dt', function (e, settings, techNote, message) {
 				errorDT(message, techNote);
 			}).on('draw', setTableColor);
 		} catch (dterr) {
 			initError(dterr.message);
 		}
-	}).on('click', '.delete-comp', function() {
+	}).on('click', '.delete-comp', function () {
 		var kriteria = $(this).data('name'), id = $(this).data('id');
-		Swal.fire({
+		confirm.fire({
 			title: 'Reset perbandingan?',
 			text: "Anda akan mereset perbandingan Sub Kriteria " + kriteria +
 				".\nBobot Sub Kriteria " + kriteria + " akan direset!",
-			icon: 'question',
-			showCancelButton: true,
-			confirmButtonText: 'Ya',
-			cancelButtonText: 'Tidak',
-			customClass: {
-				confirmButton: 'btn btn-primary me-3',
-				cancelButton: 'btn btn-secondary'
-			},
-			buttonsStyling: false
-		}).then(function(result) {
-			if (result.value) {
-				$.ajax({
-					type: 'DELETE',
-					url: '/bobot/sub/' + id + '/del',
-					beforeSend: function() {
-						toast.showToast();
-					},
-					complete: function() {
-						toast.hidetoast();
-					},
-					success: function(data) {
-						dt_subkriteriacomp.draw();
-						Swal.fire({
-							icon: 'success',
-							title: 'Direset',
-							text: data.message,
-							customClass: {
-								confirmButton: 'btn btn-success'
-							}
-						});
-					},
-					error: function(xhr, stat, err) {
-						if (xhr.status === 404) dt_subkriteriacomp.draw();
-						Swal.fire({
-							icon: 'error',
-							title: 'Gagal reset',
-							text: 'Kesalahan HTTP ' + xhr.status + '.\n' + 
-								(xhr.responseJSON.message ?? err),
-							customClass: {
-								confirmButton: 'btn btn-success'
-							}
-						});
-					}
+			preConfirm: async () => {
+				try {
+					await $.ajax({
+						type: 'DELETE',
+						url: '/bobot/sub/' + id + '/del',
+						success: function () {
+							dt_subkriteriacomp.draw();
+							return "Dihapus";
+						},
+						error: function (xhr, st, err) {
+							if (xhr.status === 404) dt_subkriteriacomp.draw();
+							console.warn(xhr.responseJSON.message ?? st);
+							Swal.showValidationMessage("Gagal reset: Kesalahan HTTP " +
+								xhr.status + ".\n" + (xhr.statusText ?? err));
+						}
+					});
+				} catch (error) {
+					console.error(error);
+					Swal.showValidationMessage(`Gagal hapus: ${error}`);
+				}
+			}
+		}).then(function (result) {
+			if (result.isConfirmed) {
+				swal.fire({
+					icon: "success",
+					title: "Berhasil direset"
 				});
 			}
 		});

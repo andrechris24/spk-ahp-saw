@@ -19,9 +19,10 @@ class SubKriteriaCompController extends Controller
 				"subkriteria",
 				"subkriteria_banding.subkriteria1",
 				"subkriteria.id"
-			)->select("subkriteria_banding.subkriteria1 as idsubkriteria",
-					"subkriteria.name")->groupBy("subkriteria1", 'name')
-				->where('kriteria_id', $id)->get();
+			)->select(
+					"subkriteria_banding.subkriteria1 as idsubkriteria",
+					"subkriteria.name"
+				)->groupBy("subkriteria1", 'name')->where('kriteria_id', $id)->get();
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil perbandingan:')
@@ -65,12 +66,14 @@ class SubKriteriaCompController extends Controller
 		$allkrit = Kriteria::get();
 		if ($allkrit->isEmpty()) {
 			return to_route('kriteria.index')->withWarning(
-				'Masukkan kriteria dulu untuk melakukan perbandingan sub kriteria.');
+				'Masukkan kriteria dulu untuk melakukan perbandingan sub kriteria.'
+			);
 		}
 		if (SubKriteria::count() === 0) {
 			return to_route('subkriteria.index')->withWarning(
 				'Masukkan data sub kriteria dulu ' .
-				'untuk melakukan perbandingan sub kriteria.');
+				'untuk melakukan perbandingan sub kriteria.'
+			);
 		}
 		return view('main.subkriteria.select', compact('allkrit'));
 	}
@@ -94,16 +97,20 @@ class SubKriteriaCompController extends Controller
 					$counter++;
 				}
 			}
-			return view('main.subkriteria.comp',
-				compact('array', 'jmlsubkriteria', 'value', 'kriteria_id'));
+			return view(
+				'main.subkriteria.comp',
+				compact('array', 'jmlsubkriteria', 'value', 'kriteria_id')
+			);
 		} catch (ModelNotFoundException) {
-			return back()->withError('Gagal memuat form perbandingan sub kriteria: ' .
-				'Kriteria tidak ditemukan');
+			return back()->withError(
+				'Gagal memuat form perbandingan sub kriteria: Kriteria tidak ditemukan'
+			);
 		} catch (QueryException $e) {
 			Log::error($e);
-			return back()->withError('Gagal memuat form perbandingan sub kriteria ' .
-				SubKriteriaController::nama_kriteria($kriteria_id))->withErrors(
-					"Kesalahan SQLState #" . $e->errorInfo[0]);
+			return back()->withError(
+				'Gagal memuat form perbandingan sub kriteria ' .
+				SubKriteriaController::nama_kriteria($kriteria_id) . ':'
+			)->withErrors("Kesalahan SQLState #" . $e->errorInfo[0]);
 		}
 	}
 	public function store(Request $request, $kriteria_id)
@@ -132,15 +139,23 @@ class SubKriteriaCompController extends Controller
 			return to_route('bobotsubkriteria.result', $kriteria_id);
 		} catch (QueryException $e) {
 			Log::error($e);
-			return back()->withError('Gagal menyimpan nilai perbandingan sub kriteria ' .
-				SubKriteriaController::nama_kriteria($kriteria_id))
-				->withErrors("Kesalahan SQLState #" . $e->errorInfo[0])->withInput();
+			return back()->withError(
+				'Gagal menyimpan nilai perbandingan sub kriteria ' .
+				SubKriteriaController::nama_kriteria($kriteria_id) . ':'
+			)->withErrors("Kesalahan SQLState #" . $e->errorInfo[0])->withInput();
 		}
 	}
 	public function show($kriteria_id)
 	{
-		if (SubKriteriaComp::where('idkriteria', $kriteria_id)->count() === 0)
-			return back()->withWarning('Perbandingan sub kriteria belum dilakukan');
+		$compsubcount = SubKriteriaComp::where('idkriteria', $kriteria_id)->count();
+		$subcount = SubKriteria::where('kriteria_id', $kriteria_id)->count();
+		if ($compsubcount <= $subcount) {
+			return to_route('bobotsubkriteria.index', $kriteria_id)->withWarning(
+				'Perbandingan sub kriteria ' .
+				SubKriteriaController::nama_kriteria($kriteria_id) .
+				' belum dilakukan atau tidak lengkap'
+			);
+		}
 		$subkriteria = $this->getSubKriteriaPerbandingan($kriteria_id);
 		$a = 0;
 		$matriks_perbandingan = $matriks_awal = [];
@@ -148,7 +163,8 @@ class SubKriteriaCompController extends Controller
 			$kode_kriteria = $k->idsubkriteria;
 			$perbandingan = $this->getPerbandinganBySubKriteria1(
 				$kode_kriteria,
-				$kriteria_id);
+				$kriteria_id
+			);
 			if ($perbandingan) {
 				foreach ($perbandingan as $hk) {
 					if ($hk->subkriteria2 !== $hk->subkriteria1) {
@@ -161,16 +177,19 @@ class SubKriteriaCompController extends Controller
 						}
 						$matriks_perbandingan[$a] = [
 							"nilai" => $nilai,
-							"kode_kriteria" => $kode_kriteria];
+							"kode_kriteria" => $kode_kriteria
+						];
 						$matriks_awal[$a] = [
 							"nilai" => $nilai2,
-							"kode_kriteria" => $kode_kriteria];
+							"kode_kriteria" => $kode_kriteria
+						];
 						$a++;
 					}
 				}
 				$nilaiPerbandingan = $this->getNilaiPerbandingan(
 					$kode_kriteria,
-					$kriteria_id);
+					$kriteria_id
+				);
 				foreach ($nilaiPerbandingan as $hb) {
 					if ($hb->nilai < 0) {
 						$nilai = abs(1 / $hb->nilai);
@@ -181,10 +200,12 @@ class SubKriteriaCompController extends Controller
 					}
 					$matriks_perbandingan[$a] = [
 						"nilai" => $nilai,
-						"kode_kriteria" => $kode_kriteria];
+						"kode_kriteria" => $kode_kriteria
+					];
 					$matriks_awal[$a] = [
 						"nilai" => $nilai2,
-						"kode_kriteria" => $kode_kriteria];
+						"kode_kriteria" => $kode_kriteria
+					];
 					$a++;
 				}
 			}
@@ -208,7 +229,8 @@ class SubKriteriaCompController extends Controller
 				for ($m = 0; $m < count($array_filter); $m++) {
 					$array_normalisasi[$a] = [
 						"nilai" => $matriks_perbandingan[$a]['nilai'] / $array_jumlah[$m],
-						"kode_kriteria" => $subkriteria[$i]->idsubkriteria];
+						"kode_kriteria" => $subkriteria[$i]->idsubkriteria
+					];
 					$a++;
 				}
 				$array_filter = [];
@@ -226,7 +248,8 @@ class SubKriteriaCompController extends Controller
 				$array_BobotPrioritas[$j] = [
 					"jumlah_baris" => $jumlah_baris,
 					"bobot" => $jumlah_baris / $total_jumlah_baris,
-					"kode_kriteria" => $subkriteria[$j]->idsubkriteria];
+					"kode_kriteria" => $subkriteria[$j]->idsubkriteria
+				];
 				$j++;
 				$jumlah_baris = $index_kriteria = 0;
 			} else
@@ -241,7 +264,8 @@ class SubKriteriaCompController extends Controller
 				$array_CM[$j] = [
 					"cm" => $cm / $array_BobotPrioritas[$j]["bobot"],
 					"kode_kriteria" => $subkriteria[$j]->idsubkriteria,
-					"kali_matriks" => $cm];
+					"kali_matriks" => $cm
+				];
 				$j++;
 				$cm = $indexbobot = 0;
 			} else
@@ -279,13 +303,15 @@ class SubKriteriaCompController extends Controller
 				"cm" => $array_CM,
 				"ci" => $total_ci,
 				"result" => $result,
-				"bobot_sub_kosong" => $subbobotkosong];
+				"bobot_sub_kosong" => $subbobotkosong
+			];
 			return view('main.subkriteria.hasil', compact('data', 'kriteria_id'));
 		} catch (QueryException $e) {
 			Log::error($e);
-			return back()->withError('Gagal memuat hasil perbandingan sub kriteria ' .
-				SubKriteriaController::nama_kriteria($kriteria_id) . ':')
-				->withErrors("Kesalahan SQLState #" . $e->errorInfo[0])->withInput();
+			return back()->withError(
+				'Gagal memuat hasil perbandingan sub kriteria ' .
+				SubKriteriaController::nama_kriteria($kriteria_id) . ':'
+			)->withErrors("Kesalahan SQLState #" . $e->errorInfo[0])->withInput();
 		}
 	}
 	public function destroy(Request $request, $kriteria_id)
@@ -298,10 +324,8 @@ class SubKriteriaCompController extends Controller
 				SubKriteriaComp::where('idkriteria', $kriteria_id)->delete();
 			SubKriteria::where('kriteria_id', $kriteria_id)
 				->update(['bobot' => 0.00000]);
-			if ($request->ajax()) {
-				return response()->json([
-					'message' => "Perbandingan Sub Kriteria $kr->name sudah direset"]);
-			}
+			if ($request->ajax())
+				return response()->json(['message' => "Direset"]);
 			return to_route('bobotsubkriteria.pick')
 				->withSuccess("Perbandingan Sub kriteria $kr->name sudah direset");
 		} catch (QueryException $e) {

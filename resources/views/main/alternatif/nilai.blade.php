@@ -7,49 +7,42 @@
 	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title" id="NilaiAlterLabel">
-					Tambah Nilai Alternatif
-				</h4>
+				<h4 class="modal-title" id="NilaiAlterLabel">Isi Nilai Alternatif</h4>
 				<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
 					<i data-feather="x"></i>
 				</button>
 			</div>
 			<div class="modal-body">
-				<form method="POST" enctype="multipart/form-data" id="NilaiAlterForm" class="needs-validation">
+				<form method="POST" enctype="multipart/form-data" id="NilaiAlterForm"
+				class="needs-validation">
 					<input type="hidden" name="alternatif_id" id="alternatif-hidden">
 					<div class="input-group has-validation mb-3">
 						<label class="input-group-text" for="alternatif-value">
 							Nama Alternatif
 						</label>
-						<select class="form-select" id="alternatif-value" name="alternatif_id" required>
-							<option value="">Pilih</option>
-							@foreach ($data['alternatif'] as $alt)
-							<option value="{{ $alt->id }}">
-								A{{ $alt->id }}: {{ $alt->name }}
-							</option>
-							@endforeach
-						</select>
+						<input type="text" class="form-control" id="alternatif-value" readonly>
 						<div class="invalid-feedback" id="alternatif-error">
-							Pilih alternatif
+							Alternatif tidak valid
 						</div>
 					</div>
 					@foreach ($data['kriteria'] as $kr)
 					<input type="hidden" name="kriteria_id[]" value="{{ $kr->id }}">
-					<div class="input-group has-validation mb-3" data-bs-toggle="tooltip" data-bs-placement="right"
-						title="{{ $kr->name }}">
-						<label class="input-group-text" for="subkriteria-{{ $kr->id }}">
+					<div class="input-group has-validation mb-3" data-bs-toggle="tooltip"
+					data-bs-placement="right" title="{{ $kr->name }}">
+						<label class="input-group-text" for="subkriteria-{{ Str::of($kr->name)->slug('-') }}">
 							C{{ $kr->id }}
 						</label>
-						<select class="form-select" id="subkriteria-{{ $kr->id }}" name="subkriteria_id[]" required>
+						<select class="form-select" id="subkriteria-{{ Str::of($kr->name)->slug('-') }}"
+							name="subkriteria_id[]" required>
 							<option value="">Pilih</option>
 							@foreach ($data['subkriteria'] as $subkr)
-								@if ($subkr->kriteria_id == $kr->id)
-								<option value="{{ $subkr->id }}">{{ $subkr->name }}
-								</option>
-								@endif
+							@if ($subkr->kriteria_id == $kr->id)
+							<option value="{{ $subkr->id }}">{{ $subkr->name }}</option>
+							@endif
 							@endforeach
 						</select>
-						<div class="invalid-feedback" id="subkriteria-error-{{ $kr->id }}">
+						<div class="invalid-feedback"
+							id="subkriteria-{{ Str::of($kr->name)->slug('-') }}-error">
 							Pilih salah satu sub kriteria {{ $kr->name }}
 						</div>
 					</div>
@@ -128,9 +121,6 @@
 <div class="card">
 	<div class="card-header">Daftar Nilai Alternatif</div>
 	<div class="card-body">
-		{{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#NilaiAlterModal">
-			<i class="bi bi-plus-lg"></i> Tambah Nilai Alternatif
-		</button> --}}
 		<table class="table table-hover table-striped" id="table-nilaialt" style="width: 100%">
 			<thead>
 				<tr>
@@ -150,10 +140,11 @@
 @section('js')
 <script type="text/javascript">
 	var nilaialtdt, errmsg;
-	function setName(id) {
-		$('#alternatif-value').val(id).trigger('change');
+	function setName(id, name) {
+		$('#alternatif-hidden').val(id);
+		$("#alternatif-value").val(name);
 	}
-	$(document).ready(function() {
+	$(document).ready(function () {
 		try {
 			$.fn.dataTable.ext.errMode = 'none';
 			nilaialtdt = $('#table-nilaialt').DataTable({
@@ -168,11 +159,11 @@
 				},
 				columnDefs: [{
 					targets: 0,
-					render: function(data, type, full) {
+					render: function (data, type, full) {
 						return `A${data}<br><small>${full['name']}</small>`
 					}
 				},
-				@foreach ($data['kriteria'] as $kr)
+				@foreach($data['kriteria'] as $kr)
 				{
 					orderable: false,
 					targets: 1 + {{ $loop->index }}
@@ -181,37 +172,35 @@
 				{
 					orderable: false,
 					targets: -1,
-					render: function(data, type, full) {
-						if (full['subkriteria'] === null)
-							return `<button class="btn btn-sm btn-info" onclick="setName(${data})" data-bs-toggle="modal" data-bs-target="#NilaiAlterModal" title="Tambah"><i class="bi bi-plus-lg"></i></button>`;
+					render: function (data, type, full) {
+						if (full['subkriteria'] === null) {
+							return (
+								`<button class="btn btn-sm btn-info" onclick="setName(${data}, ${full['name']})" data-bs-toggle="modal" data-bs-target="#NilaiAlterModal" title="Tambah">` +
+								'<i class="bi bi-plus-lg"></i>' +
+								'</button>');
+						}
 						return ('<div class="btn-group" role="group">' +
-							`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#NilaiAlterModal" title="Edit"><i class="bi bi-pencil-square"></i></button>` +
-							`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}" title="Hapus"><i class="bi bi-trash3-fill"></i></button>` +
+							`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-nama="${full['name']}" data-bs-toggle="modal" data-bs-target="#NilaiAlterModal" title="Edit">` +
+							'<i class="bi bi-pencil-square"></i>' +
+							'</button>' +
+							`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}" title="Hapus">` +
+							'<i class="bi bi-trash3-fill"></i>' +
+							'</button>' +
 							'</div>');
 					}
 				}],
-				columns: [{
-					data: "id"
-				},
-				@foreach ($data['kriteria'] as $kr)
-				{
-					data: "subkriteria.{{ Str::of($kr->name)->slug('_') }}"
-				},
-				@endforeach {
-					data: "id"
-				}],
+				columns: [
+					{ data: "id" },
+					@foreach($data['kriteria'] as $kr)
+						{ data: "subkriteria.{{ Str::of($kr->name)->slug('_') }}" },
+					@endforeach 
+					{ data: "id" }
+				],
 				language: {
 					url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
 				}
 				// dom: 'Bfrtip',
 					// buttons: [{
-					// 	text: '<i class="bi bi-plus-lg me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Tambah Nilai Alternatif</span>',
-					// 	className: 'add-new btn',
-					// 	attr: {
-					// 		'data-bs-toggle': 'modal',
-					// 		'data-bs-target': '#NilaiAlterModal'
-					// 	}
-					// }, {
 					// 	extend: 'collection',
 					// 	text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
 					// 	className: 'btn dropdown-toggle',
@@ -241,192 +230,149 @@
 					// 		}
 					// 	}]
 				// }]
-			}).on('error.dt', function(e, settings, techNote, message) {
+			}).on('error.dt', function (e, settings, techNote, message) {
 				errorDT(message, techNote);
-			}).on("preXhr", function() {
-				$.get("{{ route('nilai.count') }}", function(data) {
+			}).on("preXhr", function () {
+				$.get("{{ route('nilai.count') }}", function (data) {
 					$('#total-noscore').text(data.unused);
 					$('#total-alts').text(data.alternatif);
-				}).fail(function(xhr, st, err) {
-					Toastify({
-						text: "Gagal memuat jumlah: Kesalahan HTTP " +
-							xhr.status + '.\n' + (xhr.statusText ?? err),
-						style: {
-							background: "#dc3545"
-						},
-						duration: 9000
-					}).showToast();
+				}).fail(function (xhr, st, err) {
+					console.warn(xhr.responseJSON.message ?? st);
+					swal.fire({
+						icon: 'error',
+						title: 'Gagal memuat jumlah',
+						text: "Kesalahan HTTP " + xhr.status + '. ' + (xhr.statusText ?? err)
+					});
 				});
 			}).on('draw', setTableColor);
 		} catch (dterr) {
 			initError(dterr.message);
 		}
-	}).on('click', '.delete-record', function() {
+	}).on('click', '.delete-record', function () {
 		var score_id = $(this).data('id'), score_name = $(this).data('name');
-		Swal.fire({
+		confirm.fire({
 			title: 'Hapus nilai alternatif?',
 			text: "Anda akan menghapus nilai alternatif " + score_name + ".",
-			icon: 'question',
-			showCancelButton: true,
-			confirmButtonText: 'Ya',
-			cancelButtonText: 'Tidak',
-			customClass: {
-				confirmButton: 'btn btn-primary me-3',
-				cancelButton: 'btn btn-secondary'
-			},
-			buttonsStyling: false
-		}).then(function(result) {
-			if (result.value) { // delete the data
-				$.ajax({
-					type: 'DELETE',
-					url: '/nilai/del/' + score_id,
-					beforeSend: function() {
-						toast.showToast();
-					},
-					complete: function() {
-						toast.hideToast();
-					},
-					success: function(data) {
-						nilaialtdt.draw();
-						Swal.fire({
-							icon: 'success',
-							title: 'Dihapus',
-							text: 'Nilai Alternatif ' + score_name + ' sudah dihapus.',
-							customClass: {
-								confirmButton: 'btn btn-success'
-							}
-						});
-					},
-					error: function(xhr, stat, err) {
-						if (xhr.status === 404) {
+			preConfirm: async () => {
+				try {
+					await $.ajax({
+						type: 'DELETE',
+						url: '/nilai/del/' + score_id,
+						success: function (data) {
 							nilaialtdt.draw();
-							errmsg = 'Nilai Alternatif ' + score_name + ' tidak ditemukan';
-						} else {
-							errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' + 
-								(xhr.responseJSON.message ?? err);
-						}
-						Swal.fire({
-							icon: 'error',
-							title: 'Gagal hapus',
-							text: errmsg,
-							customClass: {
-								confirmButton: 'btn btn-success'
+							return "Dihapus";
+						},
+						error: function (xhr, stat, err) {
+							if (xhr.status === 404) {
+								nilaialtdt.draw();
+								errmsg = 'Nilai Alternatif ' + score_name + ' tidak ditemukan';
+							} else {
+								console.warn(xhr.responseJSON.message ?? st);
+								errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +
+									(xhr.statusText ?? err);
 							}
-						});
-					}
-				});
-			} else if (result.dismiss === Swal.DismissReason.cancel) {
-				Swal.fire({
-					title: 'Dibatalkan',
-					text: 'Nilai Alternatif ' + score_name + ' tidak dihapus.',
-					icon: 'warning',
-					customClass: {
-						confirmButton: 'btn btn-success'
-					}
+							Swal.showValidationMessage("Gagal hapus: " + errmsg);
+						}
+					});
+				} catch (error) {
+					console.error(error);
+					Swal.showValidationMessage(`Gagal hapus: ${error}`);
+				}
+			}
+		}).then(function (result) {
+			if (result.isConfirmed) { // delete the data
+				swal.fire({
+					icon: 'success',
+					title: 'Berhasil dihapus'
 				});
 			}
 		});
-	}).on('click', '.edit-record', function() {
-		var nilai_id = $(this).data('id');
+	}).on('click', '.edit-record', function () {
+		var nilai_id = $(this).data('id'), nilai_name = $(this).data('nama');
 
-			// changing the title of offcanvas
+		// changing the title of offcanvas
+		$("#alternatif-value").val(nilai_name);
 		$('#NilaiAlterLabel').html('Edit Nilai Alternatif');
 		$('#NilaiAlterForm :input').prop('disabled', true);
 		$('.data-submit').prop('disabled', true);
-		$('.spinner-grow.text-primary').removeClass('d-none');
-			// get data
-		$.get('/nilai/edit/' + nilai_id, function(data) {
-			$('#alternatif-value').val(data.alternatif_id);
+		$('.spinner-grow').removeClass('d-none');
+		// get data
+		$.get('/nilai/edit/' + nilai_id, function (data) {
 			$('#alternatif-hidden').val(data.alternatif_id);
-			@foreach ($data['kriteria'] as $kr)
-				$("#subkriteria-{{ $kr->id }}").val(
-					data.subkriteria.{{ Str::of($kr->name)->slug('_') }});
+			@foreach($data['kriteria'] as $kr)
+			$("#subkriteria-{{ Str::of($kr->name)->slug('-')}}").val(
+				data.subkriteria.{{ Str:: of($kr->name)->slug('_')}});
 			@endforeach
-		}).fail(function(xhr, st, err) {
+		}).fail(function (xhr, st, err) {
 			if (xhr.status === 404) {
 				nilaialtdt.draw();
 				$('#NilaiAlterModal').modal('hide');
+				errmsg = xhr.responseJSON.message;
+			} else {
+				errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +
+					(xhr.statusText ?? err);
+				console.warn(xhr.responseJSON.message ?? st);
 			}
-			Swal.fire({
+			swal.fire({
 				icon: 'error',
-				title: 'Kesalahan',
-				text: 'Kesalahan HTTP ' + xhr.status + '.\n' +
-					(xhr.responseJSON.message ?? err),
-				customClass: {
-					confirmButton: 'btn btn-success'
-				}
+				title: 'Gagal memuat data',
+				text: errmsg
 			});
-		}).always(function() {
+		}).always(function () {
 			$('#NilaiAlterForm :input').prop('disabled', false);
 			$('.data-submit').prop('disabled', false);
-			$('.spinner-grow.text-primary').addClass('d-none');
-			$('#alternatif-value').prop('disabled', true);
+			$('.spinner-grow').addClass('d-none');
 		});
 	});
-
 	function submitform(event) {
-		var errmsg, actionurl = $('#alternatif-hidden').val() == '' ?
-			"{{ route('nilai.store') }}" : "{{ route('nilai.update') }}";
 		event.preventDefault();
 		$.ajax({
 			data: $('#NilaiAlterForm').serialize(),
-			url: actionurl,
+			url: "{{ route('nilai.store') }}",
 			type: 'POST',
-			beforeSend: function() {
+			beforeSend: function () {
 				$('#NilaiAlterForm :input').prop('disabled', true)
-						.removeClass('is-invalid');
+					.removeClass('is-invalid');
 				$('.data-submit').prop('disabled', true);
-				$('.spinner-grow.text-primary').removeClass('d-none');
+				$('.spinner-grow').removeClass('d-none');
 			},
-			complete: function() {
+			complete: function () {
 				$('#NilaiAlterForm :input').prop('disabled', false);
 				$('.data-submit').prop('disabled', false);
-				$('.spinner-grow.text-primary').addClass('d-none');
+				$('.spinner-grow').addClass('d-none');
 			},
-			success: function(status) {
+			success: function (status) {
 				if ($.fn.DataTable.isDataTable("#table-nilaialt")) nilaialtdt.draw();
 				$('#NilaiAlterModal').modal('hide');
-				Swal.fire({
-					icon: 'success',
-					title: 'Sukses',
-					text: status.message,
-					customClass: {
-						confirmButton: 'btn btn-success'
-					}
+				swal.fire({
+					icon: "success",
+					title: "Berhasil dinilai"
 				});
 			},
-			error: function(xhr, st, err) {
+			error: function (xhr, st, err) {
 				if (xhr.status === 422) {
 					resetvalidation();
-					if (typeof xhr.responseJSON.errors.alternatif_id !== "undefined") {
-						$('#alternatif-value').addClass('is-invalid');
-						$('#alternatif-error').text(xhr.responseJSON.errors.alternatif_id);
-					}
-					if (typeof xhr.responseJSON.errors.subkriteria_id !== "undefined")
-						console.warn(xhr.responseJSON.errors.subkriteria_id);
+					console.warn(xhr.responseJSON.errors);
 					errmsg = xhr.responseJSON.message;
 				} else {
+					console.warn(xhr.responseJSON.message ?? st);
 					errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +
-						(xhr.responseJSON.message ?? err);
+						(xhr.statusText ?? err);
 				}
-				Swal.fire({
+				swal.fire({
 					title: 'Gagal',
 					text: errmsg,
-					icon: 'error',
-					customClass: {
-						confirmButton: 'btn btn-success'
-					}
+					icon: 'error'
 				});
 			}
 		});
 	};
 	// clearing form data when modal hidden
-	$('#NilaiAlterModal').on('hidden.bs.modal', function() {
+	$('#NilaiAlterModal').on('hidden.bs.modal', function () {
 		resetvalidation();
-		$('#alternatif-value').prop('disabled', false);
 		$('#NilaiAlterForm')[0].reset();
 		$('#alternatif-hidden').val("");
-		$('#NilaiAlterLabel').html('Tambah Nilai Alternatif');
+		$('#NilaiAlterLabel').html('Isi Nilai Alternatif');
 	});
 </script>
 @endsection

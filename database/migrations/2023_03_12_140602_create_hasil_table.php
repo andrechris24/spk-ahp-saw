@@ -15,7 +15,7 @@ return new class extends Migration {
 		Schema::create('hasil', function (Blueprint $table) {
 			$table->id();
 			$table->foreignId('alternatif_id')->constrained('alternatif')
-				->cascadeOnDelete()->cascadeOnUpdate();
+				->cascadeOnDelete()->comment('Alternatif');
 			$table->float('skor', 8, 5)->default(0.00000);
 			$table->timestamps();
 		});

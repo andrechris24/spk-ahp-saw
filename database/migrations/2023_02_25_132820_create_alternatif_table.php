@@ -14,7 +14,8 @@ return new class extends Migration {
 	{
 		Schema::create('alternatif', function (Blueprint $table) {
 			$table->id();
-			$table->string('name', 99);
+			$table->string('name', 99)->comment('Nama alternatif');
+			$table->string('desc')->nullable()->comment('Keterangan');
 			$table->timestamps();
 		});
 	}

@@ -2,8 +2,8 @@
 @section('title', 'Sub Kriteria')
 @section('subtitle', 'Sub Kriteria')
 @section('content')
-<div class="modal fade text-left" id="SubCritModal" tabindex="-1" role="dialog" aria-labelledby="SubCritLabel"
-	aria-hidden="true">
+<div class="modal fade text-left" id="SubCritModal" tabindex="-1" role="dialog"
+aria-labelledby="SubCritLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -13,8 +13,8 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<form action="{{ route('subkriteria.store') }}" method="post" enctype="multipart/form-data"
-					id="SubCritForm" class="needs-validation">
+				<form action="{{ route('subkriteria.store') }}" method="post"
+				enctype="multipart/form-data" id="SubCritForm" class="needs-validation">
 					<input type="hidden" name="id" id="subkriteria-id">
 					<label for="nama-sub">Nama Sub Kriteria</label>
 					<div class="form-group">
@@ -76,8 +76,8 @@
 	<div class="col-md-4">
 		<div class="card">
 			<div class="card-body">
-				<div class="d-flex align-items-start justify-content-between" data-bs-toggle="tooltip"
-					title="Sub Kriteria Terbanyak per Kriteria">
+				<div class="d-flex align-items-start justify-content-between"
+				data-bs-toggle="tooltip" title="Sub Kriteria Terbanyak per Kriteria">
 					<div class="content-left">
 						<span>Terbanyak</span>
 						<div class="d-flex align-items-end mt-2">
@@ -94,8 +94,8 @@
 	<div class="col-md-4">
 		<div class="card">
 			<div class="card-body">
-				<div class="d-flex align-items-start justify-content-between" data-bs-toggle="tooltip"
-					title="Sub Kriteria duplikat per kriteria">
+				<div class="d-flex align-items-start justify-content-between"
+				data-bs-toggle="tooltip" title="Sub Kriteria duplikat per kriteria">
 					<div class="content-left">
 						<span>Duplikat</span>
 						<div class="d-flex align-items-end mt-2">
@@ -113,17 +113,18 @@
 <div class="card">
 	<div class="card-header">Daftar Sub Kriteria</div>
 	<div class="card-body">
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#SubCritModal">
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+		data-bs-target="#SubCritModal">
 			<i class="bi bi-plus-lg"></i> Tambah Sub Kriteria
 		</button>
 		<table class="table table-hover table-striped" id="table-subcrit" style="width: 100%">
 			<thead>
 				<tr>
-					<th>No</th>
-					{{-- <th>Kode</th> --}}
+					<th>#</th>
 					<th>Nama Sub Kriteria</th>
 					<th>Kriteria</th>
-					<th data-bs-toggle="tooltip" title="Bobot didapat melalui pembobotan Sub Kriteria secara konsisten">
+					<th data-bs-toggle="tooltip"
+					title="Bobot didapat melalui pembobotan Sub Kriteria secara konsisten">
 						Bobot
 					</th>
 					<th>Aksi</th>
@@ -135,8 +136,8 @@
 @endsection
 @section('js')
 <script type="text/javascript">
-	var dt_subkriteria, error;
-	$(document).ready(function() {
+	var dt_subkriteria, errmsg;
+	$(document).ready(function () {
 		try {
 			$.fn.dataTable.ext.errMode = 'none';
 			dt_subkriteria = $('#table-subcrit').DataTable({
@@ -151,46 +152,35 @@
 					type: 'POST'
 				},
 				order: [[2, 'asc']],
-				columns: [{
-					data: 'kr_name'
-				}, 
-				// {
-				// 	data: 'id'
-				// }, 
-				{
-					data: 'name'
-				}, {
-					data: 'kriteria_id'
-				}, {
-					data: 'bobot'
-				}, {
-					data: 'id'
-				}],
+				columns: [
+					{ data: 'kr_name' },
+					{ data: 'name' },
+					{ data: 'kriteria_id' },
+					{ data: 'bobot' },
+					{ data: 'id' }
+				],
 				columnDefs: [{
 					targets: 0,
 					orderable: false,
-					render: function(data, type, full, meta) {
+					render: function (data, type, full, meta) {
 						return meta.row + meta.settings._iDisplayStart + 1;
 					}
-				}, 
-				// {
-					// 	targets: 1,
-					// 	render: function(data) {
-					// 		return 'S' + data;
-					// 	}
-				// }, 
-				{
+				}, {
 					targets: 2,
-					render: function(data, type, full) {
+					render: function (data, type, full) {
 						return `<span title="${full['desc_kr']}">C${data}: ${full['kr_name']}</span>`;
 					}
 				}, { //Aksi
 					orderable: false,
 					targets: -1,
-					render: function(data, type, full) {
+					render: function (data, type, full) {
 						return ('<div class="btn-group" role="group">' +
-							`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#SubCritModal" title="Edit"><i class="bi bi-pencil-square"></i></button>` +
-							`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}" data-kr="${full['kr_name']}" title="Hapus"><i class="bi bi-trash3-fill"></i></button>` +
+							`<button class="btn btn-sm btn-primary edit-record" data-id="${data}" data-bs-toggle="modal" data-bs-target="#SubCritModal" title="Edit">` +
+							'<i class="bi bi-pencil-square"></i>' +
+							'</button>' +
+							`<button class="btn btn-sm btn-danger delete-record" data-id="${data}" data-name="${full['name']}" data-kr="${full['kr_name']}" title="Hapus">` +
+							'<i class="bi bi-trash3-fill"></i>' +
+							'</button>' +
 							'</div>');
 					}
 				}],
@@ -198,191 +188,158 @@
 					url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
 				}
 				// dom: 'Bfrtip',
-					// buttons: [{
-					// 	text: '<i class="bi bi-plus-lg me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Tambah Sub Kriteria</span>',
-					// 	className: 'add-new btn',
-					// 	attr: {
-					// 		'data-bs-toggle': 'modal',
-					// 		'data-bs-target': '#SubCritModal'
-					// 	}
-					// }, {
-					// 	extend: 'collection',
-					// 	text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
-					// 	className: 'btn dropdown-toggle',
-					// 	buttons: [{
-					// 		extend: 'print',
-					// 		title: 'Sub Kriteria',
-					// 		text: '<i class="bi bi-printer me-2"></i> Print',
-					// 		className: 'dropdown-item',
-					// 		exportOptions: {
-					// 			columns: [1, 2, 3, 4]
-					// 		}
-					// 	}, {
-					// 		extend: 'excel',
-					// 		title: 'Sub Kriteria',
-					// 		text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
-					// 		className: 'dropdown-item',
-					// 		exportOptions: {
-					// 			columns: [1, 2, 3, 4]
-					// 		}
-					// 	}, {
-					// 		extend: 'pdf',
-					// 		title: 'Sub Kriteria',
-					// 		text: '<i class="bi bi-file-text me-2"></i> PDF',
-					// 		className: 'dropdown-item',
-					// 		exportOptions: {
-					// 			columns: [1, 2, 3, 4]
-					// 		}
-					// 	}]
+				// buttons: [{
+				// 	extend: 'collection',
+				// 	text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
+				// 	className: 'btn dropdown-toggle',
+				// 	buttons: [{
+				// 		extend: 'print',
+				// 		title: 'Sub Kriteria',
+				// 		text: '<i class="bi bi-printer me-2"></i> Print',
+				// 		className: 'dropdown-item',
+				// 		exportOptions: {
+				// 			columns: [1, 2, 3]
+				// 		}
+				// 	}, {
+				// 		extend: 'excel',
+				// 		title: 'Sub Kriteria',
+				// 		text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
+				// 		className: 'dropdown-item',
+				// 		exportOptions: {
+				// 			columns: [1, 2, 3]
+				// 		}
+				// 	}, {
+				// 		extend: 'pdf',
+				// 		title: 'Sub Kriteria',
+				// 		text: '<i class="bi bi-file-text me-2"></i> PDF',
+				// 		className: 'dropdown-item',
+				// 		exportOptions: {
+				// 			columns: [1, 2, 3]
+				// 		}
+				// 	}]
 				// }]
-			}).on('error.dt', function(e, settings, techNote, message) {
+			}).on('error.dt', function (e, settings, techNote, message) {
 				errorDT(message, techNote);
-			}).on('preXhr', function() {
-				$.get("{{ route('subkriteria.count') }}", function(data) {
+			}).on('preXhr', function () {
+				$.get("{{ route('subkriteria.count') }}", function (data) {
 					$('#total-max').text(data.max);
 					$("#total-counter").text(data.total);
 					$('#total-duplicate').text(data.duplicate);
-				}).fail(function(xhr, stat, err) {
-					Toastify({
-						text: "Gagal memuat jumlah: Kesalahan HTTP " +
-							xhr.status + '.\n' + (xhr.statusText ?? err),
-						style: {
-							background: "#dc3545"
-						},
-						duration: 9000
-					}).showToast();
+				}).fail(function (xhr, st, err) {
+					console.warn(xhr.responseJSON.message ?? st);
+					swal.fire({
+						icon: 'error',
+						title: 'Gagal memuat jumlah',
+						text: "Kesalahan HTTP " + xhr.status + '. ' + (xhr.statusText ?? err)
+					});
 				});
 			}).on('draw', setTableColor);
 		} catch (dterr) {
 			initError(dterr.message);
 		}
-	}).on('click', '.delete-record', function() {
+	}).on('click', '.delete-record', function () {
 		var sub_id = $(this).data('id'), sub_name = $(this).data('name'),
 			sub_kr = $(this).data('kr');
 
-		Swal.fire({
+		confirm.fire({
 			title: 'Hapus sub kriteria?',
 			text: "Anda akan menghapus sub kriteria " + sub_name + " (" + sub_kr + ").",
-			icon: 'question',
-			showCancelButton: true,
-			confirmButtonText: 'Ya',
-			cancelButtonText: 'Tidak',
-			customClass: {
-				confirmButton: 'btn btn-primary me-3',
-				cancelButton: 'btn btn-secondary'
-			},
-			buttonsStyling: false
-		}).then(function(result) {
-			if (result.value) { // delete the data
-				$.ajax({
-					type: 'DELETE',
-					url: '/kriteria/sub/del/' + sub_id,
-					beforeSend: function() {
-						toast.showToast();
-					},
-					complete: function() {
-						toast.hideToast();
-					},
-					success: function(data) {
-						dt_subkriteria.draw();
-						Swal.fire({
-							icon: 'success',
-							title: 'Dihapus',
-							text: 'Sub Kriteria ' + sub_name + ' (' + sub_kr + 
-								') sudah dihapus.',
-							customClass: {
-								confirmButton: 'btn btn-success'
-							}
-						});
-					},
-					error: function(xhr, stat, err) {
-						if (xhr.status === 404) {
+			preConfirm: async () => {
+				try {
+					await $.ajax({
+						type: 'DELETE',
+						url: '/kriteria/sub/del/' + sub_id,
+						success: function () {
 							dt_subkriteria.draw();
-							error = 'Sub Kriteria ' + sub_name + ' (' + sub_kr + 
-								') tidak ditemukan.';
-						} else {
-							error = 'Kesalahan HTTP ' + xhr.status + '.\n' + 
-								(xhr.responseJSON.message ?? err);
-						}
-						Swal.fire({
-							icon: 'error',
-							title: 'Gagal hapus',
-							text: error,
-							customClass: {
-								confirmButton: 'btn btn-success'
+							return "Dihapus";
+						},
+						error: function (xhr, st, err) {
+							if (xhr.status === 404) {
+								dt_subkriteria.draw();
+								errmsg = 'Sub Kriteria ' + sub_name + ' (' + sub_kr +
+									') tidak ditemukan.';
+							} else {
+								console.warn(xhr.responseJSON.message ?? st);
+								errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +
+									(xhr.statusText ?? err);
 							}
-						});
-					}
+							Swal.showValidationMessage("Gagal hapus: " + errmsg);
+						}
+					});
+				} catch (error) {
+					console.error(error);
+					Swal.showValidationMessage(`Gagal hapus: ${error}`);
+				}
+			}
+		}).then(function (result) {
+			if (result.isConfirmed) { // delete the data
+				swal.fire({
+					icon: "success",
+					title: "Berhasil dihapus"
 				});
 			}
 		});
-	}).on('click', '.edit-record', function() {
+	}).on('click', '.edit-record', function () {
 		var sub_id = $(this).data('id');
 
-			// changing the title of offcanvas
+		// changing the title of offcanvas
 		$('#SubCritForm :input').prop('disabled', true);
 		$('#SubCritLabel').html('Edit Sub Kriteria');
 		$('.data-submit').prop('disabled', true);
-		$('.spinner-grow.text-primary').removeClass('d-none');
-			// get data
-		$.get('/kriteria/sub/edit/' + sub_id, function(data) {
+		$('.spinner-grow').removeClass('d-none');
+		// get data
+		$.get('/kriteria/sub/edit/' + sub_id, function (data) {
 			$('#subkriteria-id').val(data.id);
 			$('#nama-sub').val(data.name);
 			$('#kriteria-select').val(data.kriteria_id);
-		}).fail(function(xhr, stat, err) {
+		}).fail(function (xhr, st, err) {
 			if (xhr.status === 404) {
 				$('#SubCritModal').modal('hide');
 				dt_subkriteria.draw();
-				error = "Sub Kriteria tidak ditemukan.";
+				errmsg = "Sub Kriteria tidak ditemukan.";
 			} else {
-				error = 'Kesalahan HTTP ' + xhr.status + '.\n' +
-					(xhr.responseJSON.message ?? err);
+				console.warn(xhr.responseJSON.message ?? st);
+				errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +
+					(xhr.statusText ?? err);
 			}
-			Swal.fire({
-				icon: 'error',
-				title: 'Kesalahan',
-				text: error,
-				customClass: {
-					confirmButton: 'btn btn-success'
-				}
+			swal.fire({
+				icon: "error",
+				title: "Gagal memuat data",
+				text: errmsg
 			});
-		}).always(function() {
+		}).always(function () {
 			$('#SubCritForm :input').prop('disabled', false);
 			$('.data-submit').prop('disabled', false);
-			$('.spinner-grow.text-primary').addClass('d-none');
+			$('.spinner-grow').addClass('d-none');
 		});
 	});
 	function submitform(event) {
-		var errmsg, actionurl = $('#subkriteria-id').val() == '' ?
+		var actionurl = $('#subkriteria-id').val() == '' ?
 			"{{ route('subkriteria.store') }}" : "{{ route('subkriteria.update') }}";
 		event.preventDefault();
 		$.ajax({
 			data: $('#SubCritForm').serialize(),
 			url: actionurl,
 			type: 'POST',
-			beforeSend: function() {
+			beforeSend: function () {
 				$('#SubCritForm :input').prop('disabled', true).removeClass('is-invalid');
 				$('.data-submit').prop('disabled', true);
-				$('.spinner-grow.text-primary').removeClass('d-none');
+				$('.spinner-grow').removeClass('d-none');
 			},
-			complete: function() {
+			complete: function () {
 				$('#SubCritForm :input').prop('disabled', false);
 				$('.data-submit').prop('disabled', false);
-				$('.spinner-grow.text-primary').addClass('d-none');
+				$('.spinner-grow').addClass('d-none');
 			},
-			success: function(status) {
+			success: function (status) {
 				if ($.fn.DataTable.isDataTable("#table-subcrit")) dt_subkriteria.draw();
 				$('#SubCritModal').modal('hide');
-				Swal.fire({
-					icon: 'success',
-					title: 'Sukses',
-					text: status.message,
-					customClass: {
-						confirmButton: 'btn btn-success'
-					}
+				swal.fire({
+					icon: "success",
+					title: status.message
 				});
 			},
-			error: function(xhr, st, err) {
+			error: function (xhr, st, err) {
 				if (xhr.status === 422) {
 					resetvalidation();
 					if (typeof xhr.responseJSON.errors.name !== "undefined") {
@@ -394,23 +351,22 @@
 						$('#kriteria-error').text(xhr.responseJSON.errors.kriteria_id);
 					}
 					errmsg = xhr.responseJSON.message;
-				} else {
+				} else if (xhr.status === 400) errmsg = xhr.responseJSON.message;
+				else {
+					console.warn(xhr.responseJSON.message ?? st);
 					errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +
-						(xhr.responseJSON.message ?? err);
+						(xhr.statusText ?? err);
 				}
-				Swal.fire({
+				swal.fire({
 					title: 'Gagal',
 					text: errmsg,
-					icon: 'error',
-					customClass: {
-						confirmButton: 'btn btn-success'
-					}
+					icon: 'error'
 				});
 			}
 		});
 	};
 	// clearing form data when modal hidden
-	$('#SubCritModal').on('hidden.bs.modal', function() {
+	$('#SubCritModal').on('hidden.bs.modal', function () {
 		resetvalidation();
 		$('#SubCritForm')[0].reset();
 		$('#subkriteria-id').val("");
