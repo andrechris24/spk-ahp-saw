@@ -1,5 +1,7 @@
 @if (Session::has($type))
-<div @class([ 'alert' , 'alert-danger'=> $type === 'error',
+<div @class([
+	'alert',
+	'alert-danger'=> $type === 'error',
 	'alert-success' => $type === 'success',
 	'alert-warning' => $type === 'warning',
 	'alert-dismissible'])>

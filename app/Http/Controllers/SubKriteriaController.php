@@ -61,31 +61,24 @@ class SubKriteriaController extends Controller
 	public function store(Request $request)
 	{
 		$request->validate(SubKriteria::$rules, SubKriteria::$message);
-		$req = $request->all();
 		try {
-			$namakriteria = $this->nama_kriteria($req['kriteria_id']);
-			if (SubKriteria::where('kriteria_id', $req['kriteria_id'])->count() >= 20) {
-				return response()->json([
-					'message' => "Batas jumlah sub kriteria $namakriteria sudah tercapai"
-				], 400);
+			if ($request->id) {
+				SubKriteria::updateOrCreate(
+					['id' => $request->id],
+					['name' => $request->name, 'kriteria_id' => $request->kriteria_id]
+				);
+				$msg = "Berhasil diupdate";
+			} else {
+				if (SubKriteria::where('kriteria_id', $request->kriteria_id)->count() >= 20) {
+					$namakriteria = $this->nama_kriteria($request->kriteria_id);
+					return response()->json([
+						'message' => "Batas jumlah sub kriteria $namakriteria sudah tercapai"
+					], 400);
+				}
+				SubKriteria::create($request->all());
+				$msg = "Berhasil diinput";
 			}
-			SubKriteria::create($req);
-			return response()->json(['message' => "Berhasil diinput"]);
-		} catch (QueryException $e) {
-			Log::error($e);
-			return response()->json(['message' => $e->errorInfo[2]], 500);
-		}
-	}
-	public function update(Request $request)
-	{
-		$request->validate(SubKriteria::$rules, SubKriteria::$message);
-		$req = $request->all();
-		try {
-			SubKriteria::updateOrCreate(
-				['id' => $req['id']],
-				['name' => $req['name'], 'kriteria_id' => $req['kriteria_id']]
-			);
-			return response()->json(['message' => "Berhasil diupdate"]);
+			return response()->json(['message' => $msg]);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->errorInfo[2]], 500);

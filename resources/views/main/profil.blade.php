@@ -124,7 +124,7 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 @section('js')
 <script type="text/javascript" src="{{ asset('js/password.js') }}"></script>
 <script type="text/javascript">
-	var errmsg;
+	let errmsg;
 	function submitform(e) {
 		e.preventDefault();
 		$.ajax({
@@ -179,6 +179,9 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 							xhr.responseJSON.errors.password_confirmation);
 					}
 					errmsg = xhr.responseJSON.message;
+				} else if (xhr.status === 429) {
+					errmsg = "Terlalu banyak upaya. " +
+						"Tunggu beberapa saat sebelum menyimpan perubahan.";
 				} else {
 					console.warn(xhr.responseJSON.message ?? st);
 					errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +
@@ -224,7 +227,9 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 						},
 						error: function (xhr, st, err) {
 							if (xhr.status === 422) errmsg = xhr.responseJSON.message;
-							else {
+							else if (xhr.status === 429) {
+								errmsg = "Terlalu banyak upaya. Cobalah beberapa saat lagi.";
+							} else {
 								console.warn(xhr.responseJSON.message ?? st);
 								errmsg = "Gagal hapus: Kesalahan HTTP " + xhr.status + ".\n" +
 									(xhr.statusText ?? err);

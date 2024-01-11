@@ -136,7 +136,7 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 @endsection
 @section('js')
 <script type="text/javascript">
-	var dt_subkriteria, errmsg;
+	let dt_subkriteria, errmsg;
 	$(document).ready(function () {
 		try {
 			$.fn.dataTable.ext.errMode = 'none';
@@ -238,7 +238,7 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 			initError(dterr.message);
 		}
 	}).on('click', '.delete-record', function () {
-		var sub_id = $(this).data('id'), sub_name = $(this).data('name'),
+		let sub_id = $(this).data('id'), sub_name = $(this).data('name'),
 			sub_kr = $(this).data('kr');
 
 		confirm.fire({
@@ -280,7 +280,7 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 			}
 		});
 	}).on('click', '.edit-record', function () {
-		var sub_id = $(this).data('id');
+		let sub_id = $(this).data('id');
 
 		// changing the title of offcanvas
 		$('#SubCritForm :input').prop('disabled', true);
@@ -314,12 +314,10 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 		});
 	});
 	function submitform(event) {
-		var actionurl = $('#subkriteria-id').val() == '' ?
-			"{{ route('subkriteria.store') }}" : "{{ route('subkriteria.update') }}";
 		event.preventDefault();
 		$.ajax({
 			data: $('#SubCritForm').serialize(),
-			url: actionurl,
+			url: "{{ route('subkriteria.store') }}",
 			type: 'POST',
 			beforeSend: function () {
 				$('#SubCritForm :input').prop('disabled', true).removeClass('is-invalid');

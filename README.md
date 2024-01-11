@@ -3,7 +3,7 @@
 <p>Aplikasi ini adalah aplikasi Sistem Pendukung Keputusan metode AHP dan SAW berbasis web dengan sub kriteria. AHP digunakan sebagai penilaian Kriteria & Sub Kriteria dan SAW digunakan sebagai penilaian Alternatif. Komponen yang digunakan:</p>
 
 -   [Laravel 10](https://laravel.com/)
--   [PHP 8.2](https://www.php.net/)
+-   [PHP 8.2.9](https://www.php.net/)
 -   [Mazer Dashboard Template](https://github.com/zuramai/mazer)
 -   [Font Awesome 5](https://fontawesome.com/)
 -   [ApexCharts](https://apexcharts.com/)
@@ -14,7 +14,7 @@
 
 ## Cara Menggunakan
 
-1. Download atau clone aplikasi ini
+1. Download atau clone aplikasi ini.
 2. Masuk ke aplikasi yang sudah didownload atau di-clone.
 3. Buka Command Prompt atau PowerShell, lalu masukkan perintah `composer install`.
 4. Ganti nama `.env.example` menjadi `.env`, lalu atur nama Database pada file .env.

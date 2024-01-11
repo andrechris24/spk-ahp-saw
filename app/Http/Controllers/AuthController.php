@@ -21,7 +21,7 @@ class AuthController extends Controller
 	{
 		if (Auth::viaRemember() || Auth::check())
 			return to_route('home.index');
-		return view('admin.login');
+		return view('auth.login');
 	}
 	public function login(Request $request)
 	{
@@ -61,7 +61,7 @@ class AuthController extends Controller
 	{
 		if (Auth::viaRemember() || Auth::check())
 			return to_route('home.index');
-		return view('admin.register');
+		return view('auth.register');
 	}
 	public function register(Request $request)
 	{
@@ -85,7 +85,7 @@ class AuthController extends Controller
 	{
 		if (Auth::viaRemember() || Auth::check())
 			return to_route('home.index');
-		return view('admin.forget-password');
+		return view('auth.forget-password');
 	}
 	public function submitForgetPasswordForm(Request $request)
 	{
@@ -125,7 +125,7 @@ class AuthController extends Controller
 			if (!Hash::check($token, $enctoken->token))
 				return to_route('login')->withError(__('passwords.token'));
 			return view(
-				'admin.reset-password',
+				'auth.reset-password',
 				['token' => $token, 'email' => $_GET['email']]
 			);
 		} catch (QueryException $e) {

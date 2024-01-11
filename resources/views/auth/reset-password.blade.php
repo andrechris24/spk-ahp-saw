@@ -1,9 +1,8 @@
-@extends('admin.auth')
+@extends('auth.layout')
 @section('title', 'Reset Password')
 @section('auth-title', 'Reset Password')
 @section('auth-subtitle',
 'Selamat datang kembali! Silahkan masukkan password baru untuk melanjutkan.')
-@section('auth-css', asset('assets/compiled/css/auth-forgot-password.css'))
 @section('content')
 <form action="{{ route('password.update') }}" method="post" class="needs-validation">
 	@csrf

@@ -19,19 +19,13 @@ use Illuminate\Support\Str;
 class HomeController extends Controller
 {
 	public static function refreshDB($model): void
-	{
+	{ //Atur ulang id kriteria, sub kriteria, dan alternatif
 		try {
 			$max = $model->max('id') + 1;
 			DB::statement("ALTER TABLE users AUTO_INCREMENT = $max");
 		} catch (QueryException $e) {
 			Log::error($e);
 		}
-	}
-	public function dbWarnings(): void
-	{
-		$warning_messages = DB::select('SHOW WARNINGS');
-		if (count($warning_messages) > 0)
-			Log::warning($warning_messages);
 	}
 	public function index()
 	{

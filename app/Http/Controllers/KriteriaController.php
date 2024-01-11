@@ -41,28 +41,22 @@ class KriteriaController extends Controller
 	{
 		$request->validate(Kriteria::$rules, Kriteria::$message);
 		try {
-			if (Kriteria::count() >= 20) {
-				return response()->json([
-					'message' => 'Jumlah kriteria maksimal sudah tercapai'
-				], 400);
+			if ($request->id) {
+				Kriteria::updateOrCreate(
+					['id' => $req['id']],
+					['name' => $req['name'], 'type' => $req['type'], 'desc' => $req['desc']]
+				);
+				$msg = 'Berhasil diupdate';
+			} else {
+				if (Kriteria::count() >= 20) {
+					return response()->json([
+						'message' => 'Jumlah kriteria maksimal sudah tercapai'
+					], 400);
+				}
+				Kriteria::create($request->all());
+				$msg = "Berhasil diinput";
 			}
-			Kriteria::create($request->all());
-			return response()->json(['message' => "Berhasil diinput"]);
-		} catch (QueryException $e) {
-			Log::error($e);
-			return response()->json(['message' => $e->errorInfo[2]], 500);
-		}
-	}
-	public function update(Request $request)
-	{
-		$request->validate(Kriteria::$rules, Kriteria::$message);
-		$req = $request->all();
-		try {
-			Kriteria::updateOrCreate(
-				['id' => $req['id']],
-				['name' => $req['name'], 'type' => $req['type'], 'desc' => $req['desc']]
-			);
-			return response()->json(['message' => 'Berhasil diupdate']);
+			return response()->json(['message' => $msg]);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->errorInfo[2]], 500);
@@ -75,6 +69,8 @@ class KriteriaController extends Controller
 	public function hapus(Kriteria $kr)
 	{
 		$kr->delete();
+		if (!Kriteria::exists())
+			KriteriaComp::truncate();
 		$model = new Kriteria;
 		HomeController::refreshDB($model);
 		return response()->json(['message' => 'Dihapus']);

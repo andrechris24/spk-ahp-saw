@@ -139,7 +139,7 @@ aria-labelledby="CritLabel" aria-hidden="true">
 @endsection
 @section('js')
 <script type="text/javascript">
-	var dt_kriteria, errmsg;
+	let dt_kriteria, errmsg;
 	$(document).ready(function () {
 		try {
 			$.fn.dataTable.ext.errMode = 'none';
@@ -241,7 +241,7 @@ aria-labelledby="CritLabel" aria-hidden="true">
 			initError(dterr.message);
 		}
 	}).on('click', '.delete-record', function () {
-		var kr_id = $(this).data('id'), kr_name = $(this).data('name');
+		let kr_id = $(this).data('id'), kr_name = $(this).data('name');
 		confirm.fire({
 			title: 'Hapus kriteria?',
 			text: "Anda akan menghapus kriteria " + kr_name + ".",
@@ -280,7 +280,7 @@ aria-labelledby="CritLabel" aria-hidden="true">
 			}
 		});
 	}).on('click', '.edit-record', function () {
-		var kr_id = $(this).data('id');
+		let kr_id = $(this).data('id');
 		// changing the title of offcanvas
 		$('#CritForm :input').prop('disabled', true);
 		$('#CritLabel').html('Edit Kriteria');
@@ -315,12 +315,10 @@ aria-labelledby="CritLabel" aria-hidden="true">
 		});
 	});
 	function submitform(event) {
-		var actionurl = $('#kriteria-id').val() == '' ?
-			"{{ route('kriteria.store') }}" : "{{ route('kriteria.update') }}";
 		event.preventDefault();
 		$.ajax({
 			data: $('#CritForm').serialize(),
-			url: actionurl,
+			url: "{{ route('kriteria.store') }}",
 			type: 'POST',
 			beforeSend: function () {
 				$('#CritForm :input').prop('disabled', true).removeClass('is-invalid');

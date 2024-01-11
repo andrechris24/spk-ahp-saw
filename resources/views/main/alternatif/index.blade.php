@@ -104,7 +104,7 @@ aria-labelledby="AlterLabel" aria-hidden="true">
 @endsection
 @section('js')
 <script type="text/javascript">
-	var dt_alternatif, errmsg;
+	let dt_alternatif, errmsg;
 	$(document).ready(function () {
 		try {
 			$.fn.dataTable.ext.errMode = "none";
@@ -201,7 +201,7 @@ aria-labelledby="AlterLabel" aria-hidden="true">
 			initError(dterr.message);
 		}
 	}).on("click", ".delete-record", function () {
-		var alt_id = $(this).data("id"), alt_name = $(this).data("name");
+		let alt_id = $(this).data("id"), alt_name = $(this).data("name");
 		confirm.fire({
 			title: "Hapus alternatif?",
 			text: "Anda akan menghapus alternatif " + alt_name +
@@ -242,7 +242,7 @@ aria-labelledby="AlterLabel" aria-hidden="true">
 			}
 		});
 	}).on("click", ".edit-record", function () {
-		var alt_id = $(this).data("id");
+		let alt_id = $(this).data("id");
 
 		// changing the title of offcanvas
 		$("#AlterLabel").html("Edit Alternatif");
@@ -276,12 +276,10 @@ aria-labelledby="AlterLabel" aria-hidden="true">
 	});
 
 	function submitform(event) {
-		var actionurl = $("#alter-id").val() == "" ?
-			"{{ route('alternatif.store') }}" : "{{ route('alternatif.update') }}";
 		event.preventDefault();
 		$.ajax({
 			data: $("#AlterForm").serialize(),
-			url: actionurl,
+			url: "{{ route('alternatif.store') }}",
 			type: "POST",
 			beforeSend: function () {
 				$("#AlterForm :input").prop("disabled", true).removeClass("is-invalid");

@@ -1,8 +1,7 @@
-@extends('admin.auth')
+@extends('auth.layout')
 @section('title', 'Login')
 @section('auth-title', 'Login')
 @section('auth-subtitle', 'Login untuk menggunakan Aplikasi Sistem Pendukung Keputusan')
-@section('auth-css', asset('assets/compiled/css/auth.css'))
 @section('content')
 <form action="{{ route('login.perform') }}" method="post"
 enctype="multipart/form-data" class="needs-validation">@csrf

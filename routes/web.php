@@ -24,7 +24,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 		});
 		Route::prefix('login')->group(function () {
 			Route::get('/', 'showlogin')->name('login');
-			Route::post('/', 'login')->name('login.perform');
+			Route::post('/', 'login')->middleware(['throttle:3,2'])
+				->name('login.perform');
 		});
 		Route::prefix('forget-password')->group(function () {
 			Route::get('/', 'showForgetPasswordForm')->name('password.request');
@@ -38,8 +39,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 	Route::middleware(['auth'])->group(function () { //Authenticated users
 		Route::controller('HomeController')->prefix('akun')->group(function () {
 			Route::get('/', 'profile')->name('akun.show');
-			Route::post('/', 'updateProfil')->name('akun.perform');
-			Route::delete('/del', 'delAkun')->name('akun.delete');
+			Route::post('/', 'updateProfil')->middleware(['throttle:3,2'])
+				->name('akun.perform');
+			Route::delete('/del', 'delAkun')->middleware(['throttle:3,2'])
+				->name('akun.delete');
 		});
 		Route::prefix('kriteria')->group(function () {
 			Route::controller('KriteriaController')->group(function () {
@@ -47,7 +50,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 				Route::get('count', 'getCount')->name('kriteria.count')->block();
 				Route::post('data', 'show')->name('kriteria.data')->block();
 				Route::post('store', 'store')->name('kriteria.store');
-				Route::post('update', 'update')->name('kriteria.update');
 				Route::get('edit/{kr}', 'edit')->name('kriteria.edit');
 				Route::delete('del/{kr}', 'hapus')->name('kriteria.delete');
 			});
@@ -58,7 +60,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 					Route::post('data', 'show')->name('subkriteria.data')->block();
 					Route::get('edit/{skr}', 'edit')->name('subkriteria.edit');
 					Route::post('store', 'store')->name('subkriteria.store');
-					Route::post('update', 'update')->name('subkriteria.update');
 					Route::delete('del/{skr}', 'destroy')->name('subkriteria.delete');
 				});
 		});
@@ -89,7 +90,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 				Route::post('data', 'show')->name('alternatif.data')->block();
 				Route::get('edit/{alt}', 'edit')->name('alternatif.edit');
 				Route::post('store', 'store')->name('alternatif.store');
-				Route::post('update', 'update')->name('alternatif.update');
 				Route::delete('del/{alt}', 'hapus')->name('alternatif.delete');
 			});
 		Route::controller('NilaiController')->group(function () {
@@ -99,7 +99,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 				Route::post('data', 'datatables')->name('nilai.data')->block();
 				Route::get('edit/{id}', 'edit')->name('nilai.edit');
 				Route::post('store', 'store')->name('nilai.store');
-				Route::post('update', 'update')->name('nilai.update');
 				Route::delete('del/{id}', 'destroy')->name('nilai.delete');
 				Route::get('hasil', 'show')->name('nilai.show');
 			});

@@ -178,7 +178,8 @@ aria-labelledby="RankLabel" aria-hidden="true">
 @endsection
 @section('js')
 <script type="text/javascript">
-	var dt_hasil, errmsg, loaded = false, options = {
+	let dt_hasil, errmsg, loaded = false;
+	const options = {
 		chart: {
 			height: 320,
 			type: 'bar'

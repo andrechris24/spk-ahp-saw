@@ -162,8 +162,7 @@ class SubKriteriaCompController extends Controller
 		foreach ($subkriteria as $k) {
 			$kode_kriteria = $k->idsubkriteria;
 			$perbandingan = $this->getPerbandinganBySubKriteria1(
-				$kode_kriteria,
-				$kriteria_id
+				$kode_kriteria, $kriteria_id
 			);
 			if ($perbandingan) {
 				foreach ($perbandingan as $hk) {
@@ -187,8 +186,7 @@ class SubKriteriaCompController extends Controller
 					}
 				}
 				$nilaiPerbandingan = $this->getNilaiPerbandingan(
-					$kode_kriteria,
-					$kriteria_id
+					$kode_kriteria, $kriteria_id
 				);
 				foreach ($nilaiPerbandingan as $hb) {
 					if ($hb->nilai < 0) {

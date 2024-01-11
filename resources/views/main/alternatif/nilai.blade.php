@@ -139,7 +139,7 @@
 @endsection
 @section('js')
 <script type="text/javascript">
-	var nilaialtdt, errmsg;
+	let nilaialtdt, errmsg;
 	function setName(id, name) {
 		$('#alternatif-hidden').val(id);
 		$("#alternatif-value").val(name);
@@ -249,7 +249,7 @@
 			initError(dterr.message);
 		}
 	}).on('click', '.delete-record', function () {
-		var score_id = $(this).data('id'), score_name = $(this).data('name');
+		let score_id = $(this).data('id'), score_name = $(this).data('name');
 		confirm.fire({
 			title: 'Hapus nilai alternatif?',
 			text: "Anda akan menghapus nilai alternatif " + score_name + ".",
@@ -288,7 +288,7 @@
 			}
 		});
 	}).on('click', '.edit-record', function () {
-		var nilai_id = $(this).data('id'), nilai_name = $(this).data('nama');
+		let nilai_id = $(this).data('id'), nilai_name = $(this).data('nama');
 
 		// changing the title of offcanvas
 		$("#alternatif-value").val(nilai_name);

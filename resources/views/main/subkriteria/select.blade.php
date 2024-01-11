@@ -20,7 +20,7 @@
 @endsection
 @section('js')
 <script type="text/javascript">
-	var dt_subkriteriacomp;
+	let dt_subkriteriacomp;
 	$(document).ready(function () {
 		try {
 			$.fn.dataTable.ext.errMode = 'none';
@@ -92,7 +92,7 @@
 			initError(dterr.message);
 		}
 	}).on('click', '.delete-comp', function () {
-		var kriteria = $(this).data('name'), id = $(this).data('id');
+		let kriteria = $(this).data('name'), id = $(this).data('id');
 		confirm.fire({
 			title: 'Reset perbandingan?',
 			text: "Anda akan mereset perbandingan Sub Kriteria " + kriteria +

@@ -150,7 +150,7 @@ class NilaiController extends Controller
 			if ($cekbobotkr > 0) {
 				return to_route('bobotkriteria.index')->withWarning(
 					'Lakukan perbandingan kriteria dulu sebelum ' .
-					'melihat hasil penilaian alternatif. Jika sudah dilakukan, ' .
+					'melihat hasil penilaian. Jika sudah dilakukan, ' .
 					'pastikan hasil perbandingannya konsisten.'
 				);
 			}
@@ -178,7 +178,7 @@ class NilaiController extends Controller
 			$nilai = Nilai::where('alternatif_id', $id)->get();
 			if ($nilai->isEmpty()) {
 				return response()->json([
-					'message' => 'Nilai Alternatif tidak ditemukan atau belum diisi.'
+					'message' => 'Nilai Alternatif tidak ditemukan atau belum diisi'
 				], 404);
 			}
 			$data['alternatif_id'] = $id;
@@ -198,7 +198,7 @@ class NilaiController extends Controller
 			$cek = Nilai::where('alternatif_id', $id);
 			if (!$cek->exists()) {
 				return response()->json([
-					'message' => 'Nilai Alternatif tidak ditemukan.'
+					'message' => 'Nilai Alternatif tidak ditemukan'
 				], 404);
 			}
 			if (Nilai::where('alternatif_id', '<>', $id)->count() === 0)

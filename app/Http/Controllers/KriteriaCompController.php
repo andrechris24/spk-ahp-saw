@@ -256,7 +256,7 @@ class KriteriaCompController extends Controller
 	{
 		try {
 			KriteriaComp::truncate();
-			Kriteria::where('bobot', '<>', 0.00000)->update(['bobot' => 0.00000]);
+			Kriteria::update(['bobot' => 0.00000]);
 			return to_route('bobotkriteria.index')
 				->withSuccess('Perbandingan Kriteria sudah direset.');
 		} catch (QueryException $sql) {

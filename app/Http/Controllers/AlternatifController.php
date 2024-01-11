@@ -31,21 +31,17 @@ class AlternatifController extends Controller
 	{
 		$request->validate(Alternatif::$rules, Alternatif::$message);
 		try {
-			Alternatif::create($request->all());
-			return response()->json(['message' => 'Berhasil diinput']);
-		} catch (QueryException $e) {
-			Log::error($e);
-			return response()->json(['message' => $e->errorInfo[2]], 500);
-		}
-	}
-	public function update(Request $request)
-	{
-		$request->validate(Alternatif::$rules, Alternatif::$message);
-		$req = $request->all();
-		try {
-			Alternatif::updateOrCreate(['id' => $req['id']], 
-				['name' => $req['name'], 'desc' => $req['desc']]);
-			return response()->json(['message' => 'Berhasil diupdate']);
+			if ($request->id) {
+				Alternatif::updateOrCreate(
+					['id' => $request->id],
+					['name' => $request->name, 'desc' => $request->desc]
+				);
+				$msg = 'Berhasil diupdate';
+			} else {
+				Alternatif::create($request->all());
+				$msg = 'Berhasil diinput';
+			}
+			return response()->json(['message' => $msg]);
 		} catch (QueryException $e) {
 			Log::error($e);
 			return response()->json(['message' => $e->errorInfo[2]], 500);
