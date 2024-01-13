@@ -25,7 +25,8 @@ class KriteriaCompController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil perbandingan:')
-				->withErrors("Kesalahan SQLState #" . $e->errorInfo[0]);
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[1])
+				->withErrors($e->errorInfo[2]);
 		}
 	}
 	private function getPerbandinganByKriteria1($kriteria1)
@@ -36,7 +37,8 @@ class KriteriaCompController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil perbandingan:')
-				->withErrors("Kesalahan SQLState #" . $e->errorInfo[0]);
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[1])
+				->withErrors($e->errorInfo[2]);
 		}
 	}
 	private function getNilaiPerbandingan($kode_kriteria)
@@ -47,7 +49,8 @@ class KriteriaCompController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil perbandingan:')
-				->withErrors("Kesalahan SQLState #" . $e->errorInfo[0]);
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[1])
+				->withErrors($e->errorInfo[2]);
 		}
 	}
 	public function index()
@@ -98,7 +101,8 @@ class KriteriaCompController extends Controller
 		} catch (QueryException $sql) {
 			Log::error($sql);
 			return back()->withInput()->withError('Gagal menyimpan nilai perbandingan:')
-				->withErrors("Kesalahan SQLState #" . $sql->errorInfo[0]);
+				->withErrors("Kesalahan SQLState #" . $sql->errorInfo[1])
+				->withErrors($sql->errorInfo[2]);
 		}
 		return to_route('bobotkriteria.result');
 	}
@@ -249,20 +253,22 @@ class KriteriaCompController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil perbandingan kriteria:')
-				->withErrors("Kesalahan SQLState #" . $e->errorInfo[0]);
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[1])
+				->withErrors($e->errorInfo[2]);
 		}
 	}
 	public function destroy()
 	{
 		try {
 			KriteriaComp::truncate();
-			Kriteria::update(['bobot' => 0.00000]);
+			Kriteria::where('bobot', '<>', 0.00000)->update(['bobot' => 0.00000]);
 			return to_route('bobotkriteria.index')
 				->withSuccess('Perbandingan Kriteria sudah direset.');
 		} catch (QueryException $sql) {
 			Log::error($sql);
 			return back()->withError('Perbandingan Kriteria gagal direset:')
-				->withErrors("Kesalahan SQLState #" . $sql->errorInfo[0]);
+				->withErrors("Kesalahan SQLState #" . $sql->errorInfo[1])
+				->withErrors($sql->errorInfo[2]);
 		}
 	}
 }

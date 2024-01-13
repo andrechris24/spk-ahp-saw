@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kriteria;
+use App\Models\Nilai;
 use App\Models\SubKriteria;
 use App\Models\SubKriteriaComp;
 use Illuminate\Database\QueryException;
@@ -67,6 +68,8 @@ class SubKriteriaController extends Controller
 					['id' => $request->id],
 					['name' => $request->name, 'kriteria_id' => $request->kriteria_id]
 				);
+				// Nilai::where('subkriteria_id', $request->id)
+				// 	->where('kriteria_id', '<>', $request->kriteria_id)->get();
 				$msg = "Berhasil diupdate";
 			} else {
 				if (SubKriteria::where('kriteria_id', $request->kriteria_id)->count() >= 20) {

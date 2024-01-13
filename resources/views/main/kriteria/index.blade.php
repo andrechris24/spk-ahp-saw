@@ -115,8 +115,8 @@ aria-labelledby="CritLabel" aria-hidden="true">
 <div class="card">
 	<div class="card-header">Daftar Kriteria</div>
 	<div class="card-body">
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-		data-bs-target="#CritModal">
+		<button type="button" class="btn btn-primary" id="addBtn"
+		data-bs-toggle="modal" data-bs-target="#CritModal">
 			<i class="bi bi-plus-lg"></i> Tambah Kriteria
 		</button>
 		<table class="table table-hover table-striped" id="table-crit" style="width: 100%">
@@ -127,7 +127,7 @@ aria-labelledby="CritLabel" aria-hidden="true">
 					<th>Atribut</th>
 					<th>Keterangan</th>
 					<th data-bs-toggle="tooltip"
-						title="Bobot didapat melalui pembobotan Kriteria secara konsisten">
+					title="Bobot didapat melalui pembobotan Kriteria secara konsisten">
 						Bobot
 					</th>
 					<th>Aksi</th>
@@ -189,41 +189,17 @@ aria-labelledby="CritLabel" aria-hidden="true">
 				}],
 				language: {
 					url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
+				},
+				drawCallback: function() {
+					var api = this.api();
+					var num_rows = api.page.info().recordsTotal;
+					if (num_rows >= 20) $('#addBtn').prop('disabled', true);
+					else $('#addBtn').prop('disabled', false);
+					setTableColor();
 				}
-				// dom: 'Bfrtip',
-				// buttons: [{
-				// 	extend: 'collection',
-				// 	text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
-				// 	className: 'btn dropdown-toggle',
-				// 	buttons: [{
-				// 		extend: 'print',
-				// 		title: 'Kriteria',
-				// 		text: '<i class="bi bi-printer me-2"></i> Print',
-				// 		className: 'dropdown-item',
-				// 		exportOptions: {
-				// 			columns: [0, 1, 2, 3, 4]
-				// 		}
-				// 	}, {
-				// 		extend: 'excel',
-				// 		title: 'Kriteria',
-				// 		text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
-				// 		className: 'dropdown-item',
-				// 		exportOptions: {
-				// 			columns: [0, 1, 2, 3, 4]
-				// 		}
-				// 	}, {
-				// 		extend: 'pdf',
-				// 		title: 'Kriteria',
-				// 		text: '<i class="bi bi-file-text me-2"></i> PDF',
-				// 		className: 'dropdown-item',
-				// 		exportOptions: {
-				// 			columns: [0, 1, 2, 3, 4]
-				// 		}
-				// 	}]
-				// }]
 			}).on('error.dt', function (e, settings, techNote, message) {
 				errorDT(message, techNote);
-			}).on('draw', setTableColor).on('preXhr', function () {
+			}).on('preXhr', function () {
 				$.get("{{ route('kriteria.count') }}", function (data) {
 					$("#total-duplicate").text(data.duplicates);
 					$("#total-counter").text(data.total);

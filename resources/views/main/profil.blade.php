@@ -34,8 +34,9 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 						<div class="col-md-8">
 							<div class="form-group has-icon-left">
 								<div class="position-relative">
-									<input type="email" name="email" placeholder="mail@example.com" id="email-user"
-										value="{{ auth()->user()->email }}" class="form-control" required />
+									<input type="email" name="email" placeholder="mail@example.com"
+									id="email-user" value="{{ auth()->user()->email }}"
+									class="form-control" required />
 									<div class="form-control-icon">
 										<i class="bi bi-envelope"></i>
 									</div>
@@ -51,9 +52,9 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 						<div class="col-md-8">
 							<div class="form-group has-icon-left">
 								<div class="position-relative">
-									<input type="password" name="current_password" id="password-current"
-									class="form-control" placeholder="Password Anda" minlength="8"
-									maxlength="20" required />
+									<input type="password" name="current_password" minlength="8"
+									id="password-current" class="form-control" maxlength="20"
+									placeholder="Password Anda" required />
 									<div class="form-control-icon">
 										<i class="bi bi-lock"></i>
 									</div>
@@ -91,9 +92,9 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 						<div class="col-md-8">
 							<div class="form-group has-icon-left">
 								<div class="position-relative">
-									<input type="password" name="password_confirmation" minlength="8" maxlength="20"
-										id="conf-password" oninput="checkpassword()" class="form-control"
-										placeholder="Ketik ulang Password baru" />
+									<input type="password" name="password_confirmation" minlength="8"
+									maxlength="20" id="conf-password" oninput="checkpassword()"
+									class="form-control" placeholder="Ketik ulang Password baru" />
 									<div class="form-control-icon"><i class="bi bi-lock"></i></div>
 									<div class="invalid-feedback" id="confirm-password-error">
 										Password Konfirmasi salah

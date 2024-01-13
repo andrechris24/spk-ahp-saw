@@ -14,7 +14,7 @@ class SubKriteriaComp extends Model
 		'skala' => ['bail', 'required', 'array'],
 		'skala.*' => ['bail', 'required', 'numeric', 'between:1,9']
 	], $message = [
-		'skala.*.required' => 'Nilai perbandingan :attr harus diisi',
+		'skala.*.required' => 'Nilai perbandingan :attribute harus diisi',
 		'skala.*.integer' => 'Nilai perbandingan harus berupa angka',
 		'skala.*.between' => 'Nilai perbandingan harus diantara :min sampai :max sesuai teori AHP'
 	];

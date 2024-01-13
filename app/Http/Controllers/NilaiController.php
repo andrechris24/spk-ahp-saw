@@ -169,7 +169,8 @@ class NilaiController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil penilaian:')
-				->withErrors("Kesalahan SQLState #" . $e->errorInfo[0]);
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[1])
+				->withErrors($e->errorInfo[2]);
 		}
 	}
 	public function edit($id)

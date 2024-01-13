@@ -30,7 +30,9 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 						<select class="form-select" id="kriteria-select" name="kriteria_id" required>
 							<option value="">Pilih</option>
 							@foreach ($kriteria as $kr)
-							<option value="{{ $kr->id }}">{{ $kr->name }}</option>
+							<option value="{{ $kr->id }}" @if($kr->desc) title="{{$kr->desc}}" @endif>
+								{{ $kr->name }}
+							</option>
 							@endforeach
 						</select>
 						<div class="invalid-feedback" id="kriteria-error">
@@ -113,8 +115,8 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 <div class="card">
 	<div class="card-header">Daftar Sub Kriteria</div>
 	<div class="card-body">
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-		data-bs-target="#SubCritModal">
+		<button type="button" class="btn btn-primary" id="addBtn"
+		data-bs-toggle="modal" data-bs-target="#SubCritModal">
 			<i class="bi bi-plus-lg"></i> Tambah Sub Kriteria
 		</button>
 		<table class="table table-hover table-striped" id="table-subcrit" style="width: 100%">
@@ -186,38 +188,15 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 				}],
 				language: {
 					url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
+				},
+				drawCallback: function() {
+					var api = this.api();
+					var num_rows = api.page.info().recordsTotal;
+					if (num_rows >= 20*{{ count($kriteria) }}) 
+						$('#addBtn').prop('disabled', true);
+					else $('#addBtn').prop('disabled', false);
+					setTableColor();
 				}
-				// dom: 'Bfrtip',
-				// buttons: [{
-				// 	extend: 'collection',
-				// 	text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
-				// 	className: 'btn dropdown-toggle',
-				// 	buttons: [{
-				// 		extend: 'print',
-				// 		title: 'Sub Kriteria',
-				// 		text: '<i class="bi bi-printer me-2"></i> Print',
-				// 		className: 'dropdown-item',
-				// 		exportOptions: {
-				// 			columns: [1, 2, 3]
-				// 		}
-				// 	}, {
-				// 		extend: 'excel',
-				// 		title: 'Sub Kriteria',
-				// 		text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
-				// 		className: 'dropdown-item',
-				// 		exportOptions: {
-				// 			columns: [1, 2, 3]
-				// 		}
-				// 	}, {
-				// 		extend: 'pdf',
-				// 		title: 'Sub Kriteria',
-				// 		text: '<i class="bi bi-file-text me-2"></i> PDF',
-				// 		className: 'dropdown-item',
-				// 		exportOptions: {
-				// 			columns: [1, 2, 3]
-				// 		}
-				// 	}]
-				// }]
 			}).on('error.dt', function (e, settings, techNote, message) {
 				errorDT(message, techNote);
 			}).on('preXhr', function () {
@@ -296,7 +275,7 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 			if (xhr.status === 404) {
 				$('#SubCritModal').modal('hide');
 				dt_subkriteria.draw();
-				errmsg = "Sub Kriteria tidak ditemukan.";
+				errmsg = "Sub Kriteria tidak ditemukan";
 			} else {
 				console.warn(xhr.responseJSON.message ?? st);
 				errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +

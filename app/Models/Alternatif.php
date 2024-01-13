@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Alternatif extends Model
 {
 	use HasFactory;
-	protected $table = 'alternatif', $fillable = ['name'];
+	protected $table = 'alternatif', $fillable = ['name', 'desc'];
 	public static array $rules = [
 		'name' => ['bail', 'required', 'regex:/^[\s\w-]*$/']
 	], $message = [

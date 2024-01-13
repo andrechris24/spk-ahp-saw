@@ -40,8 +40,9 @@ enctype="multipart/form-data" class="needs-validation">@csrf
 		</div>
 	</div>
 	<div class="form-group position-relative has-icon-left mb-4">
-		<input type="password" placeholder="Konfirmasi Password" maxlength="20" id="confirm-password"
-			name="password_confirmation" oninput="checkpassword()" class="form-control form-control-xl 
+		<input type="password" placeholder="Konfirmasi Password" maxlength="20"
+			id="confirm-password" name="password_confirmation" minlength="8" 
+			oninput="checkpassword()" class="form-control form-control-xl
 			@error('password_confirmation') is-invalid @enderror " required />
 		<div class="form-control-icon"><i class="bi bi-shield-lock"></i></div>
 		<div class="invalid-feedback">

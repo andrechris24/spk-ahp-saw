@@ -151,37 +151,6 @@ aria-labelledby="AlterLabel" aria-hidden="true">
 				language: {
 					url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
 				}
-				// dom: "Bfrtip",
-				// buttons: [{
-				// 	extend: "collection",
-				// 	text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
-				// 	className: "btn dropdown-toggle",
-				// 	buttons: [{
-				// 		extend: "print",
-				// 		title: "Alternatif",
-				// 		text: '<i class="bi bi-printer me-2"></i> Print',
-				// 		className: "dropdown-item",
-				// 		exportOptions: {
-				// 			columns: [1, 2]
-				// 		}
-				// 	}, {
-				// 		extend: "excel",
-				// 		title: "Alternatif",
-				// 		text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
-				// 		className: "dropdown-item",
-				// 		exportOptions: {
-				// 			columns: [1, 2]
-				// 		}
-				// 	}, {
-				// 		extend: "pdf",
-				// 		title: "Alternatif",
-				// 		text: '<i class="bi bi-file-text me-2"></i> PDF',
-				// 		className: "dropdown-item",
-				// 		exportOptions: {
-				// 			columns: [1, 2]
-				// 		}
-				// 	}],
-				// }]
 			}).on("error.dt", function (e, settings, techNote, message) {
 				errorDT(message, techNote);
 			}).on("preXhr", function () {

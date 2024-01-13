@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kriteria;
+use App\Models\KriteriaComp;
 use App\Models\SubKriteria;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -43,8 +44,12 @@ class KriteriaController extends Controller
 		try {
 			if ($request->id) {
 				Kriteria::updateOrCreate(
-					['id' => $req['id']],
-					['name' => $req['name'], 'type' => $req['type'], 'desc' => $req['desc']]
+					['id' => $request->id],
+					[
+						'name' => $request->name,
+						'type' => $request->type,
+						'desc' => $request->desc
+					]
 				);
 				$msg = 'Berhasil diupdate';
 			} else {

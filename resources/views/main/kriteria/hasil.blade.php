@@ -213,7 +213,7 @@
 <script type="text/javascript">
 	$(document).on('click', '#reset-button', function (e) {
 		e.preventDefault();
-		Swal.fire({
+		confirm.fire({
 			title: 'Reset perbandingan?',
 			text: "Anda akan mereset perbandingan Kriteria.\nBobot Kriteria akan direset!"
 		}).then(function (result) {

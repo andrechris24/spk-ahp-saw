@@ -26,7 +26,8 @@ class SubKriteriaCompController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil perbandingan:')
-				->withErrors("Kesalahan SQLState #" . $e->errorInfo[0] . ".");
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[1])
+				->withErrors($e->errorInfo[2]);
 		}
 	}
 	private function getPerbandinganBySubKriteria1($subkriteria1, $id)
@@ -37,7 +38,8 @@ class SubKriteriaCompController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil perbandingan:')
-				->withErrors("Kesalahan SQLState #" . $e->errorInfo[0] . ".");
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[1])
+				->withErrors($e->errorInfo[2]);
 		}
 	}
 	private function getNilaiPerbandingan($kode_kriteria, $id)
@@ -48,7 +50,8 @@ class SubKriteriaCompController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil perbandingan:')
-				->withErrors("Kesalahan SQLState #" . $e->errorInfo[0]);
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[1])
+				->withErrors($e->errorInfo[2]);
 		}
 	}
 	public function datatables()
@@ -110,7 +113,8 @@ class SubKriteriaCompController extends Controller
 			return back()->withError(
 				'Gagal memuat form perbandingan sub kriteria ' .
 				SubKriteriaController::nama_kriteria($kriteria_id) . ':'
-			)->withErrors("Kesalahan SQLState #" . $e->errorInfo[0]);
+			)->withErrors("Kesalahan SQLState #" . $e->errorInfo[1])
+				->withErrors($e->errorInfo[2]);
 		}
 	}
 	public function store(Request $request, $kriteria_id)
@@ -142,7 +146,8 @@ class SubKriteriaCompController extends Controller
 			return back()->withError(
 				'Gagal menyimpan nilai perbandingan sub kriteria ' .
 				SubKriteriaController::nama_kriteria($kriteria_id) . ':'
-			)->withErrors("Kesalahan SQLState #" . $e->errorInfo[0])->withInput();
+			)->withErrors("Kesalahan SQLState #" . $e->errorInfo[1])
+				->withErrors($e->errorInfo[2])->withInput();
 		}
 	}
 	public function show($kriteria_id)
@@ -162,7 +167,8 @@ class SubKriteriaCompController extends Controller
 		foreach ($subkriteria as $k) {
 			$kode_kriteria = $k->idsubkriteria;
 			$perbandingan = $this->getPerbandinganBySubKriteria1(
-				$kode_kriteria, $kriteria_id
+				$kode_kriteria,
+				$kriteria_id
 			);
 			if ($perbandingan) {
 				foreach ($perbandingan as $hk) {
@@ -186,7 +192,8 @@ class SubKriteriaCompController extends Controller
 					}
 				}
 				$nilaiPerbandingan = $this->getNilaiPerbandingan(
-					$kode_kriteria, $kriteria_id
+					$kode_kriteria,
+					$kriteria_id
 				);
 				foreach ($nilaiPerbandingan as $hb) {
 					if ($hb->nilai < 0) {
@@ -309,7 +316,8 @@ class SubKriteriaCompController extends Controller
 			return back()->withError(
 				'Gagal memuat hasil perbandingan sub kriteria ' .
 				SubKriteriaController::nama_kriteria($kriteria_id) . ':'
-			)->withErrors("Kesalahan SQLState #" . $e->errorInfo[0])->withInput();
+			)->withErrors("Kesalahan SQLState #" . $e->errorInfo[1])
+				->withErrors($e->errorInfo[2])->withInput();
 		}
 	}
 	public function destroy(Request $request, $kriteria_id)
@@ -331,7 +339,8 @@ class SubKriteriaCompController extends Controller
 				return response()->json(['message' => $e->errorInfo[2]], 500);
 			return back()
 				->withError("Perbandingan Sub kriteria $kr->name gagal direset")
-				->withErrors("Kesalahan SQLState #" . $e->errorInfo[0]);
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[1])
+				->withErrors($e->errorInfo[2]);
 		}
 	}
 }

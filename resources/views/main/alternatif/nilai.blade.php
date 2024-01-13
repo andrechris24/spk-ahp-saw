@@ -13,8 +13,8 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<form method="POST" enctype="multipart/form-data" id="NilaiAlterForm"
-				class="needs-validation">
+				<form method="POST" enctype="multipart/form-data"
+				id="NilaiAlterForm" class="needs-validation">
 					<input type="hidden" name="alternatif_id" id="alternatif-hidden">
 					<div class="input-group has-validation mb-3">
 						<label class="input-group-text" for="alternatif-value">
@@ -42,7 +42,7 @@
 							@endforeach
 						</select>
 						<div class="invalid-feedback"
-							id="subkriteria-{{ Str::of($kr->name)->slug('-') }}-error">
+						id="subkriteria-{{ Str::of($kr->name)->slug('-') }}-error">
 							Pilih salah satu sub kriteria {{ $kr->name }}
 						</div>
 					</div>
@@ -175,7 +175,7 @@
 					render: function (data, type, full) {
 						if (full['subkriteria'] === null) {
 							return (
-								`<button class="btn btn-sm btn-info" onclick="setName(${data}, ${full['name']})" data-bs-toggle="modal" data-bs-target="#NilaiAlterModal" title="Tambah">` +
+								`<button class="btn btn-sm btn-info" onclick="setName(${data}, '${full['name']}')" data-bs-toggle="modal" data-bs-target="#NilaiAlterModal" title="Tambah">` +
 								'<i class="bi bi-plus-lg"></i>' +
 								'</button>');
 						}
@@ -199,37 +199,6 @@
 				language: {
 					url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
 				}
-				// dom: 'Bfrtip',
-					// buttons: [{
-					// 	extend: 'collection',
-					// 	text: '<i class="bi bi-download me-0 me-sm-1"></i> Ekspor',
-					// 	className: 'btn dropdown-toggle',
-					// 	buttons: [{
-					// 		extend: 'print',
-					// 		title: 'Nilai Alternatif',
-					// 		text: '<i class="bi bi-printer me-2"></i> Print',
-					// 		className: 'dropdown-item',
-					// 		exportOptions: {
-					// 			columns: 'th:not(:last-child)'
-					// 		}
-					// 	}, {
-					// 		extend: 'excel',
-					// 		title: 'Nilai Alternatif',
-					// 		text: '<i class="bi bi-file-spreadsheet me-2"></i> Excel',
-					// 		className: 'dropdown-item',
-					// 		exportOptions: {
-					// 			columns: 'th:not(:last-child)'
-					// 		}
-					// 	}, {
-					// 		extend: 'pdf',
-					// 		title: 'Nilai Alternatif',
-					// 		text: '<i class="bi bi-file-text me-2"></i> PDF',
-					// 		className: 'dropdown-item',
-					// 		exportOptions: {
-					// 			columns: 'th:not(:last-child)'
-					// 		}
-					// 	}]
-				// }]
 			}).on('error.dt', function (e, settings, techNote, message) {
 				errorDT(message, techNote);
 			}).on("preXhr", function () {
