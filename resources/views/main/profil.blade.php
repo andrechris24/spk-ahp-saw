@@ -185,8 +185,7 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 						"Tunggu beberapa saat sebelum menyimpan perubahan.";
 				} else {
 					console.warn(xhr.responseJSON.message ?? st);
-					errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +
-						(xhr.statusText ?? err)
+					errmsg = `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err)
 				}
 				swal.fire({
 					title: 'Gagal update akun',
@@ -228,11 +227,11 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 						},
 						error: function (xhr, st, err) {
 							if (xhr.status === 422) errmsg = xhr.responseJSON.message;
-							else if (xhr.status === 429) {
+							else if (xhr.status === 429)
 								errmsg = "Terlalu banyak upaya. Cobalah beberapa saat lagi.";
-							} else {
+							else {
 								console.warn(xhr.responseJSON.message ?? st);
-								errmsg = "Gagal hapus: Kesalahan HTTP " + xhr.status + ".\n" +
+								errmsg = `Gagal hapus: Kesalahan HTTP ${xhr.status}.\n` +
 									(xhr.statusText ?? err);
 							}
 							Swal.showValidationMessage(errmsg);

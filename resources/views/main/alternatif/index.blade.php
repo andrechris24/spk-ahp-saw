@@ -116,8 +116,7 @@ aria-labelledby="AlterLabel" aria-hidden="true">
 				serverSide: true,
 				processing: true,
 				ajax: {
-					url: "{{ route('alternatif.data') }}",
-					type: "POST"
+					url: "{{ route('alternatif.data') }}"
 				},
 				columns: [
 					{ data: "id" },
@@ -162,7 +161,7 @@ aria-labelledby="AlterLabel" aria-hidden="true">
 					swal.fire({
 						icon: 'error',
 						title: 'Gagal memuat jumlah',
-						text: "Kesalahan HTTP " + xhr.status + '. ' + (xhr.statusText ?? err)
+						text: `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err)
 					});
 				});
 			}).on("draw", setTableColor);
@@ -187,10 +186,10 @@ aria-labelledby="AlterLabel" aria-hidden="true">
 						error: function (xhr, st, err) {
 							if (xhr.status === 404) {
 								dt_alternatif.draw();
-								errmsg = "Alternatif " + alt_name + " tidak ditemukan.";
+								errmsg = `Alternatif ${alt_name} tidak ditemukan"`;
 							} else {
 								console.warn(xhr.responseJSON.message ?? st);
-								errmsg = "Kesalahan HTTP " + xhr.status + "." +
+								errmsg = `Kesalahan HTTP ${xhr.status}.\n` +
 									(xhr.statusText ?? err);
 							}
 							Swal.showValidationMessage("Gagal hapus: " + errmsg);
@@ -212,14 +211,11 @@ aria-labelledby="AlterLabel" aria-hidden="true">
 		});
 	}).on("click", ".edit-record", function () {
 		let alt_id = $(this).data("id");
-
-		// changing the title of offcanvas
 		$("#AlterLabel").html("Edit Alternatif");
 		$("#AlterForm :input").prop("disabled", true);
 		$(".data-submit").prop("disabled", true);
 		$(".spinner-grow").removeClass("d-none");
-		// get data
-		$.get("/alternatif/edit/" + alt_id, function (data) {
+		$.get("/alternatif/edit/" + alt_id, function (data) {// get data
 			$("#alter-id").val(data.id);
 			$("#alter-name").val(data.name);
 		}).fail(function (xhr, st, err) {
@@ -229,8 +225,7 @@ aria-labelledby="AlterLabel" aria-hidden="true">
 				errmsg = "Alternatif tidak ditemukan";
 			} else {
 				console.warn(xhr.responseJSON.message ?? st);
-				errmsg = "Kesalahan HTTP " + xhr.status + ".\n" +
-					(xhr.statusText ?? err);
+				errmsg = `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err);
 			}
 			swal.fire({
 				icon: "error",
@@ -243,7 +238,6 @@ aria-labelledby="AlterLabel" aria-hidden="true">
 			$(".spinner-grow").addClass("d-none");
 		});
 	});
-
 	function submitform(event) {
 		event.preventDefault();
 		$.ajax({
@@ -282,8 +276,7 @@ aria-labelledby="AlterLabel" aria-hidden="true">
 					errmsg = xhr.responseJSON.message;
 				} else {
 					console.warn(xhr.responseJSON.message ?? st);
-					errmsg = "Kesalahan HTTP " + xhr.status + ".\n" +
-						(xhr.statusText ?? err);
+					errmsg = `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err);
 				}
 				swal.fire({
 					title: "Gagal",

@@ -39,8 +39,8 @@ class HomeController extends Controller
 				];
 			} catch (QueryException $e) {
 				Log::error($e);
-				$jml['error'] = "Kesalahan SQLState #" . $e->errorInfo[1] . '/' .
-					$e->errorInfo[0] . '. ' . $e->errorInfo[2];
+				$jml['error'] = "Kesalahan SQLState #{$e->errorInfo[1]}/{$e->errorInfo[0]}. " .
+					$e->errorInfo[2];
 			}
 		}
 		return view('main.index', compact('jml'));
@@ -75,6 +75,12 @@ class HomeController extends Controller
 		} catch (ModelNotFoundException $e) {
 			return response()->json(['message' => 'Akun tidak ditemukan'], 404);
 		} catch (QueryException $db) {
+			if ($db->errorInfo[1] === 1062) {
+				return response()->json([
+					'message' => "Email \"$request->email\" sudah digunakan",
+					'errors' => ['email' => 'Email sudah digunakan']
+				]);
+			}
 			Log::error($db);
 			return response()->json(['message' => $db->errorInfo[2]], 500);
 		}

@@ -25,7 +25,7 @@ class KriteriaCompController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil perbandingan:')
-				->withErrors("Kesalahan SQLState #" . $e->errorInfo[1])
+				->withErrors("Kesalahan SQLState #{$e->errorInfo[1]}")
 				->withErrors($e->errorInfo[2]);
 		}
 	}
@@ -37,7 +37,7 @@ class KriteriaCompController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil perbandingan:')
-				->withErrors("Kesalahan SQLState #" . $e->errorInfo[1])
+				->withErrors("Kesalahan SQLState #{$e->errorInfo[1]}")
 				->withErrors($e->errorInfo[2]);
 		}
 	}
@@ -49,7 +49,7 @@ class KriteriaCompController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil perbandingan:')
-				->withErrors("Kesalahan SQLState #" . $e->errorInfo[1])
+				->withErrors("Kesalahan SQLState #{$e->errorInfo[1]}")
 				->withErrors($e->errorInfo[2]);
 		}
 	}
@@ -87,9 +87,9 @@ class KriteriaCompController extends Controller
 					if ($kriteria[$i]->id === $kriteria[$j]->id)
 						$nilai = 1;
 					else {
-						$nilai = $request->skala[$a];
-						if ($request->kriteria[$a] === "right")
-							$nilai = 0 - $request->skala[$a];
+						$nilai =
+							$request->kriteria[$a] === "right" ?
+							-$request->skala[$a] : $request->skala[$a];
 					}
 					KriteriaComp::updateOrCreate([
 						'kriteria1' => $kriteria[$i]->id,
@@ -101,7 +101,7 @@ class KriteriaCompController extends Controller
 		} catch (QueryException $sql) {
 			Log::error($sql);
 			return back()->withInput()->withError('Gagal menyimpan nilai perbandingan:')
-				->withErrors("Kesalahan SQLState #" . $sql->errorInfo[1])
+				->withErrors("Kesalahan SQLState #$sql->errorInfo[1]")
 				->withErrors($sql->errorInfo[2]);
 		}
 		return to_route('bobotkriteria.result');
@@ -121,13 +121,8 @@ class KriteriaCompController extends Controller
 			if ($perbandingan) {
 				foreach ($perbandingan as $hk) {
 					if ($hk->kriteria2 !== $hk->kriteria1) {
-						if ($hk->nilai < 0) {
-							$nilai = abs($hk->nilai / 1);
-							$nilai2 = "<sup>" . abs($hk->nilai) . "</sup>/<sub>1</sub>";
-						} else {
-							$nilai = abs(1 / $hk->nilai);
-							$nilai2 = "<sup>1</sup>/<sub>" . abs($hk->nilai) . "</sub>";
-						}
+						$nilai = $hk->nilai < 0 ? abs($hk->nilai / 1) : abs(1 / $hk->nilai);
+						$nilai2 = $hk->nilai;
 						$matriks_perbandingan[$a] = [
 							"nilai" => $nilai,
 							"kode_kriteria" => $kode_kriteria
@@ -141,13 +136,8 @@ class KriteriaCompController extends Controller
 				}
 				$nilaiPerbandingan = $this->getNilaiPerbandingan($kode_kriteria);
 				foreach ($nilaiPerbandingan as $hb) {
-					if ($hb->nilai < 0) {
-						$nilai = abs(1 / $hb->nilai);
-						$nilai2 = "<sup>1</sup>/<sub>" . abs($hb->nilai) . "</sub>";
-					} else {
-						$nilai = abs(($hb->nilai > 1) ? $hb->nilai / 1 : $hb->nilai);
-						$nilai2 = "<sup>" . abs($hb->nilai) . "</sup>/<sub>1</sub>";
-					}
+					$nilai = $hb->nilai < 0 ? abs(1 / $hb->nilai) : abs($hb->nilai / 1);
+					$nilai2 = $hb->nilai;
 					$matriks_perbandingan[$a] = [
 						"nilai" => $nilai,
 						"kode_kriteria" => $kode_kriteria
@@ -253,7 +243,7 @@ class KriteriaCompController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil perbandingan kriteria:')
-				->withErrors("Kesalahan SQLState #" . $e->errorInfo[1])
+				->withErrors("Kesalahan SQLState #{$e->errorInfo[1]}")
 				->withErrors($e->errorInfo[2]);
 		}
 	}
@@ -267,7 +257,7 @@ class KriteriaCompController extends Controller
 		} catch (QueryException $sql) {
 			Log::error($sql);
 			return back()->withError('Perbandingan Kriteria gagal direset:')
-				->withErrors("Kesalahan SQLState #" . $sql->errorInfo[1])
+				->withErrors("Kesalahan SQLState #{$sql->errorInfo[1]}")
 				->withErrors($sql->errorInfo[2]);
 		}
 	}

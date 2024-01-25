@@ -154,8 +154,7 @@
 				serverSide: true,
 				processing: true,
 				ajax: {
-					url: "{{ route('nilai.data') }}",
-					type: 'POST'
+					url: "{{ route('nilai.data') }}"
 				},
 				columnDefs: [{
 					targets: 0,
@@ -210,7 +209,7 @@
 					swal.fire({
 						icon: 'error',
 						title: 'Gagal memuat jumlah',
-						text: "Kesalahan HTTP " + xhr.status + '. ' + (xhr.statusText ?? err)
+						text: `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err)
 					});
 				});
 			}).on('draw', setTableColor);
@@ -221,7 +220,7 @@
 		let score_id = $(this).data('id'), score_name = $(this).data('name');
 		confirm.fire({
 			title: 'Hapus nilai alternatif?',
-			text: "Anda akan menghapus nilai alternatif " + score_name + ".",
+			text: `Anda akan menghapus nilai alternatif ${score_name}.`,
 			preConfirm: async () => {
 				try {
 					await $.ajax({
@@ -234,10 +233,10 @@
 						error: function (xhr, stat, err) {
 							if (xhr.status === 404) {
 								nilaialtdt.draw();
-								errmsg = 'Nilai Alternatif ' + score_name + ' tidak ditemukan';
+								errmsg = `Nilai Alternatif ${score_name} tidak ditemukan`;
 							} else {
 								console.warn(xhr.responseJSON.message ?? st);
-								errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +
+								errmsg = `Kesalahan HTTP ${xhr.status}.\n` +
 									(xhr.statusText ?? err);
 							}
 							Swal.showValidationMessage("Gagal hapus: " + errmsg);
@@ -258,15 +257,12 @@
 		});
 	}).on('click', '.edit-record', function () {
 		let nilai_id = $(this).data('id'), nilai_name = $(this).data('nama');
-
-		// changing the title of offcanvas
 		$("#alternatif-value").val(nilai_name);
 		$('#NilaiAlterLabel').html('Edit Nilai Alternatif');
 		$('#NilaiAlterForm :input').prop('disabled', true);
 		$('.data-submit').prop('disabled', true);
 		$('.spinner-grow').removeClass('d-none');
-		// get data
-		$.get('/nilai/edit/' + nilai_id, function (data) {
+		$.get('/nilai/edit/' + nilai_id, function (data) {// get data
 			$('#alternatif-hidden').val(data.alternatif_id);
 			@foreach($data['kriteria'] as $kr)
 			$("#subkriteria-{{ Str::of($kr->name)->slug('-')}}").val(
@@ -278,8 +274,7 @@
 				$('#NilaiAlterModal').modal('hide');
 				errmsg = xhr.responseJSON.message;
 			} else {
-				errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +
-					(xhr.statusText ?? err);
+				errmsg = `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err);
 				console.warn(xhr.responseJSON.message ?? st);
 			}
 			swal.fire({
@@ -325,8 +320,7 @@
 					errmsg = xhr.responseJSON.message;
 				} else {
 					console.warn(xhr.responseJSON.message ?? st);
-					errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +
-						(xhr.statusText ?? err);
+					errmsg = `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err);
 				}
 				swal.fire({
 					title: 'Gagal',

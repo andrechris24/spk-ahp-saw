@@ -48,7 +48,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			Route::controller('KriteriaController')->group(function () {
 				Route::get('/', 'index')->name('kriteria.index')->block();
 				Route::get('count', 'getCount')->name('kriteria.count')->block();
-				Route::post('data', 'show')->name('kriteria.data')->block();
+				Route::get('data', 'show')->name('kriteria.data')->block();
 				Route::post('store', 'store')->name('kriteria.store')->block();
 				Route::get('edit/{kr}', 'edit')->name('kriteria.edit')->block();
 				Route::delete('del/{kr}', 'hapus')->name('kriteria.delete')->block();
@@ -57,7 +57,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 				->group(function () {
 					Route::get('/', 'index')->name('subkriteria.index')->block();
 					Route::get('count', 'getCount')->name('subkriteria.count')->block();
-					Route::post('data', 'show')->name('subkriteria.data')->block();
+					Route::get('data', 'show')->name('subkriteria.data')->block();
 					Route::get('edit/{skr}', 'edit')->name('subkriteria.edit')->block();
 					Route::post('store', 'store')->name('subkriteria.store')->block();
 					Route::delete('del/{skr}', 'destroy')->name('subkriteria.delete')
@@ -73,7 +73,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			});
 			Route::controller('SubKriteriaCompController')->prefix('sub')
 				->group(function () {
-					Route::post('data', 'datatables')->name('bobotsubkriteria.data')
+					Route::get('data', 'datatables')->name('bobotsubkriteria.data')
 						->block();
 					Route::get('/', 'index')->name('bobotsubkriteria.pick')->block();
 					Route::prefix('{kriteria_id}')->group(function () {
@@ -88,7 +88,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			->group(function () {
 				Route::get('/', 'index')->name('alternatif.index')->block();
 				Route::get('count', 'getCount')->name('alternatif.count')->block();
-				Route::post('data', 'show')->name('alternatif.data')->block();
+				Route::get('data', 'show')->name('alternatif.data')->block();
 				Route::get('edit/{alt}', 'edit')->name('alternatif.edit')->block();
 				Route::post('store', 'store')->name('alternatif.store')->block();
 				Route::delete('del/{alt}', 'hapus')->name('alternatif.delete')->block();
@@ -97,7 +97,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			Route::prefix('nilai')->group(function () {
 				Route::get('/', 'index')->name('nilai.index')->block();
 				Route::get('count', 'getCount')->name('nilai.count')->block();
-				Route::post('data', 'datatables')->name('nilai.data')->block();
+				Route::get('data', 'datatables')->name('nilai.data')->block();
 				Route::get('edit/{id}', 'edit')->name('nilai.edit')->block();
 				Route::post('store', 'store')->name('nilai.store')->block();
 				Route::delete('del/{id}', 'destroy')->name('nilai.delete')->block();

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hasil;
 use App\Models\Kriteria;
 use App\Models\Nilai;
 use App\Models\SubKriteria;
 use App\Models\SubKriteriaComp;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -20,7 +22,20 @@ class SubKriteriaController extends Controller
 			return $kriteria['name'];
 		} catch (QueryException $e) {
 			Log::error($e);
-			return "E" . $e->errorInfo[0] . '/' . $e->errorInfo[1];
+			return "E{$e->errorInfo[0]}/{$e->errorInfo[1]}";
+		}
+	}
+	public static function resetNilai($subkr, $kr): void
+	{
+		try {
+			$alt = Nilai::where('subkriteria_id', $subkr)
+			->where('kriteria_id', '<>', $kr)->firstOrFail();
+			Nilai::where('alternatif_id', $alt->alternatif_id)->delete();
+			Hasil::where('alternatif_id', $alt->alternatif_id)->delete();
+		} catch (QueryException $e) {
+			Log::error($e);
+		} catch (ModelNotFoundException) {
+			return;
 		}
 	}
 	public function getCount()
@@ -68,8 +83,7 @@ class SubKriteriaController extends Controller
 					['id' => $request->id],
 					['name' => $request->name, 'kriteria_id' => $request->kriteria_id]
 				);
-				// Nilai::where('subkriteria_id', $request->id)
-				// 	->where('kriteria_id', '<>', $request->kriteria_id)->get();
+				$this->resetNilai($request->id, $request->kriteria_id);
 				$msg = "Berhasil diupdate";
 			} else {
 				if (SubKriteria::where('kriteria_id', $request->kriteria_id)->count() >= 20) {

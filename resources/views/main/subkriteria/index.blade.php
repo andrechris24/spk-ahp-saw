@@ -39,6 +39,9 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 							Pilih Kriteria
 						</div>
 					</div>
+					<small class="form-text d-none" id="kriteria-alert">
+						Mengganti kriteria akan mereset penilaian alternatif terkait.
+					</small>
 				</form>
 			</div>
 			<div class="modal-footer">
@@ -150,8 +153,7 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 				processing: true,
 				responsive: true,
 				ajax: {
-					url: "{{ route('subkriteria.data') }}",
-					type: 'POST'
+					url: "{{ route('subkriteria.data') }}"
 				},
 				order: [[2, 'asc']],
 				columns: [
@@ -190,9 +192,8 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 					url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
 				},
 				drawCallback: function() {
-					var api = this.api();
-					var num_rows = api.page.info().recordsTotal;
-					if (num_rows >= 20*{{ count($kriteria) }}) 
+					let api = this.api(), num_rows = api.page.info().recordsTotal;
+					if (num_rows >= 20 * {{ count($kriteria) }}) 
 						$('#addBtn').prop('disabled', true);
 					else $('#addBtn').prop('disabled', false);
 					setTableColor();
@@ -209,7 +210,7 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 					swal.fire({
 						icon: 'error',
 						title: 'Gagal memuat jumlah',
-						text: "Kesalahan HTTP " + xhr.status + '. ' + (xhr.statusText ?? err)
+						text: `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err)
 					});
 				});
 			}).on('draw', setTableColor);
@@ -217,12 +218,12 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 			initError(dterr.message);
 		}
 	}).on('click', '.delete-record', function () {
-		let sub_id = $(this).data('id'), sub_name = $(this).data('name'),
+		let sub_id = $(this).data('id'),
+			sub_name = $(this).data('name'),
 			sub_kr = $(this).data('kr');
-
 		confirm.fire({
 			title: 'Hapus sub kriteria?',
-			text: "Anda akan menghapus sub kriteria " + sub_name + " (" + sub_kr + ").",
+			text: `Anda akan menghapus sub kriteria ${sub_name} (${sub_kr}).`,
 			preConfirm: async () => {
 				try {
 					await $.ajax({
@@ -235,11 +236,10 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 						error: function (xhr, st, err) {
 							if (xhr.status === 404) {
 								dt_subkriteria.draw();
-								errmsg = 'Sub Kriteria ' + sub_name + ' (' + sub_kr +
-									') tidak ditemukan.';
+								errmsg = `Sub Kriteria ${sub_name} (${sub_kr}) tidak ditemukan`;
 							} else {
 								console.warn(xhr.responseJSON.message ?? st);
-								errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +
+								errmsg = `Kesalahan HTTP ${xhr.status}.\n` +
 									(xhr.statusText ?? err);
 							}
 							Swal.showValidationMessage("Gagal hapus: " + errmsg);
@@ -260,14 +260,12 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 		});
 	}).on('click', '.edit-record', function () {
 		let sub_id = $(this).data('id');
-
-		// changing the title of offcanvas
 		$('#SubCritForm :input').prop('disabled', true);
 		$('#SubCritLabel').html('Edit Sub Kriteria');
+		$('#kriteria-alert').removeClass('d-none');
 		$('.data-submit').prop('disabled', true);
 		$('.spinner-grow').removeClass('d-none');
-		// get data
-		$.get('/kriteria/sub/edit/' + sub_id, function (data) {
+		$.get('/kriteria/sub/edit/' + sub_id, function (data) {// get data
 			$('#subkriteria-id').val(data.id);
 			$('#nama-sub').val(data.name);
 			$('#kriteria-select').val(data.kriteria_id);
@@ -278,8 +276,7 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 				errmsg = "Sub Kriteria tidak ditemukan";
 			} else {
 				console.warn(xhr.responseJSON.message ?? st);
-				errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +
-					(xhr.statusText ?? err);
+				errmsg = `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err);
 			}
 			swal.fire({
 				icon: "error",
@@ -331,8 +328,7 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 				} else if (xhr.status === 400) errmsg = xhr.responseJSON.message;
 				else {
 					console.warn(xhr.responseJSON.message ?? st);
-					errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +
-						(xhr.statusText ?? err);
+					errmsg = `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err);
 				}
 				swal.fire({
 					title: 'Gagal',
@@ -345,6 +341,7 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 	// clearing form data when modal hidden
 	$('#SubCritModal').on('hidden.bs.modal', function () {
 		resetvalidation();
+		$('#kriteria-alert').addClass('d-none');
 		$('#SubCritForm')[0].reset();
 		$('#subkriteria-id').val("");
 		$('#SubCritLabel').html('Tambah Sub Kriteria');

@@ -31,7 +31,9 @@ class Handler extends ExceptionHandler
 	 * @var array<int, string>
 	 */
 	protected $dontFlash = [
-		'current_password', 'password', 'password_confirmation'
+		'current_password',
+		'password',
+		'password_confirmation'
 	];
 
 	/**
@@ -42,19 +44,7 @@ class Handler extends ExceptionHandler
 	public function register()
 	{
 		$this->reportable(function (Throwable $e) {
-		    //
+			//
 		});
-		// $this->renderable(function (\Exception $e) {
-		// 	if ($e->getPrevious() instanceof \Illuminate\Session\TokenMismatchException) {
-		// 		if(request()->wantsJson()){
-		// 			return response()->json([
-		// 				'message' => 'Token CSRF tidak valid. Silahkan muat ulang halaman.'
-		// 			], 419);
-		// 		}
-		// 		return to_route('login')->withWarning(
-		// 			'Sesi Sistem Pendukung Keputusan sudah habis. Silahkan login ulang untuk melanjutkan.'
-		// 		);
-		// 	};
-		// });
 	}
 }

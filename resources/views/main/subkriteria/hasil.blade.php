@@ -29,7 +29,11 @@ $title = $subkriteriacomp->nama_kriteria($kriteria_id);
 						<th>{{ $kr->name }}</th>
 						@foreach ($data['matriks_awal'] as $ma)
 						@if ($ma['kode_kriteria'] === $kr->idsubkriteria)
-						<td>{!! $ma['nilai'] !!}</td>
+						<td>
+							@if($ma['nilai']<0) <sup>1</sup>/<sub>{{ abs($ma['nilai']) }}</sub>
+							@else <sup>{{ $ma['nilai'] }}</sup>/<sub>1</sub>
+							@endif
+						</td>
 						@endif
 						@endforeach
 					</tr>

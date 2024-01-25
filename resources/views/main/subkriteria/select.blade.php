@@ -32,8 +32,7 @@
 				processing: true,
 				responsive: true,
 				ajax: {
-					url: "{{ route('bobotsubkriteria.data') }}",
-					type: 'POST'
+					url: "{{ route('bobotsubkriteria.data') }}"
 				},
 				columns: [
 					{ data: 'id' },
@@ -95,13 +94,13 @@
 		let kriteria = $(this).data('name'), id = $(this).data('id');
 		confirm.fire({
 			title: 'Reset perbandingan?',
-			text: "Anda akan mereset perbandingan Sub Kriteria " + kriteria +
-				".\nBobot Sub Kriteria " + kriteria + " akan direset!",
+			text: `Anda akan mereset perbandingan Sub Kriteria ${kriteria}` +
+				`.\nBobot Sub Kriteria ${kriteria} akan direset!`,
 			preConfirm: async () => {
 				try {
 					await $.ajax({
 						type: 'DELETE',
-						url: '/bobot/sub/' + id + '/del',
+						url: `/bobot/sub/${id}/del`,
 						success: function () {
 							dt_subkriteriacomp.draw();
 							return "Dihapus";
@@ -109,8 +108,10 @@
 						error: function (xhr, st, err) {
 							if (xhr.status === 404) dt_subkriteriacomp.draw();
 							console.warn(xhr.responseJSON.message ?? st);
-							Swal.showValidationMessage("Gagal reset: Kesalahan HTTP " +
-								xhr.status + ".\n" + (xhr.statusText ?? err));
+							Swal.showValidationMessage(
+								`Gagal reset: Kesalahan HTTP ${xhr.status}.\n` + 
+								(xhr.statusText ?? err)
+							);
 						}
 					});
 				} catch (error) {

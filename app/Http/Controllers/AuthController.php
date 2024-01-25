@@ -38,7 +38,7 @@ class AuthController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withInput()->withError(
-				'Gagal login: Kesalahan SQLState #' . $e->errorInfo[1]
+				"Gagal login: Kesalahan SQLState #{$e->errorInfo[1]}"
 			);
 		}
 	}
@@ -53,7 +53,7 @@ class AuthController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError(
-				'Gagal logout: Kesalahan SQLState #' . $e->errorInfo[1]
+				"Gagal logout: Kesalahan SQLState #{$e->errorInfo[1]}"
 			);
 		}
 	}
@@ -77,7 +77,7 @@ class AuthController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withInput()->withError(
-				"Gagal membuat akun: Kesalahan SQLState #" . $e->errorInfo[1]
+				"Gagal membuat akun: Kesalahan SQLState #{$e->errorInfo[1]}"
 			);
 		}
 	}
@@ -100,13 +100,12 @@ class AuthController extends Controller
 			Log::error($err);
 			DB::table('password_resets')->where('email', $request->email)->delete();
 			return back()->withInput()->withError(
-				"Gagal mengirim link reset password: " . $err->getMessage()
+				"Gagal mengirim link reset password: {${$err->getMessage()} }"
 			);
 		} catch (QueryException $sql) {
 			Log::error($sql);
 			return back()->withInput()->withError(
-				"Gagal membuat token reset password: Kesalahan SQLState #" .
-				$sql->errorInfo[1]
+				"Gagal membuat token reset password: Kesalahan SQLState #{$sql->errorInfo[1]}"
 			);
 		}
 		return back()->withError(
@@ -131,7 +130,7 @@ class AuthController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return to_route('password.request')
-				->withError("Terjadi Kesalahan SQLState #" . $e->errorInfo[1]);
+				->withError("Terjadi Kesalahan SQLState #{$e->errorInfo[1]}");
 		}
 	}
 	public function submitResetPasswordForm(Request $request)
@@ -159,7 +158,7 @@ class AuthController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError(
-				'Reset password gagal: Kesalahan SQLState #' . $e->errorInfo[1]
+				"Reset password gagal: Kesalahan SQLState #{$e->errorInfo[1]}"
 			);
 		}
 	}

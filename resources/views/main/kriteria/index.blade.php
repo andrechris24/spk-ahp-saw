@@ -151,8 +151,7 @@ aria-labelledby="CritLabel" aria-hidden="true">
 				processing: true,
 				responsive: true,
 				ajax: {
-					url: "{{ route('kriteria.data') }}",
-					type: 'POST'
+					url: "{{ route('kriteria.data') }}"
 				},
 				columns: [
 					{ data: "id" },
@@ -170,8 +169,7 @@ aria-labelledby="CritLabel" aria-hidden="true">
 					render: function (data, type) {
 						if(data === null) return '-';
 						return type === 'display' && data.length > 50 ?
-							`<span title="${data}">` + data.substr(0, 48) + '...</span>' :
-							data;
+							`<span title="${data}">${data.substr(0, 48)}...</span>` : data;
 					}
 				}, { //Aksi
 					orderable: false,
@@ -191,8 +189,7 @@ aria-labelledby="CritLabel" aria-hidden="true">
 					url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
 				},
 				drawCallback: function() {
-					var api = this.api();
-					var num_rows = api.page.info().recordsTotal;
+					let api = this.api(), num_rows = api.page.info().recordsTotal;
 					if (num_rows >= 20) $('#addBtn').prop('disabled', true);
 					else $('#addBtn').prop('disabled', false);
 					setTableColor();
@@ -209,7 +206,7 @@ aria-labelledby="CritLabel" aria-hidden="true">
 					swal.fire({
 						icon: 'error',
 						title: 'Gagal memuat jumlah',
-						text: "Kesalahan HTTP " + xhr.status + '. ' + (xhr.statusText ?? err)
+						text: `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err)
 					});
 				});
 			});
@@ -220,7 +217,8 @@ aria-labelledby="CritLabel" aria-hidden="true">
 		let kr_id = $(this).data('id'), kr_name = $(this).data('name');
 		confirm.fire({
 			title: 'Hapus kriteria?',
-			text: "Anda akan menghapus kriteria " + kr_name + ".",
+			text: "Anda akan menghapus kriteria " + kr_name + 
+			". Penilaian Alternatif akan direset jika sudah dilakukan!",
 			preConfirm: async () => {
 				try {
 					await $.ajax({
@@ -233,10 +231,10 @@ aria-labelledby="CritLabel" aria-hidden="true">
 						error: function (xhr, st, err) {
 							if (xhr.status === 404) {
 								dt_kriteria.draw();
-								errmsg = 'Kriteria ' + kr_name + ' tidak ditemukan';
+								errmsg = `Kriteria ${kr_name} tidak ditemukan`;
 							} else {
 								console.warn(xhr.responseJSON.message ?? st);
-								errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +
+								errmsg = `Kesalahan HTTP ${xhr.status}.\n` +
 									(xhr.statusText ?? err);
 							}
 							Swal.showValidationMessage("Gagal hapus: " + errmsg);
@@ -257,14 +255,11 @@ aria-labelledby="CritLabel" aria-hidden="true">
 		});
 	}).on('click', '.edit-record', function () {
 		let kr_id = $(this).data('id');
-		// changing the title of offcanvas
 		$('#CritForm :input').prop('disabled', true);
 		$('#CritLabel').html('Edit Kriteria');
 		$('.data-submit').prop('disabled', true);
 		$('.spinner-grow').removeClass('d-none');
-
-		// get data
-		$.get('/kriteria/edit/' + kr_id, function (data) {
+		$.get('/kriteria/edit/' + kr_id, function (data) {// get data
 			$('#kriteria-id').val(data.id);
 			$('#nama-krit').val(data.name);
 			$('#tipe-kriteria').val(data.type);
@@ -276,8 +271,7 @@ aria-labelledby="CritLabel" aria-hidden="true">
 				errmsg = "Kriteria tidak ditemukan";
 			} else {
 				console.warn(xhr.responseJSON.message ?? st);
-				errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +
-					(xhr.statusText ?? err);
+				errmsg = `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err);
 			}
 			swal.fire({
 				icon: 'error',
@@ -333,8 +327,7 @@ aria-labelledby="CritLabel" aria-hidden="true">
 				} else if (xhr.status === 400) errmsg = xhr.responseJSON.message;
 				else {
 					console.warn(xhr.responseJSON.message ?? st);
-					errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +
-						(xhr.statusText ?? err);
+					errmsg = `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err);
 				}
 				swal.fire({
 					title: 'Gagal',

@@ -46,7 +46,7 @@
 	<script type="text/javascript" src="{{ asset('js/password.js') }}"></script>
 	<script type="text/javascript">
 		function submitform(e) {
-			const inputs = document.getElementsByTagName('input')
+			const inputs = document.getElementsByTagName('input');
 			for (let x = 0; x < inputs.length; x++) {
 				inputs[x].classList.remove('is-invalid');
 			}

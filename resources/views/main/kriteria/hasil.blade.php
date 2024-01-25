@@ -28,7 +28,11 @@
 						</th>
 						@foreach ($data['matriks_awal'] as $ma)
 						@if ($ma['kode_kriteria'] === $kr->idkriteria)
-						<td>{!! $ma['nilai'] !!}</td>
+						<td>
+							@if($ma['nilai']<0) <sup>1</sup>/<sub>{{ abs($ma['nilai']) }}</sub>
+							@else <sup>{{ $ma['nilai'] }}</sup>/<sub>1</sub>
+							@endif
+						</td>
 						@endif
 						@endforeach
 					</tr>

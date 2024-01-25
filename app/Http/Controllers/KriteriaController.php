@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hasil;
 use App\Models\Kriteria;
 use App\Models\KriteriaComp;
+use App\Models\Nilai;
 use App\Models\SubKriteria;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -74,6 +76,8 @@ class KriteriaController extends Controller
 	public function hapus(Kriteria $kr)
 	{
 		$kr->delete();
+		Nilai::truncate();
+		Hasil::truncate();
 		if (!Kriteria::exists())
 			KriteriaComp::truncate();
 		$model = new Kriteria;

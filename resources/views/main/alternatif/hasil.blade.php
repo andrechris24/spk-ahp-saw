@@ -21,8 +21,6 @@ $totalalts = count($data['alternatif']);
 						</th>
 						@endforeach
 					</tr>
-					<tr>
-					</tr>
 				</thead>
 				<tbody>
 					@foreach ($data['alternatif'] as $alter)
@@ -209,8 +207,8 @@ aria-labelledby="RankLabel" aria-hidden="true">
 				distributed: true
 			}
 		}
-	},
-	chart = new ApexCharts(document.querySelector("#chart-ranking"), options);
+	};
+	const chart = new ApexCharts(document.querySelector("#chart-ranking"), options);
 	$(document).ready(function () {
 		try {
 			$.fn.dataTable.ext.errMode = "none";
@@ -318,12 +316,10 @@ aria-labelledby="RankLabel" aria-hidden="true">
 				}]);
 				loaded = true;
 			}).fail(function (xhr, st, err) {
-				if (xhr.status === 400)
-					errmsg = xhr.responseJSON.message;
+				if (xhr.status === 400) errmsg = xhr.responseJSON.message;
 				else {
 					console.warn(xhr.responseJSON.message ?? st);
-					errmsg = 'Kesalahan HTTP ' + xhr.status + '.\n' +
-						(xhr.statusText ?? err);
+					errmsg = `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err);
 				}
 				swal.fire({
 					title: 'Gagal memuat grafik',
