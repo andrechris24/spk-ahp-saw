@@ -29,7 +29,7 @@ class SubKriteriaController extends Controller
 	{
 		try {
 			$alt = Nilai::where('subkriteria_id', $subkr)
-			->where('kriteria_id', '<>', $kr)->firstOrFail();
+				->where('kriteria_id', '<>', $kr)->firstOrFail();
 			Nilai::where('alternatif_id', $alt->alternatif_id)->delete();
 			Hasil::where('alternatif_id', $alt->alternatif_id)->delete();
 		} catch (QueryException $e) {
