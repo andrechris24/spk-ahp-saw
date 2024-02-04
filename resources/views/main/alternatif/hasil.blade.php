@@ -112,8 +112,10 @@ aria-labelledby="RankLabel" aria-hidden="true">
 			</div>
 			<div class="modal-body">
 				<div id="chart-ranking"></div>
-				<p>Jadi, nilai tertingginya diraih oleh <span id="SkorTertinggi">...</span>
-					(A<span id="AltID">...</span>) dengan nilai <span id="SkorHasil">...</span></p>
+				<p>Jadi, nilai tertingginya diraih oleh
+					<b><span id="SkorTertinggi">...</span></b>
+					(A<span id="AltID">...</span>) dengan nilai
+					<b><span id="SkorHasil">...</span></b></p>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary" data-bs-dismiss="modal">
