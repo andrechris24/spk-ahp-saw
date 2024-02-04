@@ -55,7 +55,7 @@ class NilaiController extends Controller
 	}
 	public function datatables()
 	{
-		return DataTables::Eloquent(Alternatif::query())
+		return DataTables::of(Alternatif::query())
 			->addColumn('subkriteria', function (Alternatif $alt) {
 				$kriteria = Kriteria::get();
 				foreach ($kriteria as $kr) {
@@ -77,7 +77,7 @@ class NilaiController extends Controller
 					}
 					return $subkriteria;
 				}
-			})->toJson();
+			})->make();
 	}
 	public function getCount()
 	{

@@ -67,12 +67,12 @@ class SubKriteriaController extends Controller
 	}
 	public function show()
 	{
-		return DataTables::eloquent(SubKriteria::query())
+		return DataTables::of(SubKriteria::query())
 			->addColumn('kr_name', function (SubKriteria $skr) {
 				return $skr->kriteria->name;
 			})->addColumn('desc_kr', function (SubKriteria $kr) {
 				return $kr->kriteria->desc;
-			})->toJson();
+			})->make();
 	}
 	public function store(Request $request)
 	{

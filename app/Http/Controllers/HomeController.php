@@ -64,6 +64,7 @@ class HomeController extends Controller
 				'password' => ['nullable', 'bail', 'confirmed', 'between:8,20'],
 				'password_confirmation' => 'required_with:password'
 			], User::$message);
+			$req['name']=Str::title($req['name']);
 			$req['email'] = Str::lower($req['email']);
 			if (empty($req['password'])) {
 				unset($req['password']);
