@@ -16,7 +16,7 @@
 
 1. Download atau clone aplikasi ini.
 2. Masuk ke aplikasi yang sudah didownload atau di-clone.
-3. Buka Command Prompt atau PowerShell, lalu masukkan perintah `composer install`.
+3. Buka Command Prompt/Terminal/PowerShell, lalu masukkan perintah `composer install`.
 4. Ganti nama `.env.example` menjadi `.env`, lalu atur nama Database pada file .env.
 5. Masukkan perintah `php artisan key:generate`
 6. Masukkan perintah `php artisan migrate --seed`
