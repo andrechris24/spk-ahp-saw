@@ -25,7 +25,7 @@ class KriteriaCompController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil perbandingan:')
-				->withErrors("Kesalahan SQLState #".$e->errorInfo[1])
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[1])
 				->withErrors($e->errorInfo[2]);
 		}
 	}
@@ -37,7 +37,7 @@ class KriteriaCompController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil perbandingan:')
-				->withErrors("Kesalahan SQLState #".$e->errorInfo[1])
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[1])
 				->withErrors($e->errorInfo[2]);
 		}
 	}
@@ -49,7 +49,7 @@ class KriteriaCompController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil perbandingan:')
-				->withErrors("Kesalahan SQLState #".$e->errorInfo[1])
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[1])
 				->withErrors($e->errorInfo[2]);
 		}
 	}
@@ -101,7 +101,7 @@ class KriteriaCompController extends Controller
 		} catch (QueryException $sql) {
 			Log::error($sql);
 			return back()->withInput()->withError('Gagal menyimpan nilai perbandingan:')
-				->withErrors("Kesalahan SQLState #".$sql->errorInfo[1])
+				->withErrors("Kesalahan SQLState #" . $sql->errorInfo[1])
 				->withErrors($sql->errorInfo[2]);
 		}
 		return to_route('bobotkriteria.result');
@@ -243,7 +243,7 @@ class KriteriaCompController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil perbandingan kriteria:')
-				->withErrors("Kesalahan SQLState #".$e->errorInfo[1])
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[1])
 				->withErrors($e->errorInfo[2]);
 		}
 	}
@@ -257,7 +257,7 @@ class KriteriaCompController extends Controller
 		} catch (QueryException $sql) {
 			Log::error($sql);
 			return back()->withError('Perbandingan Kriteria gagal direset:')
-				->withErrors("Kesalahan SQLState #".$sql->errorInfo[1])
+				->withErrors("Kesalahan SQLState #" . $sql->errorInfo[1])
 				->withErrors($sql->errorInfo[2]);
 		}
 	}
