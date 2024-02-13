@@ -10,17 +10,16 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 	<div class="card-content">
 		<div class="card-body">
 			<x-caps-lock />
-			<form class="form form-horizontal needs-validation" method="post"
-			action="{{ route('akun.perform') }}" id="form-edit-account">
+			<form class="form form-horizontal needs-validation" method="post" action="{{ route('akun.perform') }}"
+				id="form-edit-account">
 				<div class="form-body">
 					<div class="row">
 						<div class="col-md-4"><label for="nama-user">Nama</label></div>
 						<div class="col-md-8">
 							<div class="form-group has-icon-left">
 								<div class="position-relative">
-									<input type="text" name="name" placeholder="Nama" id="nama-user"
-									class="form-control" value="{{ auth()->user()->name }}"
-									pattern="[A-z.,' ]{5,99}" maxlength="99" required />
+									<input type="text" name="name" placeholder="Nama" id="nama-user" class="form-control"
+										value="{{ auth()->user()->name }}" pattern="[A-z.,' ]{5,99}" maxlength="99" required />
 									<div class="form-control-icon">
 										<i class="bi bi-person"></i>
 									</div>
@@ -34,9 +33,8 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 						<div class="col-md-8">
 							<div class="form-group has-icon-left">
 								<div class="position-relative">
-									<input type="email" name="email" placeholder="mail@example.com"
-									id="email-user" value="{{ auth()->user()->email }}"
-									class="form-control" required />
+									<input type="email" name="email" placeholder="mail@example.com" id="email-user"
+										value="{{ auth()->user()->email }}" class="form-control" required />
 									<div class="form-control-icon">
 										<i class="bi bi-envelope"></i>
 									</div>
@@ -52,9 +50,8 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 						<div class="col-md-8">
 							<div class="form-group has-icon-left">
 								<div class="position-relative">
-									<input type="password" name="current_password" minlength="8"
-									id="password-current" class="form-control" maxlength="20"
-									placeholder="Password Anda" required />
+									<input type="password" name="current_password" minlength="8" id="password-current"
+										class="form-control" maxlength="20" placeholder="Password Anda" required />
 									<div class="form-control-icon">
 										<i class="bi bi-lock"></i>
 									</div>
@@ -70,10 +67,9 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 						<div class="col-md-8">
 							<div class="form-group has-icon-left">
 								<div class="position-relative">
-									<input type="password" name="password" class="form-control"
-									id="newpassword" placeholder="Kosongkan jika tidak ganti password"
-									oninput="checkpassword()" minlength="8" maxlength="20"
-									data-bs-toggle="tooltip" data-bs-placement="top" title="8-20 karakter" />
+									<input type="password" name="password" class="form-control" id="newpassword"
+										placeholder="Kosongkan jika tidak ganti password" oninput="checkpassword()" minlength="8"
+										maxlength="20" data-bs-toggle="tooltip" data-bs-placement="top" title="8-20 karakter" />
 									<div class="form-control-icon"><i class="bi bi-lock"></i></div>
 									<div class="invalid-feedback" id="newpassword-error">
 										Password baru harus terdiri dari 8-20 karakter
@@ -92,9 +88,9 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 						<div class="col-md-8">
 							<div class="form-group has-icon-left">
 								<div class="position-relative">
-									<input type="password" name="password_confirmation" minlength="8"
-									maxlength="20" id="conf-password" oninput="checkpassword()"
-									class="form-control" placeholder="Ketik ulang Password baru" />
+									<input type="password" name="password_confirmation" minlength="8" maxlength="20"
+										id="conf-password" oninput="checkpassword()" class="form-control"
+										placeholder="Ketik ulang Password baru" />
 									<div class="form-control-icon"><i class="bi bi-lock"></i></div>
 									<div class="invalid-feedback" id="confirm-password-error">
 										Password Konfirmasi salah
@@ -239,7 +235,7 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 					});
 				} catch (error) {
 					console.error(error);
-					Swal.showValidationMessage(`Gagal hapus: ${error}`);
+					Swal.showValidationMessage('Gagal hapus: '+error);
 				}
 			}
 		}).then((result) => {

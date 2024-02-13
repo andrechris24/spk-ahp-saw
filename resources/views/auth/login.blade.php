@@ -3,8 +3,8 @@
 @section('auth-title', 'Login')
 @section('auth-subtitle', 'Login untuk menggunakan Aplikasi Sistem Pendukung Keputusan')
 @section('content')
-<form action="{{ route('login.perform') }}" method="post"
-enctype="multipart/form-data" class="needs-validation">@csrf
+<form action="{{ route('login.perform') }}" method="post" enctype="multipart/form-data"
+	class="needs-validation">@csrf
 	<div class="form-group position-relative has-icon-left mb-4">
 		<input type="email" placeholder="Email" name="email" value="{{ old('email') }}"
 			class="form-control form-control-xl @error('email') is-invalid @enderror " required />
@@ -16,8 +16,8 @@ enctype="multipart/form-data" class="needs-validation">@csrf
 		</div>
 	</div>
 	<div class="form-group position-relative has-icon-left mb-4">
-		<input type="password" placeholder="Password" name="password" minlength="8"
-		title="8-20 karakter" maxlength="20" class="form-control form-control-xl 
+		<input type="password" placeholder="Password" name="password" minlength="8" title="8-20 karakter"
+			maxlength="20" class="form-control form-control-xl 
 				@error('password') is-invalid @enderror " id="password" required />
 		<div class="form-control-icon"><i class="bi bi-shield-lock"></i></div>
 		<div class="invalid-feedback">
@@ -27,8 +27,8 @@ enctype="multipart/form-data" class="needs-validation">@csrf
 		</div>
 	</div>
 	<div class="form-check form-check-lg d-flex align-items-end">
-		<input class="form-check-input me-2" type="checkbox" id="remember-me"
-		name="remember" data-bs-toggle="tooltip" data-bs-placement="top" value="1"
+		<input class="form-check-input me-2" type="checkbox" id="remember-me" name="remember"
+			data-bs-toggle="tooltip" data-bs-placement="top" value="1"
 			title="Berlaku selama 30 hari, jangan dicentang jika bukan perangkat Anda." />
 		<label class="form-check-label text-gray-600" for="remember-me">
 			Biarkan saya login
@@ -40,7 +40,7 @@ enctype="multipart/form-data" class="needs-validation">@csrf
 </form>
 <div class="text-center mt-5 text-lg fs-4">
 	<p class="text-gray-600">Belum punya akun?
-		<a href="{{ route('register.show') }}" class="font-bold">Daftar</a>
+		<a href="{{ route('register') }}" class="font-bold">Daftar</a>
 	</p>
 	<p>
 		<a class="font-bold" href="{{ route('password.request') }}">

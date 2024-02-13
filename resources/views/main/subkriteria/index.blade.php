@@ -2,8 +2,8 @@
 @section('title', 'Sub Kriteria')
 @section('subtitle', 'Sub Kriteria')
 @section('content')
-<div class="modal fade text-left" id="SubCritModal" tabindex="-1" role="dialog"
-aria-labelledby="SubCritLabel" aria-hidden="true">
+<div class="modal fade text-left" id="SubCritModal" tabindex="-1" role="dialog" aria-labelledby="SubCritLabel"
+	aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -13,8 +13,8 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 				</button>
 			</div>
 			<div class="modal-body">
-				<form action="{{ route('subkriteria.store') }}" method="post"
-				enctype="multipart/form-data" id="SubCritForm" class="needs-validation">
+				<form action="{{ route('subkriteria.store') }}" method="post" enctype="multipart/form-data"
+					id="SubCritForm" class="needs-validation">
 					<input type="hidden" name="id" id="subkriteria-id">
 					<label for="nama-sub">Nama Sub Kriteria</label>
 					<div class="form-group">
@@ -81,8 +81,8 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 	<div class="col-md-4">
 		<div class="card">
 			<div class="card-body">
-				<div class="d-flex align-items-start justify-content-between"
-				data-bs-toggle="tooltip" title="Sub Kriteria Terbanyak per Kriteria">
+				<div class="d-flex align-items-start justify-content-between" data-bs-toggle="tooltip"
+					title="Sub Kriteria Terbanyak per Kriteria">
 					<div class="content-left">
 						<span>Terbanyak</span>
 						<div class="d-flex align-items-end mt-2">
@@ -99,8 +99,8 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 	<div class="col-md-4">
 		<div class="card">
 			<div class="card-body">
-				<div class="d-flex align-items-start justify-content-between"
-				data-bs-toggle="tooltip" title="Sub Kriteria duplikat per kriteria">
+				<div class="d-flex align-items-start justify-content-between" data-bs-toggle="tooltip"
+					title="Sub Kriteria duplikat per kriteria">
 					<div class="content-left">
 						<span>Duplikat</span>
 						<div class="d-flex align-items-end mt-2">
@@ -118,8 +118,8 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 <div class="card">
 	<div class="card-header">Daftar Sub Kriteria</div>
 	<div class="card-body">
-		<button type="button" class="btn btn-primary" id="addBtn"
-		data-bs-toggle="modal" data-bs-target="#SubCritModal">
+		<button type="button" class="btn btn-primary" id="addBtn" data-bs-toggle="modal"
+			data-bs-target="#SubCritModal">
 			<i class="bi bi-plus-lg"></i> Tambah Sub Kriteria
 		</button>
 		<table class="table table-hover table-striped" id="table-subcrit" style="width: 100%">
@@ -128,8 +128,7 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 					<th>#</th>
 					<th>Nama Sub Kriteria</th>
 					<th>Kriteria</th>
-					<th data-bs-toggle="tooltip"
-					title="Bobot didapat melalui pembobotan Sub Kriteria secara konsisten">
+					<th data-bs-toggle="tooltip" title="Bobot didapat melalui pembobotan Sub Kriteria secara konsisten">
 						Bobot
 					</th>
 					<th>Aksi</th>
@@ -141,11 +140,11 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 @endsection
 @section('js')
 <script type="text/javascript">
-	let dt_subkriteria, errmsg;
+	let dt_subkriteria = $('#table-subcrit'), errmsg;
 	$(document).ready(function () {
 		try {
 			$.fn.dataTable.ext.errMode = 'none';
-			dt_subkriteria = $('#table-subcrit').DataTable({
+			dt_subkriteria = dt_subkriteria.DataTable({
 				stateSave: true,
 				lengthChange: false,
 				searching: false,
@@ -247,7 +246,7 @@ aria-labelledby="SubCritLabel" aria-hidden="true">
 					});
 				} catch (error) {
 					console.error(error);
-					Swal.showValidationMessage(`Gagal hapus: ${error}`);
+					Swal.showValidationMessage('Gagal hapus: '+error);
 				}
 			}
 		}).then(function (result) {

@@ -12,9 +12,8 @@
 			<div class="accordion mb-3" id="accordionTabelPerbandingan">
 				<div class="accordion-item">
 					<h2 class="accordion-header">
-						<button class="accordion-button collapsed" type="button"
-						data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
-						aria-expanded="false" aria-controls="flush-collapseOne">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+							data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
 							Tabel Nilai Perbandingan
 						</button>
 					</h2>
@@ -42,8 +41,7 @@
 			@endif
 			@if ($jmlcrit >= 2)
 			<div class="table-responsive">
-				<form method="POST" enctype="multipart/form-data"
-				action="{{ route('bobotkriteria.store') }}">
+				<form method="POST" enctype="multipart/form-data" action="{{ route('bobotkriteria.store') }}">
 					<table class="table table-lg table-hover table-striped text-center">
 						<thead>
 							<tr>
@@ -60,9 +58,8 @@
 								<td>{{ ++$numindex }}</td>
 								<th>
 									<input type="radio" class="btn-check" name="kriteria[{{ $loop->index }}]"
-										id="left-{{ $loop->index }}" value="left" autocomplete="off" 
-										{{$value[$loop->index]['nilai'] > 0 ||
-										old('kriteria.' . $loop->index) == 'left' ? 'checked' : '' }} required>
+										id="left-{{ $loop->index }}" value="left" autocomplete="off"
+										{{$value[$loop->index]['nilai'] > 0 || old("kriteria.$loop->index") == 'left' ? 'checked' : '' }} required>
 									<label class="btn btn-outline-info" for="left-{{ $loop->index }}">
 										C{{ $krit['idbaris'] }}
 										<small>{{ $krit['namabaris'] }}</small>
@@ -70,10 +67,7 @@
 								</th>
 								<td>
 									<div class="input-group mb-3">
-										<input type="number" name="skala[{{ $loop->index }}]" min="1"
-										max="9" class="form-control text-center 
-											@error('skala.' . $loop->index) is-invalid @enderror "
-											value="{{ old('skala.' . $loop->index) ?? 
+										<input type="number" name="skala[{{ $loop->index }}]" min="1" max="9" class="form-control text-center @error('skala.' . $loop->index) is-invalid @enderror " value="{{ old('skala.' . $loop->index) ?? 
 												(abs($value[$loop->index]['nilai']) ?? '') }}" required>
 										@error('skala.' . $loop->index)
 										<div class="invalid-feedback">{{ $message }}</div>
@@ -81,10 +75,8 @@
 									</div>
 								</td>
 								<th>
-									<input type="radio" name="kriteria[{{ $loop->index }}]" class="btn-check"
-									value="right" id="right-{{ $loop->index }}" autocomplete="off"
-									{{ $value[$loop->index]['nilai'] < 0 ||
-										old('kriteria.' . $loop->index) == 'right' ? 'checked' : '' }}>
+									<input type="radio" name="kriteria[{{ $loop->index }}]" class="btn-check" value="right" id="right-{{ $loop->index }}" autocomplete="off"
+										{{ $value[$loop->index]['nilai'] < 0 || old("kriteria.$loop->index") == 'right' ? 'checked' : '' }}>
 										<label class="btn btn-outline-warning" for="right-{{ $loop->index }}">
 											C{{ $krit['idkolom'] }}
 											<small>{{ $krit['namakolom'] }}</small>
@@ -117,7 +109,7 @@
 <script type="text/javascript">
 	$(document).on('click', '#reset-button', function (e) {
 		e.preventDefault();
-		Swal.fire({
+		confirm.fire({
 			title: 'Reset perbandingan?',
 			text: "Anda akan mereset perbandingan Kriteria.\nBobot Kriteria akan direset!"
 		}).then(function (result) {

@@ -8,7 +8,9 @@ $totalalts = count($data['alternatif']);
 @section('subtitle', 'Hasil Penilaian Alternatif')
 @section('content')
 <div class="card">
-	<div class="card-header"><h4 class="card-title">Matriks Keputusan</h4></div>
+	<div class="card-header">
+		<h4 class="card-title">Matriks Keputusan</h4>
+	</div>
 	<div class="card-body">
 		<div class="table-responsive">
 			<table class="table table-hover table-striped text-center">
@@ -46,7 +48,9 @@ $totalalts = count($data['alternatif']);
 	</div>
 </div>
 <div class="card">
-	<div class="card-header"><h4 class="card-title">Matriks Normalisasi</h4></div>
+	<div class="card-header">
+		<h4 class="card-title">Matriks Normalisasi</h4>
+	</div>
 	<div class="card-body">
 		<div class="table-responsive">
 			<table class="table table-hover table-striped text-center">
@@ -76,7 +80,7 @@ $totalalts = count($data['alternatif']);
 							@php
 							$arrays = $saw->getNilaiArr($nilai->kriteria_id);
 							$result =
-								$saw->normalisasi($arrays, $nilai->kriteria->type, $nilai->subkriteria->bobot);
+							$saw->normalisasi($arrays, $nilai->kriteria->type, $nilai->subkriteria->bobot);
 							$lresult[$alts->id][$counter] = $result * $saw->getBobot($nilai->kriteria_id);
 							$counter++;
 							echo $result;
@@ -91,17 +95,14 @@ $totalalts = count($data['alternatif']);
 		</div>
 	</div>
 </div>
-<div class="modal fade text-left" id="RankModal" tabindex="-1" role="dialog"
-aria-labelledby="RankLabel" aria-hidden="true">
-	<div @class([
-		'modal-dialog', 
-		'modal-dialog-centered', 
-		'modal-dialog-scrollable', 
-		'modal-fullscreen-md-down'=> $totalalts <= 5, 
-		'modal-fullscreen-lg-down'=> $totalalts > 5 && $totalalts<=10, 
-		'modal-lg'=> $totalalts > 5 && $totalalts <= 10, 
-		'modal-fullscreen-xl-down'=> $totalalts > 10&&$totalalts <= 18, 
-		'modal-xl'=> $totalalts > 10 && $totalalts <= 18, 
+<div class="modal fade text-left" id="RankModal" tabindex="-1" role="dialog" aria-labelledby="RankLabel"
+	aria-hidden="true">
+	<div @class(['modal-dialog', 'modal-dialog-centered', 'modal-dialog-scrollable', 
+		'modal-fullscreen-md-down'=> $totalalts <= 5,
+		'modal-fullscreen-lg-down'=> $totalalts > 5 && $totalalts <=10,
+		'modal-lg'=> $totalalts > 5 && $totalalts <= 10,
+		'modal-fullscreen-xl-down'=> $totalalts > 10 && $totalalts <= 18,
+		'modal-xl'=> $totalalts > 10 && $totalalts <= 18,
 		'modal-fullscreen'=> $totalalts>18]) role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -115,7 +116,8 @@ aria-labelledby="RankLabel" aria-hidden="true">
 				<p>Jadi, nilai tertingginya diraih oleh
 					<b><span id="SkorTertinggi">...</span></b>
 					(A<span id="AltID">...</span>) dengan nilai
-					<b><span id="SkorHasil">...</span></b></p>
+					<b><span id="SkorHasil">...</span></b>
+				</p>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary" data-bs-dismiss="modal">
@@ -126,14 +128,15 @@ aria-labelledby="RankLabel" aria-hidden="true">
 	</div>
 </div>
 <div class="card">
-	<div class="card-header"><h4 class="card-title">Ranking</h4></div>
+	<div class="card-header">
+		<h4 class="card-title">Ranking</h4>
+	</div>
 	<div class="card-body">
-		<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal"
-		data-bs-target="#RankModal" id="spare-button">
+		<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#RankModal"
+			id="spare-button">
 			<i class="bi bi-bar-chart-line-fill"></i> Lihat Grafik
 		</button>
-		<table class="table table-hover table-striped text-center" id="table-hasil"
-		style="width: 100%">
+		<table class="table table-hover table-striped text-center" id="table-hasil" style="width: 100%">
 			<thead class="text-center">
 				<tr>
 					<th>Alternatif</th>
@@ -178,7 +181,7 @@ aria-labelledby="RankLabel" aria-hidden="true">
 @endsection
 @section('js')
 <script type="text/javascript">
-	let dt_hasil, errmsg, loaded = false;
+	let dt_hasil = $('#table-hasil'), loaded = false, errmsg;
 	const options = {
 		chart: {
 			height: 320,
@@ -214,7 +217,7 @@ aria-labelledby="RankLabel" aria-hidden="true">
 	$(document).ready(function () {
 		try {
 			$.fn.dataTable.ext.errMode = "none";
-			dt_hasil = $('#table-hasil').DataTable({
+			dt_hasil = dt_hasil.DataTable({
 				lengthChange: false,
 				searching: false,
 				responsive: true,

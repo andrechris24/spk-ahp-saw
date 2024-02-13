@@ -30,8 +30,8 @@
 						@if ($ma['kode_kriteria'] === $kr->idkriteria)
 						<td>
 							@if($ma['nilai']<0) <sup>1</sup>/<sub>{{ abs($ma['nilai']) }}</sub>
-							@else <sup>{{ $ma['nilai'] }}</sup>/<sub>1</sub>
-							@endif
+								@else <sup>{{ $ma['nilai'] }}</sup>/<sub>1</sub>
+								@endif
 						</td>
 						@endif
 						@endforeach
@@ -135,7 +135,9 @@
 	</div>
 </div>
 <div class="card">
-	<div class="card-header"><div class="card-title">Nilai Konsistensi</div></div>
+	<div class="card-header">
+		<div class="card-title">Nilai Konsistensi</div>
+	</div>
 	<div class="card-body">
 		<div class="table-responsive">
 			<table class="table table-hover">
@@ -152,11 +154,10 @@
 					<td>
 						@if (is_numeric($data['result']))
 							@php
-							$consistent = $data['result'] <= 0.1;
-							echo round($data['result'], 5);
+							$consistent = $data['result'] <= 0.1; echo round($data['result'], 5);
 							@endphp
 							<span @class(['text-danger'=> $data['result'] > 0.1])>
-							({{ round($data['result'] * 100, 2) }}%)
+								({{ round($data['result'] * 100, 2) }}%)
 							</span>
 						@else
 							@php
@@ -169,8 +170,7 @@
 				<tr>
 					<td>Hasil Konsistensi</td>
 					<td>
-						<span @class([
-							'text-warning'=> !is_numeric($data['result']),
+						<span @class(['text-warning'=> !is_numeric($data['result']),
 							'text-danger' => !$consistent,
 							'text-success' => is_numeric($data['result']) && $consistent])>
 							@if (!is_numeric($data['result'])) <b>Tidak bisa dievaluasi</b>
@@ -198,8 +198,7 @@
 						<i class="bi bi-arrow-right"></i> Lanjut
 					</a>
 					@else
-					<button type="button" class="btn btn-info" data-bs-toggle="modal"
-					data-bs-target="#inconsistentModal">
+					<button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#inconsistentModal">
 						?
 					</button>
 					@endif

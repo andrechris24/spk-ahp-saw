@@ -22,7 +22,7 @@ class SubKriteriaController extends Controller
 			return $kriteria['name'];
 		} catch (QueryException $e) {
 			Log::error($e);
-			return "E{$e->errorInfo[0]}/{$e->errorInfo[1]}";
+			return "E{$e->errorInfo[0]}/" . $e->errorInfo[1];
 		}
 	}
 	public static function resetNilai($subkr, $kr): void

@@ -20,11 +20,11 @@
 @endsection
 @section('js')
 <script type="text/javascript">
-	let dt_subkriteriacomp;
+	let dt_subkriteriacomp = $('#table-subcritcomp');
 	$(document).ready(function () {
 		try {
 			$.fn.dataTable.ext.errMode = 'none';
-			dt_subkriteriacomp = $('#table-subcritcomp').DataTable({
+			dt_subkriteriacomp = dt_subkriteriacomp.DataTable({
 				stateSave: true,
 				lengthChange: false,
 				searching: false,
@@ -116,7 +116,7 @@
 					});
 				} catch (error) {
 					console.error(error);
-					Swal.showValidationMessage(`Gagal hapus: ${error}`);
+					Swal.showValidationMessage('Gagal hapus: '+error);
 				}
 			}
 		}).then(function (result) {

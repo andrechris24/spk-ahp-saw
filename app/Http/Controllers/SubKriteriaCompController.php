@@ -26,7 +26,7 @@ class SubKriteriaCompController extends Controller
 		} catch (QueryException $e) {
 			Log::error($e);
 			return back()->withError('Gagal memuat hasil perbandingan:')
-				->withErrors("Kesalahan SQLState #{$e->errorInfo[1]}")
+				->withErrors("Kesalahan SQLState #" . $e->errorInfo[1])
 				->withErrors($e->errorInfo[2]);
 		}
 	}
@@ -112,7 +112,7 @@ class SubKriteriaCompController extends Controller
 			Log::error($e);
 			return back()->withError(
 				'Gagal memuat form perbandingan sub kriteria ' .
-				"{${SubKriteriaController::nama_kriteria($kriteria_id)} }:"
+				SubKriteriaController::nama_kriteria($kriteria_id) . ":"
 			)->withErrors("Kesalahan SQLState #" . $e->errorInfo[1])
 				->withErrors($e->errorInfo[2]);
 		}
@@ -306,7 +306,7 @@ class SubKriteriaCompController extends Controller
 			return back()->withError(
 				'Gagal memuat hasil perbandingan sub kriteria ' .
 				SubKriteriaController::nama_kriteria($kriteria_id) . ":"
-			)->withErrors("Kesalahan SQLState #{$e->errorInfo[1]}")
+			)->withErrors("Kesalahan SQLState #" . $e->errorInfo[1])
 				->withErrors($e->errorInfo[2])->withInput();
 		}
 	}

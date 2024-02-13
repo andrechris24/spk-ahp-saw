@@ -2,8 +2,8 @@
 @section('title', 'Alternatif')
 @section('subtitle', 'Alternatif')
 @section('content')
-<div class="modal fade text-left" id="AlterModal" tabindex="-1" role="dialog"
-aria-labelledby="AlterLabel" aria-hidden="true">
+<div class="modal fade text-left" id="AlterModal" tabindex="-1" role="dialog" aria-labelledby="AlterLabel"
+	aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -85,8 +85,7 @@ aria-labelledby="AlterLabel" aria-hidden="true">
 <div class="card">
 	<div class="card-header">Daftar Alternatif</div>
 	<div class="card-body">
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-		data-bs-target="#AlterModal">
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AlterModal">
 			<i class="bi bi-plus-lg"></i> Tambah Alternatif
 		</button>
 		<table class="table table-hover table-striped" id="table-alter" style="width: 100%">
@@ -104,11 +103,11 @@ aria-labelledby="AlterLabel" aria-hidden="true">
 @endsection
 @section('js')
 <script type="text/javascript">
-	let dt_alternatif, errmsg;
+	let dt_alternatif = $("#table-alter"), errmsg;
 	$(document).ready(function () {
 		try {
 			$.fn.dataTable.ext.errMode = "none";
-			dt_alternatif = $("#table-alter").DataTable({
+			dt_alternatif = dt_alternatif.DataTable({
 				stateSave: true,
 				lengthChange: false,
 				searching: false,
@@ -197,7 +196,7 @@ aria-labelledby="AlterLabel" aria-hidden="true">
 					});
 				} catch (error) {
 					console.error(error);
-					Swal.showValidationMessage(`Gagal hapus: ${error}`);
+					Swal.showValidationMessage('Gagal hapus: '+error);
 				}
 
 			}

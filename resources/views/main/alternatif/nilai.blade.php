@@ -13,8 +13,7 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<form method="POST" enctype="multipart/form-data"
-				id="NilaiAlterForm" class="needs-validation">
+				<form method="POST" enctype="multipart/form-data" id="NilaiAlterForm" class="needs-validation">
 					<input type="hidden" name="alternatif_id" id="alternatif-hidden">
 					<div class="input-group has-validation mb-3">
 						<label class="input-group-text" for="alternatif-value">
@@ -27,12 +26,12 @@
 					</div>
 					@foreach ($data['kriteria'] as $kr)
 					<input type="hidden" name="kriteria_id[]" value="{{ $kr->id }}">
-					<div class="input-group has-validation mb-3" data-bs-toggle="tooltip"
-					data-bs-placement="right" title="{{ $kr->name }}">
-						<label class="input-group-text" for="subkriteria-{{ Str::of($kr->name)->slug('-') }}">
+					<div class="input-group has-validation mb-3" data-bs-toggle="tooltip" data-bs-placement="right"
+						title="{{ $kr->name }}">
+						<label class="input-group-text" for="subkriteria-{{ Str::slug($kr->name,'-') }}">
 							C{{ $kr->id }}
 						</label>
-						<select class="form-select" id="subkriteria-{{ Str::of($kr->name)->slug('-') }}"
+						<select class="form-select" id="subkriteria-{{ Str::slug($kr->name,'-') }}"
 							name="subkriteria_id[]" required>
 							<option value="">Pilih</option>
 							@foreach ($data['subkriteria'] as $subkr)
@@ -41,8 +40,7 @@
 							@endif
 							@endforeach
 						</select>
-						<div class="invalid-feedback"
-						id="subkriteria-{{ Str::of($kr->name)->slug('-') }}-error">
+						<div class="invalid-feedback" id="subkriteria-{{ Str::slug($kr->name,'-') }}-error">
 							Pilih salah satu sub kriteria {{ $kr->name }}
 						</div>
 					</div>
@@ -139,7 +137,7 @@
 @endsection
 @section('js')
 <script type="text/javascript">
-	let nilaialtdt, errmsg;
+	let nilaialtdt = $('#table-nilaialt'), errmsg;
 	function setName(id, name) {
 		$('#alternatif-hidden').val(id);
 		$("#alternatif-value").val(name);
@@ -147,7 +145,7 @@
 	$(document).ready(function () {
 		try {
 			$.fn.dataTable.ext.errMode = 'none';
-			nilaialtdt = $('#table-nilaialt').DataTable({
+			nilaialtdt = nilaialtdt.DataTable({
 				lengthChange: false,
 				searching: false,
 				responsive: true,
@@ -220,7 +218,7 @@
 		let score_id = $(this).data('id'), score_name = $(this).data('name');
 		confirm.fire({
 			title: 'Hapus nilai alternatif?',
-			text: `Anda akan menghapus nilai alternatif ${score_name}.`,
+			text: 'Anda akan menghapus nilai alternatif '+score_name,
 			preConfirm: async () => {
 				try {
 					await $.ajax({
@@ -244,7 +242,7 @@
 					});
 				} catch (error) {
 					console.error(error);
-					Swal.showValidationMessage(`Gagal hapus: ${error}`);
+					Swal.showValidationMessage('Gagal hapus: '+error);
 				}
 			}
 		}).then(function (result) {

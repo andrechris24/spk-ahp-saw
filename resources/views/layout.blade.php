@@ -5,10 +5,8 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>@yield('title') | Sistem Pendukung Keputusan metode AHP & SAW</title>
-	<link rel="shortcut icon" href="{{ asset('assets/compiled/svg/favicon.svg') }}"
-	type="image/x-icon" />
-	<link rel="shortcut icon" href="{{ asset('assets/static/images/logo/favicon.png') }}"
-	type="image/png" />
+	<link rel="shortcut icon" href="{{ asset('assets/compiled/svg/favicon.svg') }}" type="image/x-icon" />
+	<link rel="shortcut icon" href="{{ asset('assets/static/images/logo/favicon.png') }}" type="image/png" />
 	<link rel="stylesheet" href="{{ asset('assets/compiled/css/app.css') }}" />
 	<link rel="stylesheet" href="{{ asset('assets/compiled/css/app-dark.css') }}" />
 	<link rel="stylesheet" href="{{ asset('assets/compiled/css/iconly.css') }}" />
@@ -74,20 +72,17 @@
 								</li>
 							</ul>
 						</li>
-						<li class="sidebar-item has-sub 
-							{{ request()->is('bobot/hasil') || request()->is('bobot/sub/*') ? 'active' : '' }}">
+						<li @class(['sidebar-item','has-sub','active'=>request()->is('bobot/hasil') || request()->is('bobot/sub/*')])>
 							<a href="#" class="sidebar-link">
 								<i class="bi bi-calculator-fill"></i> <span>Pembobotan</span>
 							</a>
 							<ul class="submenu">
-								<li class="submenu-item
-									{{ request()->is('bobot/hasil') ? 'active' : '' }}">
+								<li @class(['submenu-item','active'=>request()->is('bobot/hasil')])>
 									<a href="{{ route('bobotkriteria.index') }}" class="submenu-link">
 										Kriteria
 									</a>
 								</li>
-								<li class="submenu-item
-									{{ request()->is('bobot/sub/*') ? 'active' : '' }}">
+								<li @class(['submenu-item','active'=>request()->is('bobot/sub/*')])>
 									<a href="{{ route('bobotsubkriteria.pick') }}" class="submenu-link">
 										Sub Kriteria
 									</a>
@@ -131,8 +126,7 @@
 							@auth
 							<ul class="navbar-nav ms-auto mb-lg-0">
 								<li class="nav-item me-5">
-									<a class="nav-link active text-gray-600"
-									href="{{ route('php.info') }}" target="_blank">
+									<a class="nav-link active text-gray-600" href="{{ route('php.info') }}" target="_blank">
 										PHP Info
 									</a>
 								</li>
@@ -150,15 +144,19 @@
 										</div>
 									</div>
 								</a>
-								<ul class="dropdown-menu dropdown-menu-end"
-								aria-labelledby="dropdownMenuButton" style="min-width: 11rem">
-									<li><h6 class="dropdown-header">Akun</h6></li>
+								<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton"
+									style="min-width: 11rem">
+									<li>
+										<h6 class="dropdown-header">Akun</h6>
+									</li>
 									<li>
 										<a class="dropdown-item" href="{{ route('akun.show') }}">
 											<i class="icon-mid bi bi-person me-2"></i> Edit Akun
 										</a>
 									</li>
-									<li><hr class="dropdown-divider" /></li>
+									<li>
+										<hr class="dropdown-divider" />
+									</li>
 									<li>
 										<a class="dropdown-item" href="{{ route('logout') }}" id="logout-btn">
 											<i class="icon-mid bi bi-box-arrow-left me-2"></i>
@@ -217,7 +215,7 @@
 	<script type="text/javascript" src="{{ asset('assets/extensions/DataTables/natural.js') }}"></script>
 	<script type="text/javascript"
 		src="{{ asset('assets/extensions/DataTables/Buttons-2.4.2/js/buttons.print.min.js') }}">
-		</script>
+	</script>
 	<script src="{{ asset('assets/extensions/apexcharts/apexcharts.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('assets/extensions/toastify-js/src/toastify.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('assets/extensions/sweetalert2/sweetalert2.min.js') }}"></script>

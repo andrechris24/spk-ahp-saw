@@ -8,10 +8,8 @@
 	<link rel="stylesheet" href="{{ asset('assets/compiled/css/auth.css') }}" />
 	<link rel="stylesheet" href="{{ asset('assets/compiled/css/app.css') }}" />
 	<link rel="stylesheet" href="{{ asset('assets/compiled/css/app-dark.css') }}" />
-	<link rel="shortcut icon" href="{{ asset('assets/compiled/svg/favicon.svg') }}"
-	type="image/x-icon" />
-	<link rel="shortcut icon" href="{{ asset('assets/static/images/logo/favicon.png') }}"
-	type="image/png" />
+	<link rel="shortcut icon" href="{{ asset('assets/compiled/svg/favicon.svg') }}" type="image/x-icon" />
+	<link rel="shortcut icon" href="{{ asset('assets/static/images/logo/favicon.png') }}" type="image/png" />
 	<script src="{{ asset('assets/static/js/initTheme.js') }}"></script>
 </head>
 
@@ -36,7 +34,9 @@
 					@yield('content')
 				</div>
 			</div>
-			<div class="col-lg-5 d-none d-lg-block"><div id="auth-right"></div></div>
+			<div class="col-lg-5 d-none d-lg-block">
+				<div id="auth-right"></div>
+			</div>
 		</div>
 	</div>
 	<script src="{{ asset('assets/compiled/js/app.js') }}"></script>

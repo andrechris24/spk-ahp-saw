@@ -2,8 +2,8 @@
 @section('title', 'Kriteria')
 @section('subtitle', 'Kriteria')
 @section('content')
-<div class="modal fade text-left" id="CritModal" tabindex="-1" role="dialog"
-aria-labelledby="CritLabel" aria-hidden="true">
+<div class="modal fade text-left" id="CritModal" tabindex="-1" role="dialog" aria-labelledby="CritLabel"
+	aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -115,8 +115,8 @@ aria-labelledby="CritLabel" aria-hidden="true">
 <div class="card">
 	<div class="card-header">Daftar Kriteria</div>
 	<div class="card-body">
-		<button type="button" class="btn btn-primary" id="addBtn"
-		data-bs-toggle="modal" data-bs-target="#CritModal">
+		<button type="button" class="btn btn-primary" id="addBtn" data-bs-toggle="modal"
+			data-bs-target="#CritModal">
 			<i class="bi bi-plus-lg"></i> Tambah Kriteria
 		</button>
 		<table class="table table-hover table-striped" id="table-crit" style="width: 100%">
@@ -126,8 +126,7 @@ aria-labelledby="CritLabel" aria-hidden="true">
 					<th>Nama Kriteria</th>
 					<th>Atribut</th>
 					<th>Keterangan</th>
-					<th data-bs-toggle="tooltip"
-					title="Bobot didapat melalui pembobotan Kriteria secara konsisten">
+					<th data-bs-toggle="tooltip" title="Bobot didapat melalui pembobotan Kriteria secara konsisten">
 						Bobot
 					</th>
 					<th>Aksi</th>
@@ -139,11 +138,11 @@ aria-labelledby="CritLabel" aria-hidden="true">
 @endsection
 @section('js')
 <script type="text/javascript">
-	let dt_kriteria, errmsg;
+	let dt_kriteria = $('#table-crit'), errmsg;
 	$(document).ready(function () {
 		try {
 			$.fn.dataTable.ext.errMode = 'none';
-			dt_kriteria = $('#table-crit').DataTable({
+			dt_kriteria = dt_kriteria.DataTable({
 				stateSave: true,
 				lengthChange: false,
 				searching: false,
@@ -242,7 +241,7 @@ aria-labelledby="CritLabel" aria-hidden="true">
 					});
 				} catch (error) {
 					console.error(error);
-					Swal.showValidationMessage(`Gagal hapus: ${error}`);
+					Swal.showValidationMessage('Gagal hapus: '+error);
 				}
 			}
 		}).then(function (result) {
