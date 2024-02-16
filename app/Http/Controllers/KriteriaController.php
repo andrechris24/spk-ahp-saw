@@ -33,7 +33,7 @@ class KriteriaController extends Controller
 	{
 		return view('main.kriteria.index');
 	}
-	public function show()
+	public function datatables()
 	{
 		return DataTables::of(Kriteria::query())
 			->editColumn('type', function (Kriteria $krit) {
@@ -69,19 +69,19 @@ class KriteriaController extends Controller
 			return response()->json(['message' => $e->errorInfo[2]], 500);
 		}
 	}
-	public function edit(Kriteria $kr)
+	public function edit(Kriteria $kriterium)
 	{
-		return response()->json($kr);
+		return response()->json($kriterium);
 	}
-	public function hapus(Kriteria $kr)
+	public function hapus(Kriteria $kriterium)
 	{
-		$kr->delete();
+		$kriterium->delete();
 		Nilai::truncate();
 		Hasil::truncate();
 		if (!Kriteria::exists())
 			KriteriaComp::truncate();
 		$model = new Kriteria;
 		HomeController::refreshDB($model);
-		return response()->json(['message' => 'Dihapus']);
+		return response()->json(['message' => 'Berhasil dihapus']);
 	}
 }

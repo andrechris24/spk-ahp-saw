@@ -69,13 +69,14 @@ class SubKriteriaCompController extends Controller
 		$allkrit = Kriteria::get();
 		if ($allkrit->isEmpty()) {
 			return to_route('kriteria.index')->withWarning(
-				'Masukkan kriteria dulu untuk melakukan perbandingan sub kriteria.'
+				'Tambahkan kriteria dan sub kriteria dulu ' .
+				'sebelum melakukan perbandingan sub kriteria.'
 			);
 		}
 		if (SubKriteria::count() === 0) {
 			return to_route('subkriteria.index')->withWarning(
-				'Masukkan data sub kriteria dulu ' .
-				'untuk melakukan perbandingan sub kriteria.'
+				'Tambahkan sub kriteria dulu sebelum ' .
+				'melakukan perbandingan sub kriteria.'
 			);
 		}
 		return view('main.subkriteria.select', compact('allkrit'));

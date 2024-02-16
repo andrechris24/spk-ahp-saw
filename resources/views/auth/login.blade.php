@@ -16,9 +16,9 @@
 		</div>
 	</div>
 	<div class="form-group position-relative has-icon-left mb-4">
-		<input type="password" placeholder="Password" name="password" minlength="8" title="8-20 karakter"
-			maxlength="20" class="form-control form-control-xl 
-				@error('password') is-invalid @enderror " id="password" required />
+		<input type="password" placeholder="Password" name="password"
+		title="8-20 karakter" minlength="8" maxlength="20" id="password"
+			class="form-control form-control-xl @error('password') is-invalid @enderror " required />
 		<div class="form-control-icon"><i class="bi bi-shield-lock"></i></div>
 		<div class="invalid-feedback">
 			@error('password') {{ $message }}

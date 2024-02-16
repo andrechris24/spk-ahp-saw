@@ -223,7 +223,7 @@
 				try {
 					await $.ajax({
 						type: 'DELETE',
-						url: '/nilai/del/' + score_id,
+						url: '/nilai/' + score_id,
 						success: function (data) {
 							nilaialtdt.draw();
 							return "Dihapus";
@@ -260,11 +260,11 @@
 		$('#NilaiAlterForm :input').prop('disabled', true);
 		$('.data-submit').prop('disabled', true);
 		$('.spinner-grow').removeClass('d-none');
-		$.get('/nilai/edit/' + nilai_id, function (data) {// get data
+		$.get(`/nilai/${nilai_id}/edit`, function (data) {// get data
 			$('#alternatif-hidden').val(data.alternatif_id);
 			@foreach($data['kriteria'] as $kr)
-			$("#subkriteria-{{ Str::of($kr->name)->slug('-')}}").val(
-				data.subkriteria.{{ Str:: of($kr->name)->slug('_')}});
+			$("#subkriteria-{{ Str::slug($kr->name,'-')}}").val(
+				data.subkriteria.{{ Str::slug($kr->name,'_')}});
 			@endforeach
 		}).fail(function (xhr, st, err) {
 			if (xhr.status === 404) {

@@ -18,8 +18,9 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 						<div class="col-md-8">
 							<div class="form-group has-icon-left">
 								<div class="position-relative">
-									<input type="text" name="name" placeholder="Nama" id="nama-user" class="form-control"
-										value="{{ auth()->user()->name }}" pattern="[A-z.,' ]{5,99}" maxlength="99" required />
+									<input type="text" name="name" placeholder="Nama" id="nama-user"
+										value="{{ auth()->user()->name }}" pattern="[A-z.,' ]{5,99}" maxlength="99"
+										class="form-control" required />
 									<div class="form-control-icon">
 										<i class="bi bi-person"></i>
 									</div>

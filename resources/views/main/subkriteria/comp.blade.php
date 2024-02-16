@@ -93,7 +93,7 @@ $numindex = 0;
 			</div>
 			@else
 			<div class="alert alert-danger mt-3">
-				<i class="bi bi-sign-stop-fill"></i>
+				<i class="bi bi-sign-stop"></i>
 				Masukkan data <a href="{{ route('subkriteria.index') }}">Sub
 					Kriteria</a> {{ $title }} dulu (Minimal 2) untuk melakukan
 				perbandingan.

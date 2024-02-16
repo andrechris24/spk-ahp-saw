@@ -132,7 +132,7 @@ class NilaiController extends Controller
 			return response()->json(['message' => $e->errorInfo[2]], 500);
 		}
 	}
-	public function show()
+	public function lihat()
 	{
 		try {
 			$alt = Alternatif::get();
@@ -173,17 +173,17 @@ class NilaiController extends Controller
 				->withErrors($e->errorInfo[2]);
 		}
 	}
-	public function edit($id)
+	public function edit($nilai)
 	{
 		try {
-			$nilai = Nilai::where('alternatif_id', $id)->get();
-			if ($nilai->isEmpty()) {
+			$scr = Nilai::where('alternatif_id', $nilai)->get();
+			if ($scr->isEmpty()) {
 				return response()->json([
 					'message' => 'Nilai Alternatif tidak ditemukan atau belum diisi'
 				], 404);
 			}
-			$data['alternatif_id'] = $id;
-			foreach ($nilai as $skor) {
+			$data['alternatif_id'] = $nilai;
+			foreach ($scr as $skor) {
 				$data['subkriteria'][Str::slug($skor->kriteria->name, '_')] =
 					$skor->subkriteria_id;
 			}
@@ -193,23 +193,23 @@ class NilaiController extends Controller
 			return response()->json(["message" => $e->errorInfo[2]], 500);
 		}
 	}
-	public function destroy($id)
+	public function destroy($nilai)
 	{
 		try {
-			$cek = Nilai::where('alternatif_id', $id);
+			$cek = Nilai::where('alternatif_id', $nilai);
 			if (!$cek->exists()) {
 				return response()->json([
 					'message' => 'Nilai Alternatif tidak ditemukan'
 				], 404);
 			}
-			if (Nilai::where('alternatif_id', '<>', $id)->count() === 0)
+			if (Nilai::where('alternatif_id', '<>', $nilai)->count() === 0)
 				Nilai::truncate();
 			else
 				$cek->delete();
-			if (Hasil::where('alternatif_id', '<>', $id)->count() === 0)
+			if (Hasil::where('alternatif_id', '<>', $nilai)->count() === 0)
 				Hasil::truncate();
 			else
-				Hasil::where('alternatif_id', $id)->delete();
+				Hasil::where('alternatif_id', $nilai)->delete();
 			return response()->json(['message' => 'Dihapus']);
 		} catch (QueryException $err) {
 			Log::error($err);

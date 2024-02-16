@@ -30,7 +30,7 @@
 						<select class="form-select" id="kriteria-select" name="kriteria_id" required>
 							<option value="">Pilih</option>
 							@foreach ($kriteria as $kr)
-							<option value="{{ $kr->id }}" @if($kr->desc) title="{{$kr->desc}}" @endif>
+							<option value="{{ $kr->id }}" @if($kr->desc) title="{{$kr->desc}}" @endif >
 								{{ $kr->name }}
 							</option>
 							@endforeach
@@ -227,7 +227,7 @@
 				try {
 					await $.ajax({
 						type: 'DELETE',
-						url: '/kriteria/sub/del/' + sub_id,
+						url: '/subkriteria/'+sub_id,
 						success: function () {
 							dt_subkriteria.draw();
 							return "Dihapus";
@@ -264,7 +264,7 @@
 		$('#kriteria-alert').removeClass('d-none');
 		$('.data-submit').prop('disabled', true);
 		$('.spinner-grow').removeClass('d-none');
-		$.get('/kriteria/sub/edit/' + sub_id, function (data) {// get data
+		$.get(`/subkriteria/${sub_id}/edit`, function (data) {// get data
 			$('#subkriteria-id').val(data.id);
 			$('#nama-sub').val(data.name);
 			$('#kriteria-select').val(data.kriteria_id);

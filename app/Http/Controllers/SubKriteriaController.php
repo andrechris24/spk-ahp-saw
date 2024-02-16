@@ -65,7 +65,7 @@ class SubKriteriaController extends Controller
 		}
 		return view('main.subkriteria.index', compact('kriteria'));
 	}
-	public function show()
+	public function datatables()
 	{
 		return DataTables::of(SubKriteria::query())
 			->addColumn('kr_name', function (SubKriteria $skr) {
@@ -101,13 +101,13 @@ class SubKriteriaController extends Controller
 			return response()->json(['message' => $e->errorInfo[2]], 500);
 		}
 	}
-	public function edit(SubKriteria $skr)
+	public function edit(SubKriteria $subkriterium)
 	{
-		return response()->json($skr);
+		return response()->json($subkriterium);
 	}
-	public function destroy(SubKriteria $skr)
+	public function destroy(SubKriteria $subkriterium)
 	{
-		$skr->delete();
+		$subkriterium->delete();
 		if (!SubKriteriaComp::exists())
 			SubKriteriaComp::truncate();
 		$model = new SubKriteria;

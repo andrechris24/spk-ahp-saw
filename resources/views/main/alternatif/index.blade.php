@@ -171,13 +171,13 @@
 		let alt_id = $(this).data("id"), alt_name = $(this).data("name");
 		confirm.fire({
 			title: "Hapus alternatif?",
-			text: "Anda akan menghapus alternatif " + alt_name +
-				".\nJika sudah dilakukan penilaian, penilaian terkait akan dihapus!",
+			text: `Anda akan menghapus alternatif ${alt_name}.\n` +
+				"Jika sudah dilakukan penilaian, penilaian terkait akan dihapus!",
 			preConfirm: async () => {
 				try {
 					await $.ajax({
 						type: "DELETE",
-						url: "/alternatif/del/" + alt_id,
+						url: "/alternatif/" + alt_id,
 						success: function () {
 							dt_alternatif.draw();
 							return "Dihapus";
@@ -214,7 +214,7 @@
 		$("#AlterForm :input").prop("disabled", true);
 		$(".data-submit").prop("disabled", true);
 		$(".spinner-grow").removeClass("d-none");
-		$.get("/alternatif/edit/" + alt_id, function (data) {// get data
+		$.get(`/alternatif/${alt_id}/edit`, function (data) {// get data
 			$("#alter-id").val(data.id);
 			$("#alter-name").val(data.name);
 		}).fail(function (xhr, st, err) {

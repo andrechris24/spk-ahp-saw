@@ -23,7 +23,7 @@ class AlternatifController extends Controller
 	{
 		return view('main.alternatif.index');
 	}
-	public function show()
+	public function datatables()
 	{
 		return DataTables::of(Alternatif::query())->make();
 	}
@@ -47,13 +47,13 @@ class AlternatifController extends Controller
 			return response()->json(['message' => $e->errorInfo[2]], 500);
 		}
 	}
-	public function edit(Alternatif $alt)
+	public function edit(Alternatif $alternatif)
 	{
-		return response()->json($alt);
+		return response()->json($alternatif);
 	}
-	public function hapus(Alternatif $alt)
+	public function hapus(Alternatif $alternatif)
 	{
-		$alt->delete();
+		$alternatif->delete();
 		$model = new Alternatif;
 		HomeController::refreshDB($model);
 		return response()->json(['message' => 'Dihapus']);

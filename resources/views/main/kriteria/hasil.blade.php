@@ -30,8 +30,8 @@
 						@if ($ma['kode_kriteria'] === $kr->idkriteria)
 						<td>
 							@if($ma['nilai']<0) <sup>1</sup>/<sub>{{ abs($ma['nilai']) }}</sub>
-								@else <sup>{{ $ma['nilai'] }}</sup>/<sub>1</sub>
-								@endif
+							@else <sup>{{ $ma['nilai'] }}</sup>/<sub>1</sub>
+							@endif
 						</td>
 						@endif
 						@endforeach
@@ -153,17 +153,14 @@
 					<td>Consistency Ratio (CR)</td>
 					<td>
 						@if (is_numeric($data['result']))
-							@php
-							$consistent = $data['result'] <= 0.1; echo round($data['result'], 5);
-							@endphp
+							@php $consistent = $data['result'] <= 0.1; @endphp
+							{{round($data['result'], 5)}}
 							<span @class(['text-danger'=> $data['result'] > 0.1])>
 								({{ round($data['result'] * 100, 2) }}%)
 							</span>
 						@else
-							@php
-							$consistent = true;
-							echo '-';
-							@endphp
+							@php $consistent = true; @endphp
+							-
 						@endif
 					</td>
 				</tr>

@@ -51,6 +51,13 @@ class User extends Authenticatable
 	$forgetmsg = ['email.email' => 'Format Email salah'],
 	$resetmsg = ['token.required' => 'Token tidak valid'],
 	$delakunrule = ['del_password' => ['bail', 'required', 'current_password']],
+	$updrules = [
+		'name' => ['bail', 'required', 'min:5', 'regex:/^[\pL\s\-]+$/u'],
+		'email' => ['bail', 'required', 'email'],
+		'current_password' => ['bail', 'required', 'current_password'],
+		'password' => ['nullable', 'bail', 'confirmed', 'between:8,20'],
+		'password_confirmation' => 'required_with:password'
+	],
 	$message = [
 		'name.required' => 'Nama harus diisi',
 		'name.regex' => 'Nama tidak boleh mengandung simbol dan angka',

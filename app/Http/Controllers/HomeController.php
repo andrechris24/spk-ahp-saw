@@ -52,18 +52,7 @@ class HomeController extends Controller
 	public function updateProfil(Request $request)
 	{
 		try {
-			$req = $request->validate([
-				'name' => ['bail', 'required', 'min:5', 'regex:/^[\pL\s\-]+$/u'],
-				'email' => [
-					'bail',
-					'required',
-					'email',
-					'unique:users,email,' . Auth::id()
-				],
-				'current_password' => ['bail', 'required', 'current_password'],
-				'password' => ['nullable', 'bail', 'confirmed', 'between:8,20'],
-				'password_confirmation' => 'required_with:password'
-			], User::$message);
+			$req = $request->validate(User::$updrules, User::$message);
 			$req['name'] = Str::title($req['name']);
 			$req['email'] = Str::lower($req['email']);
 			if (empty($req['password'])) {

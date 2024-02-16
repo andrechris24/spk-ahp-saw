@@ -18,9 +18,9 @@
 		</div>
 	</div>
 	<div class="form-group position-relative has-icon-left mb-4">
-		<input type="password" name="password" placeholder="Password" minlength="8"
-			class="form-control form-control-xl @error('password') is-invalid @enderror " maxlength="20" id="password"
-			oninput="checkpassword()" data-bs-toggle="tooltip"
+		<input type="password" name="password" placeholder="Password" minlength="8" maxlength="20"
+			class="form-control form-control-xl @error('password') is-invalid @enderror "
+			oninput="checkpassword()" data-bs-toggle="tooltip" id="password"
 			title="8-20 karakter (Saran: terdiri dari huruf besar, huruf kecil, angka, dan simbol)"
 			data-bs-placement="top" required />
 		<div class="form-control-icon"><i class="bi bi-shield-lock"></i></div>

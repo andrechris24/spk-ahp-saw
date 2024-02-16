@@ -95,7 +95,7 @@
 							</a>
 						</li>
 						<li class="sidebar-item">
-							<a href="{{ route('nilai.show') }}" class="sidebar-link">
+							<a href="{{ route('nilai.lihat') }}" class="sidebar-link">
 								<i class="bi bi-bar-chart-line-fill"></i> <span>Hasil</span>
 							</a>
 						</li>

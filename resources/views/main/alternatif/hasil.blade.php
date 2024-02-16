@@ -79,8 +79,9 @@ $totalalts = count($data['alternatif']);
 						<td>
 							@php
 							$arrays = $saw->getNilaiArr($nilai->kriteria_id);
-							$result =
-							$saw->normalisasi($arrays, $nilai->kriteria->type, $nilai->subkriteria->bobot);
+							$result = $saw->normalisasi(
+								$arrays, $nilai->kriteria->type, $nilai->subkriteria->bobot
+							);
 							$lresult[$alts->id][$counter] = $result * $saw->getBobot($nilai->kriteria_id);
 							$counter++;
 							echo $result;
@@ -115,11 +116,14 @@ $totalalts = count($data['alternatif']);
 				<div id="chart-ranking"></div>
 				<p>Jadi, nilai tertingginya diraih oleh
 					<b><span id="SkorTertinggi">...</span></b>
-					(A<span id="AltID">...</span>) dengan nilai
+					(A<span id="AltID">x</span>) dengan nilai
 					<b><span id="SkorHasil">...</span></b>
 				</p>
 			</div>
 			<div class="modal-footer">
+				<div class="spinner-grow text-primary" role="status">
+					<span class="visually-hidden">Memuat grafik...</span>
+				</div>
 				<button type="button" class="btn btn-primary" data-bs-dismiss="modal">
 					Tutup
 				</button>
@@ -160,16 +164,12 @@ $totalalts = count($data['alternatif']);
 						A{{ $alts->id }} <span class="visually-hidden">{{ $alts->name }}</span>
 					</th>
 					@foreach ($lresult[$alts->id] as $datas)
-					@php
-					echo '<td>' . round($datas, 5) . '</td>';
-					$jml += round($datas, 5);
-					@endphp
+					<td>{{round($datas, 5)}}</td>
+					@php $jml += round($datas, 5); @endphp
 					@endforeach
 					<td class="text-info">
-						@php
-						$saw->simpanHasil($alts->id, $jml);
-						echo $jml;
-						@endphp
+						@php $saw->simpanHasil($alts->id, $jml); @endphp
+						{{$jml}}
 					</td>
 				</tr>
 				@endif
@@ -331,8 +331,12 @@ $totalalts = count($data['alternatif']);
 					text: errmsg,
 					icon: 'error'
 				});
+			}).always(function(){
+				$(".spinner-grow").addClass("d-none");
 			});
 		}
+	}).on('hidden.bs.modal',function(){
+		if(!loaded) $(".spinner-grow").removeClass("d-none");
 	});
 </script>
 @endsection

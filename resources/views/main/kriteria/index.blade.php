@@ -216,13 +216,13 @@
 		let kr_id = $(this).data('id'), kr_name = $(this).data('name');
 		confirm.fire({
 			title: 'Hapus kriteria?',
-			text: "Anda akan menghapus kriteria " + kr_name + 
-			". Penilaian Alternatif akan direset jika sudah dilakukan!",
+			text: `Anda akan menghapus kriteria ${kr_name}.\n` + 
+			"Penilaian Alternatif akan direset jika sudah dilakukan!",
 			preConfirm: async () => {
 				try {
 					await $.ajax({
 						type: 'DELETE',
-						url: '/kriteria/del/' + kr_id,
+						url: '/kriteria/' + kr_id,
 						success: function () {
 							dt_kriteria.draw();
 							return "Dihapus";
@@ -258,7 +258,7 @@
 		$('#CritLabel').html('Edit Kriteria');
 		$('.data-submit').prop('disabled', true);
 		$('.spinner-grow').removeClass('d-none');
-		$.get('/kriteria/edit/' + kr_id, function (data) {// get data
+		$.get(`/kriteria/${kr_id}/edit`, function (data) {// get data
 			$('#kriteria-id').val(data.id);
 			$('#nama-krit').val(data.name);
 			$('#tipe-kriteria').val(data.type);
