@@ -69,7 +69,7 @@ class HomeController extends Controller
 				return response()->json([
 					'message' => "Email \"$request->email\" sudah digunakan",
 					'errors' => ['email' => 'Email sudah digunakan']
-				]);
+				], 422);
 			}
 			Log::error($db);
 			return response()->json(['message' => $db->errorInfo[2]], 500);

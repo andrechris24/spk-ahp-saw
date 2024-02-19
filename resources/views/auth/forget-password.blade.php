@@ -3,7 +3,7 @@
 @section('auth-title', 'Lupa Password')
 @section('auth-subtitle', 'Masukkan email Anda untuk mendapatkan link reset password')
 @section('content')
-<form action="{{ route('password.email') }}" method="post" class="needs-validation">
+<form action="{{ route('password.email') }}" method="POST" class="needs-validation">
 	@csrf
 	<div class="form-group position-relative has-icon-left mb-4">
 		<input type="email" placeholder="Email" name="email" value="{{ old('email') }}"

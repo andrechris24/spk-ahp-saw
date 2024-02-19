@@ -4,8 +4,9 @@
 @section('auth-subtitle',
 'Selamat datang kembali! Silahkan masukkan password baru untuk melanjutkan.')
 @section('content')
-<form action="{{ route('password.update') }}" method="post" class="needs-validation">
+<form action="{{ route('password.update') }}" method="POST" class="needs-validation">
 	@csrf
+	@method('PATCH')
 	<input type="hidden" name="token" value="{{ $token }}">
 	<div class="form-group position-relative has-icon-left mb-4">
 		<input type="email" placeholder="Email" name="email" value="{{ $email }}"

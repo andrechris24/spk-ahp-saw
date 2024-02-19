@@ -35,7 +35,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			});
 			Route::prefix('reset-password')->group(function () {
 				Route::get('{token}', 'showResetPasswordForm')->name('reset');
-				Route::post('/', 'submitResetPasswordForm')->name('update');
+				Route::patch('/', 'submitResetPasswordForm')->name('update');
 			});
 		});
 	});
