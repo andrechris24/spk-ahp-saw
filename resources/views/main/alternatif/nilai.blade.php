@@ -218,7 +218,7 @@
 		let score_id = $(this).data('id'), score_name = $(this).data('name');
 		confirm.fire({
 			title: 'Hapus nilai alternatif?',
-			text: 'Anda akan menghapus nilai alternatif '+score_name,
+			text: 'Anda akan menghapus nilai alternatif ' + score_name,
 			preConfirm: async () => {
 				try {
 					await $.ajax({
@@ -242,11 +242,11 @@
 					});
 				} catch (error) {
 					console.error(error);
-					Swal.showValidationMessage('Gagal hapus: '+error);
+					Swal.showValidationMessage('Gagal hapus: ' + error);
 				}
 			}
 		}).then(function (result) {
-			if (result.isConfirmed) { // delete the data
+			if (result.isConfirmed) {
 				swal.fire({
 					icon: 'success',
 					title: 'Berhasil dihapus'
@@ -255,12 +255,12 @@
 		});
 	}).on('click', '.edit-record', function () {
 		let nilai_id = $(this).data('id'), nilai_name = $(this).data('nama');
-		$("#alternatif-value").val(nilai_name);
 		$('#NilaiAlterLabel').html('Edit Nilai Alternatif');
+		$("#alternatif-value").val(nilai_name);
 		$('#NilaiAlterForm :input').prop('disabled', true);
 		$('.data-submit').prop('disabled', true);
 		$('.spinner-grow').removeClass('d-none');
-		$.get(`/nilai/${nilai_id}/edit`, function (data) {// get data
+		$.get(`/nilai/${nilai_id}/edit`, function (data) {
 			$('#alternatif-hidden').val(data.alternatif_id);
 			@foreach($data['kriteria'] as $kr)
 			$("#subkriteria-{{ Str::slug($kr->name,'-')}}").val(
@@ -331,9 +331,9 @@
 	// clearing form data when modal hidden
 	$('#NilaiAlterModal').on('hidden.bs.modal', function () {
 		resetvalidation();
+		$('#NilaiAlterLabel').html('Isi Nilai Alternatif');
 		$('#NilaiAlterForm')[0].reset();
 		$('#alternatif-hidden').val("");
-		$('#NilaiAlterLabel').html('Isi Nilai Alternatif');
 	});
 </script>
 @endsection

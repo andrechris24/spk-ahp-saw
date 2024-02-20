@@ -50,7 +50,6 @@ class NilaiController extends Controller
 			Hasil::updateOrCreate(['alternatif_id' => $alt_id], ['skor' => $jumlah]);
 		} catch (QueryException $e) {
 			Log::error($e);
-			return;
 		}
 	}
 	public function datatables()

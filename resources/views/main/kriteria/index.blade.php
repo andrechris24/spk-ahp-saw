@@ -217,7 +217,7 @@
 		confirm.fire({
 			title: 'Hapus kriteria?',
 			text: `Anda akan menghapus kriteria ${kr_name}.\n` + 
-			"Penilaian Alternatif akan direset jika sudah dilakukan!",
+				"Penilaian Alternatif akan direset jika sudah dilakukan!",
 			preConfirm: async () => {
 				try {
 					await $.ajax({
@@ -241,11 +241,11 @@
 					});
 				} catch (error) {
 					console.error(error);
-					Swal.showValidationMessage('Gagal hapus: '+error);
+					Swal.showValidationMessage('Gagal hapus: ' + error);
 				}
 			}
 		}).then(function (result) {
-			if (result.isConfirmed) { // delete the data
+			if (result.isConfirmed) {
 				swal.fire({
 					icon: "success",
 					title: "Berhasil dihapus"
@@ -254,11 +254,11 @@
 		});
 	}).on('click', '.edit-record', function () {
 		let kr_id = $(this).data('id');
-		$('#CritForm :input').prop('disabled', true);
 		$('#CritLabel').html('Edit Kriteria');
+		$('#CritForm :input').prop('disabled', true);
 		$('.data-submit').prop('disabled', true);
 		$('.spinner-grow').removeClass('d-none');
-		$.get(`/kriteria/${kr_id}/edit`, function (data) {// get data
+		$.get(`/kriteria/${kr_id}/edit`, function (data) {
 			$('#kriteria-id').val(data.id);
 			$('#nama-krit').val(data.name);
 			$('#tipe-kriteria').val(data.type);
@@ -339,9 +339,9 @@
 	// clearing form data when modal hidden
 	$('#CritModal').on('hidden.bs.modal', function () {
 		resetvalidation();
+		$('#CritLabel').html('Tambah Kriteria');
 		$('#kriteria-id').val('');
 		$('#CritForm')[0].reset();
-		$('#CritLabel').html('Tambah Kriteria');
 	});
 </script>
 @endsection

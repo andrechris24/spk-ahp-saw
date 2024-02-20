@@ -196,12 +196,12 @@
 					});
 				} catch (error) {
 					console.error(error);
-					Swal.showValidationMessage('Gagal hapus: '+error);
+					Swal.showValidationMessage('Gagal hapus: ' + error);
 				}
 
 			}
 		}).then(function (result) {
-			if (result.isConfirmed) { // delete the data
+			if (result.isConfirmed) {
 				swal.fire({
 					icon: "success",
 					title: "Berhasil dihapus"
@@ -214,7 +214,7 @@
 		$("#AlterForm :input").prop("disabled", true);
 		$(".data-submit").prop("disabled", true);
 		$(".spinner-grow").removeClass("d-none");
-		$.get(`/alternatif/${alt_id}/edit`, function (data) {// get data
+		$.get(`/alternatif/${alt_id}/edit`, function (data) {
 			$("#alter-id").val(data.id);
 			$("#alter-name").val(data.name);
 		}).fail(function (xhr, st, err) {
@@ -288,9 +288,9 @@
 	// clearing form data when modal hidden
 	$("#AlterModal").on("hidden.bs.modal", function () {
 		resetvalidation();
+		$("#AlterLabel").html("Tambah Alternatif");
 		$("#AlterForm")[0].reset();
 		$("#alter-id").val("");
-		$("#AlterLabel").html("Tambah Alternatif");
 	});
 </script>
 @endsection

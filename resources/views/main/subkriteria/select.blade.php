@@ -94,8 +94,8 @@
 		let kriteria = $(this).data('name'), id = $(this).data('id');
 		confirm.fire({
 			title: 'Reset perbandingan?',
-			text: `Anda akan mereset perbandingan Sub Kriteria ${kriteria}` +
-				`.\nBobot Sub Kriteria ${kriteria} akan direset!`,
+			text: `Anda akan mereset perbandingan Sub Kriteria ${kriteria}.\n` +
+				`Bobot Sub Kriteria ${kriteria} akan direset!`,
 			preConfirm: async () => {
 				try {
 					await $.ajax({
@@ -116,7 +116,7 @@
 					});
 				} catch (error) {
 					console.error(error);
-					Swal.showValidationMessage('Gagal hapus: '+error);
+					Swal.showValidationMessage('Gagal hapus: ' + error);
 				}
 			}
 		}).then(function (result) {

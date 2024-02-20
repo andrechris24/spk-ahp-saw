@@ -59,7 +59,7 @@
 								<th>
 									<input type="radio" class="btn-check" name="kriteria[{{ $loop->index }}]"
 										id="left-{{ $loop->index }}" value="left" autocomplete="off"
-										{{$value[$loop->index]['nilai'] > 0 || old("kriteria.$loop->index") == 'left' ? 'checked' : '' }} required>
+										{{ $value[$loop->index]['nilai'] > 0 || old("kriteria.$loop->index") == 'left' ? 'checked' : '' }} required>
 									<label class="btn btn-outline-info" for="left-{{ $loop->index }}">
 										C{{ $krit['idbaris'] }}
 										<small>{{ $krit['namabaris'] }}</small>

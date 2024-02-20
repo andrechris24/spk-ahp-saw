@@ -72,17 +72,17 @@
 								</li>
 							</ul>
 						</li>
-						<li @class(['sidebar-item','has-sub','active'=>request()->is('bobot/hasil') || request()->is('bobot/sub/*')])>
+						<li @class(['sidebar-item', 'has-sub', 'active' => request()->is('bobot/hasil') || request()->is('bobot/sub/*')])>
 							<a href="#" class="sidebar-link">
 								<i class="bi bi-calculator-fill"></i> <span>Pembobotan</span>
 							</a>
 							<ul class="submenu">
-								<li @class(['submenu-item','active'=>request()->is('bobot/hasil')])>
+								<li @class(['submenu-item', 'active' => request()->is('bobot/hasil')])>
 									<a href="{{ route('bobotkriteria.index') }}" class="submenu-link">
 										Kriteria
 									</a>
 								</li>
-								<li @class(['submenu-item','active'=>request()->is('bobot/sub/*')])>
+								<li @class(['submenu-item', 'active' => request()->is('bobot/sub/*')])>
 									<a href="{{ route('bobotsubkriteria.pick') }}" class="submenu-link">
 										Sub Kriteria
 									</a>

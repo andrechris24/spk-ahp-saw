@@ -147,7 +147,7 @@ $title = $subkriteriacomp->nama_kriteria($kriteria_id);
 					<td>
 						@if (is_numeric($data['result']))
 							@php $consistent = $data['result'] <= 0.1; @endphp
-							{{round($data['result'], 5)}}
+							{{ round($data['result'], 5) }}
 							<span @class(['text-danger'=> $data['result'] > 0.1])>
 								({{ round($data['result'] * 100, 2) }}%)
 							</span>

@@ -227,7 +227,7 @@
 				try {
 					await $.ajax({
 						type: 'DELETE',
-						url: '/subkriteria/'+sub_id,
+						url: '/subkriteria/' + sub_id,
 						success: function () {
 							dt_subkriteria.draw();
 							return "Dihapus";
@@ -246,11 +246,11 @@
 					});
 				} catch (error) {
 					console.error(error);
-					Swal.showValidationMessage('Gagal hapus: '+error);
+					Swal.showValidationMessage('Gagal hapus: ' + error);
 				}
 			}
 		}).then(function (result) {
-			if (result.isConfirmed) { // delete the data
+			if (result.isConfirmed) {
 				swal.fire({
 					icon: "success",
 					title: "Berhasil dihapus"
@@ -259,12 +259,12 @@
 		});
 	}).on('click', '.edit-record', function () {
 		let sub_id = $(this).data('id');
-		$('#SubCritForm :input').prop('disabled', true);
 		$('#SubCritLabel').html('Edit Sub Kriteria');
+		$('#SubCritForm :input').prop('disabled', true);
 		$('#kriteria-alert').removeClass('d-none');
 		$('.data-submit').prop('disabled', true);
 		$('.spinner-grow').removeClass('d-none');
-		$.get(`/subkriteria/${sub_id}/edit`, function (data) {// get data
+		$.get(`/subkriteria/${sub_id}/edit`, function (data) {
 			$('#subkriteria-id').val(data.id);
 			$('#nama-sub').val(data.name);
 			$('#kriteria-select').val(data.kriteria_id);
@@ -340,10 +340,10 @@
 	// clearing form data when modal hidden
 	$('#SubCritModal').on('hidden.bs.modal', function () {
 		resetvalidation();
+		$('#SubCritLabel').html('Tambah Sub Kriteria');
 		$('#kriteria-alert').addClass('d-none');
 		$('#SubCritForm')[0].reset();
 		$('#subkriteria-id').val("");
-		$('#SubCritLabel').html('Tambah Sub Kriteria');
 	});
 </script>
 @endsection
