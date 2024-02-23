@@ -231,12 +231,11 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 								console.warn(xhr.responseJSON.message ?? st);
 								errmsg = `Gagal hapus: Kesalahan HTTP ${xhr.status}. ${xhr.statusText}`;
 							}
-							Swal.showValidationMessage(errmsg);
+							return Swal.showValidationMessage(errmsg);
 						}
 					});
 				} catch (error) {
 					console.error(error);
-					Swal.showValidationMessage('Gagal hapus: ' + error);
 				}
 			}
 		}).then((result) => {

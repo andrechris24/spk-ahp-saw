@@ -218,7 +218,7 @@
 		let score_id = $(this).data('id'), score_name = $(this).data('name');
 		confirm.fire({
 			title: 'Hapus nilai alternatif?',
-			text: 'Anda akan menghapus nilai alternatif ' + score_name,
+			text: `Anda akan menghapus nilai alternatif ${score_name}.`,
 			preConfirm: async () => {
 				try {
 					await $.ajax({
@@ -237,12 +237,11 @@
 								console.warn(xhr.responseJSON.message ?? st);
 								errmsg = `Kesalahan HTTP ${xhr.status}. ${xhr.statusText}`;
 							}
-							Swal.showValidationMessage("Gagal hapus: " + errmsg);
+							return Swal.showValidationMessage("Gagal hapus: " + errmsg);
 						}
 					});
 				} catch (error) {
 					console.error(error);
-					Swal.showValidationMessage('Gagal hapus: ' + error);
 				}
 			}
 		}).then(function (result) {

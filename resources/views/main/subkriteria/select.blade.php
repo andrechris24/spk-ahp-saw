@@ -109,14 +109,13 @@
 						error: function (xhr, st) {
 							if (xhr.status === 404) dt_subkriteriacomp.draw();
 							console.warn(xhr.responseJSON.message ?? st);
-							Swal.showValidationMessage(
+							return Swal.showValidationMessage(
 								`Gagal reset: Kesalahan HTTP ${xhr.status}. ${xhr.statusText}`
 							);
 						}
 					});
 				} catch (error) {
 					console.error(error);
-					Swal.showValidationMessage('Gagal reset: ' + error);
 				}
 			}
 		}).then(function (result) {

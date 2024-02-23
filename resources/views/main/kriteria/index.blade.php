@@ -236,12 +236,11 @@
 								console.warn(xhr.responseJSON.message ?? st);
 								errmsg = `Kesalahan HTTP ${xhr.status}. ${xhr.statusText}`;
 							}
-							Swal.showValidationMessage("Gagal hapus: " + errmsg);
+							return Swal.showValidationMessage("Gagal hapus: " + errmsg);
 						}
 					});
 				} catch (error) {
 					console.error(error);
-					Swal.showValidationMessage('Gagal hapus: ' + error);
 				}
 			}
 		}).then(function (result) {
