@@ -39,8 +39,7 @@ class HomeController extends Controller
 				];
 			} catch (QueryException $e) {
 				Log::error($e);
-				$jml['error'] = "Kesalahan SQLState #{$e->errorInfo[1]}/{$e->errorInfo[0]}. " .
-					$e->errorInfo[2];
+				$jml['error'] = "Kesalahan SQLState #{$e->errorInfo[1]}/{$e->errorInfo[0]}. {$e->errorInfo[2]}";
 			}
 		}
 		return view('main.index', compact('jml'));

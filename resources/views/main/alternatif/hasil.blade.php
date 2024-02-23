@@ -80,7 +80,7 @@ $totalalts = count($data['alternatif']);
 							@php
 							$arrays = $saw->getNilaiArr($nilai->kriteria_id);
 							$result = $saw->normalisasi(
-								$arrays, $nilai->kriteria->type, $nilai->subkriteria->bobot
+							$arrays, $nilai->kriteria->type, $nilai->subkriteria->bobot
 							);
 							$lresult[$alts->id][$counter] = $result * $saw->getBobot($nilai->kriteria_id);
 							$counter++;
@@ -98,13 +98,10 @@ $totalalts = count($data['alternatif']);
 </div>
 <div class="modal fade text-left" id="RankModal" tabindex="-1" role="dialog" aria-labelledby="RankLabel"
 	aria-hidden="true">
-	<div @class(['modal-dialog', 'modal-dialog-centered', 'modal-dialog-scrollable', 
-		'modal-fullscreen-md-down' => $totalalts <= 5,
-		'modal-fullscreen-lg-down' => $totalalts > 5 && $totalalts <=10,
-		'modal-lg' => $totalalts > 5 && $totalalts <= 10,
-		'modal-fullscreen-xl-down'=> $totalalts > 10 && $totalalts <= 18,
-		'modal-xl' => $totalalts > 10 && $totalalts <= 18,
-		'modal-fullscreen' => $totalalts>18]) role="document">
+	<div @class(['modal-dialog', 'modal-dialog-centered', 'modal-dialog-scrollable', 'modal-fullscreen-md-down'=> $totalalts <= 5, 
+		'modal-fullscreen-lg-down'=> $totalalts > 5 && $totalalts <=10, 'modal-lg'=> $totalalts > 5 && $totalalts <= 10, 
+		'modal-fullscreen-xl-down'=> $totalalts > 10 && $totalalts <= 18, 'modal-xl'=> $totalalts > 10 && $totalalts <= 18, 
+		'modal-fullscreen'=>$totalalts>18]) role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title" id="RankLabel">Grafik hasil penilaian</h4>
@@ -223,7 +220,7 @@ $totalalts = count($data['alternatif']);
 				responsive: true,
 				order: [[1 + {{ count($data['kriteria']) }}, 'desc']],
 				language: {
-					url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
+					url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/id.json"
 				},
 				columnDefs: [{//Alternatif
 					targets: 0,
@@ -320,11 +317,11 @@ $totalalts = count($data['alternatif']);
 					data: response.result.skor
 				}]);
 				loaded = true;
-			}).fail(function (xhr, st, err) {
+			}).fail(function (xhr, st) {
 				if (xhr.status === 400) errmsg = xhr.responseJSON.message;
 				else {
 					console.warn(xhr.responseJSON.message ?? st);
-					errmsg = `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err);
+					errmsg = `Kesalahan HTTP ${xhr.status}. ${xhr.statusText}`;
 				}
 				swal.fire({
 					title: 'Gagal memuat grafik',

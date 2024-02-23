@@ -14,7 +14,7 @@
 			</div>
 			<div class="modal-body">
 				<form method="POST" enctype="multipart/form-data" id="AlterForm" class="needs-validation">
-					<input type="hidden" name="id" id="alter-id">
+					<input type="hidden" name="id" id="alter-id">@csrf
 					<label for="alter-name">Nama Alternatif</label>
 					<div class="form-group">
 						<input type="text" class="form-control" name="name" id="alter-name" required />
@@ -147,7 +147,7 @@
 					}
 				}],
 				language: {
-					url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
+					url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/id.json"
 				}
 			}).on("error.dt", function (e, settings, techNote, message) {
 				errorDT(message, techNote);
@@ -155,12 +155,12 @@
 				$.get("{{ route('alternatif.count') }}", function (data) {
 					$("#total-duplicate").text(data.duplicates);
 					$("#total-counter").text(data.total);
-				}).fail(function (xhr, st, err) {
+				}).fail(function (xhr, st) {
 					console.warn(xhr.responseJSON.message ?? st);
 					swal.fire({
 						icon: 'error',
 						title: 'Gagal memuat jumlah',
-						text: `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err)
+						text: `Kesalahan HTTP ${xhr.status}. ${xhr.statusText}`
 					});
 				});
 			}).on("draw", setTableColor);
@@ -177,19 +177,19 @@
 				try {
 					await $.ajax({
 						type: "DELETE",
+						headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" },
 						url: "/alternatif/" + alt_id,
 						success: function () {
 							dt_alternatif.draw();
 							return "Dihapus";
 						},
-						error: function (xhr, st, err) {
+						error: function (xhr, st) {
 							if (xhr.status === 404) {
 								dt_alternatif.draw();
-								errmsg = `Alternatif ${alt_name} tidak ditemukan"`;
+								errmsg = `Alternatif ${alt_name} tidak ditemukan`;
 							} else {
 								console.warn(xhr.responseJSON.message ?? st);
-								errmsg = `Kesalahan HTTP ${xhr.status}.\n` +
-									(xhr.statusText ?? err);
+								errmsg = `Kesalahan HTTP ${xhr.status}. ${xhr.statusText}`;
 							}
 							Swal.showValidationMessage("Gagal hapus: " + errmsg);
 						},
@@ -198,7 +198,6 @@
 					console.error(error);
 					Swal.showValidationMessage('Gagal hapus: ' + error);
 				}
-
 			}
 		}).then(function (result) {
 			if (result.isConfirmed) {
@@ -217,14 +216,14 @@
 		$.get(`/alternatif/${alt_id}/edit`, function (data) {
 			$("#alter-id").val(data.id);
 			$("#alter-name").val(data.name);
-		}).fail(function (xhr, st, err) {
+		}).fail(function (xhr, st) {
 			if (xhr.status === 404) {
 				$("#AlterModal").modal("hide");
 				dt_alternatif.draw();
 				errmsg = "Alternatif tidak ditemukan";
 			} else {
 				console.warn(xhr.responseJSON.message ?? st);
-				errmsg = `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err);
+				errmsg = `Kesalahan HTTP ${xhr.status}. ${xhr.statusText}`;
 			}
 			swal.fire({
 				icon: "error",
@@ -261,7 +260,7 @@
 					title: status.message
 				});
 			},
-			error: function (xhr, stat, err) {
+			error: function (xhr, st) {
 				if (xhr.status === 422) {
 					resetvalidation();
 					if (typeof xhr.responseJSON.errors.name !== "undefined") {
@@ -275,7 +274,7 @@
 					errmsg = xhr.responseJSON.message;
 				} else {
 					console.warn(xhr.responseJSON.message ?? st);
-					errmsg = `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err);
+					errmsg = `Kesalahan HTTP ${xhr.status}. ${xhr.statusText}`;
 				}
 				swal.fire({
 					title: "Gagal",

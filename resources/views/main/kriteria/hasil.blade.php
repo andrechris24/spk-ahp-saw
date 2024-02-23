@@ -27,13 +27,13 @@
 							C{{ $kr->id }}
 						</th>
 						@foreach ($data['matriks_awal'] as $ma)
-						@if ($ma['kode_kriteria'] === $kr->idkriteria)
-						<td>
-							@if($ma['nilai']<0) <sup>1</sup>/<sub>{{ abs($ma['nilai']) }}</sub>
-							@else <sup>{{ $ma['nilai'] }}</sup>/<sub>1</sub>
+							@if ($ma['kode_kriteria'] === $kr->idkriteria)
+							<td>
+								@if($ma['nilai']<0) <sup>1</sup>/<sub>{{ abs($ma['nilai']) }}</sub>
+								@else <sup>{{ $ma['nilai'] }}</sup>/<sub>1</sub>
+								@endif
+							</td>
 							@endif
-						</td>
-						@endif
 						@endforeach
 					</tr>
 					@endforeach
@@ -66,9 +66,9 @@
 							C{{ $kr->id }}
 						</th>
 						@foreach ($data['matriks_perbandingan'] as $mp)
-						@if ($mp['kode_kriteria'] === $kr->idkriteria)
-						<td>{{ round($mp['nilai'], 5) }}</td>
-						@endif
+							@if ($mp['kode_kriteria'] === $kr->idkriteria)
+							<td>{{ round($mp['nilai'], 5) }}</td>
+							@endif
 						@endforeach
 					</tr>
 					@endforeach
@@ -110,9 +110,9 @@
 							C{{ $kr->id }}
 						</th>
 						@foreach ($data['matriks_normalisasi'] as $mn)
-						@if ($mn['kode_kriteria'] === $kr->idkriteria)
-						<td>{{ round($mn['nilai'], 5) }}</td>
-						@endif
+							@if ($mn['kode_kriteria'] === $kr->idkriteria)
+							<td>{{ round($mn['nilai'], 5) }}</td>
+							@endif
 						@endforeach
 						@if ($data['bobot_prioritas'][$loop->index]['kode_kriteria'] === $kr->idkriteria)
 						<td class="text-info">

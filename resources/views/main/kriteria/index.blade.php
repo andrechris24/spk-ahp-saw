@@ -14,7 +14,7 @@
 			</div>
 			<div class="modal-body">
 				<form method="POST" enctype="multipart/form-data" id="CritForm" class="needs-validation">
-					<input type="hidden" name="id" id="kriteria-id">
+					<input type="hidden" name="id" id="kriteria-id">@csrf
 					<label for="nama-krit">Nama Kriteria</label>
 					<div class="form-group">
 						<input type="text" class="form-control" name="name" id="nama-krit" required />
@@ -185,7 +185,7 @@
 					}
 				}],
 				language: {
-					url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
+					url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/id.json"
 				},
 				drawCallback: function() {
 					let api = this.api(), num_rows = api.page.info().recordsTotal;
@@ -200,12 +200,12 @@
 					$("#total-duplicate").text(data.duplicates);
 					$("#total-counter").text(data.total);
 					$('#total-unused').text(data.unused);
-				}).fail(function (xhr, st, err) {
+				}).fail(function (xhr, st) {
 					console.warn(xhr.responseJSON.message ?? st);
 					swal.fire({
 						icon: 'error',
 						title: 'Gagal memuat jumlah',
-						text: `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err)
+						text: `Kesalahan HTTP ${xhr.status}. ${xhr.statusText}`
 					});
 				});
 			});
@@ -222,19 +222,19 @@
 				try {
 					await $.ajax({
 						type: 'DELETE',
+						headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" },
 						url: '/kriteria/' + kr_id,
 						success: function () {
 							dt_kriteria.draw();
 							return "Dihapus";
 						},
-						error: function (xhr, st, err) {
+						error: function (xhr, st) {
 							if (xhr.status === 404) {
 								dt_kriteria.draw();
 								errmsg = `Kriteria ${kr_name} tidak ditemukan`;
 							} else {
 								console.warn(xhr.responseJSON.message ?? st);
-								errmsg = `Kesalahan HTTP ${xhr.status}.\n` +
-									(xhr.statusText ?? err);
+								errmsg = `Kesalahan HTTP ${xhr.status}. ${xhr.statusText}`;
 							}
 							Swal.showValidationMessage("Gagal hapus: " + errmsg);
 						}
@@ -263,14 +263,14 @@
 			$('#nama-krit').val(data.name);
 			$('#tipe-kriteria').val(data.type);
 			$('#deskripsi').val(data.desc);
-		}).fail(function (xhr, st, err) {
+		}).fail(function (xhr, st) {
 			if (xhr.status === 404) {
 				$('#CritModal').modal('hide');
 				dt_kriteria.draw();
 				errmsg = "Kriteria tidak ditemukan";
 			} else {
 				console.warn(xhr.responseJSON.message ?? st);
-				errmsg = `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err);
+				errmsg = `Kesalahan HTTP ${xhr.status}. ${xhr.statusText}`;
 			}
 			swal.fire({
 				icon: 'error',
@@ -307,7 +307,7 @@
 					title: status.message
 				});
 			},
-			error: function (xhr, st, err) {
+			error: function (xhr, st) {
 				if (xhr.status === 422) {
 					resetvalidation();
 					if (typeof xhr.responseJSON.errors.name !== "undefined") {
@@ -326,7 +326,7 @@
 				} else if (xhr.status === 400) errmsg = xhr.responseJSON.message;
 				else {
 					console.warn(xhr.responseJSON.message ?? st);
-					errmsg = `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err);
+					errmsg = `Kesalahan HTTP ${xhr.status}. ${xhr.statusText}`;
 				}
 				swal.fire({
 					title: 'Gagal',

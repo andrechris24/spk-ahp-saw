@@ -14,7 +14,7 @@
 			</div>
 			<div class="modal-body">
 				<form action="{{ route('subkriteria.store') }}" method="post" enctype="multipart/form-data"
-					id="SubCritForm" class="needs-validation">
+					id="SubCritForm" class="needs-validation">@csrf
 					<input type="hidden" name="id" id="subkriteria-id">
 					<label for="nama-sub">Nama Sub Kriteria</label>
 					<div class="form-group">
@@ -188,7 +188,7 @@
 					}
 				}],
 				language: {
-					url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
+					url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/id.json"
 				},
 				drawCallback: function() {
 					let api = this.api(), num_rows = api.page.info().recordsTotal;
@@ -204,12 +204,12 @@
 					$('#total-max').text(data.max);
 					$("#total-counter").text(data.total);
 					$('#total-duplicate').text(data.duplicate);
-				}).fail(function (xhr, st, err) {
+				}).fail(function (xhr, st) {
 					console.warn(xhr.responseJSON.message ?? st);
 					swal.fire({
 						icon: 'error',
 						title: 'Gagal memuat jumlah',
-						text: `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err)
+						text: `Kesalahan HTTP ${xhr.status}. ${xhr.statusText}`
 					});
 				});
 			}).on('draw', setTableColor);
@@ -227,19 +227,19 @@
 				try {
 					await $.ajax({
 						type: 'DELETE',
+						headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" },
 						url: '/subkriteria/' + sub_id,
 						success: function () {
 							dt_subkriteria.draw();
 							return "Dihapus";
 						},
-						error: function (xhr, st, err) {
+						error: function (xhr, st) {
 							if (xhr.status === 404) {
 								dt_subkriteria.draw();
 								errmsg = `Sub Kriteria ${sub_name} (${sub_kr}) tidak ditemukan`;
 							} else {
 								console.warn(xhr.responseJSON.message ?? st);
-								errmsg = `Kesalahan HTTP ${xhr.status}.\n` +
-									(xhr.statusText ?? err);
+								errmsg = `Kesalahan HTTP ${xhr.status}. ${xhr.statusText}`;
 							}
 							Swal.showValidationMessage("Gagal hapus: " + errmsg);
 						}
@@ -268,14 +268,14 @@
 			$('#subkriteria-id').val(data.id);
 			$('#nama-sub').val(data.name);
 			$('#kriteria-select').val(data.kriteria_id);
-		}).fail(function (xhr, st, err) {
+		}).fail(function (xhr, st) {
 			if (xhr.status === 404) {
 				$('#SubCritModal').modal('hide');
 				dt_subkriteria.draw();
 				errmsg = "Sub Kriteria tidak ditemukan";
 			} else {
 				console.warn(xhr.responseJSON.message ?? st);
-				errmsg = `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err);
+				errmsg = `Kesalahan HTTP ${xhr.status}. ${xhr.statusText}`;
 			}
 			swal.fire({
 				icon: "error",
@@ -312,7 +312,7 @@
 					title: status.message
 				});
 			},
-			error: function (xhr, st, err) {
+			error: function (xhr, st) {
 				if (xhr.status === 422) {
 					resetvalidation();
 					if (typeof xhr.responseJSON.errors.name !== "undefined") {
@@ -327,7 +327,7 @@
 				} else if (xhr.status === 400) errmsg = xhr.responseJSON.message;
 				else {
 					console.warn(xhr.responseJSON.message ?? st);
-					errmsg = `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err);
+					errmsg = `Kesalahan HTTP ${xhr.status}. ${xhr.statusText}`;
 				}
 				swal.fire({
 					title: 'Gagal',

@@ -73,7 +73,7 @@ class KriteriaController extends Controller
 	{
 		return response()->json($kriterium);
 	}
-	public function hapus(Kriteria $kriterium)
+	public function destroy(Kriteria $kriterium)
 	{
 		$kriterium->delete();
 		Nilai::truncate();

@@ -14,7 +14,7 @@
 			</div>
 			<div class="modal-body">
 				<form method="POST" enctype="multipart/form-data" id="NilaiAlterForm" class="needs-validation">
-					<input type="hidden" name="alternatif_id" id="alternatif-hidden">
+					<input type="hidden" name="alternatif_id" id="alternatif-hidden">@csrf
 					<div class="input-group has-validation mb-3">
 						<label class="input-group-text" for="alternatif-value">
 							Nama Alternatif
@@ -31,8 +31,8 @@
 						<label class="input-group-text" for="subkriteria-{{ Str::slug($kr->name,'-') }}">
 							C{{ $kr->id }}
 						</label>
-						<select class="form-select" id="subkriteria-{{ Str::slug($kr->name,'-') }}"
-							name="subkriteria_id[]" required>
+						<select class="form-select" id="subkriteria-{{ Str::slug($kr->name,'-') }}" name="subkriteria_id[]"
+							required>
 							<option value="">Pilih</option>
 							@foreach ($data['subkriteria'] as $subkr)
 							@if ($subkr->kriteria_id == $kr->id)
@@ -194,7 +194,7 @@
 					{ data: "id" }
 				],
 				language: {
-					url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
+					url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/id.json"
 				}
 			}).on('error.dt', function (e, settings, techNote, message) {
 				errorDT(message, techNote);
@@ -202,12 +202,12 @@
 				$.get("{{ route('nilai.count') }}", function (data) {
 					$('#total-noscore').text(data.unused);
 					$('#total-alts').text(data.alternatif);
-				}).fail(function (xhr, st, err) {
+				}).fail(function (xhr, st) {
 					console.warn(xhr.responseJSON.message ?? st);
 					swal.fire({
 						icon: 'error',
 						title: 'Gagal memuat jumlah',
-						text: `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err)
+						text: `Kesalahan HTTP ${xhr.status}. ${xhr.statusText}`
 					});
 				});
 			}).on('draw', setTableColor);
@@ -223,19 +223,19 @@
 				try {
 					await $.ajax({
 						type: 'DELETE',
+						headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" },
 						url: '/nilai/' + score_id,
-						success: function (data) {
+						success: function () {
 							nilaialtdt.draw();
 							return "Dihapus";
 						},
-						error: function (xhr, stat, err) {
+						error: function (xhr, st) {
 							if (xhr.status === 404) {
 								nilaialtdt.draw();
 								errmsg = `Nilai Alternatif ${score_name} tidak ditemukan`;
 							} else {
 								console.warn(xhr.responseJSON.message ?? st);
-								errmsg = `Kesalahan HTTP ${xhr.status}.\n` +
-									(xhr.statusText ?? err);
+								errmsg = `Kesalahan HTTP ${xhr.status}. ${xhr.statusText}`;
 							}
 							Swal.showValidationMessage("Gagal hapus: " + errmsg);
 						}
@@ -263,16 +263,16 @@
 		$.get(`/nilai/${nilai_id}/edit`, function (data) {
 			$('#alternatif-hidden').val(data.alternatif_id);
 			@foreach($data['kriteria'] as $kr)
-			$("#subkriteria-{{ Str::slug($kr->name,'-')}}").val(
+			$("#subkriteria-{{ Str::slug($kr->name,'-') }}").val(
 				data.subkriteria.{{ Str::slug($kr->name,'_')}});
 			@endforeach
-		}).fail(function (xhr, st, err) {
+		}).fail(function (xhr, st) {
 			if (xhr.status === 404) {
 				nilaialtdt.draw();
 				$('#NilaiAlterModal').modal('hide');
 				errmsg = xhr.responseJSON.message;
 			} else {
-				errmsg = `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err);
+				errmsg = `Kesalahan HTTP ${xhr.status}. ${xhr.statusText}`;
 				console.warn(xhr.responseJSON.message ?? st);
 			}
 			swal.fire({
@@ -311,14 +311,14 @@
 					title: "Berhasil dinilai"
 				});
 			},
-			error: function (xhr, st, err) {
+			error: function (xhr, st) {
 				if (xhr.status === 422) {
 					resetvalidation();
 					console.warn(xhr.responseJSON.errors);
 					errmsg = xhr.responseJSON.message;
 				} else {
 					console.warn(xhr.responseJSON.message ?? st);
-					errmsg = `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err);
+					errmsg = `Kesalahan HTTP ${xhr.status}. ${xhr.statusText}`;
 				}
 				swal.fire({
 					title: 'Gagal',

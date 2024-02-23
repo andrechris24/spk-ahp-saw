@@ -5,20 +5,29 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>@yield('title') | Sistem Pendukung Keputusan metode AHP & SAW</title>
-	<link rel="shortcut icon" href="{{ asset('assets/compiled/svg/favicon.svg') }}" type="image/x-icon" />
-	<link rel="shortcut icon" href="{{ asset('assets/static/images/logo/favicon.png') }}" type="image/png" />
-	<link rel="stylesheet" href="{{ asset('assets/compiled/css/app.css') }}" />
-	<link rel="stylesheet" href="{{ asset('assets/compiled/css/app-dark.css') }}" />
-	<link rel="stylesheet" href="{{ asset('assets/compiled/css/iconly.css') }}" />
-	<link rel="stylesheet" type="text/css" href="{{ asset('assets/extensions/DataTables/datatables.min.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ asset('assets/compiled/css/table-datatable-jquery.css') }}">
-	<link rel="stylesheet" href="{{ asset('assets/extensions/apexcharts/apexcharts.css') }}">
-	<link rel="stylesheet" href="{{ asset('assets/extensions/toastify-js/src/toastify.css') }}" />
-	<link rel="stylesheet" type="text/css"
-		href="{{ asset('assets/extensions/sweetalert2/sweetalert2.min.css') }}">
+	<link rel="shortcut icon"
+		href="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/static/images/logo/favicon.svg"
+		type="image/x-icon" />
+	<link rel="shortcut icon"
+		href="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/static/images/logo/favicon.png"
+		type="image/png" />
 	<link rel="stylesheet"
-		href="{{ asset('assets/extensions/@fortawesome/fontawesome-free/css/all.min.css') }}" />
-	<script src="{{ asset('assets/static/js/initTheme.js') }}"></script>
+		href="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/compiled/css/app.css" />
+	<link rel="stylesheet"
+		href="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/compiled/css/app-dark.css" />
+	<link rel="stylesheet"
+		href="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/compiled/css/iconly.css" />
+	<link rel="stylesheet"
+		href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.8/b-2.4.2/b-html5-2.4.2/r-2.5.0/datatables.min.css">
+	<link rel="stylesheet" type="text/css"
+		href="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/compiled/css/table-datatable-jquery.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css"
+		integrity="sha256-ZCK10swXv9CN059AmZf9UzWpJS34XvilDMJ79K+WOgc=" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+		integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<script src="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/static/js/initTheme.js"></script>
 </head>
 
 <body onload="switchvalidation()">
@@ -29,7 +38,8 @@
 					<div class="d-flex justify-content-between align-items-center">
 						<div class="logo">
 							<a href="{{ route('home.index') }}">
-								<img src="{{ asset('assets/compiled/svg/logo.svg') }}" alt="Logo" />
+								<img src="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/static/images/logo/logo.svg"
+									alt="Logo" />
 							</a>
 						</div>
 						<x-theme />
@@ -72,17 +82,18 @@
 								</li>
 							</ul>
 						</li>
-						<li @class(['sidebar-item', 'has-sub', 'active' => request()->is('bobot/hasil') || request()->is('bobot/sub/*')])>
+						<li @class(['sidebar-item', 'has-sub' , 'active'=> request()->is('bobot/hasil') ||
+							request()->is('bobot/sub/*')])>
 							<a href="#" class="sidebar-link">
 								<i class="bi bi-calculator-fill"></i> <span>Pembobotan</span>
 							</a>
 							<ul class="submenu">
-								<li @class(['submenu-item', 'active' => request()->is('bobot/hasil')])>
+								<li @class(['submenu-item', 'active'=> request()->is('bobot/hasil')])>
 									<a href="{{ route('bobotkriteria.index') }}" class="submenu-link">
 										Kriteria
 									</a>
 								</li>
-								<li @class(['submenu-item', 'active' => request()->is('bobot/sub/*')])>
+								<li @class(['submenu-item', 'active'=> request()->is('bobot/sub/*')])>
 									<a href="{{ route('bobotsubkriteria.pick') }}" class="submenu-link">
 										Sub Kriteria
 									</a>
@@ -206,27 +217,32 @@
 		</div>
 	</div>
 	<script type="text/javascript" src="{{ asset('js/navbar.js') }}"></script>
-	<script src="{{ asset('assets/static/js/components/dark.js') }}"></script>
-	<script src="{{ asset('assets/compiled/js/app.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('assets/extensions/jquery/jquery.min.js') }}"></script>
-	<script src="{{ asset('assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}">
+	<script src="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/static/js/components/dark.js">
 	</script>
-	<script type="text/javascript" src="{{ asset('assets/extensions/DataTables/datatables.min.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('assets/extensions/DataTables/natural.js') }}"></script>
-	<script type="text/javascript"
-		src="{{ asset('assets/extensions/DataTables/Buttons-2.4.2/js/buttons.print.min.js') }}">
+	<script
+		src="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js">
 	</script>
-	<script src="{{ asset('assets/extensions/apexcharts/apexcharts.min.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('assets/extensions/toastify-js/src/toastify.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('assets/extensions/sweetalert2/sweetalert2.min.js') }}"></script>
+	<script src="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/compiled/js/app.js"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+		integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+	<script
+		src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.8/b-2.4.2/b-html5-2.4.2/r-2.5.0/datatables.min.js">
+	</script>
+	<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js">
+	</script>
+	<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.13.7/sorting/natural.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"
+		integrity="sha256-IW9RTty6djbi3+dyypxajC14pE6ZrP53DLfY9w40Xn4=" crossorigin="anonymous"></script>
+	</script>
+	<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 	<script type="text/javascript" src="{{ asset('js/popup.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/tooltip.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/datatables.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/validate.js') }}"></script>
 	<script type="text/javascript">
-		$.ajaxSetup({
-			headers: { 'X-CSRF-TOKEN': "{{ csrf_token() }}" }
-		});
 		$(document).on('click', '#logout-btn', function (e) {
 			e.preventDefault();
 			document.getElementById('logout-form').submit();

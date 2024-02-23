@@ -82,7 +82,7 @@
 					}
 				}],
 				language: {
-					url: "{{ asset('assets/extensions/DataTables/DataTables-id.json') }}"
+					url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/id.json"
 				}
 			}).on('error.dt', function (e, settings, techNote, message) {
 				errorDT(message, techNote);
@@ -100,23 +100,23 @@
 				try {
 					await $.ajax({
 						type: 'DELETE',
+						headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" },
 						url: `/bobot/sub/${id}/del`,
 						success: function () {
 							dt_subkriteriacomp.draw();
 							return "Dihapus";
 						},
-						error: function (xhr, st, err) {
+						error: function (xhr, st) {
 							if (xhr.status === 404) dt_subkriteriacomp.draw();
 							console.warn(xhr.responseJSON.message ?? st);
 							Swal.showValidationMessage(
-								`Gagal reset: Kesalahan HTTP ${xhr.status}.\n` + 
-								(xhr.statusText ?? err)
+								`Gagal reset: Kesalahan HTTP ${xhr.status}. ${xhr.statusText}`
 							);
 						}
 					});
 				} catch (error) {
 					console.error(error);
-					Swal.showValidationMessage('Gagal hapus: ' + error);
+					Swal.showValidationMessage('Gagal reset: ' + error);
 				}
 			}
 		}).then(function (result) {

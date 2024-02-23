@@ -11,7 +11,7 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 		<div class="card-body">
 			<x-caps-lock />
 			<form class="form form-horizontal needs-validation" method="post" action="{{ route('akun.perform') }}"
-				id="form-edit-account">
+				id="form-edit-account">@csrf
 				<div class="form-body">
 					<div class="row">
 						<div class="col-md-4"><label for="nama-user">Nama</label></div>
@@ -150,7 +150,7 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 					title: "Tersimpan"
 				});
 			},
-			error: function (xhr, st, err) {
+			error: function (xhr, st) {
 				if (xhr.status === 422) {
 					resetvalidation();
 					if (typeof xhr.responseJSON.errors.name !== "undefined") {
@@ -182,7 +182,7 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 						"Tunggu beberapa saat sebelum menyimpan perubahan.";
 				} else {
 					console.warn(xhr.responseJSON.message ?? st);
-					errmsg = `Kesalahan HTTP ${xhr.status}.\n` + (xhr.statusText ?? err)
+					errmsg = `Kesalahan HTTP ${xhr.status}. ${xhr.statusText}`
 				}
 				swal.fire({
 					title: 'Gagal update akun',
@@ -216,27 +216,27 @@ Jika Anda tidak ingin ganti password, biarkan kolom password baru kosong.
 					await $.ajax({
 						url: "{{ route('akun.delete') }}",
 						type: "DELETE",
+						headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" },
 						data: {
 							del_password: password
 						},
 						success: function () {
 							return "{{ route('login') }}";
 						},
-						error: function (xhr, st, err) {
+						error: function (xhr, st) {
 							if (xhr.status === 422) errmsg = xhr.responseJSON.message;
 							else if (xhr.status === 429)
 								errmsg = "Terlalu banyak upaya. Cobalah beberapa saat lagi.";
 							else {
 								console.warn(xhr.responseJSON.message ?? st);
-								errmsg = `Gagal hapus: Kesalahan HTTP ${xhr.status}.\n` +
-									(xhr.statusText ?? err);
+								errmsg = `Gagal hapus: Kesalahan HTTP ${xhr.status}. ${xhr.statusText}`;
 							}
 							Swal.showValidationMessage(errmsg);
 						}
 					});
 				} catch (error) {
 					console.error(error);
-					Swal.showValidationMessage('Gagal hapus: '+error);
+					Swal.showValidationMessage('Gagal hapus: ' + error);
 				}
 			}
 		}).then((result) => {

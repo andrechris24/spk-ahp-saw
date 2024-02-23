@@ -57,8 +57,7 @@ class User extends Authenticatable
 		'current_password' => ['bail', 'required', 'current_password'],
 		'password' => ['nullable', 'bail', 'confirmed', 'between:8,20'],
 		'password_confirmation' => 'required_with:password'
-	],
-	$message = [
+	], $message = [
 		'name.required' => 'Nama harus diisi',
 		'name.regex' => 'Nama tidak boleh mengandung simbol dan angka',
 		'current_password.required' => 'Password lama harus diisi'

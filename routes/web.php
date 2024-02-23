@@ -15,7 +15,7 @@ Route::get('/phpinfo', function () {
 })->name('php.info');
 Route::view('/laravel-info', 'welcome')->name('laravel.welcome');
 Route::group(['namespace' => 'App\Http\Controllers'], function () {
-	Route::name('home.')->group(function(){
+	Route::name('home.')->group(function () {
 		Route::get('/', 'HomeController@index')->name('index');
 		Route::redirect('/home', '/')->name('failsafe');
 	});
@@ -72,19 +72,19 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 			Route::get('ranking', 'hasil')->name('hasil.ranking')->block();
 		});
 		Route::resources([
-			'kriteria'=>'KriteriaController',
-			'subkriteria'=>'SubKriteriaController',
-			'alternatif'=>'AlternatifController',
-			'nilai'=>'NilaiController'
+			'kriteria' => 'KriteriaController',
+			'subkriteria' => 'SubKriteriaController',
+			'alternatif' => 'AlternatifController',
+			'nilai' => 'NilaiController'
 		]);
 		Route::prefix('bobot')->group(function () {
 			Route::controller('KriteriaCompController')->name('bobotkriteria.')
-			->group(function () {
-				Route::get('/', 'index')->name('index');
-				Route::post('/', 'simpan')->name('store');
-				Route::get('hasil', 'hasil')->name('result');
-				Route::delete('reset', 'destroy')->name('reset');
-			});
+				->group(function () {
+					Route::get('/', 'index')->name('index');
+					Route::post('/', 'simpan')->name('store');
+					Route::get('hasil', 'hasil')->name('result');
+					Route::delete('reset', 'destroy')->name('reset');
+				});
 			Route::controller('SubKriteriaCompController')->name('bobotsubkriteria.')
 				->prefix('sub')->group(function () {
 					Route::get('data', 'datatables')->name('data')->block();

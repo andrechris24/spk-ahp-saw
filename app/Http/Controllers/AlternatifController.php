@@ -51,7 +51,7 @@ class AlternatifController extends Controller
 	{
 		return response()->json($alternatif);
 	}
-	public function hapus(Alternatif $alternatif)
+	public function destroy(Alternatif $alternatif)
 	{
 		$alternatif->delete();
 		$model = new Alternatif;
