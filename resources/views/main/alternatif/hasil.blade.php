@@ -98,9 +98,12 @@ $totalalts = count($data['alternatif']);
 </div>
 <div class="modal fade text-left" id="RankModal" tabindex="-1" role="dialog" aria-labelledby="RankLabel"
 	aria-hidden="true">
-	<div @class(['modal-dialog', 'modal-dialog-centered', 'modal-dialog-scrollable', 'modal-fullscreen-md-down'=> $totalalts <= 5, 
-		'modal-fullscreen-lg-down'=> $totalalts > 5 && $totalalts <=10, 'modal-lg'=> $totalalts > 5 && $totalalts <= 10, 
-		'modal-fullscreen-xl-down'=> $totalalts > 10 && $totalalts <= 18, 'modal-xl'=> $totalalts > 10 && $totalalts <= 18, 
+	<div @class(['modal-dialog', 'modal-dialog-centered', 'modal-dialog-scrollable', 
+		'modal-fullscreen-md-down'=> $totalalts <= 5, 
+		'modal-fullscreen-lg-down'=> $totalalts > 5 && $totalalts <=10, 
+		'modal-lg'=> $totalalts > 5 && $totalalts <= 10, 
+		'modal-fullscreen-xl-down'=> $totalalts > 10 && $totalalts <= 18, 
+		'modal-xl'=> $totalalts > 10 && $totalalts <= 18, 
 		'modal-fullscreen'=>$totalalts>18]) role="document">
 		<div class="modal-content">
 			<div class="modal-header">

@@ -48,6 +48,6 @@ class Kriteria extends Model
 	}
 	public function kriteriacomp()
 	{
-		return $this->hasMany(kriteriaComp::class);
+		return $this->hasMany(KriteriaComp::class);
 	}
 }

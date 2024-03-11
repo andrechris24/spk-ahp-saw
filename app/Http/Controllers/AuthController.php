@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Symfony\Component\Mailer\Exception\TransportException;
@@ -25,6 +26,8 @@ class AuthController extends Controller
 	}
 	public function login(Request $request)
 	{
+		if(RateLimiter::tooManyAttempts())
+			return back()->withError('Terlalu banyak upaya. Coba lagi dalam 2 menit.');
 		try {
 			$credentials = $request->validate(User::$loginrules);
 			if (Auth::attempt($credentials, $request->get('remember'))) {

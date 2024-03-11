@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kriteria;
-use App\Models\KriteriaComp;
-use Illuminate\Database\QueryException;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use App\Models\Kriteria,
+App\Models\KriteriaComp,
+Illuminate\Database\QueryException,
+Illuminate\Http\Request,
+Illuminate\Support\Facades\Log;
 
 class KriteriaCompController extends Controller
 {

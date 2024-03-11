@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kriteria;
-use App\Models\SubKriteria;
-use App\Models\SubKriteriaComp;
-use Illuminate\Database\QueryException;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Yajra\DataTables\Facades\DataTables;
+use App\Models\Kriteria,
+App\Models\SubKriteria,
+App\Models\SubKriteriaComp,
+Illuminate\Database\QueryException,
+Illuminate\Http\Request,
+Illuminate\Support\Facades\Log,
+Yajra\DataTables\Facades\DataTables;
 
 class SubKriteriaCompController extends Controller
 {
